@@ -550,4 +550,10 @@ ALTER TABLE selected_skill
 		)
 		REFERENCES skill (
 			skill_num
-		);
+		);        
+		
+ALTER TABLE company MODIFY(
+	img4 VARCHAR2(90)
+DEFAULT 'no_co_img4.png');
+
+COMMIT;
