@@ -1,6 +1,17 @@
-
+﻿
 # ERD내용 
+
 .log
-02.설계\eXERD_자료\oneNineOneFour\.metadata\*
+
+
+/02.설계/eXERD_자료/oneNineOneFour/.metadata\*
+
 /02.설계/eXERD_자료/oneNineOneFour/.project
+
 /02.설계/eXERD_자료/.metadata/*
+
+
+.classpath
+.project
+
+/03.개발/bin/*
