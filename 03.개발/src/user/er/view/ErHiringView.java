@@ -1,97 +1,101 @@
 package user.er.view;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 @SuppressWarnings("serial")
 public class ErHiringView extends JDialog {
 
-	private JButton jbDetailSearch;
+	private JButton jbDetailSearch, jbSearch;
+	private JComboBox<String> jcbSort;
 	private JTable jtEeInfo;
 	private DefaultTableModel dtmEeInfo;
 	
 	
-	public ErHiringView() {
-		super("1949-전체관리");
+	public ErHiringView(ErMainView emv) {
+		super(emv,"구인 정보 보기",true);
 		
 		
-		String[] userColumns= {"번호","아이디","이름","연락처","주소","이메일","회원타입","등록일"};
-		dtmUser=new DefaultTableModel(userColumns, 4) {
+		String[] eeColumns= {"번호","구인정보번호","제목","회사명","직급","근무지역","학력","고용형태", "급여","등록일"};
+		dtmEeInfo=new DefaultTableModel(eeColumns, 40) {
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
 		};
-		JPanel jpUser=new JPanel();
+		jtEeInfo=new JTable(dtmEeInfo);
+		JScrollPane jspEe=new JScrollPane(jtEeInfo);
+		
+		jbDetailSearch=new JButton("조건검색");
+		JLabel jlSearch=new JLabel("기업명 검색");
+		JTextField jtfSearch=new JTextField();
+		jbSearch=new JButton("검색");
+		
+		String sort[]= {"등록일순", "직급순", "급여순"};
+		jcbSort=new JComboBox<String>(sort);
 		
 		
-		jtb.add("회원관리", jpUser);
+		JPanel jpEeNorth=new JPanel();
+		jpEeNorth.add(jbDetailSearch);
+		jpEeNorth.add(jlSearch);
+		jpEeNorth.add(jtfSearch);
+		jpEeNorth.add(jbSearch);
 		
+		
+		add("Center",jspEe);
+		add("North",jcbSort);
+		add("South",jpEeNorth);
+		
+		setBounds(100, 100, 800, 600);
+		setVisible(true);
+		
+	}//ErHiringView
+
 	
-		String[] eeColumns= {"번호","구인정보번호","제목","회사명","기업사용자","이름","연락처","직급","근무지역","학력","고용형태","급여","등록일"};
-		dtmEe=new DefaultTableModel(eeColumns, 4) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
-		JPanel jpEe=new JPanel();
-		
-		jtb.add("구인정보관리", jpEe);
-		
-		String[] erColumns= {"번호","기본정보번호","이미지","일반사용자","이름","직급","근무지역","학력","나이","포트폴리오 유무","성별","외부이력서 파일명","등록일"};
-		dtmEe=new DefaultTableModel(erColumns, 4) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
-		JPanel jpEr=new JPanel();
-		
-		jtb.add("구직자 기본정보관리", jpEr);
-		
-		String[] coColumns= {"번호","회사번호","이미지","회사명","기업사용자","설립년도","사원수","등록일"};
-		dtmEe=new DefaultTableModel(coColumns, 4) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
-		JPanel jpCo=new JPanel();
-		
-		jtb.add("회사정보 관리", jpCo);
-		
-		add("Center",jtb);
-		
-	}//AdminMainView
-
-
-	public JTabbedPane getJtb() {
-		return jtb;
+	
+	public JButton getJbDetailSearch() {
+		return jbDetailSearch;
 	}
 
 
-	public DefaultTableModel getDtmUser() {
-		return dtmUser;
+
+	public JButton getJbSearch() {
+		return jbSearch;
 	}
 
 
-	public DefaultTableModel getDtmEe() {
-		return dtmEe;
+
+	public JComboBox<String> getJcbSort() {
+		return jcbSort;
 	}
 
 
-	public DefaultTableModel getDtmEr() {
-		return dtmEr;
+
+	public JTable getJtEeInfo() {
+		return jtEeInfo;
 	}
 
 
-	public DefaultTableModel getDtmCo() {
-		return dtmCo;
+
+	public DefaultTableModel getDtmEeInfo() {
+		return dtmEeInfo;
 	}
+
+
+
+	public static void main(String[] args) {
+		ErMainView emv=new ErMainView();
+		new ErHiringView(emv);
+	}
+
 	
 	
 }//class
