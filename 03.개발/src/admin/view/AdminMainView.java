@@ -91,4 +91,4 @@ public class AdminMainView extends JFrame {
 	public JButton getJbExit() {
 		return jbExit;
 	}
-}
+} 
