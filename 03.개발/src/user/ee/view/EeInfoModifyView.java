@@ -14,35 +14,35 @@ import javax.swing.border.TitledBorder;
 
 public class EeInfoModifyView extends JDialog {
 
-	private JButton jbModify, jbRegisterModi, jbRegisterImg, jbCancle;
+	private JButton jbModify, jbModifyExt, jbModifyImg, jbClose;
 	private JComboBox<String> jcbRank, jcbLoc, jcbEducation, jcbPortfolio;
 	private JTextField jtfExtResume;
-
+	private JLabel jlImag;
 	public EeInfoModifyView() {
 //		super("기본 정보 관리",true);
 
 		// image
 		ImageIcon ii=new ImageIcon("C:/dev/homework/1949/1949/03.개발/가데이터/구직자사진/150x200px/각키.jpg");
-		JLabel jlImage=new JLabel(ii);
-		jlImage.setBorder(new TitledBorder("구직자 이미지"));
-		jlImage.setBounds(38, 20, 160, 225);
-		add(jlImage);
+		jlImag=new JLabel(ii);
+		jlImag.setBorder(new TitledBorder("구직자 이미지"));
+		jlImag.setBounds(38, 20, 160, 225);
+		add(jlImag);
 
-		jbRegisterImg = new JButton("이미지 변경");
-		add(jbRegisterImg);
-		jbRegisterImg.setBounds(42, 260, 150, 30);
+		jbModifyImg = new JButton("이미지 변경");
+		add(jbModifyImg);
+		jbModifyImg.setBounds(42, 260, 150, 30);
 
-		jbRegisterModi = new JButton("외부이력서 수정");
-		add(jbRegisterModi);
-		jbRegisterModi.setBounds(50, 380, 150, 30);
+		jbModifyExt = new JButton("외부이력서 수정");
+		add(jbModifyExt);
+		jbModifyExt.setBounds(50, 360, 150, 30);
 
 		jbModify = new JButton("수정");
 		add(jbModify);
-		jbModify.setBounds(240, 380, 100, 30);
+		jbModify.setBounds(240, 360, 100, 30);
 
-		jbCancle = new JButton("취소");
-		add(jbCancle);
-		jbCancle.setBounds(355, 380, 100, 30);
+		jbClose = new JButton("취소");
+		add(jbClose);
+		jbClose.setBounds(355, 360, 100, 30);
 
 		// Label
 		JLabel jlName = new JLabel("이름");
@@ -82,48 +82,48 @@ public class EeInfoModifyView extends JDialog {
 
 		// Label
 		add(jlName);
-		jlName.setBounds(270, 40, 50, 20);
+		jlName.setBounds(265, 20, 50, 20);
 		add(jlRank);
-		jlRank.setBounds(270, 80, 50, 20);
+		jlRank.setBounds(265, 60, 50, 20);
 		add(jlLoc);
-		jlLoc.setBounds(260, 120, 70, 20);
+		jlLoc.setBounds(255, 100, 70, 20);
 		add(jlEdu);
-		jlEdu.setBounds(270, 155, 50, 30);
+		jlEdu.setBounds(265, 138, 50, 30);
 		add(jlAge);
-		jlAge.setBounds(270, 190, 50, 30);
+		jlAge.setBounds(265, 175, 50, 30);
 		add(jlPort);
-		jlPort.setBounds(220, 235, 100, 30);
+		jlPort.setBounds(215, 215, 100, 30);
 		add(jlGender);
-		jlGender.setBounds(270, 280, 50, 30);
+		jlGender.setBounds(265, 255, 50, 30);
 		add(jlResume);
-		jlResume.setBounds(240, 320, 100, 30);
+		jlResume.setBounds(235, 295, 100, 30);
 
-		// JText
-		JTextField jtfName = new JTextField(10);
-		add(jtfName);
-		jtfName.setBounds(330, 42, 130, 20);
-
-		JTextField jtfAge = new JTextField(10);
-		add(jtfAge);
-		jtfAge.setBounds(330, 202, 130, 20);
-
-		JTextField jtfGender = new JTextField(10);
-		add(jtfGender);
-		jtfGender.setBounds(330, 282, 130, 20);
-
-		JTextField jtfResume = new JTextField(10);
-		add(jtfResume);
-		jtfResume.setBounds(330, 322, 130, 20);
-
-		// Combobox
-		add(jcbRank);
-		jcbRank.setBounds(330, 82, 130, 20);
-		add(jcbLoc);
-		jcbLoc.setBounds(330, 122, 130, 20);
-		add(jcbEducation);
-		jcbEducation.setBounds(330, 162, 130, 20);
-		add(jcbPortfolio);
-		jcbPortfolio.setBounds(330, 242, 130, 20);
+		//JText
+				JTextField jtfName=new JTextField(10);
+				add(jtfName);
+				jtfName.setBounds(325, 22, 130, 20);
+				
+				JTextField jtfAge=new JTextField(10);
+				add(jtfAge);
+				jtfAge.setBounds(325, 182, 130, 20);
+				
+				JTextField jtfGender=new JTextField(10);
+				add(jtfGender);
+				jtfGender.setBounds(325, 262, 130, 20);
+				
+				jtfExtResume=new JTextField(10);
+				add(jtfExtResume);
+				jtfExtResume.setBounds(325, 302, 130, 20);
+				
+				//Combobox
+				add(jcbRank);
+				jcbRank.setBounds(325,62,130,20);
+				add(jcbLoc);
+				jcbLoc.setBounds(325,102,130,20);
+				add(jcbEducation);
+				jcbEducation.setBounds(325,142,130,20);
+				add(jcbPortfolio);
+				jcbPortfolio.setBounds(325,222,130,20);
 
 		setLayout(null);
 		setBounds(100, 100, 490, 460);
