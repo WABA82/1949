@@ -22,16 +22,15 @@ public class EeInfoModifyView extends JDialog {
 //		super("기본 정보 관리",true);
 
 		// image
-		ImageIcon ii = new ImageIcon("C:/dev/workspace/javase_prj2/src/day0114/images/각키.png");
-		JLabel jlImage = new JLabel(ii);
-		JScrollPane jsp = new JScrollPane(jlImage);
-		jsp.setBorder(new TitledBorder("구직자 이미지"));
-		jsp.setBounds(20, 20, 200, 200);
-		add(jsp);
+		ImageIcon ii=new ImageIcon("C:/dev/homework/1949/1949/03.개발/가데이터/구직자사진/150x200px/각키.jpg");
+		JLabel jlImage=new JLabel(ii);
+		jlImage.setBorder(new TitledBorder("구직자 이미지"));
+		jlImage.setBounds(38, 20, 160, 225);
+		add(jlImage);
 
 		jbRegisterImg = new JButton("이미지 변경");
 		add(jbRegisterImg);
-		jbRegisterImg.setBounds(42, 230, 150, 30);
+		jbRegisterImg.setBounds(42, 260, 150, 30);
 
 		jbRegisterModi = new JButton("외부이력서 수정");
 		add(jbRegisterModi);

@@ -1,11 +1,14 @@
 package user.ee.view;
 
+import java.awt.Color;
+
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import user.ee.controller.EeDetailCoController;
@@ -16,8 +19,7 @@ public class EeDetailCoView extends JDialog {
 	private JButton jbClose;
 	private JLabel img1, img2, img3, img4;
 	
-//	public EeDetailCoView(EeDetailErView edev, CoDetailVO cdvo) {
-	public EeDetailCoView() {
+	public EeDetailCoView(EeDetailErView edev, CoDetailVO cdvo) {
 	
 		JTextField jtfCoName = new JTextField();
 		JTextField jtfEstDate = new JTextField();
@@ -41,25 +43,29 @@ public class EeDetailCoView extends JDialog {
 		setLayout(null);
 		
 		jlCoName.setBounds(240, 45, 57, 26);
-		jlEstDate.setBounds(240, 87, 57, 26);
-		jlmemberNum.setBounds(240, 129, 57, 26);
+		jlEstDate.setBounds(240, 97, 57, 26);
+		jlmemberNum.setBounds(240, 149, 57, 26);
 		
 		jtfCoName.setBounds(300, 45, 133, 29);
-		jtfEstDate.setBounds(300, 87, 133, 29);
-		memberNum.setBounds(300, 129, 133, 29);
+		jtfEstDate.setBounds(300, 97, 133, 29);
+		memberNum.setBounds(300, 149, 133, 29);
 		
-		jlImg1.setBounds(28, 35, 190, 120);
+		jlImg1.setBounds(36, 25, 170, 170);
 		jlImg1.setBorder(new TitledBorder("회사 이미지"));
 		
-		jlImg2.setBounds(33, 168, 50, 44);
-		jlImg3.setBounds(93, 168, 50, 44);
-		jlImg4.setBounds(158, 168, 50, 44);
+		jlImg2.setBounds(33, 208, 50, 50);
+		jlImg3.setBounds(93, 208, 50, 50);
+		jlImg4.setBounds(158, 208, 50, 50);
 		
-		jspTaDesc.setBounds(27, 225, 405, 276);
+		jlImg2.setBorder(new LineBorder(Color.black));
+		jlImg3.setBorder(new LineBorder(Color.black));
+		jlImg4.setBorder(new LineBorder(Color.black));
+		
+		jspTaDesc.setBounds(27, 275, 405, 266);
 		jspTaDesc.setBorder(new TitledBorder("기업 설명"));
 		
-		jbClose.setBounds(338, 522, 92, 24);
-		setBounds(100, 100, 480, 610);
+		jbClose.setBounds(338, 562, 92, 24);
+		setBounds(100, 100, 480, 650);
 		setVisible(true);
 		
 		
