@@ -29,8 +29,8 @@ private JButton jbModify, jbRemove, jbClose;
 private JLabel jlImg1, jlImg2, jlImg3, jlImg4;
 
 //public CoModifyView(AdminMgMtView ammv, CoInfoVO cvo) {
-//	super(ammv, "회사상세정보", true); //모달 true
 public CoModifyView(AdminMgMtView ammv, CoInfoVO civo) {
+	super(ammv, "회사상세정보", true); //모달 true
 
 	JTextField jtfCoId = new JTextField();
 	jtfCoName = new JTextField();

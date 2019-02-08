@@ -7,6 +7,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import user.common.vo.ErMainVO;
 import user.er.vo.ErListVO;
 
 public class ErMgMtView extends JDialog {
@@ -39,7 +40,7 @@ public class ErMgMtView extends JDialog {
 		
 		setBounds(100, 100, 1015, 500);
 		setVisible(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		
 		
 	}
@@ -60,8 +61,9 @@ public class ErMgMtView extends JDialog {
 	}
 
 
-	/*public static void main(String[] args) {
-		 ErMainView rmv=new ErMainView();
+/*	public static void main(String[] args) {
+		ErMainVO rm_vo =new ErMainVO("sad", "sad", "ad", "sad");
+		 ErMainView rmv=new ErMainView(rm_vo);
 		 ErListVO rlvo=new ErListVO();
 		 String s=new String();
 		new ErMgMtView(rmv,rlvo,s);
