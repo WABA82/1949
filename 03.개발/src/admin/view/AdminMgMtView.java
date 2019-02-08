@@ -1,9 +1,12 @@
 package admin.view;
 
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 @SuppressWarnings("serial")
@@ -19,51 +22,63 @@ public class AdminMgMtView extends JFrame {
 		jtb=new JTabbedPane();
 		
 		String[] userColumns= {"번호","아이디","이름","연락처","주소","이메일","회원타입","등록일"};
-		dtmUser=new DefaultTableModel(userColumns, 4) {
+		dtmUser=new DefaultTableModel(userColumns, 40) {
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
 		};
-		JPanel jpUser=new JPanel();
+		JTable jtUser=new JTable(dtmUser);
 		
+		JScrollPane jspUser=new JScrollPane(jtUser);
 		
-		jtb.add("회원관리", jpUser);
+		jtb.add("회원관리", jspUser);
 		
 	
 		String[] eeColumns= {"번호","구인정보번호","제목","회사명","기업사용자","이름","연락처","직급","근무지역","학력","고용형태","급여","등록일"};
-		dtmEe=new DefaultTableModel(eeColumns, 4) {
+		dtmEe=new DefaultTableModel(eeColumns, 40) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
 		};
-		JPanel jpEe=new JPanel();
+		JTable jtEe=new JTable(dtmEe);
+
+		JScrollPane jspEe=new JScrollPane(jtEe);
 		
-		jtb.add("구인정보관리", jpEe);
+		jtb.add("구인정보관리", jspEe);
 		
 		String[] erColumns= {"번호","기본정보번호","이미지","일반사용자","이름","직급","근무지역","학력","나이","포트폴리오 유무","성별","외부이력서 파일명","등록일"};
-		dtmEe=new DefaultTableModel(erColumns, 4) {
+
+		dtmEr=new DefaultTableModel(erColumns, 40) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
 		};
-		JPanel jpEr=new JPanel();
+
+		JTable jtEr=new JTable(dtmEr);
+		JScrollPane jspEr=new JScrollPane(jtEr);
 		
-		jtb.add("구직자 기본정보관리", jpEr);
+		
+		jtb.add("구직자 기본정보관리", jspEr);
 		
 		String[] coColumns= {"번호","회사번호","이미지","회사명","기업사용자","설립년도","사원수","등록일"};
-		dtmEe=new DefaultTableModel(coColumns, 4) {
+
+		dtmCo=new DefaultTableModel(coColumns, 40) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
 		};
-		JPanel jpCo=new JPanel();
+		JTable jtCo=new JTable(dtmCo);
+		JScrollPane jspCo=new JScrollPane(jtCo);
 		
-		jtb.add("회사정보 관리", jpCo);
+		jtb.add("회사정보 관리", jspCo);
 		
 		add("Center",jtb);
+		setBounds(100, 100, 1000, 500);
+		setVisible(true);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}//AdminMainView
 
@@ -92,7 +107,9 @@ public class AdminMgMtView extends JFrame {
 		return dtmCo;
 	}
 	
-	
+	/*public static void main(String[] args) {
+		new AdminMgMtView();
+	}*/
 }//class
 
 

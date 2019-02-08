@@ -130,7 +130,7 @@ public class UserModifyView extends JDialog {
 		
 		jcbQuestion.setBounds(133, 396, 200, 30);
 		jcbQuestion.addItem("내 혈액형은? ");
-		jcbQuestion.addItem("초등학교 시절 가장 친했던 친구는? ");
+		jcbQuestion.addItem("가장 친한 친구는? ");
 		add(jcbQuestion);
 		
 		jcbUser.setBounds(133, 476, 200, 30);
@@ -148,7 +148,7 @@ public class UserModifyView extends JDialog {
 		add(jbRemove);
 		
 		jbClose.setBounds(235, 576, 70, 30);
-		getContentPane().add(jbClose);
+		add(jbClose);
 		
 		
 		setBounds(0,0,390,680);

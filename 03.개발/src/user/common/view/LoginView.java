@@ -66,18 +66,18 @@ public class LoginView extends JFrame {
 		jlFindPass.setBounds(190, 317, 100, 15);
 		add(jlFindPass);
 		
-		LoginController lc = new LoginController();
+		LoginController lc = new LoginController(this);
 		jtfId.addActionListener(lc);
 		jpfPass.addActionListener(lc);
 		jbLogin.addActionListener(lc);
 		jlSignUp.addMouseListener(lc);
 		jlFindID.addMouseListener(lc);
 		jlFindPass.addMouseListener(lc);
+		addWindowListener(lc);
 		
 		setBounds(0,0,400,400);
 		setVisible(true);
 		setResizable(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}
 	public static void main(String[] args) {
