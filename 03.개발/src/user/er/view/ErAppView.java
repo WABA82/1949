@@ -48,11 +48,11 @@ public class ErAppView extends JDialog {
 	public DefaultTableModel getDtmEeInfo() {
 		return dtmEr;
 	}
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		
 		  ErMainView rmv=new ErMainView(); 
 		  new ErAppView(rmv);
 		 
-	}
+	}*/
 
 }

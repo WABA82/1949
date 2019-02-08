@@ -107,12 +107,12 @@ public class ErHiringView extends JDialog {
 
 
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		ErMainView rmv=new ErMainView();
 		List<ErHiringVO> rhvo=new ArrayList<ErHiringVO>();
 		String s=new String();
 		new ErHiringView(rmv,rhvo,s);
-	}
+	}*/
 
 	
 	

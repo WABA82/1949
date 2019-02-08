@@ -50,10 +50,10 @@ public class EeAppView extends JDialog {
 
 
 
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		EeMainView emv=new EeMainView();
 		List<EeAppVO> eavo=new ArrayList<EeAppVO>();
 		new EeAppView(emv,eavo);
-	}
+	}*/
 	
 }

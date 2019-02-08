@@ -60,11 +60,11 @@ public class ErMgMtView extends JDialog {
 	}
 
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		 ErMainView rmv=new ErMainView();
 		 ErListVO rlvo=new ErListVO();
 		 String s=new String();
 		new ErMgMtView(rmv,rlvo,s);
-	}
+	}*/
 	
 }

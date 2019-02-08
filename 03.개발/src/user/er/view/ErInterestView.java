@@ -53,11 +53,11 @@ public class ErInterestView extends JDialog {
 		return dtmEeInfo;
 	}
 	
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		ErMainView rmv=new ErMainView();
 		List<ErHiringVO> rhvo=new ArrayList<ErHiringVO>(); 
 		new ErInterestView(rmv, rhvo);
-	}
+	}*/
 
 }
 
