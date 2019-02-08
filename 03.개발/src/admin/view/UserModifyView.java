@@ -148,7 +148,7 @@ public class UserModifyView extends JDialog {
 		add(jbRemove);
 		
 		jbClose.setBounds(235, 576, 70, 30);
-		getContentPane().add(jbClose);
+		add(jbClose);
 		
 		
 		setBounds(0,0,390,680);
