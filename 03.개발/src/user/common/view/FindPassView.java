@@ -30,7 +30,7 @@ public class FindPassView extends JDialog {
 		jtfId = new JTextField();
 		jtfAnswer = new JTextField();
 		
-		String[] items = { "내 혈액형은?", "어릴적 가장 친했던 친구는?" };
+		String[] items = { "내 혈액형은?", "가장 친한 친구는?" };
 		jcbQuestion = new JComboBox<String>(items);
 		
 		jbValidation = new JButton("유저 검증");

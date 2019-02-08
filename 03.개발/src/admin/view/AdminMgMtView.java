@@ -1,13 +1,12 @@
 package admin.view;
 
-
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import admin.controller.AdminMgMtController;
 
 @SuppressWarnings("serial")
 public class AdminMgMtView extends JFrame {
@@ -15,7 +14,6 @@ public class AdminMgMtView extends JFrame {
 	private JTabbedPane jtb;
 	private DefaultTableModel dtmUser, dtmEe, dtmEr, dtmCo;
 
-	
 	public AdminMgMtView() {
 		super("1949-전체관리");
 		
@@ -76,40 +74,39 @@ public class AdminMgMtView extends JFrame {
 		jtb.add("회사정보 관리", jspCo);
 		
 		add("Center",jtb);
-		setBounds(100, 100, 1000, 500);
+		
+		AdminMgMtController ammc = new AdminMgMtController(this);
+		jtUser.addMouseListener(ammc);
+		jtEe.addMouseListener(ammc);
+		jtEr.addMouseListener(ammc);
+		jtCo.addMouseListener(ammc);
+		addWindowListener(ammc);
+		
+		setBounds(100, 100, 1500, 700);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}//AdminMainView
-
-
+	
 	public JTabbedPane getJtb() {
 		return jtb;
 	}
-
-
+	
 	public DefaultTableModel getDtmUser() {
 		return dtmUser;
 	}
-
-
+	
 	public DefaultTableModel getDtmEe() {
 		return dtmEe;
 	}
-
-
+	
 	public DefaultTableModel getDtmEr() {
 		return dtmEr;
 	}
-
-
+	
 	public DefaultTableModel getDtmCo() {
 		return dtmCo;
 	}
-	
-	/*public static void main(String[] args) {
-		new AdminMgMtView();
-	}*/
 }//class
 
 

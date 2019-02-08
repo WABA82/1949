@@ -1,11 +1,10 @@
 package admin.run;
 
-import admin.view.AdminMgMtView;
+import admin.view.AdminMainView;
 
 public class AdminRun {
-		
 	
 	public static void main(String[] args) {
-		new AdminMgMtView();
+		new AdminMainView();
 	}
 }
