@@ -10,6 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import user.common.vo.ErMainVO;
 import user.er.vo.ErHiringVO;
 
 @SuppressWarnings("serial")
@@ -42,7 +43,7 @@ public class ErInterestView extends JDialog {
 		setBounds(100, 100, 1000, 500);
 		setResizable(false);
 		setVisible(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	}
 	
 	public JTable getJtEeInfo() {
@@ -54,7 +55,8 @@ public class ErInterestView extends JDialog {
 	}
 	
 /*	public static void main(String[] args) {
-		ErMainView rmv=new ErMainView();
+		ErMainVO em_vo = new ErMainVO("ad", "dsa", "sad", "sd");
+		ErMainView rmv=new ErMainView(em_vo);
 		List<ErHiringVO> rhvo=new ArrayList<ErHiringVO>(); 
 		new ErInterestView(rmv, rhvo);
 	}*/

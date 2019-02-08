@@ -13,6 +13,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import user.common.vo.EeMainVO;
 import user.ee.vo.EeHiringVO;
 
 @SuppressWarnings("serial")
@@ -20,15 +21,15 @@ public class EeHiringView extends JDialog {
 
 	private JButton jbDetailSearch,jbWordSearch;
 	private JComboBox<String> jcbSort;
-	private JTable jtEeInfo;
-	private DefaultTableModel dtmEeInfo;
+	private JTable jtErInfo;
+	private DefaultTableModel dtmErInfo;
 	
 	
 	public EeHiringView(EeMainView emv, List<EeHiringVO> ehvo, String s) {
 		super(emv,"구인 정보 보기",true);
 				
 		String[] eeColumns= {"번호","구인정보번호","제목","회사명","직급","근무지역","학력","고용형태","급여","등록일"};
-		dtmEeInfo=new DefaultTableModel(eeColumns, 40) {
+		dtmErInfo=new DefaultTableModel(eeColumns, 40) {
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
@@ -37,8 +38,8 @@ public class EeHiringView extends JDialog {
 		String sort[]= {"등록일순","직급순","급여순"};
 		jcbSort=new JComboBox<String>(sort);
 		
-		jtEeInfo=new JTable(dtmEeInfo);
-		JScrollPane jspEe=new JScrollPane(jtEeInfo);
+		jtErInfo=new JTable(dtmErInfo);
+		JScrollPane jspEe=new JScrollPane(jtErInfo);
 		
 		jbDetailSearch=new JButton("조건검색");
 		
@@ -66,7 +67,7 @@ public class EeHiringView extends JDialog {
 		setBounds(100, 100, 1000, 500);
 		setResizable(false);
 		setVisible(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		
 	}//ErHiringView
 
@@ -90,20 +91,21 @@ public class EeHiringView extends JDialog {
 
 
 
-	public JTable getJtEeInfo() {
-		return jtEeInfo;
+	public JTable getjtErInfo() {
+		return jtErInfo;
 	}
 
 
 
-	public DefaultTableModel getDtmEeInfo() {
-		return dtmEeInfo;
+	public DefaultTableModel getdtmErInfo() {
+		return dtmErInfo;
 	}
 
 
 
-	/*public static void main(String[] args) {
-		EeMainView emv=new EeMainView();
+/*	public static void main(String[] args) {
+		EeMainVO em_vo= new EeMainVO("ds", "sdf", "ds", "asd");
+		EeMainView emv=new EeMainView(em_vo);
 		List<EeHiringVO> ehvo=new ArrayList<EeHiringVO>();
 		String s=new String();
 		new EeHiringView(emv, ehvo, s);

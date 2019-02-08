@@ -9,8 +9,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import user.common.vo.EeMainVO;
 import user.ee.vo.EeAppVO;
 
+@SuppressWarnings("serial")
 public class EeAppView extends JDialog {
 
 	private JTable jtApp;
@@ -32,7 +34,7 @@ public class EeAppView extends JDialog {
 		
 		setBounds(100, 100, 1000, 500);
 		setVisible(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		
 	}
 	
@@ -51,7 +53,8 @@ public class EeAppView extends JDialog {
 
 
 /*	public static void main(String[] args) {
-		EeMainView emv=new EeMainView();
+		EeMainVO em_vo = new EeMainVO("asd", "sdf", "fds", "fsf");
+		EeMainView emv=new EeMainView(em_vo);
 		List<EeAppVO> eavo=new ArrayList<EeAppVO>();
 		new EeAppView(emv,eavo);
 	}*/
