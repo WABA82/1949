@@ -1,19 +1,26 @@
 package user.er.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import user.common.vo.ErMainVO;
+import user.er.vo.ErListVO;
+
+
+@SuppressWarnings("serial")
 public class ErAppView extends JDialog {
 
 
 	private JTable jtEr;
 	private DefaultTableModel dtmEr;
 	
-	public ErAppView(ErMainView rmv) {
+	public ErAppView(ErMainView rmv, List<ErListVO> rl_vo) {
 		super(rmv,"지원 현황",true);
 	
 		String[] erInfoColumns= {"번호","구인정보번호","제목","직급","근무지역","학력","고용형태","등록일"};
@@ -38,7 +45,7 @@ public class ErAppView extends JDialog {
 		setBounds(100, 100, 1000, 500);
 		setResizable(false);
 		setVisible(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	}
 	
 	public JTable getJtEeInfo() {
@@ -48,10 +55,11 @@ public class ErAppView extends JDialog {
 	public DefaultTableModel getDtmEeInfo() {
 		return dtmEr;
 	}
-	/*public static void main(String[] args) {
-		
-		  ErMainView rmv=new ErMainView(); 
-		  new ErAppView(rmv);
+/*	public static void main(String[] args) {
+		ErMainVO rm_vo = new ErMainVO("fs", "sd", "as", "sd");
+		ErMainView rmv=new ErMainView(rm_vo); 
+		List<ErListVO> rl_vo = new ArrayList<ErListVO>();
+		new ErAppView(rmv,rl_vo);
 		 
 	}*/
 

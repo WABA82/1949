@@ -11,13 +11,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import user.common.vo.ErMainVO;
 import user.er.vo.ErHiringVO;
 
 @SuppressWarnings("serial")
 public class ErHiringView extends JDialog {
 
 
-	private JButton jbDetailSearch,jbSearch;
+	private JButton jbDetailSearch;
 	private JComboBox<String> jcbSort;
 	private JTable jtEeInfo;
 	private DefaultTableModel dtmEeInfo;
@@ -32,15 +33,13 @@ public class ErHiringView extends JDialog {
 				return false;
 			}
 		};
-		String sort[]= {"등록일순","직급순","급여순"};
+		String sort[]= {"등록일순","직급순"};
 		jcbSort=new JComboBox<String>(sort);
 		
 		jtEeInfo=new JTable(dtmEeInfo);
 		JScrollPane jspEe=new JScrollPane(jtEeInfo);
 		
 		jbDetailSearch=new JButton("조건검색");
-		
-		
 		
 		setLayout(null);
 		
@@ -55,60 +54,30 @@ public class ErHiringView extends JDialog {
 		setBounds(100, 100, 1000, 500);
 		setResizable(false);
 		setVisible(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		
 	}//ErHiringView
-
-	
-
-	
-
-
 
 	public JButton getJbDetailSearch() {
 		return jbDetailSearch;
 	}
 
-
-
-
-
-
-
-	public JButton getJbSearch() {
-		return jbSearch;
-	}
-
-
-
-
-
-
-
 	public JComboBox<String> getJcbSort() {
 		return jcbSort;
 	}
 
-
-
 	public JTable getJtEeInfo() {
 		return jtEeInfo;
 	}
-
-
 
 	public DefaultTableModel getDtmEeInfo() {
 		return dtmEeInfo;
 	}
 
 
-
-
-
-
-
-	/*public static void main(String[] args) {
-		ErMainView rmv=new ErMainView();
+/*	public static void main(String[] args) {
+		ErMainVO em_vo = new ErMainVO("ad", "dsa", "sad", "sd");
+		ErMainView rmv=new ErMainView(em_vo);
 		List<ErHiringVO> rhvo=new ArrayList<ErHiringVO>();
 		String s=new String();
 		new ErHiringView(rmv,rhvo,s);

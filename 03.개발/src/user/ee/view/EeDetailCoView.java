@@ -121,8 +121,8 @@ public class EeDetailCoView extends JDialog {
 
 
 
-//	public static void main(String[] args) {
-//		new EeDetailCoView();
-//	}
+/*	public static void main(String[] args) {
+		new EeDetailCoView();
+	}*/
 	
 }

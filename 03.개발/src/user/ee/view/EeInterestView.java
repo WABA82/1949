@@ -10,24 +10,26 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import user.common.vo.EeMainVO;
 import user.ee.vo.EeHiringVO;
 
+@SuppressWarnings("serial")
 public class EeInterestView extends JDialog {
 
-	private JTable jtEeInfo;
-	private DefaultTableModel dtmEeInfo;
+	private JTable jtErInfo;
+	private DefaultTableModel dtmErInfo;
 	
 	public EeInterestView(EeMainView emv, List<EeHiringVO> ehvo) {
 		super(emv,"관심 구인 정보",true);
 	
 		String[] erInfoColumns= {"번호","구인정보번호","제목","회사명","직급","근무지역","학력","고용형태","급여","등록일"};
-		dtmEeInfo=new DefaultTableModel(erInfoColumns, 40) {
+		dtmErInfo=new DefaultTableModel(erInfoColumns, 40) {
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
 		};
-		jtEeInfo=new JTable(dtmEeInfo);
-		JScrollPane jspEeInfo=new JScrollPane(jtEeInfo);
+		jtErInfo=new JTable(dtmErInfo);
+		JScrollPane jspEeInfo=new JScrollPane(jtErInfo);
 		
 		JLabel jlEeInfo=new JLabel("내 관심 구인정보 수 : ");
 		
@@ -42,18 +44,19 @@ public class EeInterestView extends JDialog {
 		setBounds(100, 100, 1000, 500);
 		setResizable(false);
 		setVisible(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	}
 	
-	public JTable getJtEeInfo() {
-		return jtEeInfo;
+	public JTable getjtErInfo() {
+		return jtErInfo;
 	}
 
-	public DefaultTableModel getDtmEeInfo() {
-		return dtmEeInfo;
+	public DefaultTableModel getdtmErInfo() {
+		return dtmErInfo;
 	}
-	/*public static void main(String[] args) {
-		EeMainView emv=new EeMainView();
+/*	public static void main(String[] args) {
+		EeMainVO em_vo= new EeMainVO("fsd", "fdsf", "sdf", "dsfs");
+		EeMainView emv=new EeMainView(em_vo);
 		List<EeHiringVO> ehvo=new ArrayList<EeHiringVO>();
 		new EeInterestView(emv,ehvo);
 	}*/
