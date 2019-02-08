@@ -157,7 +157,7 @@ public class SignUpView extends JDialog {
 		
 		jcbQuestion.setBounds(123, 509, 200, 30);
 		jcbQuestion.addItem("내 혈액형은?");
-		jcbQuestion.addItem("초등학교 시절 가장 친했던 친구는?");
+		jcbQuestion.addItem("가장 친한 친구는?");
 		add(jcbQuestion);
 		
 		
