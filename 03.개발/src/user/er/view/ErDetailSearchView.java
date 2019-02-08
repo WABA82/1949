@@ -64,7 +64,7 @@ public class ErDetailSearchView extends JDialog {
 		add(jbSearch);
 		add(jbCancel);
 		
-		ErDetailSearchController edsc = new ErDetailSearchController(this, null/*ehc*/);
+		ErDetailSearchController edsc = new ErDetailSearchController(this, ehc);
 		jbSearch.addActionListener(edsc);
 		jbCancel.addActionListener(edsc);
 		

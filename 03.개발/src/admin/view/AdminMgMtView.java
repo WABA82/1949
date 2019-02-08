@@ -107,7 +107,7 @@ public class AdminMgMtView extends JFrame {
 		return dtmCo;
 	}
 	
-/*	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		new AdminMgMtView();
 	}*/
 }//class

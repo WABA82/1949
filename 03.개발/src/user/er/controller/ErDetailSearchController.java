@@ -17,6 +17,10 @@ public class ErDetailSearchController extends WindowAdapter implements ActionLis
 		this.ehc = ehc;
 	}
 	
+	public void search() {
+		
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 

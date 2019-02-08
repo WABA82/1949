@@ -20,9 +20,9 @@ public class SearchAddrView extends JDialog {
 	private JTable jtZip;
 	private JButton jbSearch, jbOk, jbCancel;
 
-//	public SearchAddrView(UserModifyView umv, String addrSeq) {
-//		super(umv,"주소검색", true);
-	public SearchAddrView() {
+	public SearchAddrView(UserModifyView umv, String addrSeq) {
+		super(umv,"주소검색", true);
+//	public SearchAddrView() {
 		
 		jtfDong = new JTextField(20);
 		String[] columnNames = { "우편번호", "시도", "구군", "동", "번지" };
@@ -47,7 +47,7 @@ public class SearchAddrView extends JDialog {
 		add(BorderLayout.CENTER, jspZip);
 		add(BorderLayout.SOUTH, bottomPanel);
 		
-		SearchAddrController sac = new SearchAddrController(this);
+		SearchAddrController sac = new SearchAddrController(this, umv, addrSeq);
 		jbSearch.addActionListener(sac);
 		jbOk.addActionListener(sac);
 		jbCancel.addActionListener(sac);

@@ -54,7 +54,7 @@ public class SetNewPassView extends JDialog {
 		
 		addWindowListener(snpc);
 		
-		setBounds(500, 200, 400, 290);
+		setBounds(500, 200, 400, 280);
 		setResizable(false);
 		setVisible(true);
 	}
