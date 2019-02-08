@@ -20,7 +20,7 @@ public class EeDetailCoView extends JDialog {
 	private JLabel img1, img2, img3, img4;
 	
 	public EeDetailCoView(EeDetailErView edev, CoDetailVO cdvo) {
-	
+		super(edev, "회사상세정보", true);
 		JTextField jtfCoName = new JTextField();
 		JTextField jtfEstDate = new JTextField();
 		JTextField memberNum = new JTextField();			

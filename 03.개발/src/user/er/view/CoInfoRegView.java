@@ -21,7 +21,7 @@ public class CoInfoRegView extends JDialog {
 	private JTextArea jtaCoDesc;
 
 	public CoInfoRegView(ErMainView emv, String erId) {
-		
+		super(emv, "회사상세정보",true);
 		jtfCoName = new JTextField();
 		jtfEstDate = new JTextField();
 		memberNum = new JTextField();

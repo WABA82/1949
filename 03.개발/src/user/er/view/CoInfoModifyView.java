@@ -23,7 +23,7 @@ public class CoInfoModifyView extends JDialog {
 	private JTextArea jtaCoDesc;
 	
 	public CoInfoModifyView(ErMainView emv, CoInfoVO cvo) {
-		
+		super(emv, "회사정보수정",true);
 		jtfCoName = new JTextField();
 		jtfEstDate = new JTextField();
 		memberNum = new JTextField();
