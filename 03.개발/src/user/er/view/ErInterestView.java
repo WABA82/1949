@@ -1,4 +1,3 @@
-
 package user.er.view;
 
 import java.util.ArrayList;
@@ -13,8 +12,8 @@ import javax.swing.table.DefaultTableModel;
 
 import user.er.vo.ErHiringVO;
 
+@SuppressWarnings("serial")
 public class ErInterestView extends JDialog {
-
 	private JTable jtEeInfo;
 	private DefaultTableModel dtmEeInfo;
 	
@@ -54,10 +53,11 @@ public class ErInterestView extends JDialog {
 		return dtmEeInfo;
 	}
 	
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		ErMainView rmv=new ErMainView();
 		List<ErHiringVO> rhvo=new ArrayList<ErHiringVO>(); 
 		new ErInterestView(rmv, rhvo);
-	}
+	}*/
 
 }
+

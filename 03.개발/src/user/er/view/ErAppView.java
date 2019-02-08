@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class ErAppView extends JDialog {
 
+
 	private JTable jtEr;
 	private DefaultTableModel dtmEr;
 	
@@ -47,10 +48,11 @@ public class ErAppView extends JDialog {
 	public DefaultTableModel getDtmEeInfo() {
 		return dtmEr;
 	}
-	public static void main(String[] args) {
-		/*
-		 * ErMainView rmv=new ErMainView(); new ErAppView(rmv);
-		 */
-	}
+	/*public static void main(String[] args) {
+		
+		  ErMainView rmv=new ErMainView(); 
+		  new ErAppView(rmv);
+		 
+	}*/
 
 }

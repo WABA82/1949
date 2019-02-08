@@ -7,16 +7,15 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import user.er.vo.ErHiringVO;
 
 @SuppressWarnings("serial")
 public class ErHiringView extends JDialog {
+
 
 	private JButton jbDetailSearch,jbSearch;
 	private JComboBox<String> jcbSort;
@@ -33,7 +32,6 @@ public class ErHiringView extends JDialog {
 				return false;
 			}
 		};
-		
 		String sort[]= {"등록일순","직급순","급여순"};
 		jcbSort=new JComboBox<String>(sort);
 		
@@ -93,17 +91,9 @@ public class ErHiringView extends JDialog {
 
 
 
-
-
-
-
 	public JTable getJtEeInfo() {
 		return jtEeInfo;
 	}
-
-
-
-
 
 
 
@@ -117,12 +107,13 @@ public class ErHiringView extends JDialog {
 
 
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		ErMainView rmv=new ErMainView();
 		List<ErHiringVO> rhvo=new ArrayList<ErHiringVO>();
 		String s=new String();
 		new ErHiringView(rmv,rhvo,s);
-	}
+	}*/
+
 	
 	
 }//class

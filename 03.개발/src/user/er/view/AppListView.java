@@ -50,10 +50,10 @@ public class AppListView extends JDialog {
 		return dtmApp;
 	}
 	
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		ErMainView rmv=new ErMainView();
 		ErAppView rav=new ErAppView(rmv);
 		new AppListView(rav);
-	}
+	}*/
 
 }

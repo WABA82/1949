@@ -1,6 +1,7 @@
 package admin.view;
 
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -27,6 +28,7 @@ public class AdminMgMtView extends JFrame {
 			}
 		};
 		JTable jtUser=new JTable(dtmUser);
+		
 		JScrollPane jspUser=new JScrollPane(jtUser);
 		
 		jtb.add("회원관리", jspUser);
@@ -40,17 +42,20 @@ public class AdminMgMtView extends JFrame {
 			}
 		};
 		JTable jtEe=new JTable(dtmEe);
+
 		JScrollPane jspEe=new JScrollPane(jtEe);
 		
 		jtb.add("구인정보관리", jspEe);
 		
 		String[] erColumns= {"번호","기본정보번호","이미지","일반사용자","이름","직급","근무지역","학력","나이","포트폴리오 유무","성별","외부이력서 파일명","등록일"};
+
 		dtmEr=new DefaultTableModel(erColumns, 40) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
 		};
+
 		JTable jtEr=new JTable(dtmEr);
 		JScrollPane jspEr=new JScrollPane(jtEr);
 		
@@ -58,6 +63,7 @@ public class AdminMgMtView extends JFrame {
 		jtb.add("구직자 기본정보관리", jspEr);
 		
 		String[] coColumns= {"번호","회사번호","이미지","회사명","기업사용자","설립년도","사원수","등록일"};
+
 		dtmCo=new DefaultTableModel(coColumns, 40) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -101,11 +107,9 @@ public class AdminMgMtView extends JFrame {
 		return dtmCo;
 	}
 	
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		new AdminMgMtView();
-	}
-	
-	
+	}*/
 }//class
 
 
