@@ -10,7 +10,7 @@
 
 /02.설계/eXERD_자료/.metadata/*
 
-
+*.class
 .classpath
 .project
 
