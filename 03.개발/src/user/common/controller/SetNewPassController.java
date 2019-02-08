@@ -17,6 +17,10 @@ public class SetNewPassController extends WindowAdapter implements ActionListene
 		this.id = id;
 	}
 	
+	public void changePass() {
+		
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 

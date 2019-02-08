@@ -17,8 +17,27 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 		this.emv = emv;
 	}
 	
-	@Override
-	public void windowClosing(WindowEvent e) {
+	public void checkActivation() {
+		
+	}
+	
+	public void mngUser() {
+		
+	}
+	
+	public void mngEe() {
+		
+	}
+	
+	public void showHiring() {
+		
+	}
+	
+	public void showInterestEr() {
+		
+	}
+	
+	public void showApp() {
 		
 	}
 	
@@ -32,6 +51,10 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 
 	}
 
+	@Override
+	public void windowClosing(WindowEvent e) {
+		emv.dispose();
+	}
 	@Override
 	public void mousePressed(MouseEvent e) {}
 	@Override

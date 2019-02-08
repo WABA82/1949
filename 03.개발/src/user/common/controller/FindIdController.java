@@ -14,6 +14,11 @@ public class FindIdController extends WindowAdapter implements ActionListener {
 	public FindIdController(FindIdView fiv) {
 		this.fiv = fiv;
 	}
+	
+	public void checkUser() {
+
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		

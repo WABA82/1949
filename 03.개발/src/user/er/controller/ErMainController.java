@@ -12,14 +12,30 @@ import user.er.view.ErMainView;
 public class ErMainController extends WindowAdapter implements ActionListener, MouseListener {
 	
 	private ErMainView emv;
+	private String erId;
 	
-	public ErMainController(ErMainView emv) {
+	public ErMainController(ErMainView emv, String erId) {
 		this.emv = emv;
 	}
 	
-	@Override
-	public void windowClosing(WindowEvent e) {
-		emv.dispose();
+	public void mngUser() {
+		
+	}
+	
+	public void showHiring() {
+		
+	}
+	
+	public void mngEr() {
+		
+	}
+	
+	public void showApp() {
+		
+	}
+	
+	public void showInterestEe() {
+		
 	}
 
 	@Override
@@ -32,6 +48,10 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 		
 	}
 
+	@Override
+	public void windowClosing(WindowEvent e) {
+		emv.dispose();
+	}
 	@Override
 	public void mousePressed(MouseEvent e) {}
 	@Override

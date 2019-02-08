@@ -52,7 +52,7 @@ public class FindIdView extends JDialog {
 		
 		addWindowListener(fic);
 		
-		setBounds(500, 200, 400, 290);
+		setBounds(500, 200, 390, 280);
 		setResizable(false);
 		setVisible(true);
 	}

@@ -17,6 +17,10 @@ public class EeDetailSearchController extends WindowAdapter implements ActionLis
 		this.ehc = ehc;
 	}
 	
+	public void search() {
+		
+	}
+	
 	@Override
 	public void windowClosing(WindowEvent e) {
 		esv.dispose();

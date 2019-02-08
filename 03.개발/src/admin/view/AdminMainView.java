@@ -66,7 +66,7 @@ public class AdminMainView extends JFrame {
 		addWindowListener(amc);
 		
 		setResizable(false);
-		setBounds(400, 300, 600, 400);
+		setBounds(400, 300, 590, 385);
 		setVisible(true);
 	}
 	
