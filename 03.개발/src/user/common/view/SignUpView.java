@@ -108,7 +108,7 @@ public class SignUpView extends JDialog {
 		add(jlQuestion);
 		
 		jlSlash.setBounds(219, 267, 16, 30);
-		getContentPane().add(jlSlash);
+		add(jlSlash);
 		
 		jtfId.setBounds(123, 106, 200, 30);
 		add(jtfId);
@@ -117,7 +117,7 @@ public class SignUpView extends JDialog {
 		add(jpfPass1);
 		
 		jpfPass2.setBounds(123, 187, 200, 30);
-		getContentPane().add(jpfPass2);
+		add(jpfPass2);
 		
 		jtfName.setBounds(123, 227, 200, 30);
 		add(jtfName);
@@ -129,36 +129,36 @@ public class SignUpView extends JDialog {
 		add(jpfSsn2);
 		
 		jtfTel.setBounds(123, 307, 200, 30);
-		getContentPane().add(jtfTel);
+		add(jtfTel);
 		
 		jtfEmail.setBounds(123, 348, 200, 30);
-		getContentPane().add(jtfEmail);
+		add(jtfEmail);
 		
 		jtfZip.setBounds(123, 389, 102, 30);
-		getContentPane().add(jtfZip);
+		add(jtfZip);
 		
 		jtfAddr1.setBounds(123, 429, 200, 30);
-		getContentPane().add(jtfAddr1);
+		add(jtfAddr1);
 		
 		jtfAddr2.setBounds(123, 469, 200, 30);
-		getContentPane().add(jtfAddr2);
+		add(jtfAddr2);
 		
 		jtfAnswer.setBounds(123, 549, 200, 30);
-		getContentPane().add(jtfAnswer);
+		add(jtfAnswer);
 		
 		jbAddr.setBounds(231, 389, 92, 30);
-		getContentPane().add(jbAddr);
+		add(jbAddr);
 		
 		jbSignUp.setBounds(98, 625, 92, 30);
-		getContentPane().add(jbSignUp);
+		add(jbSignUp);
 		
 		jbCancel.setBounds(213, 625, 92, 30);
-		getContentPane().add(jbCancel);
+		add(jbCancel);
 		
 		jcbQuestion.setBounds(123, 509, 200, 30);
 		jcbQuestion.addItem("내 혈액형은?");
-		jcbQuestion.addItem("초등학교 시절 가장 친했던 친구는?");
-		getContentPane().add(jcbQuestion);
+		jcbQuestion.addItem("가장 친한 친구는?");
+		add(jcbQuestion);
 		
 		
 		setBounds(0,0,390,740);
@@ -166,7 +166,7 @@ public class SignUpView extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		
 	}
-/*	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		new SignUpView();
 	}*/
 	public JRadioButton getJrbEe() {
