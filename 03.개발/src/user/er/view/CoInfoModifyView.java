@@ -12,6 +12,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import admin.vo.CoInfoVO;
+import user.common.vo.ErMainVO;
 import user.er.controller.CoInfoModifyController;
 import user.er.controller.CoInfoRegController;
 
@@ -138,7 +139,10 @@ public class CoInfoModifyView extends JDialog {
 		return jtaCoDesc;
 	}
 	
-//	public static void main(String[] args) {
-//		new CoInfoModifyView();
-//	}
+/*	public static void main(String[] args) {
+		ErMainVO rm_vo = new ErMainVO("ad", "sad", "sad", "asd");
+		ErMainView emv = new ErMainView(rm_vo);
+		CoInfoVO cvo = new CoInfoVO();
+		new CoInfoModifyView(emv,cvo);
+	}*/
 }
