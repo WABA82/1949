@@ -1,11 +1,14 @@
 package user.er.view;
 
+import java.awt.Color;
+
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import user.er.controller.CoInfoRegController;
@@ -17,7 +20,7 @@ public class CoInfoRegView extends JDialog {
 	private JLabel jlImg1, jlImg2, jlImg3, jlImg4;
 	private JTextArea jtaCoDesc;
 
-	public CoInfoRegView() {
+	public CoInfoRegView(ErMainView emv, String erId) {
 		
 		jtfCoName = new JTextField();
 		jtfEstDate = new JTextField();
@@ -41,26 +44,29 @@ public class CoInfoRegView extends JDialog {
 		//배치
 		setLayout(null);
 		
-		jlCoName.setBounds(240, 56, 57, 26);
+		jlCoName.setBounds(240, 46, 57, 26);
 		jlEstDate.setBounds(240, 98, 57, 26);
-		jlmemberNum.setBounds(240, 140, 57, 26);
+		jlmemberNum.setBounds(240, 150, 57, 26);
 		
-		jtfCoName.setBounds(300, 56, 133, 29);
+		jtfCoName.setBounds(300, 46, 133, 29);
 		jtfEstDate.setBounds(300, 98, 133, 29);
-		memberNum.setBounds(300, 140, 133, 29);
+		memberNum.setBounds(300, 150, 133, 29);
 		
-		jlImg1.setBounds(28, 45, 190, 120);
+		jlImg1.setBounds(38, 25, 170, 170);
 		jlImg1.setBorder(new TitledBorder("회사 이미지"));
+		jlImg2.setBounds(38, 208, 50, 50);
+		jlImg3.setBounds(98, 208, 50, 50);
+		jlImg4.setBounds(158, 208, 50, 50);
 		
-		jlImg2.setBounds(33, 178, 50, 44);
-		jlImg3.setBounds(93, 178, 50, 44);
-		jlImg4.setBounds(158, 178, 50, 44);
+		jlImg2.setBorder(new LineBorder(Color.black));
+		jlImg3.setBorder(new LineBorder(Color.black));
+		jlImg4.setBorder(new LineBorder(Color.black));
 		
-		jspTaDesc.setBounds(32, 234, 405, 133);
+		jspTaDesc.setBounds(32, 289, 405, 133);
 		jspTaDesc.setBorder(new TitledBorder("기업 설명"));
 		
-		jbReg.setBounds(233, 400, 92, 24);
-		jbClose.setBounds(342, 400, 92, 24);
+		jbReg.setBounds(233, 446, 92, 24);
+		jbClose.setBounds(342, 446, 92, 24);
 		
 		CoInfoRegController crc= new CoInfoRegController(this);
 		addWindowListener(crc);
@@ -85,7 +91,7 @@ public class CoInfoRegView extends JDialog {
 		add(jbReg);
 		add(jbClose);
 		
-		setBounds(100, 100, 480, 510);
+		setBounds(100, 100, 480, 540);
 		setVisible(true);
 		
 	}//생성자

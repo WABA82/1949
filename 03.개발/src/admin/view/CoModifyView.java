@@ -1,6 +1,12 @@
 package admin.view;
 
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
+
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -8,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import admin.controller.CoModifyController;
@@ -23,7 +30,7 @@ private JLabel jlImg1, jlImg2, jlImg3, jlImg4;
 
 //public CoModifyView(AdminMgMtView ammv, CoInfoVO cvo) {
 //	super(ammv, "회사상세정보", true); //모달 true
-public CoModifyView() {
+public CoModifyView(AdminMgMtView ammv, CoInfoVO civo) {
 
 	JTextField jtfCoId = new JTextField();
 	jtfCoName = new JTextField();
@@ -61,19 +68,22 @@ public CoModifyView() {
 	jtfEstDate.setBounds(300, 138, 133, 29);
 	memberNum.setBounds(300, 180, 133, 29);
 	
-	jlImg1.setBounds(28, 45, 190, 120);
+	jlImg1.setBounds(38, 25, 170, 170);
 	jlImg1.setBorder(new TitledBorder("회사 이미지"));
 	
-	jlImg2.setBounds(33, 178, 50, 44);
-	jlImg3.setBounds(93, 178, 50, 44);
-	jlImg4.setBounds(158, 178, 50, 44);
+	jlImg2.setBounds(38, 208, 50, 50);
+	jlImg3.setBounds(98, 208, 50, 50);
+	jlImg4.setBounds(158, 208, 50, 50);
+	jlImg2.setBorder(new LineBorder(Color.black));
+	jlImg3.setBorder(new LineBorder(Color.black));
+	jlImg4.setBorder(new LineBorder(Color.black));
 	
-	jspTaDesc.setBounds(32, 274, 405, 133);
+	jspTaDesc.setBounds(32, 289, 405, 133);
 	jspTaDesc.setBorder(new TitledBorder("기업 설명"));
 	
-	jbModify.setBounds(140, 426, 92, 24);
-	jbRemove.setBounds(243, 426, 92, 24);
-	jbClose.setBounds(342, 426, 92, 24);
+	jbModify.setBounds(140, 446, 92, 24);
+	jbRemove.setBounds(243, 446, 92, 24);
+	jbClose.setBounds(342, 446, 92, 24);
 	
 	CoModifyController cmc = new CoModifyController(this);
 	addWindowListener(cmc);
@@ -102,7 +112,7 @@ public CoModifyView() {
 	add(jbRemove);
 	add(jbClose);
 	
-	setBounds(100, 100, 480, 520);
+	setBounds(100, 100, 480, 540);
 	setVisible(true);
 	
 }//CoModifyView 생성자
@@ -120,8 +130,6 @@ public JTextField getJtfCoName() {
 public JTextField getJtfEstDate() {
 	return jtfEstDate;
 }
-
-
 
 
 public JTextField getMemberNum() {
@@ -143,13 +151,9 @@ public JButton getJbModify() {
 }
 
 
-
-
 public JButton getJbRemove() {
 	return jbRemove;
 }
-
-
 
 
 public JButton getJbClose() {
@@ -157,13 +161,9 @@ public JButton getJbClose() {
 }
 
 
-
-
 public JLabel getJlImg1() {
 	return jlImg1;
 }
-
-
 
 
 public JLabel getJlImg2() {
@@ -171,13 +171,9 @@ public JLabel getJlImg2() {
 }
 
 
-
-
 public JLabel getJlImg3() {
 	return jlImg3;
 }
-
-
 
 
 public JLabel getJlImg4() {
