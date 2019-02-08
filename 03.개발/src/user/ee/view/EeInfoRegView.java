@@ -27,16 +27,15 @@ public class EeInfoRegView extends JDialog {
 //		super("기본 정보 관리",true);
 		
 		//image
-		ImageIcon ii=new ImageIcon("C:/dev/workspace/javase_prj2/src/day0114/images/각키.png");
+		ImageIcon ii=new ImageIcon("C:/dev/homework/1949/1949/03.개발/가데이터/구직자사진/150x200px/각키.jpg");
 		JLabel jlImage=new JLabel(ii);
-		JScrollPane jsp=new JScrollPane(jlImage);
-		jsp.setBorder(new TitledBorder("구직자 이미지"));
-		jsp.setBounds(20, 20, 200, 200);
-		add(jsp);
+		jlImage.setBorder(new TitledBorder("구직자 이미지"));
+		jlImage.setBounds(38, 20, 160, 225);
+		add(jlImage);
 		
 		jbRegisterImg=new JButton("이미지 변경");
 		add(jbRegisterImg);
-		jbRegisterImg.setBounds(42, 230, 150, 30);
+		jbRegisterImg.setBounds(42, 260, 150, 30);
 		
 		jbRegisterExt = new JButton("외부이력서 등록");
 		add(jbRegisterExt);
@@ -54,28 +53,28 @@ public class EeInfoRegView extends JDialog {
 		
 		//Label
 		JLabel jlName=new JLabel("이름");
-		jlName.setFont(new Font(Font.DIALOG, Font.BOLD, 12));
+		jlName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
 		
 		JLabel jlRank=new JLabel("직급");
-		jlRank.setFont(new Font(Font.DIALOG, Font.BOLD, 12));
+		jlRank.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
 		
 		JLabel jlLoc=new JLabel("근무지역");
-		jlLoc.setFont(new Font(Font.DIALOG, Font.BOLD, 12));
+		jlLoc.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
 		
 		JLabel jlEdu=new JLabel("학력");
-		jlEdu.setFont(new Font(Font.DIALOG, Font.BOLD, 12));
+		jlEdu.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
 		
 		JLabel jlAge=new JLabel("나이");
-		jlAge.setFont(new Font(Font.DIALOG, Font.BOLD, 12));
+		jlAge.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
 		
 		JLabel jlPort=new JLabel("포트폴리오 유무");
-		jlPort.setFont(new Font(Font.DIALOG, Font.BOLD, 12));
+		jlPort.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
 		
 		JLabel jlGender=new JLabel("성별");
-		jlGender.setFont(new Font(Font.DIALOG, Font.BOLD, 12));
+		jlGender.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
 		
 		JLabel jlResume=new JLabel("외부이력서");
-		jlResume.setFont(new Font(Font.DIALOG, Font.BOLD, 12));
+		jlResume.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
 		
 		
 		//Combobox  jcbRank, jcbLoc, jcbEducation, jcbPortfolio;
