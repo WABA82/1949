@@ -103,4 +103,8 @@ public class ErMainView extends JFrame {
 	public JLabel getJlActivation() {
 		return jlActivation;
 	}
+	public static void main(String[] args) {
+		new ErMainView(null);
+	}
+	
 }

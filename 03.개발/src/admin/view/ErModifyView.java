@@ -1,7 +1,6 @@
 package admin.view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 
@@ -15,15 +14,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+
+import admin.vo.ErInfoVO;
 
 /**
  * 0207 상세구인정보 View클래스
  */
 @SuppressWarnings("serial")
 public class ErModifyView extends JDialog {
-	
+
 	/* 인스턴스 변수 */
 	JTextField jtfSubject, jtfSal; /* jtfRank */
 	JTextArea jtaErDesc;
@@ -31,14 +31,13 @@ public class ErModifyView extends JDialog {
 	JComboBox<String> jcbRank, jcbEducation, jcbLoc, jcbHireType, jcbPortfolio;
 	JButton jbModify, jbRemove, jbCancel;
 
-	public ErModifyView() {
-		super();/* 창의 제목 */
+	public ErModifyView(AdminMgMtView ammv, ErInfoVO eivo) {
+		super(ammv, "상세 구인 정보", true);/* 창의 제목 */
 
 		/* 컴포넌트 생성하기 */
-		
 		// 이미지아이콘 : 회사로고
 		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/admin/img/co/no_co_img1.png");
-		
+
 		// 라벨들
 		JLabel jlImage = new JLabel(erLogo);
 		JLabel jlName = new JLabel("이름");
@@ -88,7 +87,8 @@ public class ErModifyView extends JDialog {
 		jcbRank = new JComboBox<>(rItem);
 		String[] eItem = { "고졸", "초대졸", "석사", "박사" };
 		jcbEducation = new JComboBox<>(eItem);
-		String[] lItem = { "서울", "경기", "인천", "대전", "세종", "충남", "충북", "광주", "전남", "전북", "대구", "경북", "부산", "울산", "경남", "강원", "제주", "전국" };
+		String[] lItem = { "서울", "경기", "인천", "대전", "세종", "충남", "충북", "광주", "전남", "전북", "대구", "경북", "부산", "울산", "경남",
+				"강원", "제주", "전국" };
 		jcbLoc = new JComboBox<>(lItem);
 		String[] hItem = { "정규직", "계약직", "프리 " };
 		jcbHireType = new JComboBox<>(hItem);
@@ -109,7 +109,6 @@ public class ErModifyView extends JDialog {
 		imgPanel.setBorder(new TitledBorder("회사로고"));
 		imgPanel.setBounds(15, 8, 185, 192);
 		jlImage.setBounds(7, 15, 170, 170);
-		//jlImage.setBorder(new LineBorder(Color.black)); //크기 확인 (지워도됨.)
 		imgPanel.add(jlImage);
 
 		jlName.setBounds(210, 40, 60, 20);
@@ -193,9 +192,9 @@ public class ErModifyView extends JDialog {
 		skillGridPanel.add(jchJS);
 
 		// 최하단 버튼
-		jbModify.setBounds(180, 570, 60, 25);
-		jbRemove.setBounds(245, 570, 60, 25);
-		jbCancel.setBounds(310, 570, 60, 25);
+		jbModify.setBounds(180, 575, 60, 25);
+		jbRemove.setBounds(245, 575, 60, 25);
+		jbCancel.setBounds(310, 575, 60, 25);
 
 		/* 프레임에 배치 */
 		add(imgPanel);
@@ -216,11 +215,91 @@ public class ErModifyView extends JDialog {
 
 		/* 프레임 크기 설정 및 가시화 */
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 410, 650);
+		setBounds(100, 100, 410, 660);
 		setVisible(true);
+
 	}// 생성자
 
+	/***************** getter *****************/
+	public JTextField getJtfSubject() {
+		return jtfSubject;
+	}
+
+	public JTextField getJtfSal() {
+		return jtfSal;
+	}
+
+	public JTextArea getJtaErDesc() {
+		return jtaErDesc;
+	}
+
+	public JCheckBox getJchJava() {
+		return jchJava;
+	}
+
+	public JCheckBox getJchJspServlet() {
+		return jchJspServlet;
+	}
+
+	public JCheckBox getJchSpring() {
+		return jchSpring;
+	}
+
+	public JCheckBox getJchOracle() {
+		return jchOracle;
+	}
+
+	public JCheckBox getJchHTML() {
+		return jchHTML;
+	}
+
+	public JCheckBox getJchCSS() {
+		return jchCSS;
+	}
+
+	public JCheckBox getJchLinux() {
+		return jchLinux;
+	}
+
+	public JCheckBox getJchJS() {
+		return jchJS;
+	}
+
+	public JComboBox<String> getJcbRank() {
+		return jcbRank;
+	}
+
+	public JComboBox<String> getJcbEducation() {
+		return jcbEducation;
+	}
+
+	public JComboBox<String> getJcbLoc() {
+		return jcbLoc;
+	}
+
+	public JComboBox<String> getJcbHireType() {
+		return jcbHireType;
+	}
+
+	public JComboBox<String> getJcbPortfolio() {
+		return jcbPortfolio;
+	}
+
+	public JButton getJbModify() {
+		return jbModify;
+	}
+
+	public JButton getJbRemove() {
+		return jbRemove;
+	}
+
+	public JButton getJbCancel() {
+		return jbCancel;
+	}
+	/***************** getter *****************/
+
 	public static void main(String[] args) {
-		new ErModifyView();
+		new ErModifyView(null, null);
 	}// main : 단위테스트용
+
 }// class

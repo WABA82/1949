@@ -23,11 +23,11 @@ public class EeInfoRegView extends JDialog {
 	private JComboBox<String>jcbRank, jcbLoc, jcbEducation, jcbPortfolio;
 	private JTextField jtfExtResume;
 	
-	public EeInfoRegView() {
-//		super("기본 정보 관리",true);
+	public EeInfoRegView(EeMainView emv) {
+		super(emv, "기본 정보 관리",true);
 		
 		//image
-		ImageIcon ii=new ImageIcon("C:/dev/homework/1949/1949/03.개발/가데이터/구직자사진/150x200px/각키.jpg");
+		ImageIcon ii=new ImageIcon("C:/dev/1949/03.개발/가데이터/구직자사진/150x200px/각키.jpg");
 		JLabel jlImage=new JLabel(ii);
 		jlImage.setBorder(new TitledBorder("구직자 이미지"));
 		jlImage.setBounds(38, 20, 160, 225);
@@ -148,8 +148,8 @@ public class EeInfoRegView extends JDialog {
 		
 		
 	}//EeInfoRegView
-	public static void main(String[] args) {
-		new EeInfoRegView();
-	}//main
+//	public static void main(String[] args) {
+//		new EeInfoRegView();
+//	}//main
 	
 }//class
