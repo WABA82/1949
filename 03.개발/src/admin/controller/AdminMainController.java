@@ -129,7 +129,7 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == amv.getJbMgmt()) {
-			new AdminMgMtView();
+			new AdminMgMtView(amv);
 		}
 		
 		if (e.getSource() == amv.getJbServerOn()) {
