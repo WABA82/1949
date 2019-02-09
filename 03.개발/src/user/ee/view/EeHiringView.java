@@ -71,7 +71,7 @@ public class EeHiringView extends JDialog {
 		add(jtfSearch);
 		add(jbWordSearch);
 		
-		
+		//이벤트 추가
 		EeHiringController ehc = new EeHiringController(this);
 		jcbSort.addActionListener(ehc);
 		jbDetailSearch.addActionListener(ehc);
