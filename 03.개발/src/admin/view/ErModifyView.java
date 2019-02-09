@@ -1,9 +1,11 @@
 package admin.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -13,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 /**
@@ -32,8 +35,12 @@ public class ErModifyView extends JDialog {
 		super();/* 창의 제목 */
 
 		/* 컴포넌트 생성하기 */
+		
+		// 이미지아이콘 : 회사로고
+		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/admin/img/co/no_co_img1.png");
+		
 		// 라벨들
-		JLabel jlImage = new JLabel("이미지");
+		JLabel jlImage = new JLabel(erLogo);
 		JLabel jlName = new JLabel("이름");
 		JLabel jlTel = new JLabel("연락처");
 		JLabel jlEmail = new JLabel("이메일");
@@ -98,8 +105,11 @@ public class ErModifyView extends JDialog {
 
 		// 상단
 		JPanel imgPanel = new JPanel();
-		imgPanel.setBounds(20, 15, 170, 170);
+		imgPanel.setLayout(null);
 		imgPanel.setBorder(new TitledBorder("회사로고"));
+		imgPanel.setBounds(15, 8, 185, 192);
+		jlImage.setBounds(7, 15, 170, 170);
+		//jlImage.setBorder(new LineBorder(Color.black)); //크기 확인 (지워도됨.)
 		imgPanel.add(jlImage);
 
 		jlName.setBounds(210, 40, 60, 20);
@@ -112,7 +122,7 @@ public class ErModifyView extends JDialog {
 		// 구인정보
 		JPanel infoPanel = new JPanel();
 		infoPanel.setLayout(null);
-		infoPanel.setBounds(15, 200, 365, 180);
+		infoPanel.setBounds(15, 205, 365, 180);
 		infoPanel.setBorder(new TitledBorder("구인정보"));
 		jlSubject.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
 		jlCoName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 11));
@@ -165,13 +175,13 @@ public class ErModifyView extends JDialog {
 		JPanel erDescPanel = new JPanel();
 		erDescPanel.setLayout(new BorderLayout());
 		erDescPanel.setBorder(new TitledBorder("상세정보"));
-		erDescPanel.setBounds(15, 385, 365, 110);
+		erDescPanel.setBounds(15, 390, 365, 110);
 		erDescPanel.add(jspErDesc);
 
 		// 필요 기술스택
 		JPanel skillGridPanel = new JPanel();
 		skillGridPanel.setLayout(new GridLayout(2, 4, 0, 0));
-		skillGridPanel.setBounds(15, 500, 365, 60);
+		skillGridPanel.setBounds(15, 505, 365, 60);
 		skillGridPanel.setBorder(new TitledBorder("필요 기술스택"));
 		skillGridPanel.add(jchJava);
 		skillGridPanel.add(jchJspServlet);
