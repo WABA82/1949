@@ -18,7 +18,7 @@ public class EeMainView extends JFrame {
 //		super("1949 - 일반사용자 ["+emv.getName()+"]");
 		
 		JLabel jlAct = new JLabel("기본정보 등록여부 : ");
-		JLabel jlImg = new JLabel(new ImageIcon("C:/Users/owner/youngRepositories/1949/03.개발/src/user/img/eeImg/temp_no_image.png"));
+		JLabel jlImg = new JLabel(new ImageIcon("C:\\dev\\1949\\03.개발\\가데이터\\구직자사진\\150x200px\\각키.jpg"));
 		jlImg.setBorder(new TitledBorder("내 이미지"));
 		
 		jlActivation = new JLabel("O"/*emv.getActivation()*/);
@@ -69,9 +69,6 @@ public class EeMainView extends JFrame {
 		setVisible(true);
 	}
 
-	/*public static void main(String[] args) {
-		new EeMainView(null);
-	}*/
 	
 	public JLabel getJlActivation() {
 		return jlActivation;
@@ -94,4 +91,10 @@ public class EeMainView extends JFrame {
 	public JLabel getJlLogOut() {
 		return jlLogOut;
 	}
+
+	public static void main(String[] args) {
+		new EeMainView(null);
+	}
 }
+
+
