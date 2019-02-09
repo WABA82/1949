@@ -2,10 +2,9 @@ package user.ee.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridLayout;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -14,6 +13,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+
+import user.ee.vo.DetailErInfoVO;
 
 /**
  * 일반사용자 - 구인정보보기 - 상세구인정보 View
@@ -25,12 +26,13 @@ public class EeDetailErView extends JDialog {
 	JLabel jlHeart;
 	JButton jbCoInfo, jbApply, jbClose;
 
-	public EeDetailErView() {
-		super();/* 창의 제목 */
+	public EeDetailErView(JDialog jd, DetailErInfoVO deivo, String erNum, String appStatus) {
+		super(jd, "상세구인정보", true);/* 창의 제목 */
 
 		/* 컴포넌트 생성 */
+		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/no_co_img1.png");
 		// 라벨들
-		JLabel jlImage = new JLabel("이미지");
+		JLabel jlImage = new JLabel(erLogo);
 		JLabel jlSubject = new JLabel("제목");
 		JLabel jlCoName = new JLabel("회사명");
 		JLabel jlRank = new JLabel("직급");
@@ -52,17 +54,11 @@ public class EeDetailErView extends JDialog {
 		JTextField jtfEmail = new JTextField();
 
 		// 콤보박스들
-		String[] rItem = { "신입", "경력" };
-		JComboBox<String> jcbRank = new JComboBox<>(rItem);
-		String[] eItem = { "고졸", "초대졸", "석사", "박사" };
-		JComboBox<String> jcbEducation = new JComboBox<>(eItem);
-		String[] lItem = { "서울", "경기", "인천", "대전", "세종", "충남", "충북", "광주", "전남", "전북", "대구", "경북", "부산", "울산", "경남",
-				"강원", "제주", "전국" };
-		JComboBox<String> jcbLoc = new JComboBox<>(lItem);
-		String[] hItem = { "정규직", "계약직", "프리 " };
-		JComboBox<String> jcbHireType = new JComboBox<>(hItem);
-		String[] pItem = { "YES", "NO" };
-		JComboBox<String> jcbPortfolio = new JComboBox<>(pItem);
+		JTextField jtfRank = new JTextField();
+		JTextField jtfEducation = new JTextField();
+		JTextField jtfLoc = new JTextField();
+		JTextField jtfHireType = new JTextField();
+		JTextField jtfPortfolio = new JTextField();
 
 		// 상세정보
 		JTextArea jtaErDesc = new JTextArea();
@@ -70,7 +66,8 @@ public class EeDetailErView extends JDialog {
 		jtaErDesc.setColumns(25);
 		JScrollPane jspErDesc = new JScrollPane(jtaErDesc);
 
-		JLabel jlSkill1 = new JLabel("이미지1");
+		ImageIcon imgSkill = new ImageIcon("C:/dev/1949/03.개발/src/admin/img/co/오라클.png");
+		JLabel jlSkill1 = new JLabel(imgSkill);
 		jlSkill1.setBorder(new LineBorder(Color.BLACK));
 		JLabel jlSkill2 = new JLabel("이미지2");
 		jlSkill2.setBorder(new LineBorder(Color.BLACK));
@@ -88,48 +85,66 @@ public class EeDetailErView extends JDialog {
 		jlSkill8.setBorder(new LineBorder(Color.BLACK));
 
 		// 버튼들
-		jlHeart = new JLabel("하트");
-		jlHeart.setBorder(new LineBorder(Color.BLACK));
+		ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/빈하트.png");
+		jlHeart = new JLabel(heart);
+//		jlHeart.setBorder(new LineBorder(Color.BLACK));
 		jbCoInfo = new JButton("회사정보");
 		jbApply = new JButton("지원하기");
 		jbClose = new JButton("닫기");
 
+		jtfSubject.setEditable(false);
+		jtfName.setEditable(false);
+		jtfTel.setEditable(false);
+		jtfEmail.setEditable(false);
+		jtfCoName.setEditable(false);
+		
+		jtfSal.setEditable(false);
+		jtfRank.setEditable(false);
+		jtfEducation.setEditable(false);
+		jtfLoc.setEditable(false);
+		jtfHireType.setEditable(false);
+		jtfPortfolio.setEditable(false);
+		
 		/* 컴포넌트 크기 설정 */
 		JPanel wrapPanel = new JPanel();
 		wrapPanel.setLayout(null);
 		wrapPanel.setBorder(new TitledBorder("구인정보"));
 
-		jlSubject.setBounds(15, 30, 60, 20);
-		wrapPanel.add(jlSubject);
+		jlSubject.setBounds(15, 25, 60, 20);
+		jtfSubject.setBounds(50, 22, 330, 23);
 
 		JPanel imgPanel = new JPanel();
-		imgPanel.setBounds(20, 60, 170, 170);
+		imgPanel.setLayout(null);
 		imgPanel.setBorder(new TitledBorder("회사로고"));
+		imgPanel.setBounds(15, 52, 185, 192);
+		jlImage.setBounds(7, 15, 170, 170);
 		imgPanel.add(jlImage);
+
+		jlCoName.setBounds(215, 90, 60, 20);
+		jlName.setBounds(215, 120, 60, 20);
+		jlTel.setBounds(215, 150, 60, 20);
+		jlEmail.setBounds(215, 180, 60, 20);
+		jtfCoName.setBounds(265, 90, 110, 25);
+		jtfName.setBounds(265, 120, 110, 25);
+		jtfTel.setBounds(265, 150, 110, 25);
+		jtfEmail.setBounds(265, 180, 110, 25);
+
+		jlHireType.setBounds(20, 255, 60, 20);
+		jlRank.setBounds(20, 285, 60, 20);
+		jlSal.setBounds(20, 315, 60, 20);
+		jlEducation.setBounds(215, 255, 60, 20);
+		jlLoc.setBounds(215, 285, 60, 20);
+		jlPortfolio.setBounds(215, 315, 80, 20);
+
+		jtfHireType.setBounds(77, 255, 120, 25);
+		jtfRank.setBounds(77, 285, 120, 25);
+		jtfSal.setBounds(77, 315, 120, 25);
+		jtfEducation.setBounds(285, 255, 90, 25);
+		jtfLoc.setBounds(285, 285, 90, 25);
+		jtfPortfolio.setBounds(285, 315, 90, 25);
+
+		wrapPanel.add(jlSubject);
 		wrapPanel.add(imgPanel);
-
-		jlCoName.setBounds(20, 240, 60, 20);
-		jlRank.setBounds(20, 270, 60, 20);
-		jlSal.setBounds(20, 300, 60, 20);
-		jlName.setBounds(205, 100, 60, 20);
-		jlTel.setBounds(205, 130, 60, 20);
-		jlEmail.setBounds(205, 160, 60, 20);
-		jlEducation.setBounds(205, 240, 60, 20);
-		jlLoc.setBounds(205, 270, 60, 20);
-		jlHireType.setBounds(205, 300, 60, 20);
-		jlPortfolio.setBounds(205, 330, 80, 20);
-		jtfSubject.setBounds(50, 25, 330, 25);
-		jtfCoName.setBounds(70, 240, 120, 25);
-		jcbRank.setBounds(70, 270, 120, 25);
-		jtfSal.setBounds(70, 300, 120, 25);
-		jtfName.setBounds(255, 100, 125, 25);
-		jtfTel.setBounds(255, 130, 125, 25);
-		jtfEmail.setBounds(255, 160, 125, 25);
-		jcbEducation.setBounds(275, 240, 100, 25);
-		jcbLoc.setBounds(275, 270, 100, 25);
-		jcbHireType.setBounds(275, 300, 100, 25);
-		jcbPortfolio.setBounds(275, 330, 100, 25);
-
 		wrapPanel.add(jlCoName);
 		wrapPanel.add(jlRank);
 		wrapPanel.add(jlSal);
@@ -140,24 +155,24 @@ public class EeDetailErView extends JDialog {
 		wrapPanel.add(jlLoc);
 		wrapPanel.add(jlHireType);
 		wrapPanel.add(jlPortfolio);
+
 		wrapPanel.add(jtfSubject);
 		wrapPanel.add(jtfCoName);
-		wrapPanel.add(jcbRank);
-		wrapPanel.add(jtfSal);
 		wrapPanel.add(jtfName);
 		wrapPanel.add(jtfTel);
 		wrapPanel.add(jtfEmail);
-
-		wrapPanel.add(jcbEducation);
-		wrapPanel.add(jcbLoc);
-		wrapPanel.add(jcbHireType);
-		wrapPanel.add(jcbPortfolio);
+		wrapPanel.add(jtfHireType);
+		wrapPanel.add(jtfRank);
+		wrapPanel.add(jtfSal);
+		wrapPanel.add(jtfEducation);
+		wrapPanel.add(jtfLoc);
+		wrapPanel.add(jtfPortfolio);
 
 		// 상세정보 컴포넌트 크기설정
 		JPanel erDescPanel = new JPanel();
 		erDescPanel.setLayout(new BorderLayout());
 		erDescPanel.setBorder(new TitledBorder("상세정보"));
-		erDescPanel.setBounds(15, 360, 365, 120);
+		erDescPanel.setBounds(15, 350, 365, 135);
 		erDescPanel.add(jspErDesc);
 
 		wrapPanel.add(erDescPanel);
@@ -167,14 +182,14 @@ public class EeDetailErView extends JDialog {
 		skillGridPanel.setLayout(null);
 		skillGridPanel.setBounds(10, 490, 370, 75);
 		skillGridPanel.setBorder(new TitledBorder("필요 기술스택"));
-		jlSkill1.setBounds(7, 20, 40, 40);
-		jlSkill2.setBounds(52, 20, 40, 40);
-		jlSkill3.setBounds(97, 20, 40, 40);
-		jlSkill4.setBounds(142, 20, 40, 40);
-		jlSkill5.setBounds(187, 20, 40, 40);
-		jlSkill6.setBounds(232, 20, 40, 40);
-		jlSkill7.setBounds(277, 20, 40, 40);
-		jlSkill8.setBounds(322, 20, 40, 40);
+		jlSkill1.setBounds(7, 25, 40, 40);
+		jlSkill2.setBounds(52, 25, 40, 40);
+		jlSkill3.setBounds(97, 25, 40, 40);
+		jlSkill4.setBounds(142, 25, 40, 40);
+		jlSkill5.setBounds(187, 25, 40, 40);
+		jlSkill6.setBounds(232, 25, 40, 40);
+		jlSkill7.setBounds(277, 25, 40, 40);
+		jlSkill8.setBounds(322, 25, 40, 40);
 		skillGridPanel.add(jlSkill1);
 		skillGridPanel.add(jlSkill2);
 		skillGridPanel.add(jlSkill3);
@@ -186,7 +201,7 @@ public class EeDetailErView extends JDialog {
 
 		wrapPanel.add(skillGridPanel);
 
-		jlHeart.setBounds(65, 570, 30, 30);
+		jlHeart.setBounds(65, 572, 32, 32);
 		jbCoInfo.setBounds(105, 575, 100, 25);
 		jbApply.setBounds(210, 575, 100, 25);
 		jbClose.setBounds(315, 575, 60, 25);
@@ -195,18 +210,37 @@ public class EeDetailErView extends JDialog {
 		wrapPanel.add(jbCoInfo);
 		wrapPanel.add(jbApply);
 		wrapPanel.add(jbClose);
-		
+
 		/* 프레임에 배치 */
 		add(wrapPanel);
 
 		/* 프레임 크기 설정 및 가시화 */
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 410, 650);
+		setBounds(100, 100, 410, 660);
 		setVisible(true);
+
 	}// 생성자
 
+	/*****************getter*****************/
+	public JLabel getJlHeart() {
+		return jlHeart;
+	}
+
+	public JButton getJbCoInfo() {
+		return jbCoInfo;
+	}
+
+	public JButton getJbApply() {
+		return jbApply;
+	}
+
+	public JButton getJbClose() {
+		return jbClose;
+	}
+	/*****************getter*****************/
+
 	public static void main(String[] args) {
-		new EeDetailErView();
+		new EeDetailErView(null, null, null, null);
 	}// main
 
 }// class
