@@ -35,8 +35,8 @@ public class EeDAO {
 		Connection con = null;
 		
 		String url="jdbc:oracle:thin:@localhost:1521:orcl";
-		String id ="scott";
-		String pass ="tiger";
+		String id ="kanu";
+		String pass ="share";
 		con = DriverManager.getConnection(url, id, pass);
 		return con;
 	}//getConns
