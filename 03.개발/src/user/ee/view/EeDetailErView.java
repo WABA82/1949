@@ -66,7 +66,8 @@ public class EeDetailErView extends JDialog {
 		jtaErDesc.setColumns(25);
 		JScrollPane jspErDesc = new JScrollPane(jtaErDesc);
 
-		JLabel jlSkill1 = new JLabel("이미지1");
+		ImageIcon imgSkill = new ImageIcon("C:/dev/1949/03.개발/src/admin/img/co/오라클.png");
+		JLabel jlSkill1 = new JLabel(imgSkill);
 		jlSkill1.setBorder(new LineBorder(Color.BLACK));
 		JLabel jlSkill2 = new JLabel("이미지2");
 		jlSkill2.setBorder(new LineBorder(Color.BLACK));
@@ -84,8 +85,9 @@ public class EeDetailErView extends JDialog {
 		jlSkill8.setBorder(new LineBorder(Color.BLACK));
 
 		// 버튼들
-		jlHeart = new JLabel("하트");
-		jlHeart.setBorder(new LineBorder(Color.BLACK));
+		ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/빈하트.png");
+		jlHeart = new JLabel(heart);
+//		jlHeart.setBorder(new LineBorder(Color.BLACK));
 		jbCoInfo = new JButton("회사정보");
 		jbApply = new JButton("지원하기");
 		jbClose = new JButton("닫기");
@@ -199,7 +201,7 @@ public class EeDetailErView extends JDialog {
 
 		wrapPanel.add(skillGridPanel);
 
-		jlHeart.setBounds(65, 575, 30, 30);
+		jlHeart.setBounds(65, 572, 32, 32);
 		jbCoInfo.setBounds(105, 575, 100, 25);
 		jbApply.setBounds(210, 575, 100, 25);
 		jbClose.setBounds(315, 575, 60, 25);
