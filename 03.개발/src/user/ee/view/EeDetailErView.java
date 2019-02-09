@@ -26,7 +26,7 @@ public class EeDetailErView extends JDialog {
 	JLabel jlHeart;
 	JButton jbCoInfo, jbApply, jbClose;
 
-	public EeDetailErView(JDialog jd, DetailErInfoVO deivo, String str, String str2) {
+	public EeDetailErView(JDialog jd, DetailErInfoVO deivo, String erNum, String appStatus) {
 		super(jd, "상세구인정보", true);/* 창의 제목 */
 
 		/* 컴포넌트 생성 */
