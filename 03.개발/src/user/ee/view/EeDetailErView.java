@@ -15,6 +15,8 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import user.ee.vo.DetailErInfoVO;
+
 /**
  * 일반사용자 - 구인정보보기 - 상세구인정보 View
  */
@@ -25,8 +27,8 @@ public class EeDetailErView extends JDialog {
 	JLabel jlHeart;
 	JButton jbCoInfo, jbApply, jbClose;
 
-	public EeDetailErView() {
-		super();/* 창의 제목 */
+	public EeDetailErView(EeHiringView ehv, DetailErInfoVO dei_vo, String s, String st) {
+		super(ehv,"상세 구인 정보",true);/* 창의 제목 */
 
 		/* 컴포넌트 생성 */
 		// 라벨들
@@ -205,8 +207,8 @@ public class EeDetailErView extends JDialog {
 		setVisible(true);
 	}// 생성자
 
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		new EeDetailErView();
 	}// main
-
+*/
 }// class

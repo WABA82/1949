@@ -20,7 +20,7 @@ import user.ee.vo.EeHiringVO;
 @SuppressWarnings("serial")
 public class EeHiringView extends JDialog {
 
-	private JButton jbDetailSearch,jbWordSearch;
+	private JButton jbDetailSearch,jbWordSearch ;
 	private JComboBox<String> jcbSort;
 	private JTable jtErInfo;
 	private DefaultTableModel dtmErInfo;
@@ -35,12 +35,6 @@ public class EeHiringView extends JDialog {
 				return false;
 			}
 		};
-		///////////가데이터//////////////////
-		//"번호","구인정보번호","제목","회사명","직급","근무지역","학력","고용형태","급여","등록일"
-		Object[] rowData1 = {"1","er_000001",	"테스트제목1",	"1", "C","서울", "C", "Y", "2500","2019-01-30 오후 7:06:43"};
-		Object[] rowData2 = {"2","er_000002",	"테스트제목2",	"2", "C", "서울", "C", "Y", "2300", "2019-01-29 오후 7:06:42"};		
-		dtmErInfo.addRow(rowData1);
-		dtmErInfo.addRow(rowData2);
 		
 		String sort[]= {"등록일순","직급순","급여순"};
 		jcbSort=new JComboBox<String>(sort);
@@ -53,12 +47,13 @@ public class EeHiringView extends JDialog {
 		JLabel jlSearch=new JLabel("기업명 검색");
 		jtfSearch = new JTextField();
 		
+		
 		jbWordSearch=new JButton("검색");
 		
 		setLayout(null);
 		
 		jcbSort.setBounds(10, 10, 100, 30);
-		jspEe.setBounds(0, 50, 995, 360);
+		jspEe.setBounds(0, 50, 1080, 360);
 		jbDetailSearch.setBounds(10, 425, 100, 30);
 		jlSearch.setBounds(620, 425, 100, 30);
 		jtfSearch.setBounds(700, 425, 190, 30);
@@ -80,9 +75,11 @@ public class EeHiringView extends JDialog {
 		jtErInfo.addMouseListener(ehc);
 		addWindowListener(ehc);
 		
-		setBounds(100, 100, 1000, 500);
-		setResizable(false);
+		
+		setBounds(100, 100, 1100, 550);
 		setVisible(true);
+		setResizable(false);
+		jtfSearch.requestFocus();
 		
 	}//ErHiringView
 
