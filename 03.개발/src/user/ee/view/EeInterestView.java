@@ -26,7 +26,7 @@ public class EeInterestView extends JDialog {
 		JLabel jlEeInfo = new JLabel("내 관심 구인정보 수 : ");
 
 		String[] erInfoColumns = { "번호", "구인정보번호", "제목", "회사명", "직급", "근무지역", "학력", "고용형태", "급여", "등록일" };
-		dtmErInfo = new DefaultTableModel(erInfoColumns, 15) {
+		dtmErInfo = new DefaultTableModel(erInfoColumns, 20) {
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}// isCellEditable
@@ -46,10 +46,10 @@ public class EeInterestView extends JDialog {
 		jtErInfo.setRowHeight(25);
 		// jtErInfo의 크기 컬럼 넓이 설정
 		jtErInfo.getColumnModel().getColumn(0).setPreferredWidth(30);
-		jtErInfo.getColumnModel().getColumn(1).setPreferredWidth(100);
-		jtErInfo.getColumnModel().getColumn(2).setPreferredWidth(125);
-		jtErInfo.getColumnModel().getColumn(3).setPreferredWidth(100);
-		jtErInfo.getColumnModel().getColumn(4).setPreferredWidth(50);
+		jtErInfo.getColumnModel().getColumn(1).setPreferredWidth(80);
+		jtErInfo.getColumnModel().getColumn(2).setPreferredWidth(110);
+		jtErInfo.getColumnModel().getColumn(3).setPreferredWidth(90);
+		jtErInfo.getColumnModel().getColumn(4).setPreferredWidth(40);
 		jtErInfo.getColumnModel().getColumn(5).setPreferredWidth(50);
 		jtErInfo.getColumnModel().getColumn(6).setPreferredWidth(50);
 		jtErInfo.getColumnModel().getColumn(7).setPreferredWidth(50);
@@ -66,7 +66,7 @@ public class EeInterestView extends JDialog {
 		addWindowListener(eic);
 
 		/* 프레임 크기 설정 및 가시화 */
-		setBounds(100, 100, 800, 400);
+		setBounds(100, 100, 780, 500);
 		setResizable(true);
 		setVisible(true);
 	}// 생성자
@@ -79,7 +79,6 @@ public class EeInterestView extends JDialog {
 	public DefaultTableModel getdtmErInfo() {
 		return dtmErInfo;
 	}
-<<<<<<< HEAD
 	///////////////////// getter/////////////////////
 
 	public static void main(String[] args) {
@@ -87,13 +86,3 @@ public class EeInterestView extends JDialog {
 	}// main
 
 }// class
-=======
-	public static void main(String[] args) {
-		EeMainVO em_vo= new EeMainVO("fsd", "fdsf", "sdf", "dsfs");
-		EeMainView emv=new EeMainView(em_vo);
-		List<EeHiringVO> ehvo=new ArrayList<EeHiringVO>();
-		new EeInterestView(emv,ehvo);
-	}
-
-}
->>>>>>> af80011f6d431b5fccc4b5723a06494ace16b48f
