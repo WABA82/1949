@@ -12,6 +12,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import user.ee.controller.EeInfoRegController;
+
 /**
  *	 기본 정보 관리 -김건하-
  *	19.02.07
@@ -23,11 +25,11 @@ public class EeInfoRegView extends JDialog {
 	private JComboBox<String>jcbRank, jcbLoc, jcbEducation, jcbPortfolio;
 	private JTextField jtfExtResume;
 	
-	public EeInfoRegView() {
-//		super("기본 정보 관리",true);
+	public EeInfoRegView(EeMainView emv) {
+		super(emv, "기본 정보 관리",true);
 		
 		//image
-		ImageIcon ii=new ImageIcon("C:/dev/homework/1949/1949/03.개발/가데이터/구직자사진/150x200px/각키.jpg");
+		ImageIcon ii=new ImageIcon("C:/dev/1949/03.개발/가데이터/구직자사진/150x200px/각키.jpg");
 		JLabel jlImage=new JLabel(ii);
 		jlImage.setBorder(new TitledBorder("구직자 이미지"));
 		jlImage.setBounds(38, 20, 160, 225);
@@ -110,18 +112,23 @@ public class EeInfoRegView extends JDialog {
 		JTextField jtfName=new JTextField(10);
 		add(jtfName);
 		jtfName.setBounds(325, 22, 130, 20);
+		jtfName.setEditable(false);
 		
 		JTextField jtfAge=new JTextField(10);
 		add(jtfAge);
 		jtfAge.setBounds(325, 182, 130, 20);
+		jtfAge.setEditable(false);
 		
 		JTextField jtfGender=new JTextField(10);
 		add(jtfGender);
 		jtfGender.setBounds(325, 262, 130, 20);
+		jtfGender.setEditable(false);
+		
 		
 		jtfExtResume=new JTextField(10);
 		add(jtfExtResume);
 		jtfExtResume.setBounds(325, 302, 130, 20);
+		jtfExtResume.setEditable(false);
 		
 		//Combobox
 		add(jcbRank);
@@ -133,23 +140,63 @@ public class EeInfoRegView extends JDialog {
 		add(jcbPortfolio);
 		jcbPortfolio.setBounds(325,222,130,20);
 		
-		
+		//이벤트 등록
+		EeInfoRegController eirc=new EeInfoRegController(this);
+		jbRegisterExt.addActionListener(eirc);
 		
 		
 		setLayout(null);
-		setBounds(100, 100, 490, 450);
+		setBounds( emv.getX()+450, emv.getY(), 490, 465);
 		
 		
 		setVisible(true);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
-		
-		
-		
 	}//EeInfoRegView
-	public static void main(String[] args) {
-		new EeInfoRegView();
-	}//main
+
+	public JButton getJbRegister() {
+		return jbRegister;
+	}
+
+	public JButton getJbRegisterExt() {
+		return jbRegisterExt;
+	}
+
+	public JButton getJbRegisterImg() {
+		return jbRegisterImg;
+	}
+
+	public JButton getJbClose() {
+		return jbClose;
+	}
+
+	public JComboBox<String> getJcbRank() {
+		return jcbRank;
+	}
+
+	public JComboBox<String> getJcbLoc() {
+		return jcbLoc;
+	}
+
+	public JComboBox<String> getJcbEducation() {
+		return jcbEducation;
+	}
+
+	public JComboBox<String> getJcbPortfolio() {
+		return jcbPortfolio;
+	}
+
+	public JTextField getJtfExtResume() {
+		return jtfExtResume;
+	}
+	
+	
+	
+//	public static void main(String[] args) {
+//		new EeInfoRegView(null);
+//	}//main
+	
+	
 	
 }//class

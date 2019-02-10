@@ -1,6 +1,7 @@
 package user.ee.view;
 
 import java.awt.Font;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -9,7 +10,9 @@ import javax.swing.JLabel;
 
 import user.ee.controller.EeDetailSearchController;
 import user.ee.controller.EeHiringController;
+import user.ee.vo.EeHiringVO;
 
+@SuppressWarnings("serial")
 public class EeDetailSearchView extends JDialog {
 	
 	private JButton jbSearch, jbCancel;
@@ -59,6 +62,10 @@ public class EeDetailSearchView extends JDialog {
 		EeDetailSearchController edsc = new EeDetailSearchController(this, ehc);
 		jbSearch.addActionListener(edsc);
 		jbCancel.addActionListener(edsc);
+		jcbEducation.addActionListener(edsc);
+		jcbHireType.addActionListener(edsc);
+		jcbLoc.addActionListener(edsc);
+		jcbRank.addActionListener(edsc);
 		
 		addWindowListener(edsc);
 		
@@ -67,9 +74,7 @@ public class EeDetailSearchView extends JDialog {
 		setVisible(true);
 	}
 	
-	/*public static void main(String[] args) {
-		new EeDetailSearchView();
-	}*/
+
 	public JButton getJbSearch() {
 		return jbSearch;
 	}

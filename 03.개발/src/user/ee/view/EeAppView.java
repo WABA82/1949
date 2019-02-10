@@ -52,11 +52,11 @@ public class EeAppView extends JDialog {
 
 
 
-/*	public static void main(String[] args) {
+	public static void main(String[] args) {
 		EeMainVO em_vo = new EeMainVO("asd", "sdf", "fds", "fsf");
 		EeMainView emv=new EeMainView(em_vo);
 		List<EeAppVO> eavo=new ArrayList<EeAppVO>();
 		new EeAppView(emv,eavo);
-	}*/
+	}
 	
 }

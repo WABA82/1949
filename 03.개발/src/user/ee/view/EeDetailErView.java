@@ -26,6 +26,9 @@ public class EeDetailErView extends JDialog {
 	JLabel jlHeart;
 	JButton jbCoInfo, jbApply, jbClose;
 
+	public EeDetailErView(EeHiringView ehv, DetailErInfoVO dei_vo, String s, String st) {
+		super(ehv,"상세 구인 정보",true);/* 창의 제목 */
+	}
 	public EeDetailErView(JDialog jd, DetailErInfoVO deivo, String erNum, String appStatus) {
 		super(jd, "상세구인정보", true);/* 창의 제목 */
 
@@ -221,6 +224,8 @@ public class EeDetailErView extends JDialog {
 
 	}// 생성자
 
+/*	public static void main(String[] args) {
+		new EeDetailErView();
 	/*****************getter*****************/
 	public JLabel getJlHeart() {
 		return jlHeart;
@@ -242,5 +247,4 @@ public class EeDetailErView extends JDialog {
 	public static void main(String[] args) {
 		new EeDetailErView(null, null, null, null);
 	}// main
-
 }// class

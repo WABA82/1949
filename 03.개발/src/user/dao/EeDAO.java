@@ -50,30 +50,37 @@ public class EeDAO {
 		Connection con =null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
 		try {
 			con = getConn();
 			
 			StringBuilder selectEeHiring = new StringBuilder();
 			selectEeHiring.append("select ei.er_num, ei.subject, ei.education, ei.rank, ei.loc, ei.hire_type,")
-			.append("to_char(ei.input_date,'yyyy-mm-dd') input_date, ei.sal, c.co_name	 ")
+			.append("to_char(ei.input_date,'yyyy-mm-dd-hh-mi') input_date, ei.sal, c.co_name	 ")
 			.append("	from er_info ei ,company c	 ")
 			.append("	where (ei.co_num=c.co_num) ");
+			
 			
 			if(!(eh_dto.getCoName().trim()==null || eh_dto.getCoName().trim().equals(""))) {
 				selectEeHiring.append("and (c.co_name like '%" )
 				.append(eh_dto.getCoName())
 				.append("%' ) ");
 			}
-			
-			if(eh_dto.getSort().equals("등록일순")) {
-				selectEeHiring.append("	order by ei.input_date	");
-			}else if(eh_dto.getSort().equals("직급순")) {
-				selectEeHiring.append("	order by ei.rank	 ");
-			}else if(eh_dto.getSort().equals("급여순")) {
-				selectEeHiring.append("	order by ei.sal	 ");
+			if(!(eh_dto.getCdt()==null || eh_dto.getCdt().equals(""))) {
+				selectEeHiring.append(eh_dto.getCdt());
 			}
-			///조건검색 추가
+			
+			if(!(eh_dto.getSort().trim()==null || eh_dto.getSort().trim().equals(""))) {
+				if(eh_dto.getSort().equals("등록일순")) {
+					selectEeHiring.append("	order by ei.input_date	");
+				}else if(eh_dto.getSort().equals("직급순")) {
+					selectEeHiring.append("	order by ei.rank	 ");
+				}else if(eh_dto.getSort().equals("급여순")) {
+					selectEeHiring.append("	order by ei.sal	 ");
+				}
+			}else {
+				selectEeHiring.append("	order by ei.input_date	");
+			}
+			System.out.println(selectEeHiring.toString());
 			
 			pstmt = con.prepareStatement(selectEeHiring.toString());
 			
@@ -93,13 +100,12 @@ public class EeDAO {
 		}
 				
 		
-		System.out.println(list);
 		return list;
 	}
 	
 	
 	//02.09선의테스트
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		EeDAO ee_dao = new EeDAO();
 		EeHiringCdtDTO eh_dto = new EeHiringCdtDTO("직급순","","키스템프");
 		try {
@@ -107,7 +113,7 @@ public class EeDAO {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	
 	
