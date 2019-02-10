@@ -8,14 +8,16 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import user.common.vo.EeMainVO;
+import user.ee.view.EeHiringView;
 import user.ee.view.EeInfoRegView;
+import user.ee.view.EeInterestView;
 import user.ee.view.EeMainView;
 
 public class EeMainController extends WindowAdapter implements ActionListener, MouseListener {
 
 	private EeMainView emv;
 	
-	public EeMainController(EeMainView emv, EeMainVO emvo	) {
+	public EeMainController(EeMainView emv, EeMainVO emvo) {
 		this.emv = emv;
 	}
 	
@@ -33,16 +35,17 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 	}
 	
 	public void showHiring() {
-		
+//		new EeHiringView(emv);
 	}
 	
 	public void showInterestEr() {
-		
+//		new EeInterestView(emv, ehvo);
 	}
 	
 	public void showApp() {
-		
+//		new EeAppView();
 	}
+	
 	/**
 	 * 	private EeMainView emv;
 	 *  마우스 클릭시 종료 jlLogOut
@@ -54,13 +57,6 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 			
 		}//end if
 		
-		if(me.getSource() == emv.getJlUserInfo()) {
-			mngUser();
-//			if(me.getSource() ==emv.getJlLogOut() ) {
-//				emv.dispose();
-//				
-//			}
-		}
 		
 		
 	}//mouseClicked
@@ -68,7 +64,14 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 
-	}
+		if(ae.getSource() == emv.getJbEeInfo()) {
+			mngUser();
+		}//end if
+		
+		if(ae.getSource() == emv.getJbErInfo()) {
+		}//end if
+		
+	}//actionPerformed
 
 	@Override
 	public void windowClosing(WindowEvent e) {

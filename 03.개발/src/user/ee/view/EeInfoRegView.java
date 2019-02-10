@@ -12,6 +12,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import user.ee.controller.EeInfoRegController;
+
 /**
  *	 기본 정보 관리 -김건하-
  *	19.02.07
@@ -110,14 +112,18 @@ public class EeInfoRegView extends JDialog {
 		JTextField jtfName=new JTextField(10);
 		add(jtfName);
 		jtfName.setBounds(325, 22, 130, 20);
+		jtfName.setEditable(false);
 		
 		JTextField jtfAge=new JTextField(10);
 		add(jtfAge);
 		jtfAge.setBounds(325, 182, 130, 20);
+		jtfAge.setEditable(false);
 		
 		JTextField jtfGender=new JTextField(10);
 		add(jtfGender);
 		jtfGender.setBounds(325, 262, 130, 20);
+		jtfGender.setEditable(false);
+		
 		
 		jtfExtResume=new JTextField(10);
 		add(jtfExtResume);
@@ -133,23 +139,63 @@ public class EeInfoRegView extends JDialog {
 		add(jcbPortfolio);
 		jcbPortfolio.setBounds(325,222,130,20);
 		
-		
+		//이벤트 등록
+		EeInfoRegController eirc=new EeInfoRegController(this);
+		jbRegisterExt.addActionListener(eirc);
 		
 		
 		setLayout(null);
-		setBounds(100, 100, 490, 450);
+		setBounds(100, 100, 490, 465);
 		
 		
 		setVisible(true);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
-		
-		
-		
 	}//EeInfoRegView
+
+	public JButton getJbRegister() {
+		return jbRegister;
+	}
+
+	public JButton getJbRegisterExt() {
+		return jbRegisterExt;
+	}
+
+	public JButton getJbRegisterImg() {
+		return jbRegisterImg;
+	}
+
+	public JButton getJbClose() {
+		return jbClose;
+	}
+
+	public JComboBox<String> getJcbRank() {
+		return jcbRank;
+	}
+
+	public JComboBox<String> getJcbLoc() {
+		return jcbLoc;
+	}
+
+	public JComboBox<String> getJcbEducation() {
+		return jcbEducation;
+	}
+
+	public JComboBox<String> getJcbPortfolio() {
+		return jcbPortfolio;
+	}
+
+	public JTextField getJtfExtResume() {
+		return jtfExtResume;
+	}
+	
+	
+	
 //	public static void main(String[] args) {
-//		new EeInfoRegView();
+//		new EeInfoRegView(null);
 //	}//main
+	
+	
 	
 }//class

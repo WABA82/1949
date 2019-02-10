@@ -54,11 +54,11 @@ public class EeInterestView extends JDialog {
 	public DefaultTableModel getdtmErInfo() {
 		return dtmErInfo;
 	}
-/*	public static void main(String[] args) {
+	public static void main(String[] args) {
 		EeMainVO em_vo= new EeMainVO("fsd", "fdsf", "sdf", "dsfs");
 		EeMainView emv=new EeMainView(em_vo);
 		List<EeHiringVO> ehvo=new ArrayList<EeHiringVO>();
 		new EeInterestView(emv,ehvo);
-	}*/
+	}
 
 }
