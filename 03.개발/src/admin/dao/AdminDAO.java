@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import admin.vo.CoListVO;
 import admin.vo.EeListVO;
 import admin.vo.ErListVO;
 import admin.vo.UserListVO;
@@ -163,7 +164,41 @@ public class AdminDAO {
 	}
 	
 	
-	
+	public List<CoListVO> selectAllCo() throws SQLException {
+		List<CoListVO> list = new ArrayList<CoListVO>();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null; 
+		
+		try {
+			con = getConn();
+			
+			StringBuilder selectAllCo = new StringBuilder();
+			selectAllCo
+			.append(" select co_num, img1, co_name, er_id, est_date, member_num, input_date ")
+			.append(" from company order by co_num desc ");
+			
+			pstmt = con.prepareStatement(selectAllCo.toString());
+			
+			rs = pstmt.executeQuery();
+			
+			CoListVO clvo = null;
+			while(rs.next()) {
+				clvo = new CoListVO(rs.getString("co_num"), rs.getString("img1"),
+						rs.getString("co_name"), rs.getString("er_id"), rs.getString("est_date"), 
+						rs.getString("input_date"), rs.getInt("member_num"));
+				list.add(clvo);
+			}
+			
+		} finally {
+			if (rs != null) { rs.close(); }
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		return list;
+	}
 	
 	
 	

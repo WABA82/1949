@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 
 import admin.dao.AdminDAO;
 import admin.view.AdminMgMtView;
+import admin.vo.CoListVO;
 import admin.vo.EeListVO;
 import admin.vo.ErListVO;
 import admin.vo.UserListVO;
@@ -159,7 +160,32 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 	}
 	
 	public void setCo() {
-		
+		try {
+			List<CoListVO> list = a_dao.selectAllCo();
+			DefaultTableModel dtm = ammv.getDtmCo();
+			
+			dtm.setRowCount(0);
+
+			Object[] rowData = new Object[8];
+			
+			CoListVO clvo = null;
+			for(int i=0; i<list.size(); i++) {
+				clvo = list.get(i);
+				rowData[0] = String.valueOf(i+1);
+				rowData[1] = clvo.getCoNum();
+				rowData[2] = clvo.getImg1();
+				rowData[3] = clvo.getCoName();
+				rowData[4] = clvo.getErId();
+				rowData[5] = clvo.getEstDate();
+				rowData[6] = clvo.getMemberNum();
+				rowData[7] = clvo.getInputDate();
+				dtm.addRow(rowData);
+			}
+			
+		} catch (SQLException e) {
+			msgCenter("DB에 문제가 발생했습니다.");
+			e.printStackTrace();
+		}
 	}
 	
 	public void showUserModify() {
