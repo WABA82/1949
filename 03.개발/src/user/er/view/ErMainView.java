@@ -75,9 +75,9 @@ public class ErMainView extends JFrame {
 		setVisible(true);
 	}
 	
-	/*public static void main(String[] args) {
+	public static void main(String[] args) {
 		new ErMainView(null);
-	}*/
+	}
 	
 	public JButton getJbCoMgmt() {
 		return jbCoMgmt;
@@ -103,8 +103,6 @@ public class ErMainView extends JFrame {
 	public JLabel getJlActivation() {
 		return jlActivation;
 	}
-	public static void main(String[] args) {
-		new ErMainView(null);
-	}
+	
 	
 }

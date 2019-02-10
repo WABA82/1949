@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import user.ee.controller.EeDetailErController;
 import user.ee.vo.DetailErInfoVO;
 
 /**
@@ -23,15 +24,13 @@ import user.ee.vo.DetailErInfoVO;
 public class EeDetailErView extends JDialog {
 
 	/* 인스턴스 변수 선언 */
-	JLabel jlHeart;
-	JButton jbCoInfo, jbApply, jbClose;
-
-	public EeDetailErView(EeHiringView ehv, DetailErInfoVO dei_vo, String s, String st) {
-		super(ehv,"상세 구인 정보",true);/* 창의 제목 */
-	}
-	public EeDetailErView(JDialog jd, DetailErInfoVO deivo, String erNum, String appStatus) {
-		super(jd, "상세구인정보", true);/* 창의 제목 */
-
+	private JLabel jlHeart;
+	private JButton jbCoInfo, jbApply, jbClose; 
+	private String erNum,eeId;
+	
+	public EeDetailErView(EeHiringView ehv, DetailErInfoVO deivo, String erNum, String eeId,String appStatus) {
+		super(ehv, "상세구인정보", true);/* 창의 제목 */
+		this.erNum = erNum;
 		/* 컴포넌트 생성 */
 		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/no_co_img1.png");
 		// 라벨들
@@ -70,27 +69,27 @@ public class EeDetailErView extends JDialog {
 		JScrollPane jspErDesc = new JScrollPane(jtaErDesc);
 
 		ImageIcon imgSkill = new ImageIcon("C:/dev/1949/03.개발/src/admin/img/co/오라클.png");
-		JLabel jlSkill1 = new JLabel(imgSkill);
+		JLabel jlSkill1,jlSkill2,jlSkill3,jlSkill4,jlSkill5,jlSkill6,jlSkill7,jlSkill8;
+		jlSkill1 = new JLabel(imgSkill);
 		jlSkill1.setBorder(new LineBorder(Color.BLACK));
-		JLabel jlSkill2 = new JLabel("이미지2");
+		jlSkill2 = new JLabel("");
 		jlSkill2.setBorder(new LineBorder(Color.BLACK));
-		JLabel jlSkill3 = new JLabel("이미지3");
+		jlSkill3 = new JLabel("");
 		jlSkill3.setBorder(new LineBorder(Color.BLACK));
-		JLabel jlSkill4 = new JLabel("이미지4");
+		jlSkill4 = new JLabel("");
 		jlSkill4.setBorder(new LineBorder(Color.BLACK));
-		JLabel jlSkill5 = new JLabel("이미지5");
+		jlSkill5 = new JLabel("");
 		jlSkill5.setBorder(new LineBorder(Color.BLACK));
-		JLabel jlSkill6 = new JLabel("이미지6");
+		jlSkill6 = new JLabel("");
 		jlSkill6.setBorder(new LineBorder(Color.BLACK));
-		JLabel jlSkill7 = new JLabel("이미지7");
+		jlSkill7 = new JLabel("");
 		jlSkill7.setBorder(new LineBorder(Color.BLACK));
-		JLabel jlSkill8 = new JLabel("이미지8");
+		jlSkill8 = new JLabel("");
 		jlSkill8.setBorder(new LineBorder(Color.BLACK));
 
 		// 버튼들
-		ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/빈하트.png");
+		ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/b_heart.png");
 		jlHeart = new JLabel(heart);
-//		jlHeart.setBorder(new LineBorder(Color.BLACK));
 		jbCoInfo = new JButton("회사정보");
 		jbApply = new JButton("지원하기");
 		jbClose = new JButton("닫기");
@@ -193,15 +192,36 @@ public class EeDetailErView extends JDialog {
 		jlSkill6.setBounds(232, 25, 40, 40);
 		jlSkill7.setBounds(277, 25, 40, 40);
 		jlSkill8.setBounds(322, 25, 40, 40);
-		skillGridPanel.add(jlSkill1);
-		skillGridPanel.add(jlSkill2);
-		skillGridPanel.add(jlSkill3);
-		skillGridPanel.add(jlSkill4);
-		skillGridPanel.add(jlSkill5);
-		skillGridPanel.add(jlSkill6);
-		skillGridPanel.add(jlSkill7);
-		skillGridPanel.add(jlSkill8);
 
+		JLabel[] arrLbSkill = {jlSkill1,jlSkill2,jlSkill3,jlSkill4,jlSkill5,jlSkill6,jlSkill7,jlSkill8};
+		for(int i=0; i<deivo.getSkill().size();i++) {
+			if(deivo.getSkill().get(i).equals("Java")) {
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/Java.png"));
+			}else if(deivo.getSkill().get(i).equals("JSP/Servlet")) {
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/jsp_servelt.png"));
+				
+			}else if(deivo.getSkill().get(i).equals("Spring")) {
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/spring.png"));
+				
+			}else if(deivo.getSkill().get(i).equals("Oracle")) {
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/oracle.png"));
+				
+			}else if(deivo.getSkill().get(i).equals("HTML")) {
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/html.png"));
+				
+			}else if(deivo.getSkill().get(i).equals("CSS")) {
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/css.png"));
+				
+			}else if(deivo.getSkill().get(i).equals("Linux")) {
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/linux.png"));
+				
+			}else if(deivo.getSkill().get(i).equals("JS")) {
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/js.png"));
+				
+			}
+			skillGridPanel.add(arrLbSkill[i]);
+		}
+		
 		wrapPanel.add(skillGridPanel);
 
 		jlHeart.setBounds(65, 572, 32, 32);
@@ -211,12 +231,52 @@ public class EeDetailErView extends JDialog {
 
 		wrapPanel.add(jlHeart);
 		wrapPanel.add(jbCoInfo);
-		wrapPanel.add(jbApply);
+		if(appStatus==null) {
+			wrapPanel.add(jbApply);
+		}
 		wrapPanel.add(jbClose);
 
 		/* 프레임에 배치 */
 		add(wrapPanel);
-
+		
+		jtfSubject.setText(deivo.getSubject());
+		jlImage.setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/회사정보 가데이터/네이버/"+deivo.getImg1()));
+		jtfCoName.setText(deivo.getCoName());
+		jtfName.setText(deivo.getName());
+		jtfTel.setText(deivo.getTel());
+		jtfEmail.setText(deivo.getEmail());
+		jtfEducation.setText(deivo.getEdudation());
+		jtfLoc.setText(deivo.getLoc());
+		jtfSal.setText(String.valueOf(deivo.getSal()));
+		jtfPortfolio.setText(deivo.getPortfolio());
+		jtaErDesc.setText(deivo.getErDesc());
+		jtaErDesc.setEditable(false);
+		
+		//hiretype 'C' - 정규직'N' - 비정규직'F' - 프리랜서
+		if(deivo.getHireType().equals("C")) {
+			jtfHireType.setText("정규직");
+		}else if(deivo.getHireType().equals("N")) {
+			jtfHireType.setText("비정규직");
+		}else if(deivo.getHireType().equals("F")) {
+			jtfHireType.setText("프리랜서");
+		}
+		
+		//rank: 'N' - 신입 'C' - 경력
+		if(deivo.getRank().equals("C")) {
+			jtfRank.setText("경력");
+		}else if(deivo.getRank().equals("N")) {
+			jtfRank.setText("신입");
+			
+		}
+		
+		
+		//이벤트
+		EeDetailErController edec = new EeDetailErController(this,erNum,eeId);
+		jlHeart.addMouseListener(edec);
+		jbCoInfo.addActionListener(edec);
+		jbClose.addActionListener(edec);
+		jbApply.addActionListener(edec);
+		
 		/* 프레임 크기 설정 및 가시화 */
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 410, 660);
@@ -242,9 +302,6 @@ public class EeDetailErView extends JDialog {
 	public JButton getJbClose() {
 		return jbClose;
 	}
-	/*****************getter*****************/
 
-	public static void main(String[] args) {
-		new EeDetailErView(null, null, null, null);
-	}// main
+
 }// class

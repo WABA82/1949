@@ -20,17 +20,23 @@ import user.ee.view.EeDetailSearchView;
 import user.ee.view.EeHiringView;
 import user.ee.vo.DetailErInfoVO;
 import user.ee.vo.EeHiringVO;
+import user.ee.vo.EeInterestAndAppVO;
 
 public class EeHiringController extends WindowAdapter implements ActionListener, MouseListener {
 	private EeHiringView ehv;
 	private List<EeHiringVO> list;
-	private String eeId;
+
+	
+	//테스트용 변경해야함/////////////////////////////////
+	private String eeId ="gong1";
+	////////////////////////////////////////////////
 	public EeHiringCdtDTO ehc_dto;
-	private EeDAO e_dao;
+	private EeDAO ee_dao;
+	
 	public EeHiringController(EeHiringView ehv) {
 		this.ehv = ehv;
 		ehc_dto = EeHiringCdtDTO.getInstance();
-		e_dao = EeDAO.getInstance();
+		ee_dao = EeDAO.getInstance();
 		ehc_dto.setSort(" ");
 		ehc_dto.setCdt(" ");
 		ehc_dto.setCoName(" ");
@@ -42,7 +48,7 @@ public class EeHiringController extends WindowAdapter implements ActionListener,
 		dtmHiring.setRowCount(0);
 		
 		try {
-			list = e_dao.selectEeHiring(ehc_dto);
+			list = ee_dao.selectEeHiring(ehc_dto);
 			EeHiringVO e_vo = null;
 			
 			Object[] rowData = null;
@@ -83,22 +89,36 @@ public class EeHiringController extends WindowAdapter implements ActionListener,
 	}
 	
 	public void detailSearch() {
-		
+		JTable jt = ehv.getJtErInfo();
+		String erNum= String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
+		DetailErInfoVO deivo=null;
+		try {
+			deivo = ee_dao.selectDetail(erNum);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		EeDetailErView edev = new EeDetailErView(ehv, deivo, erNum,eeId, null);
+	}
+	
+	public void searchAll() {
+		ehc_dto.setSort(" ");
+		ehc_dto.setCdt(" ");
+		ehc_dto.setCoName(" ");
+		setDtm();
 	}
 	
 	@Override
 	public void mouseClicked(MouseEvent me) {
+		
 		switch(me.getClickCount()) {
 		case 2:
-			if(me.getSource()==ehv.getJtErInfo()) {
-				JTable jt = ehv.getJtErInfo();
-				System.out.println(jt.getSelectedRow());
-				DetailErInfoVO dei_vo = new DetailErInfoVO();
-				new EeDetailErView(ehv,dei_vo," ", " ");
+			if(me.getSource()==ehv.getJtErInfo())
+			{
+				detailSearch();
 			}
 		}
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if(ae.getSource()==ehv.getJbDetailSearch()) {
@@ -117,6 +137,9 @@ public class EeHiringController extends WindowAdapter implements ActionListener,
 			//텍스트필드 엔터를 누르면
 			searchCoName();
 		}
+		if(ae.getSource()==ehv.getJbAllView()) {
+			searchAll();
+		}
 	}
 	
 	@Override
@@ -132,5 +155,7 @@ public class EeHiringController extends WindowAdapter implements ActionListener,
 	public void mouseEntered(MouseEvent e) {}
 	@Override
 	public void mouseExited(MouseEvent e) {}
+	
 
+	
 }
