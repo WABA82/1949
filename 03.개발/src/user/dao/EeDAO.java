@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import user.ee.dto.EeHiringCdtDTO;
+import user.ee.vo.DetailErInfoVO;
 import user.ee.vo.EeHiringVO;
+import user.ee.vo.EeInterestAndAppVO;
 
 public class EeDAO {
 	private static EeDAO Ee_dao;
@@ -43,7 +45,7 @@ public class EeDAO {
 	
 	
 	
-	/////02.09 선의 소스
+	/////02.09 선의 Hiring소스
 	public List<EeHiringVO> selectEeHiring(EeHiringCdtDTO eh_dto) throws SQLException{
 		List<EeHiringVO> list = new ArrayList<EeHiringVO>();
 		
@@ -80,7 +82,6 @@ public class EeDAO {
 			}else {
 				selectEeHiring.append("	order by ei.input_date	");
 			}
-			System.out.println(selectEeHiring.toString());
 			
 			pstmt = con.prepareStatement(selectEeHiring.toString());
 			
@@ -98,10 +99,132 @@ public class EeDAO {
 			if(pstmt!=null) {pstmt.close();}
 			if(con!=null) {con.close();}
 		}
-				
-		
 		return list;
+	}//selectEeHiring
+	
+	//0210 선의 추가 
+	public List<String> selectSkill(String erNum)throws SQLException {
+		List<String> listSkill= new ArrayList<String>();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs =null;
+		
+		try {
+			con=getConn();
+			StringBuilder selectDetail = new StringBuilder() ;
+			selectDetail
+			.append(" select sk.skill_name ")
+			.append(" from selected_skill ss, skill sk ")
+			.append(" where (ss.skill_num=sk.skill_num) and (er_num=?) ");
+			pstmt = con.prepareStatement(selectDetail.toString());
+			
+
+		//4.
+			pstmt.setString(1, erNum );
+		//5.
+			rs= pstmt.executeQuery();
+			//입력된 코드로 조회된 레코드가 존재할 때 VO를 생성하고 값 추가
+			while(rs.next()) {
+				listSkill.add(rs.getString("skill_name"));
+			}//end if
+		}finally{
+			if(con!=null) { con.close();}
+			if(pstmt!=null) {pstmt.close();}
+			if(rs!=null) {rs.close();}
+		}
+		
+		return listSkill;
 	}
+	//0210 선의 detailErInfo 검색
+	public DetailErInfoVO selectDetail(String erNum) throws SQLException{
+		
+		DetailErInfoVO deivo = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs =null;
+		
+		try {
+			con=getConn();
+			StringBuilder selectDetail = new StringBuilder() ;
+			selectDetail
+			.append(" select ei.er_num, ei.subject, ut.name, ut.tel, ut.email, ")
+			.append(" to_char(ei.input_date,'yyyy-mm-dd-hh-mi') input_date, c.img1, c.co_name, ")
+			.append(" ei.education, ei.rank, ei.loc, ei.hire_type, ei.portfolio, ei.er_desc, ei.sal ")
+			.append(" from er_info ei, company c, user_table ut ")
+			.append(" where (ei.co_num= c.co_num)and(ut.id=c.er_id) ")
+			.append(" and (ei.er_num= ? )");
+			pstmt = con.prepareStatement(selectDetail.toString());
+		//4.
+			pstmt.setString(1, erNum );
+		//5.
+			rs= pstmt.executeQuery();
+			//입력된 코드로 조회된 레코드가 존재할 때 VO를 생성하고 값 추가
+			if(rs.next()) {
+				deivo = new DetailErInfoVO(rs.getString("er_num"), rs.getString("subject"),rs.getString("name"), rs.getString("tel"),
+						rs.getString("email"), rs.getString("input_date"), rs.getString("img1"), rs.getString("co_name"),
+						rs.getString("education"),rs.getString("rank"), rs.getString("loc"), rs.getString("hire_type"),
+						rs.getString("portfolio"), rs.getString("er_desc"),"true",rs.getInt("sal"),selectSkill(erNum));
+			}//end if
+		}finally{
+			if(con!=null) { con.close();}
+			if(pstmt!=null) {pstmt.close();}
+			if(rs!=null) {rs.close();}
+		}
+		return deivo;
+	}//DetailErInfoVO
+	
+	
+	//0210 선의 관심구인공고 추가
+	public void insertInterestEr(EeInterestAndAppVO eiaavo)throws SQLException{
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		try {
+			con = getConn();
+			String insertInterestEr ="insert into interest_er(er_num,ee_id) values(?,?)";
+			pstmt = con.prepareStatement(insertInterestEr);
+			
+			pstmt.setString(1,eiaavo.getErNum());
+			pstmt.setString(2,eiaavo.getEeId());
+			
+			pstmt.executeUpdate();
+			
+		}finally {
+			if(pstmt!=null) {pstmt.close();}
+			if(con!=null) {con.close();}
+		}
+	}//insertInterestEr
+	
+	
+	//0210 선의 관심구인공고 제거
+	public boolean deleteInterestEr(EeInterestAndAppVO eiaavo) throws SQLException {
+		boolean flag = false;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+		//1.
+		//2.
+			con = getConn();
+		//3.
+			String deleteQuery = "delete from interest_er where er_num=?";
+			pstmt = con.prepareStatement(deleteQuery);
+		//4.
+			pstmt.setString(1, eiaavo.getErNum());
+		//5.
+			int cnt = pstmt.executeUpdate();
+			if(cnt ==1) {
+				flag =true;
+			}//end if
+			
+		}finally {
+			if(pstmt !=null) {pstmt.close();}
+			if(con!= null) {con.close();}
+		}
+		return flag;
+	}
+	
 	
 	
 	//02.09선의테스트
