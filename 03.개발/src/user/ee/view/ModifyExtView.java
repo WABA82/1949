@@ -8,6 +8,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import user.ee.controller.ModifyExtController;
+
+/**
+ * 	19.02.10 김건하
+ *	외부파일 가져오는 클래스
+ * @author 82102
+ */
 public class ModifyExtView extends JDialog {
 
 	private JTextField jtfPath;
@@ -42,13 +49,36 @@ public class ModifyExtView extends JDialog {
 		add(jbCancel);
 		jbCancel.setBounds(190,95,100,25);
 		
+		//이벤트 등록
+		ModifyExtController mec=new ModifyExtController(this, eirv);
+		jbCancel.addActionListener(mec);
+		jbChange.addActionListener(mec);
+		jbChoose.addActionListener(mec);
+		
 		
 		setLayout(null);
 		setResizable(false);
-		setBounds(100, 100, 380, 170);
+		setBounds(eirv.getX()+50, eirv.getY()+150, 380, 170);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
 	}//생성자
+
+	public JTextField getJtfPath() {
+		return jtfPath;
+	}
+
+	public JButton getJbChoose() {
+		return jbChoose;
+	}
+
+	public JButton getJbChange() {
+		return jbChange;
+	}
+
+	public JButton getJbCancel() {
+		return jbCancel;
+	}
 	
 //	public static void main(String[] args) {
 //		new ModifyExtView(null);

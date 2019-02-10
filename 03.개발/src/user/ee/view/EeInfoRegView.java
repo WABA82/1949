@@ -128,6 +128,7 @@ public class EeInfoRegView extends JDialog {
 		jtfExtResume=new JTextField(10);
 		add(jtfExtResume);
 		jtfExtResume.setBounds(325, 302, 130, 20);
+		jtfExtResume.setEditable(false);
 		
 		//Combobox
 		add(jcbRank);
@@ -145,7 +146,7 @@ public class EeInfoRegView extends JDialog {
 		
 		
 		setLayout(null);
-		setBounds(100, 100, 490, 465);
+		setBounds( emv.getX()+450, emv.getY(), 490, 465);
 		
 		
 		setVisible(true);

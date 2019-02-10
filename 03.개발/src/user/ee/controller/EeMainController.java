@@ -7,18 +7,27 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.JTable;
+
 import user.common.vo.EeMainVO;
+import user.dao.EeDAO;
 import user.ee.view.EeHiringView;
 import user.ee.view.EeInfoRegView;
 import user.ee.view.EeInterestView;
 import user.ee.view.EeMainView;
+import user.ee.vo.EeHiringVO;
 
 public class EeMainController extends WindowAdapter implements ActionListener, MouseListener {
 
 	private EeMainView emv;
+	private EeMainVO emvo;
+	
+	private EeDAO EeDAO;
+	private EeHiringView ehv;
 	
 	public EeMainController(EeMainView emv, EeMainVO emvo) {
 		this.emv = emv;
+		EeDAO=EeDAO.getInstance();
 	}
 	
 	public void checkActivation() {
@@ -35,10 +44,15 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 	}
 	
 	public void showHiring() {
-//		new EeHiringView(emv);
+//	JTable jt=ehv.getJtErInfo();
+//		EeHiringVO eh_vo=EeDAO.selectEeHiring((String)jt.getValueAt(jt.getSelectedRow(), 1));
+//		
+//		new EeHiringView(emv, eh_vo);
 	}
 	
 	public void showInterestEr() {
+//		JTable jt=
+//		EeHiringVO ehvo=EeDAO.
 //		new EeInterestView(emv, ehvo);
 	}
 	
@@ -69,6 +83,7 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 		}//end if
 		
 		if(ae.getSource() == emv.getJbErInfo()) {
+			showHiring();
 		}//end if
 		
 	}//actionPerformed
