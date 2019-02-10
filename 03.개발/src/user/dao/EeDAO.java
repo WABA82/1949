@@ -10,6 +10,7 @@ import java.util.List;
 
 import user.ee.dto.EeHiringCdtDTO;
 import user.ee.vo.EeHiringVO;
+import user.ee.vo.EeInsertVO;
 
 public class EeDAO {
 	private static EeDAO Ee_dao;
@@ -116,11 +117,50 @@ public class EeDAO {
 	}*/
 	
 	
+	/**
+	 * 	19.02.10김건하 
+	 * 	회원정보 입력
+	 * @param eivo
+	 * @throws SQLException
+	 */
+	public void insertEeinfo(EeInsertVO eivo) throws SQLException {
+		Connection con =null;
+		PreparedStatement pstmt=null;
+		
+		try {
+		con=getConn();
+		
+		//String eeNum, img, rank,  loc, education, portfolio, extResume, inputDate, eeId;
+		
+		StringBuilder insertInfo=new StringBuilder();
+		insertInfo
+		.append("insert into ee_info")
+		.append("(ee_num, img, rank, loc, education, portfolio, ext_resume, to_char( input_date,'YYYY-MM-DD') input_date, ee_id)")
+		.append("values('ee_num', ?, ?, ?, ?, ?, ?, ?, ? 	)");
+		
+		
+		pstmt=con.prepareStatement(insertInfo.toString());
+		
+		pstmt.setString(1, eivo.getImg());
+		pstmt.setString(2, eivo.getRank() );
+		pstmt.setString(3, eivo.getLoc() );
+		pstmt.setString(4, eivo.getEducation() );
+		pstmt.setString(5, eivo.getPortfolio() );
+		pstmt.setString(6, eivo.getExtResume() );
+		pstmt.setString(7, eivo.getInputDate() );
+		pstmt.setString(8, eivo.getEeId() );
+			
+		pstmt.executeUpdate();
+			
+		}finally {
+			if( pstmt !=null ) { pstmt.close(); }
+			if( con !=null ) { con.close(); }
+		}//end finally
+		
+	}//insertEeinfo
 	
 	
-	
-	
-	
+
 	
 	
 	
