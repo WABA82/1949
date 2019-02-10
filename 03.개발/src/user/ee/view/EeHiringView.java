@@ -20,13 +20,13 @@ import user.ee.vo.EeHiringVO;
 @SuppressWarnings("serial")
 public class EeHiringView extends JDialog {
 
-	private JButton jbDetailSearch,jbWordSearch ;
+	private JButton jbDetailSearch,jbWordSearch, jbAllView ;
 	private JComboBox<String> jcbSort;
 	private JTable jtErInfo;
 	private DefaultTableModel dtmErInfo;
 	private JTextField jtfSearch;
 	
-	public EeHiringView(EeMainView emv, List<EeHiringVO> eh_vo, String s) {
+	public EeHiringView(EeMainView emv, List<EeHiringVO> eh_vo, String eeId) {
 		super(emv,"구인 정보 보기",true);
 				
 		String[] eeColumns= {"번호","구인정보번호","제목","회사명","직급","근무지역","학력","고용형태","급여","등록일"};
@@ -35,14 +35,30 @@ public class EeHiringView extends JDialog {
 				return false;
 			}
 		};
+		jtErInfo = new JTable(dtmErInfo) {
+			@Override
+			public Class<?> getColumnClass(int column) {
+				return getValueAt(0, column).getClass();
+			}
+		};
+		jtErInfo.getColumnModel().getColumn(0).setPreferredWidth(40);
+		jtErInfo.getColumnModel().getColumn(1).setPreferredWidth(100);
+		jtErInfo.getColumnModel().getColumn(2).setPreferredWidth(250);
+		jtErInfo.getColumnModel().getColumn(3).setPreferredWidth(150);
+		jtErInfo.getColumnModel().getColumn(4).setPreferredWidth(30);
+		jtErInfo.getColumnModel().getColumn(5).setPreferredWidth(50);
+		jtErInfo.getColumnModel().getColumn(6).setPreferredWidth(60);
+		jtErInfo.getColumnModel().getColumn(7).setPreferredWidth(30);
+		jtErInfo.getColumnModel().getColumn(8).setPreferredWidth(70);
+		jtErInfo.getColumnModel().getColumn(9).setPreferredWidth(200);
 		
 		String sort[]= {"등록일순","직급순","급여순"};
 		jcbSort=new JComboBox<String>(sort);
 		
-		jtErInfo=new JTable(dtmErInfo);
 		JScrollPane jspEe=new JScrollPane(jtErInfo);
 		
 		jbDetailSearch=new JButton("조건검색");
+		jbAllView = new JButton("전체보기");
 		
 		JLabel jlSearch=new JLabel("기업명 검색");
 		jtfSearch = new JTextField();
@@ -53,11 +69,12 @@ public class EeHiringView extends JDialog {
 		setLayout(null);
 		
 		jcbSort.setBounds(10, 10, 100, 30);
-		jspEe.setBounds(0, 50, 1080, 360);
+		jspEe.setBounds(0, 50, 980, 360);
 		jbDetailSearch.setBounds(10, 425, 100, 30);
 		jlSearch.setBounds(620, 425, 100, 30);
 		jtfSearch.setBounds(700, 425, 190, 30);
 		jbWordSearch.setBounds(900, 425, 80, 30);
+		jbAllView.setBounds(120, 10, 100, 30);
 		
 		add(jcbSort);
 		add(jspEe);
@@ -65,6 +82,7 @@ public class EeHiringView extends JDialog {
 		add(jlSearch);
 		add(jtfSearch);
 		add(jbWordSearch);
+		add(jbAllView);
 		
 		//이벤트 추가
 		EeHiringController ehc = new EeHiringController(this);
@@ -73,10 +91,12 @@ public class EeHiringView extends JDialog {
 		jtfSearch.addActionListener(ehc);
 		jbWordSearch.addActionListener(ehc);
 		jtErInfo.addMouseListener(ehc);
+		jbAllView.addActionListener(ehc);
+		
 		addWindowListener(ehc);
 		
 		
-		setBounds(100, 100, 1100, 550);
+		setBounds(100, 100, 1000, 550);
 		setVisible(true);
 		setResizable(false);
 		jtfSearch.requestFocus();
@@ -87,6 +107,12 @@ public class EeHiringView extends JDialog {
 
 	public JTextField getJtfSearch() {
 		return jtfSearch;
+	}
+
+	
+
+	public JButton getJbAllView() {
+		return jbAllView;
 	}
 
 
@@ -115,8 +141,8 @@ public class EeHiringView extends JDialog {
 		EeMainVO em_vo= new EeMainVO("ds", "sdf", "ds", "asd");
 		EeMainView emv=new EeMainView(em_vo);
 		List<EeHiringVO> ehvo=new ArrayList<EeHiringVO>();
-		String s=new String();
-		new EeHiringView(emv, ehvo, s);
+		String eeid= "testId";
+		new EeHiringView(emv, ehvo, eeid);
 	}
 	
 	
