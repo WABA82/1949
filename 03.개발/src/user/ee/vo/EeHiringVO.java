@@ -5,7 +5,6 @@ public class EeHiringVO {
 	private int sal;
 	public EeHiringVO(String erNum, String subject, String coName, String rank, String loc, String education,
 			String hireType, String inputDate, int sal) {
-		super();
 		this.erNum = erNum;
 		this.subject = subject;
 		this.coName = coName;
@@ -43,8 +42,12 @@ public class EeHiringVO {
 	public int getSal() {
 		return sal;
 	}
-	
 
+	@Override
+	public String toString() {
+		return "EeHiringVO [erNum=" + erNum + ", subject=" + subject + ", coName=" + coName + ", rank=" + rank
+				+ ", loc=" + loc + ", education=" + education + ", hireType=" + hireType + ", inputDate=" + inputDate
+				+ ", sal=" + sal + "]";
+	}// toString
 
-	
-}
+}// class
