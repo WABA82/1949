@@ -54,7 +54,11 @@ public class EeMainView extends JFrame {
 		add(jbInterestEr);
 		add(jbApp);
 		
+<<<<<<< HEAD
 		EeMainController emc = new EeMainController(this, emv);
+=======
+		EeMainController emc = new EeMainController(this,emv);
+>>>>>>> a93d303ca5651304515dc992350cfa14e74c4e23
 		jbEeInfo.addActionListener(emc);
 		jbErInfo.addActionListener(emc);
 		jbInterestEr.addActionListener(emc);

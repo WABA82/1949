@@ -44,12 +44,7 @@ public class EeHiringVO {
 		return sal;
 	}
 	
-	@Override
-	public String toString() {
-		return "EeHiringVO [erNum=" + erNum + ", subject=" + subject + ", coName=" + coName + ", rank=" + rank
-				+ ", loc=" + loc + ", education=" + education + ", hireType=" + hireType + ", inputDate=" + inputDate
-				+ ", sal=" + sal + "]";
-	}
+
 
 	
 }
