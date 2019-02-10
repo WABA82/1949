@@ -24,13 +24,16 @@ public class EeInfoRegView extends JDialog {
 	private JButton jbRegister, jbRegisterExt, jbRegisterImg, jbClose;
 	private JComboBox<String>jcbRank, jcbLoc, jcbEducation, jcbPortfolio;
 	private JTextField jtfExtResume;
+	private JLabel jlImage;
 	
+	private JTextField eeNum;
+	private JTextField jtfName;
 	public EeInfoRegView(EeMainView emv) {
 		super(emv, "기본 정보 관리",true);
 		
 		//image
-		ImageIcon ii=new ImageIcon("C:/dev/1949/03.개발/가데이터/구직자사진/150x200px/각키.jpg");
-		JLabel jlImage=new JLabel(ii);
+		ImageIcon ii=new ImageIcon("C:\\dev\\1949\\03.개발\\no_img_files\\no_ee_img.png");
+		jlImage=new JLabel(ii);
 		jlImage.setBorder(new TitledBorder("구직자 이미지"));
 		jlImage.setBounds(38, 20, 160, 225);
 		add(jlImage);
@@ -51,6 +54,9 @@ public class EeInfoRegView extends JDialog {
 		add(jbClose);
 		jbClose.setBounds(355, 360, 100, 30);
 				
+		
+		//삭제용 넘버
+		eeNum=new JTextField();
 		
 		
 		//Label
@@ -109,10 +115,10 @@ public class EeInfoRegView extends JDialog {
 		jlResume.setBounds(235, 295, 100, 30);
 		
 		//JText
-		JTextField jtfName=new JTextField(10);
+		jtfName=new JTextField(10);
 		add(jtfName);
 		jtfName.setBounds(325, 22, 130, 20);
-		jtfName.setEditable(false);
+//		jtfName.setEditable(false);
 		
 		JTextField jtfAge=new JTextField(10);
 		add(jtfAge);
@@ -141,13 +147,14 @@ public class EeInfoRegView extends JDialog {
 		jcbPortfolio.setBounds(325,222,130,20);
 		
 		//이벤트 등록
-		EeInfoRegController eirc=new EeInfoRegController(this);
+		EeInfoRegController eirc=new EeInfoRegController(this ,"아이디받아옴");
 		jbRegisterExt.addActionListener(eirc);
-		
+		jbClose.addActionListener(eirc);
+		jbRegisterImg.addActionListener(eirc);
+		jbRegister.addActionListener(eirc);
 		
 		setLayout(null);
 		setBounds( emv.getX()+450, emv.getY(), 490, 465);
-		
 		
 		setVisible(true);
 		setResizable(false);
@@ -190,6 +197,23 @@ public class EeInfoRegView extends JDialog {
 	public JTextField getJtfExtResume() {
 		return jtfExtResume;
 	}
+
+	public JLabel getJlImage() {
+		return jlImage;
+	}
+
+	
+	
+	public JTextField getEeNum() {
+		return eeNum;
+	}
+
+	public JTextField getJtfName() {
+		return jtfName;
+	}
+	
+	
+	
 	
 	
 	
