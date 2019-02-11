@@ -19,7 +19,7 @@ public class EeInterestView extends JDialog {
 	private JTable jtErInfo;
 	private DefaultTableModel dtmErInfo;
 
-	public EeInterestView(EeMainView emv, List<EeHiringVO> ehvo) {
+	public EeInterestView(EeMainView emv, String eeid) {
 		super(emv, "관심 구인 정보", true);
 
 		/* 컴포넌트 생성 */
@@ -62,7 +62,7 @@ public class EeInterestView extends JDialog {
 		add("Center", jspEeInfo);
 
 		/* 이벤트 등록 */
-		EeInterestController eic = new EeInterestController(this, ehvo);
+		EeInterestController eic = new EeInterestController(this, eeid);
 		addWindowListener(eic);
 
 		/* 프레임 크기 설정 및 가시화 */
