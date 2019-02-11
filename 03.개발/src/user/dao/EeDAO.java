@@ -11,11 +11,8 @@ import java.util.List;
 import user.ee.dto.EeHiringCdtDTO;
 import user.ee.vo.DetailErInfoVO;
 import user.ee.vo.EeHiringVO;
-<<<<<<< HEAD
 import user.ee.vo.EeInsertVO;
-=======
 import user.ee.vo.EeInterestAndAppVO;
->>>>>>> 7c4a93b7514307cbbe4959f38ef51dbbc3b76155
 
 public class EeDAO {
 	private static EeDAO Ee_dao;
