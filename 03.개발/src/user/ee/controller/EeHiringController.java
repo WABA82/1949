@@ -94,11 +94,11 @@ public class EeHiringController extends WindowAdapter implements ActionListener,
 		String erNum= String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
 		DetailErInfoVO deivo=null;
 		try {
-			deivo = ee_dao.selectDetail(erNum);
+			deivo = ee_dao.selectDetail(erNum,eeId);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		EeDetailErView edev = new EeDetailErView(ehv, deivo, erNum,eeId, null);
+		EeDetailErView edev = new EeDetailErView(ehv, deivo, erNum,eeId,null,deivo.getInterest());
 	}
 	
 	public void searchAll() {

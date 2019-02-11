@@ -1,7 +1,6 @@
 package user.ee.view;
 
 import java.awt.BorderLayout;
-import java.util.List;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -11,7 +10,6 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import user.ee.controller.EeInterestController;
-import user.ee.vo.EeHiringVO;
 
 @SuppressWarnings("serial")
 public class EeInterestView extends JDialog {
@@ -62,8 +60,9 @@ public class EeInterestView extends JDialog {
 		add("Center", jspEeInfo);
 
 		/* 이벤트 등록 */
-		EeInterestController eic = new EeInterestController(this, eeid);
+		EeInterestController eic = new EeInterestController(this, "gong1");
 		addWindowListener(eic);
+		jtErInfo.addMouseListener(eic);
 
 		/* 프레임 크기 설정 및 가시화 */
 		setBounds(100, 100, 780, 500);

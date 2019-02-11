@@ -8,10 +8,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import admin.vo.AddrVO;
 import admin.vo.CoListVO;
 import admin.vo.EeListVO;
 import admin.vo.ErListVO;
+import admin.vo.UserInfoVO;
 import admin.vo.UserListVO;
+import admin.vo.UserModifyVO;
 
 public class AdminDAO {
 	
@@ -200,13 +203,156 @@ public class AdminDAO {
 		return list;
 	}
 	
+	public UserInfoVO selectOneUser(String id) throws SQLException {
+		UserInfoVO uivo = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			con = getConn();
+			
+			StringBuilder selectOneUser = new StringBuilder();
+			
+			selectOneUser
+			.append(" select id, pass, name, ssn, tel, addr_seq, z.zipcode, z.sido||z.gugun||z.dong||z.bunji addr1, ")
+			.append(" addr_detail, email, question_type, answer, user_type, to_char(input_date,'yyyy-MM-dd') input_date ")
+			.append(" from user_table ut, zipcode z ")
+			.append(" where ut.addr_seq = z.seq AND id = ? ");
+			
+			pstmt = con.prepareStatement(selectOneUser.toString());
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				uivo = new UserInfoVO(rs.getString("id"), rs.getString("pass"), 
+						rs.getString("name"), rs.getString("ssn"), rs.getString("tel"), 
+						rs.getString("addr_seq"), rs.getString("zipcode"), rs.getString("addr1"),
+						rs.getString("addr_detail"), rs.getString("email"),
+						rs.getString("question_type"),
+						rs.getString("answer"),
+						rs.getString("user_type"),
+						rs.getString("input_date"));
+			}
+			
+		} finally {
+			if (rs != null) { rs.close(); }
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		return uivo;
+	}
 	
+	public boolean updateUser(UserModifyVO umvo) throws SQLException {
+		boolean flag = false;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = getConn();
+			StringBuilder updateUser = new StringBuilder();
+			updateUser
+			.append(" update user_table ")
+			.append(" set pass=?, name=?, ssn=?, tel=?, addr_seq=?,  ")
+			.append(" addr_detail=?, email=?, question_type=?, user_type=? ")
+			.append(" where id = ? ");
+			
+			pstmt = con.prepareStatement(updateUser.toString());
+			
+			pstmt.setString(1, umvo.getPass());
+			pstmt.setString(2, umvo.getName());
+			pstmt.setString(3, umvo.getSsn());
+			pstmt.setString(4, umvo.getTel());
+			pstmt.setString(5, umvo.getAddrSeq());
+			pstmt.setString(6, umvo.getAddrDetail());
+			pstmt.setString(7, umvo.getEmail());
+			pstmt.setString(8, umvo.getQuestionType());
+			pstmt.setString(9, umvo.getUserType());
+			pstmt.setString(10, umvo.getId());
+			
+			int cnt = pstmt.executeUpdate();
+			
+			if (cnt == 1) {
+				flag = true;
+			}
+			
+			
+		} finally {
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		return flag;
+	}
 	
+	public boolean deleteUser(String id) throws SQLException {
+		boolean flag = false;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = getConn();
+			String deleteUser = "delete from user_table where id=?";
+			pstmt = con.prepareStatement(deleteUser);
+			pstmt.setString(1, id);
+			
+			int cnt = pstmt.executeUpdate();
+			
+			if (cnt == 1) {
+				flag = true;
+			}
+			
+		} finally {
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		
+		return flag;
+	}
 	
-	
-	
-	
-	
+	public List<AddrVO> selectAddr(String dong) throws SQLException {
+		List<AddrVO> list = new ArrayList<AddrVO>();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			con = getConn();
+			
+			StringBuilder selectAddr = new StringBuilder();
+			selectAddr.append("select seq, zipcode, sido, gugun, dong, NVL(bunji, ' ') bunji from zipcode where dong like '%'||?||'%'");
+			pstmt = con.prepareStatement(selectAddr.toString());
+			pstmt.setString(1, dong);
+			
+			rs = pstmt.executeQuery();
+			
+			AddrVO avo = null;
+			while(rs.next()) {
+				avo = new AddrVO(rs.getString("seq"),
+						rs.getString("zipcode"), rs.getString("sido"),
+						rs.getString("gugun"), rs.getString("dong"),
+						rs.getString("bunji"));
+						
+				list.add(avo);
+			}
+			
+		} finally {
+			if (rs != null) { rs.close(); }
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		return list;
+	}
 	
 	
 	

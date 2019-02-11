@@ -7,15 +7,19 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import admin.controller.UserModifyController;
+import admin.vo.UserInfoVO;
+
 @SuppressWarnings("serial")
 public class UserModifyView extends JDialog {
 	private JTextField jtfId, jtfName, jtfSsn1, jtfSsn2, jtfTel, jtfZip, jtfAddr1, jtfAddr2,jtfEmail, jtfAnswer, jtfInputDate;
 	private JPasswordField jpfPass;
 	private JButton jbModify, jbSearchAddr, jbRemove, jbClose;
 	private JComboBox<String> jcbQuestion, jcbUser;
-	public UserModifyView() {
+	
+	public UserModifyView(AdminMgMtView ammv, UserInfoVO uivo) {
+		super(ammv, "회원 상세 정보", true);
 		
-		setTitle("회원 상세 정보"); //다음 작업에 상위 프레임으로 타이틀이랑 모달구현하기(x좌표 y좌표 받아서 화면띄우기)
 		JLabel jlId = new JLabel("아이디");
 		JLabel jlPw = new JLabel("비밀번호");
 		JLabel jlName= new JLabel("이름");
@@ -30,26 +34,39 @@ public class UserModifyView extends JDialog {
 		JLabel jlInputDate = new JLabel("가입일");
 		JLabel jlSlash = new JLabel("-");
 		
-		jtfId = new JTextField();
-		jpfPass = new JPasswordField();
-		jtfName = new JTextField();
-		jtfSsn1 = new JTextField();
-		jtfSsn2 = new JTextField();
-		jtfTel = new JTextField(); 
-		jtfZip = new JTextField();
-		jtfAddr1 = new JTextField();
-		jtfAddr2 = new JTextField();
-		jtfEmail = new JTextField();
-		jtfAnswer = new JTextField();
-		jtfInputDate = new JTextField();
+		jtfId = new JTextField(uivo.getId());
+		jtfId.setEditable(false);
+		jpfPass = new JPasswordField(uivo.getPass());
+		jtfName = new JTextField(uivo.getName());
+		jtfSsn1 = new JTextField(uivo.getSsn().substring(0, 6));
+		jtfSsn2 = new JTextField(uivo.getSsn().substring(7, 13));
+		jtfTel = new JTextField(uivo.getTel()); 
+		jtfZip = new JTextField(uivo.getZipcode());
+		jtfZip.setEditable(false);
+		jtfAddr1 = new JTextField(uivo.getAddr1());
+		jtfAddr1.setEditable(false);
+		jtfAddr2 = new JTextField(uivo.getAddr2());
+		jtfEmail = new JTextField(uivo.getEmail());
+		jtfAnswer = new JTextField(uivo.getAnswer());
+		jtfInputDate = new JTextField(uivo.getInputDate());
+		jtfInputDate.setEditable(false);
 		
 		jbModify = new JButton("수정");
 		jbSearchAddr = new JButton("주소검색");
 		jbRemove = new JButton("삭제");
 		jbClose = new JButton("닫기");
 		
-		jcbQuestion = new JComboBox<String>();
-		jcbUser = new JComboBox<String>();
+		String[] qItems = { "내 혈액형은?", "가장 친한 친구는?" };
+		jcbQuestion = new JComboBox<String>(qItems);
+		jcbQuestion.setSelectedIndex(Integer.parseInt(uivo.getQuestionType()));
+		
+		String[] uItems = { "일반", "기업" };
+		jcbUser = new JComboBox<String>(uItems);
+		if(uivo.getUserType().equals("E")) {
+			jcbUser.setSelectedIndex(0);
+		} else {
+			jcbUser.setSelectedIndex(1);
+		}
 		
 		setLayout(null);
 		
@@ -129,13 +146,9 @@ public class UserModifyView extends JDialog {
 		add(jtfInputDate);
 		
 		jcbQuestion.setBounds(133, 396, 200, 30);
-		jcbQuestion.addItem("내 혈액형은? ");
-		jcbQuestion.addItem("가장 친한 친구는? ");
 		add(jcbQuestion);
 		
 		jcbUser.setBounds(133, 476, 200, 30);
-		jcbUser.addItem("구직자");
-		jcbUser.addItem("구인자");
 		add(jcbUser);
 		
 		jbSearchAddr.setBounds(241, 236, 92, 30);
@@ -150,15 +163,17 @@ public class UserModifyView extends JDialog {
 		jbClose.setBounds(235, 576, 70, 30);
 		add(jbClose);
 		
+		UserModifyController umc = new UserModifyController(this, ammv, uivo.getAddrSeq());
+		jbModify.addActionListener(umc);
+		jbRemove.addActionListener(umc);
+		jbSearchAddr.addActionListener(umc);
+		jbClose.addActionListener(umc);
+		addWindowListener(umc);
 		
-		setBounds(0,0,390,680);
+		setBounds(ammv.getX()+500,ammv.getY()+50,390,680);
 		setVisible(true);
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		
 	}
-/*	public static void main(String[] args) {
-		new UserModifyView();
-	}*/
 	public JTextField getJtfId() {
 		return jtfId;
 	}
