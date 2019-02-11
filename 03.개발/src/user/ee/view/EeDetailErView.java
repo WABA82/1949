@@ -25,12 +25,13 @@ public class EeDetailErView extends JDialog {
 
 	/* 인스턴스 변수 선언 */
 	private JLabel jlHeart;
-	private JButton jbCoInfo, jbApply, jbClose; 
-	private String erNum,eeId;
-	
-	public EeDetailErView(EeHiringView ehv, DetailErInfoVO deivo, String erNum, String eeId,String appStatus) {
+	private JButton jbCoInfo, jbApply, jbClose;
+	private String erNum, eeId;
+
+	public EeDetailErView(EeHiringView ehv, DetailErInfoVO deivo, String erNum, String eeId, String appStatus,String interest) {
 		super(ehv, "상세구인정보", true);/* 창의 제목 */
 		this.erNum = erNum;
+		System.out.println("----------------" + deivo);
 		/* 컴포넌트 생성 */
 		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/no_co_img1.png");
 		// 라벨들
@@ -69,7 +70,7 @@ public class EeDetailErView extends JDialog {
 		JScrollPane jspErDesc = new JScrollPane(jtaErDesc);
 
 		ImageIcon imgSkill = new ImageIcon("C:/dev/1949/03.개발/src/admin/img/co/오라클.png");
-		JLabel jlSkill1,jlSkill2,jlSkill3,jlSkill4,jlSkill5,jlSkill6,jlSkill7,jlSkill8;
+		JLabel jlSkill1, jlSkill2, jlSkill3, jlSkill4, jlSkill5, jlSkill6, jlSkill7, jlSkill8;
 		jlSkill1 = new JLabel(imgSkill);
 		jlSkill1.setBorder(new LineBorder(Color.BLACK));
 		jlSkill2 = new JLabel("");
@@ -99,14 +100,14 @@ public class EeDetailErView extends JDialog {
 		jtfTel.setEditable(false);
 		jtfEmail.setEditable(false);
 		jtfCoName.setEditable(false);
-		
+
 		jtfSal.setEditable(false);
 		jtfRank.setEditable(false);
 		jtfEducation.setEditable(false);
 		jtfLoc.setEditable(false);
 		jtfHireType.setEditable(false);
 		jtfPortfolio.setEditable(false);
-		
+
 		/* 컴포넌트 크기 설정 */
 		JPanel wrapPanel = new JPanel();
 		wrapPanel.setLayout(null);
@@ -193,35 +194,34 @@ public class EeDetailErView extends JDialog {
 		jlSkill7.setBounds(277, 25, 40, 40);
 		jlSkill8.setBounds(322, 25, 40, 40);
 
-		JLabel[] arrLbSkill = {jlSkill1,jlSkill2,jlSkill3,jlSkill4,jlSkill5,jlSkill6,jlSkill7,jlSkill8};
-		for(int i=0; i<deivo.getSkill().size();i++) {
-			if(deivo.getSkill().get(i).equals("Java")) {
+		JLabel[] arrLbSkill = { jlSkill1, jlSkill2, jlSkill3, jlSkill4, jlSkill5, jlSkill6, jlSkill7, jlSkill8 };
+		for (int i = 0; i < deivo.getSkill().size(); i++) {
+			if (deivo.getSkill().get(i).equals("Java")) {
 				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/Java.png"));
-			}else if(deivo.getSkill().get(i).equals("JSP/Servlet")) {
+			} else if (deivo.getSkill().get(i).equals("JSP/Servlet")) {
 				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/jsp_servelt.png"));
-				
-			}else if(deivo.getSkill().get(i).equals("Spring")) {
+
+			} else if (deivo.getSkill().get(i).equals("Spring")) {
 				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/spring.png"));
-				
-			}else if(deivo.getSkill().get(i).equals("Oracle")) {
+
+			} else if (deivo.getSkill().get(i).equals("Oracle")) {
 				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/oracle.png"));
-				
-			}else if(deivo.getSkill().get(i).equals("HTML")) {
+
+			} else if (deivo.getSkill().get(i).equals("HTML")) {
 				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/html.png"));
-				
-			}else if(deivo.getSkill().get(i).equals("CSS")) {
+
+			} else if (deivo.getSkill().get(i).equals("CSS")) {
 				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/css.png"));
-				
-			}else if(deivo.getSkill().get(i).equals("Linux")) {
+
+			} else if (deivo.getSkill().get(i).equals("Linux")) {
 				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/linux.png"));
-				
-			}else if(deivo.getSkill().get(i).equals("JS")) {
+
+			} else if (deivo.getSkill().get(i).equals("JS")) {
 				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/js.png"));
-				
 			}
 			skillGridPanel.add(arrLbSkill[i]);
-		}
-		
+		}// end for 
+
 		wrapPanel.add(skillGridPanel);
 
 		jlHeart.setBounds(65, 572, 32, 32);
@@ -231,16 +231,16 @@ public class EeDetailErView extends JDialog {
 
 		wrapPanel.add(jlHeart);
 		wrapPanel.add(jbCoInfo);
-		if(appStatus==null) {
+		if (appStatus == null) {
 			wrapPanel.add(jbApply);
 		}
 		wrapPanel.add(jbClose);
 
 		/* 프레임에 배치 */
 		add(wrapPanel);
-		
+
 		jtfSubject.setText(deivo.getSubject());
-		jlImage.setIcon(new ImageIcon("C:/dev/1949/03.개발/src/img/coImg/"+deivo.getImg1()));
+		jlImage.setIcon(new ImageIcon("C:/dev/1949/03.개발/src/img/coImg/" + deivo.getImg1()));
 		jtfCoName.setText(deivo.getCoName());
 		jtfName.setText(deivo.getName());
 		jtfTel.setText(deivo.getTel());
@@ -251,41 +251,42 @@ public class EeDetailErView extends JDialog {
 		jtfPortfolio.setText(deivo.getPortfolio());
 		jtaErDesc.setText(deivo.getErDesc());
 		jtaErDesc.setEditable(false);
-		
-		//hiretype 'C' - 정규직'N' - 비정규직'F' - 프리랜서
-		if(deivo.getHireType().equals("C")) {
+
+		// hiretype 'C' - 정규직'N' - 비정규직'F' - 프리랜서
+		if (deivo.getHireType().equals("C")) {
 			jtfHireType.setText("정규직");
-		}else if(deivo.getHireType().equals("N")) {
+		} else if (deivo.getHireType().equals("N")) {
 			jtfHireType.setText("비정규직");
-		}else if(deivo.getHireType().equals("F")) {
+		} else if (deivo.getHireType().equals("F")) {
 			jtfHireType.setText("프리랜서");
 		}
-		
-		//rank: 'N' - 신입 'C' - 경력
-		if(deivo.getRank().equals("C")) {
+
+		// rank: 'N' - 신입 'C' - 경력
+		if (deivo.getRank().equals("C")) {
 			jtfRank.setText("경력");
-		}else if(deivo.getRank().equals("N")) {
+		} else if (deivo.getRank().equals("N")) {
 			jtfRank.setText("신입");
-			
+
 		}
-		
-		
-		//이벤트
-		EeDetailErController edec = new EeDetailErController(this,erNum,eeId);
+
+		// 이벤트
+		EeDetailErController edec = new EeDetailErController(this, erNum, eeId);
 		jlHeart.addMouseListener(edec);
 		jbCoInfo.addActionListener(edec);
 		jbClose.addActionListener(edec);
 		jbApply.addActionListener(edec);
-		
+
 		/* 프레임 크기 설정 및 가시화 */
 		setBounds(100, 100, 410, 660);
 		setVisible(true);
 
 	}// 생성자
 
-/*	public static void main(String[] args) {
-		new EeDetailErView();
-*/
+	// 단위테스용.
+//	public static void main(String[] args) {
+//		new EeDetailErView(null, null, null, null, null);
+//	}
+	
 	public JLabel getJlHeart() {
 		return jlHeart;
 	}
@@ -301,6 +302,5 @@ public class EeDetailErView extends JDialog {
 	public JButton getJbClose() {
 		return jbClose;
 	}
-
 
 }// class

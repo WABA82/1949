@@ -13,10 +13,12 @@ import user.ee.vo.DetailErInfoVO;
 import user.ee.vo.EeHiringVO;
 import user.ee.vo.EeInsertVO;
 import user.ee.vo.EeInterestAndAppVO;
+import user.ee.vo.EeInterestVO;
 
 public class EeDAO {
 	private static EeDAO Ee_dao;
 	private String interest;
+
 	public EeDAO() {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
@@ -37,19 +39,15 @@ public class EeDAO {
 
 		Connection con = null;
 
-
-		
-		String url="jdbc:oracle:thin:@211.63.89.144:1521:orcl";
-		String id ="kanu";
-		String pass ="share";
+		String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl";
+		String id = "kanu";
+		String pass = "share";
 		con = DriverManager.getConnection(url, id, pass);
 		return con;
-	}//getConns
-	
-	
-	
-	//////////////////////////////////////////선의 소스//////////////////////////////////////////////////////////
+	}// getConns
 
+	////////////////////////////////////////// 선의
+	////////////////////////////////////////// 소스//////////////////////////////////////////////////////////
 
 	///// 02.09 선의 Hiring소스
 	public List<EeHiringVO> selectEeHiring(EeHiringCdtDTO eh_dto) throws SQLException {
@@ -189,18 +187,14 @@ public class EeDAO {
 			}
 		}
 		return deivo;
-	}//DetailErInfoVO
-	
+	}// DetailErInfoVO
+
 	public List<EeHiringVO> selectInterestEr(String erNum) {
-		List<EeHiringVO> list =null;
-		
-		
-		
+		List<EeHiringVO> list = null;
 		return list;
-	}
-	
-	
-	//0210 선의 관심구인공고 추가
+	}// selectInterestEr
+
+	// 0210 선의 관심구인공고 추가
 
 	// 0210 선의 관심구인공고 추가
 	public void insertInterestEr(EeInterestAndAppVO eiaavo) throws SQLException {
@@ -258,7 +252,8 @@ public class EeDAO {
 		}
 		return flag;
 	}
-	//////////////////////////////////////////선의 소스 끝//////////////////////////////////////////////////////////
+	////////////////////////////////////////// 선의 소스
+	////////////////////////////////////////// 끝//////////////////////////////////////////////////////////
 
 	/**
 	 * 19.02.10김건하 회원정보 입력
@@ -312,7 +307,9 @@ public class EeDAO {
 	 *
 	 * @throws SQLException
 	 */
-	public List<EeHiringVO> selectInterestErInfo() throws SQLException {
+	public List<EeInterestVO> selectInterestErInfo(String ee_id) throws SQLException {
+		List<EeInterestVO> list = new ArrayList<>();
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -321,13 +318,29 @@ public class EeDAO {
 
 			con = getConn(); // 커넥션 얻기.
 
-			StringBuilder selectInterestErInfo = new StringBuilder(); // sql조회 하기
-			selectInterestErInfo.append(" select ie.er_num, ei.subject, ei.co_name, ei.education, ei.rank, ei.loc, ");
-			selectInterestErInfo.append(" ei.hire_type, ei.sal, to_char(ei.input_date,'yyyy-mm-dd-hh-mi') input_date");
-			selectInterestErInfo.append(" from interest_er ie LEFT OUTER JOIN er_info ei ON ie.er_num=ei.er_num");
-			selectInterestErInfo.append(" where (ei.co_num=c.co_num) and ");
+			StringBuilder slcInterestErInfo = new StringBuilder(); // 관심구인정보조회 하기
+			slcInterestErInfo
+					.append(" select ei.ER_NUM, ei.SUBJECT, c.CO_NAME, ei.RANK, ei.LOC, ei.EDUCATION, ei.SAL,");
+			slcInterestErInfo.append(
+					" ei.HIRE_TYPE, ei.PORTFOLIO, ei.ER_DESC,  to_char(ei.INPUT_DATE, 'yyyy-dd-mm') INPUT_DATE");
+			slcInterestErInfo.append(" from interest_er ie, er_info ei, company c");
+			slcInterestErInfo.append(" where (ie.er_num = ei.er_num) and (c.co_num=ei.co_num) and ie.ee_id = ?");
+			pstmt = con.prepareStatement(slcInterestErInfo.toString());
 
-		} finally { // fianlly : 연결끊기.
+			// 바인드변수 값 넣기
+			pstmt.setString(1, ee_id);
+
+			rs = pstmt.executeQuery();
+			EeInterestVO eivo = null;
+			// 조회된 데이터
+			while (rs.next()) {
+				eivo = new EeInterestVO(rs.getString("er_num"), rs.getString("SUBJECT"), rs.getString("CO_NAME"),
+						rs.getString("RANK"), rs.getString("LOC"), rs.getString("EDUCATION"), rs.getString("HIRE_TYPE"),
+						rs.getString("INPUT_DATE"), rs.getInt("SAL"));
+				list.add(eivo);
+			} // end if
+
+		} finally { // finally : 연결끊기.
 			if (rs != null) {
 				rs.close();
 			} // end if
@@ -339,7 +352,16 @@ public class EeDAO {
 			} // end if
 		} // end finally
 
-		return null;
+		return list;
 	}// end selectInterestErInfo
+
+//	public static void main(String[] args) {
+//		EeDAO ee_dao = EeDAO.getInstance();
+//		try {
+//			System.out.println(ee_dao.selectInterestErInfo("gong1"));
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}// main
 
 }// class

@@ -6,15 +6,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JTable;
-
 import user.common.vo.EeMainVO;
 import user.dao.EeDAO;
-import user.ee.dto.EeHiringCdtDTO;
 import user.ee.view.EeHiringView;
 import user.ee.view.EeInfoRegView;
 import user.ee.view.EeInterestView;
@@ -53,10 +49,13 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 		new EeHiringView(emv, ehvo, eeid);
 	}
 
+	/**
+	 * 관심 구인 목록창 띄우기
+	 */
 	public void showInterestEr() {
-		String eeid = "testId";
+		String eeid = "gong1";
 		new EeInterestView(emv, eeid);
-	}
+	}// showInterestEr
 
 	public void showApp() {
 //		new EeAppView();
