@@ -28,13 +28,14 @@ public class EeHiringController extends WindowAdapter implements ActionListener,
 
 	
 	//테스트용 변경해야함/////////////////////////////////
-	private String eeId ="gong1";
+	private String eeId;
 	////////////////////////////////////////////////
 	public EeHiringCdtDTO ehc_dto;
 	private EeDAO ee_dao;
 	
-	public EeHiringController(EeHiringView ehv) {
+	public EeHiringController(EeHiringView ehv,String eeId) {
 		this.ehv = ehv;
+		this.eeId =  eeId;
 		ehc_dto = EeHiringCdtDTO.getInstance();
 		ee_dao = EeDAO.getInstance();
 		ehc_dto.setSort(" ");

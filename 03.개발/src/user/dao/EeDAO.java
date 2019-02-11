@@ -44,7 +44,12 @@ public class EeDAO {
 		String pass ="share";
 		con = DriverManager.getConnection(url, id, pass);
 		return con;
-	}// getConns
+	}//getConns
+	
+	
+	
+	//////////////////////////////////////////선의 소스//////////////////////////////////////////////////////////
+
 
 	///// 02.09 선의 Hiring소스
 	public List<EeHiringVO> selectEeHiring(EeHiringCdtDTO eh_dto) throws SQLException {
@@ -184,7 +189,18 @@ public class EeDAO {
 			}
 		}
 		return deivo;
-	}// DetailErInfoVO
+	}//DetailErInfoVO
+	
+	public List<EeHiringVO> selectInterestEr(String erNum) {
+		List<EeHiringVO> list =null;
+		
+		
+		
+		return list;
+	}
+	
+	
+	//0210 선의 관심구인공고 추가
 
 	// 0210 선의 관심구인공고 추가
 	public void insertInterestEr(EeInterestAndAppVO eiaavo) throws SQLException {
@@ -242,6 +258,7 @@ public class EeDAO {
 		}
 		return flag;
 	}
+	//////////////////////////////////////////선의 소스 끝//////////////////////////////////////////////////////////
 
 	/**
 	 * 19.02.10김건하 회원정보 입력
