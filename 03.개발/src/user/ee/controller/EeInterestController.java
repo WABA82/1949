@@ -24,7 +24,7 @@ public class EeInterestController extends WindowAdapter implements ActionListene
 	private EeDAO ee_dao;
 	public static final int DBL_CLICK = 2; // 더블 클릭 상수.
 
-	public EeInterestController(EeInterestView eiv, List<EeHiringVO> ehvo) {
+	public EeInterestController(EeInterestView eiv, String eeid) {
 		this.eiv = eiv;
 		ee_dao = EeDAO.getInstance();
 	}// 생성자

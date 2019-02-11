@@ -25,83 +25,90 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 
 	private EeMainView emv;
 	private EeMainVO emvo;
-	
+
 	private EeDAO EeDAO;
 	private EeHiringView ehv;
-	
+
 	public EeMainController(EeMainView emv, EeMainVO emvo) {
 		this.emv = emv;
-		EeDAO=EeDAO.getInstance();
+		EeDAO = EeDAO.getInstance();
 	}
-	
+
 	public void checkActivation() {
-		
+
 	}
-	
-	
+
 	public void mngUser() {
-		new EeInfoRegView( emv );
+		new EeInfoRegView(emv);
 	}
-	
+
 	public void mngEe() {
-		
+
 	}
-	
+
 	public void showHiring() {
-		EeMainView emv=new EeMainView(emvo);
-		List<EeHiringVO> ehvo=new ArrayList<EeHiringVO>();
-		String eeid= "testId";
+		EeMainView emv = new EeMainView(emvo);
+		List<EeHiringVO> ehvo = new ArrayList<EeHiringVO>();
+		String eeid = "testId";
 		new EeHiringView(emv, ehvo, eeid);
 	}
-	
+
 	public void showInterestEr() {
-//		JTable jt=
-//		EeHiringVO ehvo=EeDAO.
-//		new EeInterestView(emv, ehvo);
+		String eeid = "testId";
+		new EeInterestView(emv, eeid);
 	}
-	
+
 	public void showApp() {
 //		new EeAppView();
 	}
-	
+
 	/**
-	 * 	private EeMainView emv;
-	 *  마우스 클릭시 종료 jlLogOut
+	 * private EeMainView emv; 마우스 클릭시 종료 jlLogOut
 	 */
 	@Override
 	public void mouseClicked(MouseEvent me) {
-		if(me.getSource() ==emv.getJlLogOut() ) {
+		if (me.getSource() == emv.getJlLogOut()) {
 			emv.dispose();
-			
-		}//end if
-		
-		
-		
-	}//mouseClicked
+
+		} // end if
+
+	}// mouseClicked
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 
-		if(ae.getSource() == emv.getJbEeInfo()) {
+		if (ae.getSource() == emv.getJbEeInfo()) {
 			mngUser();
-		}//end if
-		
-		if(ae.getSource() == emv.getJbErInfo()) {
+		} // end if
+
+		if (ae.getSource() == emv.getJbErInfo()) {
 			showHiring();
-		}//end if
-		
-	}//actionPerformed
+		} // end if
+
+		if (ae.getSource() == emv.getJbInterestEr()) {
+			showInterestEr();
+		} // end if
+
+	}// actionPerformed
 
 	@Override
 	public void windowClosing(WindowEvent e) {
 		emv.dispose();
 	}
+
 	@Override
-	public void mousePressed(MouseEvent e) {}
+	public void mousePressed(MouseEvent e) {
+	}
+
 	@Override
-	public void mouseReleased(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {
+	}
+
 	@Override
-	public void mouseEntered(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {
+	}
+
 	@Override
-	public void mouseExited(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {
+	}
 }
