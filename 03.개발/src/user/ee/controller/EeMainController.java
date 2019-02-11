@@ -6,11 +6,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JTable;
 
 import user.common.vo.EeMainVO;
 import user.dao.EeDAO;
+import user.ee.dto.EeHiringCdtDTO;
 import user.ee.view.EeHiringView;
 import user.ee.view.EeInfoRegView;
 import user.ee.view.EeInterestView;
@@ -44,10 +48,10 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 	}
 	
 	public void showHiring() {
-//	JTable jt=ehv.getJtErInfo();
-//		EeHiringVO eh_vo=EeDAO.selectEeHiring((String)jt.getValueAt(jt.getSelectedRow(), 1));
-//		
-//		new EeHiringView(emv, eh_vo);
+		EeMainView emv=new EeMainView(emvo);
+		List<EeHiringVO> ehvo=new ArrayList<EeHiringVO>();
+		String eeid= "testId";
+		new EeHiringView(emv, ehvo, eeid);
 	}
 	
 	public void showInterestEr() {

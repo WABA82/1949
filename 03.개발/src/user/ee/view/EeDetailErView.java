@@ -240,7 +240,7 @@ public class EeDetailErView extends JDialog {
 		add(wrapPanel);
 		
 		jtfSubject.setText(deivo.getSubject());
-		jlImage.setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/회사정보 가데이터/네이버/"+deivo.getImg1()));
+		jlImage.setIcon(new ImageIcon("C:/dev/1949/03.개발/src/img/coImg/"+deivo.getImg1()));
 		jtfCoName.setText(deivo.getCoName());
 		jtfName.setText(deivo.getName());
 		jtfTel.setText(deivo.getTel());
@@ -278,7 +278,6 @@ public class EeDetailErView extends JDialog {
 		jbApply.addActionListener(edec);
 		
 		/* 프레임 크기 설정 및 가시화 */
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 410, 660);
 		setVisible(true);
 
@@ -286,7 +285,7 @@ public class EeDetailErView extends JDialog {
 
 /*	public static void main(String[] args) {
 		new EeDetailErView();
-	/*****************getter*****************/
+*/
 	public JLabel getJlHeart() {
 		return jlHeart;
 	}

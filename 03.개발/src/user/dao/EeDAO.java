@@ -16,7 +16,7 @@ import user.ee.vo.EeInterestAndAppVO;
 
 public class EeDAO {
 	private static EeDAO Ee_dao;
-
+	private String interest;
 	public EeDAO() {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
@@ -37,9 +37,11 @@ public class EeDAO {
 
 		Connection con = null;
 
-		String url = "jdbc:oracle:thin:@localhost:1521:orcl";
-		String id = "kanu";
-		String pass = "share";
+
+		
+		String url="jdbc:oracle:thin:@211.63.89.144:1521:orcl";
+		String id ="kanu";
+		String pass ="share";
 		con = DriverManager.getConnection(url, id, pass);
 		return con;
 	}// getConns
@@ -240,14 +242,6 @@ public class EeDAO {
 		}
 		return flag;
 	}
-
-	// 02.09선의테스트
-	/*
-	 * public static void main(String[] args) { EeDAO ee_dao = new EeDAO();
-	 * EeHiringCdtDTO eh_dto = new EeHiringCdtDTO("직급순","","키스템프"); try {
-	 * ee_dao.selectEeHiring(eh_dto); }catch (Exception e) { e.printStackTrace(); }
-	 * }
-	 */
 
 	/**
 	 * 19.02.10김건하 회원정보 입력
