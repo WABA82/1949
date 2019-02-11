@@ -28,7 +28,6 @@ public class ModifyExtController extends WindowAdapter implements ActionListener
 	public ModifyExtController( ModifyExtView mev, EeInfoRegView erv) {
 		this.mev=mev;
 		this.erv=erv;
-		
 	}//생성자
 	
 	private void chooseFile() {
@@ -50,7 +49,6 @@ public class ModifyExtController extends WindowAdapter implements ActionListener
 				JOptionPane.showMessageDialog(mev, "외부이력서는 doc, pdf만 가능합니다.");
 				return;
 			}else {
-				
 				mev.getJtfPath().setText(extResume);
 				mev.getJtfPath().setEditable(false);
 				JTextField jtf=erv.getJtfExtResume();
