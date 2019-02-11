@@ -11,15 +11,12 @@ import java.util.List;
 import user.ee.dto.EeHiringCdtDTO;
 import user.ee.vo.DetailErInfoVO;
 import user.ee.vo.EeHiringVO;
-<<<<<<< HEAD
 import user.ee.vo.EeInsertVO;
-=======
 import user.ee.vo.EeInterestAndAppVO;
->>>>>>> 7c4a93b7514307cbbe4959f38ef51dbbc3b76155
 
 public class EeDAO {
 	private static EeDAO Ee_dao;
-	
+	private String interest;
 	public EeDAO() {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
@@ -40,7 +37,7 @@ public class EeDAO {
 		
 		Connection con = null;
 		
-		String url="jdbc:oracle:thin:@localhost:1521:orcl";
+		String url="jdbc:oracle:thin:@211.63.89.144:1521:orcl";
 		String id ="kanu";
 		String pass ="share";
 		con = DriverManager.getConnection(url, id, pass);
@@ -228,19 +225,6 @@ public class EeDAO {
 		}
 		return flag;
 	}
-	
-	
-	
-	//02.09선의테스트
-/*	public static void main(String[] args) {
-		EeDAO ee_dao = new EeDAO();
-		EeHiringCdtDTO eh_dto = new EeHiringCdtDTO("직급순","","키스템프");
-		try {
-			ee_dao.selectEeHiring(eh_dto);
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-	}*/
 	
 	
 	/**
