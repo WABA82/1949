@@ -2,6 +2,7 @@ package user.ee.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,13 +26,17 @@ public class EeDetailErView extends JDialog {
 
 	/* 인스턴스 변수 선언 */
 	private JLabel jlHeart;
-	private JButton jbCoInfo, jbApply, jbClose;
-	private String erNum, eeId;
 
-	public EeDetailErView(EeHiringView ehv, DetailErInfoVO deivo, String erNum, String eeId, String appStatus,String interest) {
+	private JButton jbCoInfo, jbApply, jbClose; 
+	private String erNum,eeId,appStatus,interest;
+	private boolean flagHeart;
+	
+	public EeDetailErView(EeHiringView ehv, DetailErInfoVO deivo, String erNum, String eeId,String appStatus,String interest) {
 		super(ehv, "상세구인정보", true);/* 창의 제목 */
 		this.erNum = erNum;
-		System.out.println("----------------" + deivo);
+		this.eeId = eeId;
+		this.appStatus = appStatus;
+		this.interest = interest;
 		/* 컴포넌트 생성 */
 		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/no_co_img1.png");
 		// 라벨들
@@ -89,8 +94,15 @@ public class EeDetailErView extends JDialog {
 		jlSkill8.setBorder(new LineBorder(Color.BLACK));
 
 		// 버튼들
-		ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/b_heart.png");
-		jlHeart = new JLabel(heart);
+		System.out.println(interest);
+		if(interest.equals("0")) {
+			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/b_heart.png");
+			jlHeart = new JLabel(heart);
+		}else if(interest.equals("1")) {
+			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/r_heart.png");
+			jlHeart = new JLabel(heart);
+			flagHeart=true;
+		}
 		jbCoInfo = new JButton("회사정보");
 		jbApply = new JButton("지원하기");
 		jbClose = new JButton("닫기");
@@ -269,8 +281,10 @@ public class EeDetailErView extends JDialog {
 
 		}
 
-		// 이벤트
-		EeDetailErController edec = new EeDetailErController(this, erNum, eeId);
+		
+		
+		//이벤트
+		EeDetailErController edec = new EeDetailErController(this,erNum,eeId,flagHeart);
 		jlHeart.addMouseListener(edec);
 		jbCoInfo.addActionListener(edec);
 		jbClose.addActionListener(edec);

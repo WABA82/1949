@@ -52,7 +52,7 @@ public class EeInterestController extends WindowAdapter implements ActionListene
 				String erNum= String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
 				DetailErInfoVO deivo=null;
 				try {
-					deivo = ee_dao.selectDetail(erNum);
+					deivo = ee_dao.selectDetail(erNum, ee_id);
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -110,6 +110,7 @@ public class EeInterestController extends WindowAdapter implements ActionListene
 	}// setDTM
 
 	private void showDetailErinfo() {
+		new EeDetailErView(null, null, null, null, null, null);
 	}// showDetailErinfo
 
 	////////// 안쓰는 메소드//////////

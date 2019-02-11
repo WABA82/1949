@@ -64,9 +64,6 @@ public class EeDetailCoView extends JDialog {
 		jspTaDesc.setBounds(27, 275, 405, 266);
 		jspTaDesc.setBorder(new TitledBorder("기업 설명"));
 		
-		jbClose.setBounds(338, 562, 92, 24);
-		setBounds(100, 100, 480, 650);
-		setVisible(true);
 		
 		
 		EeDetailCoController edcc = new EeDetailCoController(this);
@@ -91,6 +88,9 @@ public class EeDetailCoView extends JDialog {
 		
 		add(jbClose);
 		
+		jbClose.setBounds(338, 562, 92, 24);
+		setBounds(100, 100, 480, 650);
+		setVisible(true);
 		
 		
 	}//생성자
@@ -128,7 +128,7 @@ public class EeDetailCoView extends JDialog {
 
 
 /*	public static void main(String[] args) {
-		new EeDetailCoView();
+		new EeDetailCoView(null, null);
 	}*/
 	
 }

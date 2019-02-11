@@ -1,26 +1,28 @@
 package user.er.view;
 
+import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import user.common.vo.ErMainVO;
+import user.er.controller.ErMgMtController;
 import user.er.vo.ErListVO;
 
+@SuppressWarnings("serial")
 public class ErMgMtView extends JDialog {
 
 	private JButton jbRegEr;
 	private DefaultTableModel dtmEr;
 	private JTable jtEr;
 	
-	public ErMgMtView(ErMainView rmv, ErListVO rlvo, String s) {
+	public ErMgMtView(ErMainView rmv, List<ErListVO> list, String erId) {
 		super(rmv,"구인 정보 관리",true);
 		
 		String[] eeInfoColumns= {"번호","구인정보번호","제목","직급","근무지역","학력","고용형태","등록일"};
-		dtmEr=new DefaultTableModel(eeInfoColumns, 40) {
+		dtmEr=new DefaultTableModel(eeInfoColumns, 0) {
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
@@ -38,13 +40,18 @@ public class ErMgMtView extends JDialog {
 		add(jspEeInfo);
 		add(jbRegEr);
 		
+		////////// 가데이터
+		erId = "gang123";
+		/////////
+		ErMgMtController emmc = new ErMgMtController(this,list,erId);
+		jbRegEr.addActionListener(emmc);
+		jtEr.addMouseListener(emmc);
+		
 		setBounds(100, 100, 1015, 500);
 		setVisible(true);
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		
 		
 	}
-	
 	
 	 public JButton getJbRegEr() {
 		return jbRegEr;
@@ -61,12 +68,8 @@ public class ErMgMtView extends JDialog {
 	}
 
 
-/*	public static void main(String[] args) {
-		ErMainVO rm_vo =new ErMainVO("sad", "sad", "ad", "sad");
-		 ErMainView rmv=new ErMainView(rm_vo);
-		 ErListVO rlvo=new ErListVO();
-		 String s=new String();
-		new ErMgMtView(rmv,rlvo,s);
-	}*/
+	public static void main(String[] args) {
+		ErMgMtView emmv = new ErMgMtView(null, null, null);
+	}
 	
 }
