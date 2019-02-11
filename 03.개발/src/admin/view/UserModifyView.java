@@ -42,7 +42,9 @@ public class UserModifyView extends JDialog {
 		jtfSsn2 = new JTextField(uivo.getSsn().substring(7, 13));
 		jtfTel = new JTextField(uivo.getTel()); 
 		jtfZip = new JTextField(uivo.getZipcode());
+		jtfZip.setEditable(false);
 		jtfAddr1 = new JTextField(uivo.getAddr1());
+		jtfAddr1.setEditable(false);
 		jtfAddr2 = new JTextField(uivo.getAddr2());
 		jtfEmail = new JTextField(uivo.getEmail());
 		jtfAnswer = new JTextField(uivo.getAnswer());
@@ -58,7 +60,7 @@ public class UserModifyView extends JDialog {
 		jcbQuestion = new JComboBox<String>(qItems);
 		jcbQuestion.setSelectedIndex(Integer.parseInt(uivo.getQuestionType()));
 		
-		String[] uItems = { "구직자", "구인자" };
+		String[] uItems = { "일반", "기업" };
 		jcbUser = new JComboBox<String>(uItems);
 		if(uivo.getUserType().equals("E")) {
 			jcbUser.setSelectedIndex(0);
@@ -162,7 +164,10 @@ public class UserModifyView extends JDialog {
 		add(jbClose);
 		
 		UserModifyController umc = new UserModifyController(this, ammv, uivo.getAddrSeq());
-		
+		jbModify.addActionListener(umc);
+		jbRemove.addActionListener(umc);
+		jbSearchAddr.addActionListener(umc);
+		jbClose.addActionListener(umc);
 		addWindowListener(umc);
 		
 		setBounds(ammv.getX()+500,ammv.getY()+50,390,680);
