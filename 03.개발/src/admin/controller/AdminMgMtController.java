@@ -7,14 +7,18 @@ import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import admin.dao.AdminDAO;
 import admin.view.AdminMgMtView;
+import admin.view.UserModifyView;
 import admin.vo.CoListVO;
 import admin.vo.EeListVO;
 import admin.vo.ErListVO;
+import admin.vo.UserInfoVO;
 import admin.vo.UserListVO;
 
 public class AdminMgMtController extends WindowAdapter implements MouseListener, Runnable {
@@ -22,6 +26,8 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 	private AdminMgMtView ammv;
 	private AdminDAO a_dao;
 	private Thread threadUser, threadEe, threadEr, threadCo;
+	
+	private static final int DBL_CLICK = 2;
 	
 	public AdminMgMtController(AdminMgMtView ammv) {
 		a_dao = AdminDAO.getInstance();
@@ -76,7 +82,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 				elvo = list.get(i);
 				rowData[0] = String.valueOf(i+1);
 				rowData[1] = elvo.getEeNum();
-				rowData[2] = elvo.getImg();
+				rowData[2] = new ImageIcon("C:/Users/owner/youngRepositories/1949/03.개발/src/img/eeImg/"+elvo.getImg());
 				rowData[3] = elvo.getEeId();
 				rowData[4] = elvo.getName();
 				switch(elvo.getRank()) {
@@ -173,7 +179,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 				clvo = list.get(i);
 				rowData[0] = String.valueOf(i+1);
 				rowData[1] = clvo.getCoNum();
-				rowData[2] = clvo.getImg1();
+				rowData[2] = new ImageIcon("C:/Users/owner/youngRepositories/1949/03.개발/src/img/coImg/"+clvo.getImg1());
 				rowData[3] = clvo.getCoName();
 				rowData[4] = clvo.getErId();
 				rowData[5] = clvo.getEstDate();
@@ -225,6 +231,30 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 		
 		if (ammv.getJtb().getSelectedIndex() == 3) {
 			setCo();
+		}
+		
+		switch(me.getClickCount()) {
+		case DBL_CLICK :
+			JTable jt = null;
+			if (me.getSource() == ammv.getJtUser()) {
+				jt = ammv.getJtUser();
+				
+				String id = (String)jt.getValueAt(jt.rowAtPoint(me.getPoint()), 1);
+				
+				try {
+					UserInfoVO ulvo = a_dao.selectOneUser(id);
+					new UserModifyView(ammv, ulvo);
+				} catch (SQLException e) {
+					msgCenter("DB 접속 실패했습니다.");
+					e.printStackTrace();
+				}
+			}
+			
+			if (me.getSource() == ammv.getJtCo()) {
+				
+				jt = ammv.getJtCo();
+			}
+			break;
 		}
 	}
 

@@ -11,6 +11,7 @@ import java.util.List;
 import admin.vo.CoListVO;
 import admin.vo.EeListVO;
 import admin.vo.ErListVO;
+import admin.vo.UserInfoVO;
 import admin.vo.UserListVO;
 
 public class AdminDAO {
@@ -200,7 +201,49 @@ public class AdminDAO {
 		return list;
 	}
 	
-	
+	public UserInfoVO selectOneUser(String id) throws SQLException {
+		UserInfoVO uivo = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			con = getConn();
+			
+			StringBuilder selectOneUser = new StringBuilder();
+			
+			selectOneUser
+			.append(" select id, pass, name, ssn, tel, addr_seq, z.zipcode, z.sido||z.gugun||z.dong||z.bunji addr1, ")
+			.append(" addr_detail, email, question_type, answer, user_type, to_char(input_date,'yyyy-MM-dd') input_date ")
+			.append(" from user_table ut, zipcode z ")
+			.append(" where ut.addr_seq = z.seq AND id = ? ");
+			
+			pstmt = con.prepareStatement(selectOneUser.toString());
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				uivo = new UserInfoVO(rs.getString("id"), rs.getString("pass"), 
+						rs.getString("name"), rs.getString("ssn"), rs.getString("tel"), 
+						rs.getString("addr_seq"), rs.getString("zipcode"), rs.getString("addr1"),
+						rs.getString("addr_detail"), rs.getString("email"),
+						rs.getString("question_type"),
+						rs.getString("answer"),
+						rs.getString("user_type"),
+						rs.getString("input_date"));
+			}
+			
+		} finally {
+			if (rs != null) { rs.close(); }
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		return uivo;
+	}
 	
 	
 	
