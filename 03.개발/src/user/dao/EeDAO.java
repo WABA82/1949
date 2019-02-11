@@ -148,10 +148,10 @@ public class EeDAO {
 	}
 
 	// 0210 선의 detailErInfo 검색
-	public DetailErInfoVO selectDetail(String erNum) throws SQLException {
+	public DetailErInfoVO selectDetail(String erNum,String eeId) throws SQLException {
+
 
 		DetailErInfoVO deivo = null;
-
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -161,12 +161,26 @@ public class EeDAO {
 			StringBuilder selectDetail = new StringBuilder();
 			selectDetail.append(" select ei.er_num, ei.subject, ut.name, ut.tel, ut.email, ")
 					.append(" to_char(ei.input_date,'yyyy-mm-dd-hh-mi') input_date, c.img1, c.co_name, ")
-					.append(" ei.education, ei.rank, ei.loc, ei.hire_type, ei.portfolio, ei.er_desc, ei.sal ")
+					.append("  ei.education, ei.rank, ei.loc, ei.hire_type, ei.portfolio, ei.er_desc, ei.sal, ")
+					.append("  (select COUNT(*) from interest_er ")
+					.append("  where ee_id = ? and er_num=?) interest ")
 					.append(" from er_info ei, company c, user_table ut ")
 					.append(" where (ei.co_num= c.co_num)and(ut.id=c.er_id) ").append(" and (ei.er_num= ? )");
+			
+	/*		select ei.er_num, ei.subject, ut.name, ut.tel, ut.email,
+			 to_char(ei.input_date,'yyyy-mm-dd-hh-mi') input_date, c.img1, c.co_name,
+			 ei.education, ei.rank, ei.loc, ei.hire_type, ei.portfolio, ei.er_desc, ei.sal,
+			 (select COUNT(*) from interest_er
+			   where ee_id = 'gong1' and er_num='er_000031') interest
+			  from er_info ei, company c, user_table ut
+			  where (ei.co_num= c.co_num)
+			     and (ut.id=c.er_id)
+			     and (ei.er_num= 'er_000031' );*/
 			pstmt = con.prepareStatement(selectDetail.toString());
 			// 4.
-			pstmt.setString(1, erNum);
+			pstmt.setString(1, eeId);
+			pstmt.setString(2, erNum);
+			pstmt.setString(3, erNum);
 			// 5.
 			rs = pstmt.executeQuery();
 			// 입력된 코드로 조회된 레코드가 존재할 때 VO를 생성하고 값 추가
@@ -174,7 +188,7 @@ public class EeDAO {
 				deivo = new DetailErInfoVO(rs.getString("er_num"), rs.getString("subject"), rs.getString("name"),
 						rs.getString("tel"), rs.getString("email"), rs.getString("input_date"), rs.getString("img1"),
 						rs.getString("co_name"), rs.getString("education"), rs.getString("rank"), rs.getString("loc"),
-						rs.getString("hire_type"), rs.getString("portfolio"), rs.getString("er_desc"), "true",
+						rs.getString("hire_type"), rs.getString("portfolio"), rs.getString("er_desc"), rs.getString("interest"),
 						rs.getInt("sal"), selectSkill(erNum));
 			} // end if
 		} finally {
@@ -200,8 +214,6 @@ public class EeDAO {
 	}
 	
 	
-	//0210 선의 관심구인공고 추가
-
 	// 0210 선의 관심구인공고 추가
 	public void insertInterestEr(EeInterestAndAppVO eiaavo) throws SQLException {
 		Connection con = null;

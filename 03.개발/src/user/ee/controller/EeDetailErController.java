@@ -26,10 +26,11 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 	private EeInterestAndAppVO eiaavo;
 	private EeDAO ee_dao;
 	
-	public EeDetailErController(EeDetailErView edev, String erNum, String eeId) {
+	public EeDetailErController(EeDetailErView edev, String erNum, String eeId,boolean flagHeart) {
 		this.edev = edev;
 		this.erNum = erNum;
 		this.eeId = eeId;
+		mouseClickFlag = flagHeart;
 		ee_dao= EeDAO.getInstance();
 	}
 
@@ -44,9 +45,9 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 			return;
 		}
 		edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/r_heart.png"));
-		JOptionPane.showMessageDialog(edev, "관심 구인정보에 추가되었습니다!");
+		JOptionPane.showMessageDialog(edev, "관심 구인글에 추가되었습니다!");
 		try {
-			DetailErInfoVO devo= ee_dao.selectDetail(erNum);
+			DetailErInfoVO devo= ee_dao.selectDetail(erNum,eeId);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -66,7 +67,7 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 			return;
 		}
 		if(deleteFlag) {
-			JOptionPane.showMessageDialog(edev, "관심 구인정보에서 삭제되었습니다.");
+			JOptionPane.showMessageDialog(edev, "관심 구인글을 취소했습니다.");
 			edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/b_heart.png"));
 		}else {
 			JOptionPane.showMessageDialog(edev, "리스트삭제에 실패했습니다.");
@@ -79,7 +80,7 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 	}//showCoDetail
 	
 	public void apply(){
-		
+		//관심구인정보에 전달(eeAppVO)
 	}
 	
 	
@@ -95,7 +96,11 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 		}
 		if(ae.getSource()==edev.getJbApply()) {
 			//지원하기
-			apply();
+			int apply=JOptionPane.showConfirmDialog(edev, "지원하시겠습니까?");
+			if(apply==0) {
+				apply();
+				JOptionPane.showMessageDialog(edev, "지원이 완료되었습니다. \n 지원해주셔서 감사합니다.");
+			}
 		}
 		if(ae.getSource()==edev.getJbClose()) {
 			edev.dispose();
