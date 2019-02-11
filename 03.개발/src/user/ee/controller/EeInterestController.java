@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import user.dao.JaeHyunEEDAO;
+import user.dao.EeDAO;
 import user.ee.view.EeDetailErView;
 import user.ee.view.EeInterestView;
 import user.ee.vo.EeHiringVO;
@@ -21,12 +21,12 @@ import user.ee.vo.EeHiringVO;
 public class EeInterestController extends WindowAdapter implements ActionListener, MouseListener {
 
 	private EeInterestView eiv;
-	private JaeHyunEEDAO jhee_dao;
+	private EeDAO ee_dao;
 	public static final int DBL_CLICK = 2; // 더블 클릭 상수.
 
 	public EeInterestController(EeInterestView eiv, List<EeHiringVO> ehvo) {
 		this.eiv = eiv;
-		jhee_dao = JaeHyunEEDAO.getInstance();
+		ee_dao = EeDAO.getInstance();
 	}// 생성자
 
 	@Override
@@ -65,7 +65,7 @@ public class EeInterestController extends WindowAdapter implements ActionListene
 
 		try {
 			// DB에서 관심회사를 조회.
-			List<EeHiringVO> list = jhee_dao.selectInterestErInfo();
+			List<EeHiringVO> list = ee_dao.selectInterestErInfo();
 
 //			// JTable에 조회한 정보를 출력.
 //			LunchVO lv = null;
@@ -98,7 +98,7 @@ public class EeInterestController extends WindowAdapter implements ActionListene
 	}// setDTM
 
 	private void showDetailErinfo() {
-		new EeDetailErView(null, null, null, null);
+		new EeDetailErView(null, null, null, null, null);
 	}// showDetailErinfo
 
 	////////// 안쓰는 메소드//////////
