@@ -49,7 +49,7 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 	
 	@Override
 	public void windowClosed(WindowEvent e) {
-		
+		System.exit(0);
 	}
 	
 	public void login() {
