@@ -50,7 +50,7 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 	public void showHiring() {
 		EeMainView emv=new EeMainView(emvo);
 		List<EeHiringVO> ehvo=new ArrayList<EeHiringVO>();
-		String eeid= "testId";
+		String eeid= "gong1";
 		new EeHiringView(emv, ehvo, eeid);
 	}
 	

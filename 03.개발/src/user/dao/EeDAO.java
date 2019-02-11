@@ -46,7 +46,7 @@ public class EeDAO {
 	
 	
 	
-	/////02.09 선의 Hiring소스
+	//////////////////////////////////////////선의 소스//////////////////////////////////////////////////////////
 	public List<EeHiringVO> selectEeHiring(EeHiringCdtDTO eh_dto) throws SQLException{
 		List<EeHiringVO> list = new ArrayList<EeHiringVO>();
 		
@@ -175,6 +175,14 @@ public class EeDAO {
 		return deivo;
 	}//DetailErInfoVO
 	
+	public List<EeHiringVO> selectInterestEr(String erNum) {
+		List<EeHiringVO> list =null;
+		
+		
+		
+		return list;
+	}
+	
 	
 	//0210 선의 관심구인공고 추가
 	public void insertInterestEr(EeInterestAndAppVO eiaavo)throws SQLException{
@@ -225,7 +233,8 @@ public class EeDAO {
 		}
 		return flag;
 	}
-	
+	//////////////////////////////////////////선의 소스 끝//////////////////////////////////////////////////////////
+
 	
 	/**
 	 * 	19.02.10김건하 
