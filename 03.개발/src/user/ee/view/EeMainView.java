@@ -6,10 +6,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.border.TitledBorder;
 
+import com.sun.corba.se.impl.orbutil.closure.Constant;
+
 import user.common.vo.EeMainVO;
 import user.ee.controller.EeMainController;
 
 public class EeMainView extends JFrame {
+
+	/* 임시로 쓰는 데이터입니다. */
+	public static final String EE_ID="kun90";
 	
 	private JButton jbEeInfo, jbErInfo, jbInterestEr, jbApp;
 	private JLabel jlUserInfo, jlLogOut, jlActivation;
