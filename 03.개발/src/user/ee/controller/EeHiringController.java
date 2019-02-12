@@ -98,7 +98,7 @@ public class EeHiringController extends WindowAdapter implements ActionListener,
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		EeDetailErView edev = new EeDetailErView(ehv, deivo, erNum,eeId,null,deivo.getInterest());
+		new EeDetailErView(ehv, deivo, erNum, eeId , null , deivo.getInterest());
 	}
 	
 	public void searchAll() {

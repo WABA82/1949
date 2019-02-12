@@ -60,7 +60,7 @@ public class EeInterestView extends JDialog {
 		add("Center", jspEeInfo);
 
 		/* 이벤트 등록 */
-		EeInterestController eic = new EeInterestController(this, "gong1");
+		EeInterestController eic = new EeInterestController(this, eeid);
 		addWindowListener(eic);
 		jtErInfo.addMouseListener(eic);
 
@@ -81,7 +81,7 @@ public class EeInterestView extends JDialog {
 	///////////////////// getter/////////////////////
 
 	public static void main(String[] args) {
-		new EeInterestView(null, null);
+		new EeInterestView(null, "gong1");
 	}// main
 
 }// class
