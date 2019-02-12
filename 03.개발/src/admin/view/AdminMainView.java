@@ -70,9 +70,6 @@ public class AdminMainView extends JFrame {
 		setVisible(true);
 	}
 	
-	/*public static void main(String[] args) {
-		new AdminMainView();
-	}*/
 	public JList<String> getJlLog() {
 		return jlLog;
 	}

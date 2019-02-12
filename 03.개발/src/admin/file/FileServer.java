@@ -41,7 +41,7 @@ public class FileServer extends Thread {
 						// 현재 파일서버가 가진 파일명들을 리스트로 저장
 						List<String> listImg = new ArrayList<String>();
 						
-						File dir = new File("C:/Users/owner/youngRepositories/1949/03.개발/src/img/coImg");
+						File dir = new File("C:/dev/1949/03.개발/src/img/coImg");
 						
 						for(File f : dir.listFiles()) {
 							listImg.add(f.getName());

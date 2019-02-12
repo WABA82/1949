@@ -298,8 +298,8 @@ public class ErModifyView extends JDialog {
 	}
 	/***************** getter *****************/
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		new ErModifyView(null, null);
 	}// main : 단위테스트용
-
+*/
 }// class
