@@ -2,28 +2,22 @@ package user.ee.vo;
 
 public class EeInsertVO {
 
-	private String eeNum, img, rank,  loc, education, portfolio, extResume, inputDate, eeId;
+	private String eeId, img, rank,  loc, education, portfolio, extResume;
 
-	public EeInsertVO() {
-		super();
-	}
-
-	public EeInsertVO(String eeNum, String img, String rank, String loc, String education, String portfolio,
-			String extResume, String inputDate, String eeId) {
-		super();
-		this.eeNum = eeNum;
+	public EeInsertVO(String eeId, String img, String rank, String loc, String education, String portfolio,
+			String extResume) {
+		this.eeId = eeId;
 		this.img = img;
 		this.rank = rank;
 		this.loc = loc;
 		this.education = education;
 		this.portfolio = portfolio;
 		this.extResume = extResume;
-		this.inputDate = inputDate;
-		this.eeId = eeId;
-	}
+	}//»ý¼ºÀÚ
 
-	public String getEeNum() {
-		return eeNum;
+	//getter
+	public String getEeId() {
+		return eeId;
 	}
 
 	public String getImg() {
@@ -50,20 +44,6 @@ public class EeInsertVO {
 		return extResume;
 	}
 
-	public String getInputDate() {
-		return inputDate;
-	}
-
-	public String getEeId() {
-		return eeId;
-	}
-
-	@Override
-	public String toString() {
-		return "EeInsertVO [eeNum=" + eeNum + ", img=" + img + ", rank=" + rank + ", loc=" + loc + ", education="
-				+ education + ", portfolio=" + portfolio + ", extResume=" + extResume + ", inputDate=" + inputDate
-				+ ", eeId=" + eeId + "]";
-	}
 	
 	
 	

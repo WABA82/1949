@@ -22,6 +22,7 @@ import user.ee.vo.EeRegVO;
 
 public class EeInfoRegController extends WindowAdapter implements ActionListener {
 
+	/* 인스턴스변수 */
 	private EeInfoRegView eirv;
 	private String uploadImg;
 	private EeDAO eedao;
@@ -36,7 +37,7 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 	}// 생성자
 
 	// 이미지전송도 같이 수행
-	public void register() {
+	public void register(String eeid) {
 		if (uploadImg.isEmpty()) {
 			JOptionPane.showMessageDialog(eirv, "이미지는 필수 입니다.");
 			return;
@@ -50,13 +51,16 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 
 		File file = new File(uploadImg);
 
-		// eeNum, img, rank, loc, education, portfolio, extResume, inputDate, eeId)
-//		EeInsertVO eivo= new EeInsertVO(num, file.getName(), rank, loc, education, portfolio, extResume, ,name);
-
 //		try {
-//			EeDAO.getInstance().insertEeinfo(eivo);
+//		EeInsertVO eivo= new EeInsertVO(eeid, file.getName(), rank, loc, education, portfolio, extResume );
+////				( file.getName(), rank, loc, education, portfolio, extResume, );
+////			eedao.insertEeinfo(eivo);
+//			
 //		} catch (SQLException e) {
-//		}
+//			JOptionPane.showMessageDialog(eirv, "등록되었습니다");
+//			
+//			e.printStackTrace();
+//		}//DB에 추가
 	}// register
 
 	public void changeImg() {
@@ -116,7 +120,7 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 		} // end if
 
 		if (ae.getSource() == eirv.getJbRegister()) {
-			register();
+			register(eeid);
 		} // end if
 
 	}// actionPerformed
