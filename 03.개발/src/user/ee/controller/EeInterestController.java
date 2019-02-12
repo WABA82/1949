@@ -24,7 +24,7 @@ public class EeInterestController extends WindowAdapter implements ActionListene
 	private String ee_id = "";
 	private EeInterestView eiv;
 	private EeDAO ee_dao;
-	public static final int DBL_CLICK = 2; // 더블 클릭 상수.
+	private final int DBL_CLICK = 2; // 더블 클릭 상수.
 
 	public EeInterestController(EeInterestView eiv, String ee_id) {
 		this.eiv = eiv;
@@ -48,15 +48,7 @@ public class EeInterestController extends WindowAdapter implements ActionListene
 		switch (me.getClickCount()) { // 클릭 횟수 비교.
 		case DBL_CLICK: // 더블 클릭 시
 			if (me.getSource() == eiv.getjtErInfo()) { // 테이블 더블클릭 시.
-				JTable jt = eiv.getjtErInfo();
-				String erNum= String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
-				DetailErInfoVO deivo=null;
-				try {
-					deivo = ee_dao.selectDetail(erNum, ee_id);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-				EeDetailErView edev = new EeDetailErView(null, deivo, erNum, "gong1",null, deivo.getInterest());
+				showDetailErinfo();
 			} // end if
 		} // end switch
 	}// mouseClicked
@@ -70,7 +62,7 @@ public class EeInterestController extends WindowAdapter implements ActionListene
 
 		try {
 			// DB에서 관심회사를 조회.
-			List<EeInterestVO> list = ee_dao.selectInterestErInfo(ee_id);
+			List<EeInterestVO> list = ee_dao.selectInterestErInfoList(ee_id);
 
 			// JTable에 조회한 정보를 출력.
 			EeInterestVO eivo = null;
@@ -91,7 +83,7 @@ public class EeInterestController extends WindowAdapter implements ActionListene
 				rowData[5] = eivo.getLoc();
 				rowData[6] = eivo.getEducation();
 				rowData[7] = eivo.getHireType();
-				rowData[8] = eivo.getSal();
+				rowData[8] = new Integer(eivo.getSal());
 				rowData[9] = eivo.getInputDate();
 
 				// DTM에 추가
@@ -109,8 +101,19 @@ public class EeInterestController extends WindowAdapter implements ActionListene
 
 	}// setDTM
 
+	/**
+	 * 더블 클릭시 띄우는 창
+	 */
 	private void showDetailErinfo() {
-		new EeDetailErView(null, null, null, null, null, null);
+		JTable jt = eiv.getjtErInfo();
+		String erNum = String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
+		DetailErInfoVO deivo = null;
+		try {
+			deivo = ee_dao.selectDetail(erNum, ee_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} // end catch
+		new EeDetailErView(null, deivo, erNum, ee_id, null, deivo.getInterest());
 	}// showDetailErinfo
 
 	////////// 안쓰는 메소드//////////

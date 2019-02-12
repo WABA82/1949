@@ -2,7 +2,6 @@ package user.ee.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -243,7 +242,7 @@ public class EeDetailErView extends JDialog {
 
 		wrapPanel.add(jlHeart);
 		wrapPanel.add(jbCoInfo);
-		if (appStatus == null) {
+		if (appStatus != null) {
 			wrapPanel.add(jbApply);
 		}
 		wrapPanel.add(jbClose);
