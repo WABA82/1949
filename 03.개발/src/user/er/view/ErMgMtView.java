@@ -41,7 +41,7 @@ public class ErMgMtView extends JDialog {
 		add(jbRegEr);
 		
 		////////// 가데이터
-		erId = "gang123";
+		erId = "moonlight";
 		/////////
 		ErMgMtController emmc = new ErMgMtController(this,list,erId);
 		jbRegEr.addActionListener(emmc);

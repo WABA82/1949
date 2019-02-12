@@ -165,15 +165,6 @@ public class EeDAO {
 					.append(" from er_info ei, company c, user_table ut ")
 					.append(" where (ei.co_num= c.co_num)and(ut.id=c.er_id) ").append(" and (ei.er_num= ? )");
 			
-	/*		select ei.er_num, ei.subject, ut.name, ut.tel, ut.email,
-			 to_char(ei.input_date,'yyyy-mm-dd-hh-mi') input_date, c.img1, c.co_name,
-			 ei.education, ei.rank, ei.loc, ei.hire_type, ei.portfolio, ei.er_desc, ei.sal,
-			 (select COUNT(*) from interest_er
-			   where ee_id = 'gong1' and er_num='er_000031') interest
-			  from er_info ei, company c, user_table ut
-			  where (ei.co_num= c.co_num)
-			     and (ut.id=c.er_id)
-			     and (ei.er_num= 'er_000031' );*/
 			pstmt = con.prepareStatement(selectDetail.toString());
 			// 4.
 			pstmt.setString(1, eeId);
