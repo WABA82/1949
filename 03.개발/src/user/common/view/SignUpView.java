@@ -11,6 +11,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import user.common.controller.SignUpController;
+
 @SuppressWarnings("serial")
 public class SignUpView extends JDialog {
 	private JRadioButton jrbEe, jrbEr;
@@ -161,8 +163,15 @@ public class SignUpView extends JDialog {
 		jcbQuestion.addItem("가장 친한 친구는?");
 		add(jcbQuestion);
 		
+		SignUpController suc = new SignUpController(this);
+		jbAddr.addActionListener(suc);
+		jbSignUp.addActionListener(suc);
+		jbCancel.addActionListener(suc);
 		
-		setBounds(0,0,390,740);
+		addWindowListener(suc);
+		
+		
+		setBounds(lv.getX()+420,lv.getY()-100,390,740);
 		setVisible(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		
