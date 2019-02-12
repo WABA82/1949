@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import admin.vo.AddrVO;
+import admin.vo.CoInfoVO;
 import admin.vo.CoListVO;
+import admin.vo.CoModifyVO;
 import admin.vo.EeListVO;
 import admin.vo.ErListVO;
 import admin.vo.UserInfoVO;
@@ -354,13 +356,78 @@ public class AdminDAO {
 		return list;
 	}
 	
+	public CoInfoVO selectOneCo(String coNum) throws SQLException {
+		CoInfoVO civo = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = getConn();
+			StringBuilder selectOneCo = new StringBuilder();
+			selectOneCo
+			.append(" select er_id, co_num, img1, img2, img3, img4, co_name, to_char(est_date, 'yyyy-MM-dd') est_date, co_desc, member_num ")
+			.append(" from company ")
+			.append(" where co_num=? ");
+			pstmt = con.prepareStatement(selectOneCo.toString());
+			pstmt.setString(1, coNum);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				civo = new CoInfoVO(rs.getString("er_id"), rs.getString("co_num"),
+						rs.getString("img1"), rs.getString("img2"),
+						rs.getString("img3"), rs.getString("img4"),
+						rs.getString("co_name"), rs.getString("est_date"),
+						rs.getString("co_desc"), rs.getInt("member_num"));
+			}
+			
+		} finally {
+			if (rs != null) { rs.close(); }
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		return civo;
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-
+	public boolean updateCo(CoModifyVO cmvo) throws SQLException {
+		boolean flag = false;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = getConn();
+			StringBuilder updateCo = new StringBuilder();
+			
+			updateCo
+			.append(" update company ")
+			.append(" set co_name=?, est_date=?, co_desc=?, img1=?, img2=?, img3=?, img4=?, member_num=? ")
+			.append(" where co_num=?  ");
+			pstmt = con.prepareStatement(updateCo.toString());
+			pstmt.setString(1, cmvo.getCoName());
+			pstmt.setString(2, cmvo.getEstDate());
+			pstmt.setString(3, cmvo.getCoDesc());
+			pstmt.setString(4, cmvo.getImg1());
+			pstmt.setString(5, cmvo.getImg2());
+			pstmt.setString(6, cmvo.getImg3());
+			pstmt.setString(7, cmvo.getImg4());
+			pstmt.setInt(8, cmvo.getMemberNum());
+			pstmt.setString(9, cmvo.getCoNum());
+			
+			int cnt = pstmt.executeUpdate();
+			
+			if(cnt == 1) {
+				flag = true;
+			}
+			
+		} finally {
+			if(pstmt != null) { pstmt.close(); }
+			if(con != null) { con.close(); }
+		}
+		
+		return flag;
+	}
 }
