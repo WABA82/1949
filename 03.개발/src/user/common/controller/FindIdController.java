@@ -7,8 +7,10 @@ import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 import user.common.view.FindIdView;
+import user.common.view.LoginView;
 import user.common.vo.FindIdVO;
 import user.dao.CommonDAO;
 
@@ -20,39 +22,56 @@ public class FindIdController extends WindowAdapter implements ActionListener {
 		this.fiv = fiv;
 	}
 	
-	public void checkUser(FindIdVO fivo) {
-		String userId="";
-
-		CommonDAO c_dao=CommonDAO.getInstance();
-	
+	public void checkUser() {
+		JTextField jtfName=fiv.getJtfName();
+		JTextField jtfTel=fiv.getJtfTel();
+		
+		String name=jtfName.getText().trim();
+		String tel=jtfTel.getText().trim();
+		
+		if(name==null||name.equals("")) {
+			JOptionPane.showMessageDialog(fiv, "이름을 입력하세요.");
+			jtfName.requestFocus();
+			return;
+		}
+		if(tel==null||tel.equals("")) {
+			JOptionPane.showMessageDialog(fiv, "연락처를 입력하세요.");
+			jtfTel.requestFocus();
+			return;
+		}
+		FindIdVO fivo = new FindIdVO(name, tel);
+		String searchId="";
+		
 		try {
-			userId=c_dao.selectFindId(fivo);
+			searchId=CommonDAO.getInstance().selectFindId(fivo);//DB로그인 인증
+			
+			if(searchId.equals("")) {
+				JOptionPane.showMessageDialog(fiv, "이름이나 연락처를 확인하세요.");
+				jtfName.setText("");
+				jtfTel.setText("");
+				jtfName.requestFocus();
+			}else {
+			//팝업창띄우기!!!!-------------------------------
+				JOptionPane.showMessageDialog(fiv, "입력하신 정보가 일치합니다.");
+				JOptionPane.showMessageDialog(fiv, "회원님의 아이디는"+searchId+"입니다.");
+				
+			}
+			
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(fiv, "DB에서 문제가 발생했습니다.");
 			e.printStackTrace();
 		}//end catch
 		
-//		return userId;
+
 	}
 	
 	
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		String name= fiv.getJtfName().getText().trim();
-		String tel= fiv.getJtfTel().getText().trim();
 		
-		FindIdVO fivo = new FindIdVO(name, tel);
 		if(ae.getSource()==fiv.getJbValidate()) {
-			if(name==null||tel.equals("")) {
-				JOptionPane.showMessageDialog(fiv, "이름을 입력하세요.");
-				fiv.getJtfName().requestFocus();
-				return;
-			}
-			if(tel==null||tel.equals("")) {
-				JOptionPane.showMessageDialog(fiv, "연락처를 입력하세요.");
-				fiv.getJtfTel().requestFocus();
-				return;
-			}
+			checkUser();
+			
 		}
 	}
 		

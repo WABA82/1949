@@ -17,6 +17,8 @@ public class LoginView extends JFrame {
 	private JPasswordField jpfPass;
 	private JButton jbLogin;
 	private JLabel jlSignUp, jlFindID,jlFindPass;
+	
+
 
 	public LoginView() {
 		ImageIcon logoImg = new ImageIcon("C:/Users/owner/Desktop/1949logo2.png");
@@ -67,8 +69,8 @@ public class LoginView extends JFrame {
 		add(jlFindPass);
 		
 		LoginController lc = new LoginController(this);
-		jtfId.addActionListener(lc);
-		jpfPass.addActionListener(lc);
+		jtfId.addActionListener(lc);// 눌리면 로그인 눌려지게
+		jpfPass.addActionListener(lc);// 예외처리 해야함
 		jbLogin.addActionListener(lc);
 		jlSignUp.addMouseListener(lc);
 		jlFindID.addMouseListener(lc);

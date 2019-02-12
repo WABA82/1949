@@ -10,7 +10,7 @@ public class ErHiringController extends WindowAdapter implements ActionListener,
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
+		
 	}
 	
 	@Override
