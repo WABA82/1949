@@ -7,13 +7,20 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -135,9 +142,20 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 		if (e.getSource() == amv.getJbServerOn()) {
 			amv.getDlmLog().addElement("서버를 구동합니다..");
 			threadLog = new Thread(this);    // 로그를 기록하는 스레드
-			threadServer = new FileServer(); // 보내는 외부이력서를 저장, 전송하는 스레드
+			threadServer = new FileServer(); // 파일서버 스레드
 			threadLog.start();
 			threadServer.start();
+			
+			try {
+				// 파일서버를 실행시키며 파일서버에 존재하지 않은 이미지를 서버로 받는 메소드호출
+				getImgFiles(); 
+			} catch (UnknownHostException e1) {
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			} catch (ClassNotFoundException e1) {
+				e1.printStackTrace();
+			}
 		}
 		
 		if (e.getSource() == amv.getJbSaveLog()) {
@@ -159,5 +177,73 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 			amv.dispose();
 		}
 	}
+	
+	public void getImgFiles() throws UnknownHostException, IOException, ClassNotFoundException { 
+		// 파일서버에 접속해서 없는 이미지를 내려받는 메소드
+		
+		Socket client = null;
+		DataOutputStream dos = null;
+		DataInputStream dis = null;
+		ObjectInputStream ois = null;
+		ObjectOutputStream oos = null;
+		FileOutputStream fos = null;
+		
+		try {
+			client = new Socket("localhost", 7002);
+			dos = new DataOutputStream(client.getOutputStream());
+			dis = new DataInputStream(client.getInputStream());
+			dos.writeUTF("coImgs_list_req"); // co 파일목록 요청
+			dos.flush();
 
+			ois = new ObjectInputStream(client.getInputStream());
+
+			// 파일서버로부터 파일명을 전달받음
+			List<String> listImg = (List<String>)ois.readObject();
+			
+			File dir = new File("C:/Users/owner/youngRepositories/1949/03.개발/src/admin/img/co");
+			for(File f : dir.listFiles()) {
+				listImg.remove(f.getName()); // 존재하는 파일은 제외
+			}
+			
+			// listImg에 담긴 파일명들이 서버에 없는 파일들, 파일서버에 전송요청
+			oos = new ObjectOutputStream(client.getOutputStream());
+			
+			oos.writeObject(listImg);
+			oos.flush();
+			
+			int arrCnt = 0;
+			
+			byte[] readData = new byte[512];
+			int len = 0;
+			String fileName = "";
+			
+			int fileNum = dis.readInt(); // 전송받을 파일의 수 받기
+			
+			for(int i=0; i<fileNum; i++) {
+				fileName = dis.readUTF(); // 파일명 받기
+				System.out.println("--파일명 : "+fileName);
+				
+				arrCnt = dis.readInt(); // 파일 크기 받기
+				
+				fos = new FileOutputStream(dir.getAbsolutePath()+"/"+fileName);
+				
+				for(int j=0; j<arrCnt; j++) {
+					len = dis.read(readData);
+					fos.write(readData, 0, len);
+				}
+				fos.flush();
+				System.out.println("파일 다운완료");
+				
+			}
+			msgCenter("파일받기 완료");
+			
+		} finally {
+			if (fos != null) { fos.close(); }
+			if (dis != null) { dis.close(); }
+			if (oos != null) { oos.close(); }
+			if (ois != null) { ois.close(); }
+			if (dos != null) { dos.close(); }
+			if (client != null) { client.close(); }
+		}
+	}
 }

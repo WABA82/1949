@@ -11,6 +11,7 @@ import java.util.List;
 import user.common.view.FindIdView;
 import user.common.view.LoginView;
 import user.common.vo.FindIdVO;
+import user.common.vo.FindPassVO;
 import user.common.vo.UserInsertVO;
 
 public class CommonDAO {
@@ -50,7 +51,7 @@ public class CommonDAO {
 	
 	public String selectFindId(FindIdVO fivo)throws SQLException {
 		FindIdView fiv=new FindIdView(lv);
-		String userId="";
+		String searchId="";
 		
 		Connection con=null;
 		PreparedStatement pstmt=null;
@@ -58,32 +59,31 @@ public class CommonDAO {
 		
 		try {
 			con=getConn();
-			String login="select name from user_table where name=? and tel=?";
+			String selectId="select id from user_table where name=? and tel=?";
 
-			pstmt=con.prepareStatement(login);
+			pstmt=con.prepareStatement(selectId);
 			
 			pstmt.setString(1, fivo.getName());
 			pstmt.setString(2, fivo.getTel());
 
 			rs=pstmt.executeQuery();
 			if(rs.next()) {
-				userId=rs.getString("id");
+				searchId=rs.getString("id");
 			}
 
 		}finally {
-		//6.
 			if(rs!=null) {rs.close();}
 			if(pstmt!=null) {pstmt.close();}
 			if(con!=null) {con.close();}
 		}
-		return userId;
+		return searchId;
 
 	}
 	
 
 	
-	public boolean searchId(String id) throws SQLException {
-		String searchId ="";
+	public boolean selectFindPass(FindPassVO fpvo) throws SQLException {
+		String searchPass ="";
 		boolean flag = false;
 		
 		Connection con = null;
@@ -91,12 +91,16 @@ public class CommonDAO {
 		ResultSet rs = null;
 		try {
 			con = getConn();
-			String selectId = "select id from simple_login where id = ?	";
-			pstmt = con.prepareStatement(selectId);
-			pstmt.setString(1, id);
+			String selectPass = "select pass from user_table where id = ? and question_type = ? and answer = ? ";
+			pstmt = con.prepareStatement(selectPass);
+			
+			pstmt.setString(1, fpvo.getId());
+			pstmt.setString(2, fpvo.getqType());
+			pstmt.setString(3, fpvo.getAnswer());
+			
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				searchId = rs.getString("id");
+				searchPass = rs.getString("pass");
 			}//end while
 		}finally {
 			//6.
@@ -104,7 +108,7 @@ public class CommonDAO {
 			if(pstmt!=null) {pstmt.close();}
 			if(con!=null) {con.close();}
 		}
-		if(searchId.equals("")) {
+		if(searchPass.equals("")) {
 			flag = true;
 		}
 		return flag;
