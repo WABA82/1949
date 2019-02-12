@@ -14,7 +14,9 @@ import javax.swing.table.DefaultTableModel;
 
 import admin.dao.AdminDAO;
 import admin.view.AdminMgMtView;
+import admin.view.CoModifyView;
 import admin.view.UserModifyView;
+import admin.vo.CoInfoVO;
 import admin.vo.CoListVO;
 import admin.vo.EeListVO;
 import admin.vo.ErListVO;
@@ -253,6 +255,16 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 			if (me.getSource() == ammv.getJtCo()) {
 				
 				jt = ammv.getJtCo();
+				
+				String coNum = (String)jt.getValueAt(jt.rowAtPoint(me.getPoint()), 1);
+				
+				try {
+					CoInfoVO clvo = a_dao.selectOneCo(coNum);
+					new CoModifyView(ammv, clvo);
+				} catch (SQLException e) {
+					msgCenter("DB 접속 실패했습니다.");
+					e.printStackTrace();
+				}
 			}
 			break;
 		}

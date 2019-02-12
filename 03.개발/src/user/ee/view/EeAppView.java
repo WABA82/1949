@@ -36,27 +36,22 @@ public class EeAppView extends JDialog {
 		setVisible(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		
-	}
-	
+	}// »ý¼ºÀÚ
 	
 	
 	public JTable getJtEr() {
 		return jtApp;
 	}
 
-
-
 	public DefaultTableModel getDtmEr() {
 		return dtmApp;
 	}
 
-
-
 	public static void main(String[] args) {
-		EeMainVO em_vo = new EeMainVO("asd", "sdf", "fds", "fsf");
-		EeMainView emv=new EeMainView(em_vo);
-		List<EeAppVO> eavo=new ArrayList<EeAppVO>();
-		new EeAppView(emv,eavo);
-	}
+//		EeMainVO em_vo = new EeMainVO("asd", "sdf", "fds", "fsf");
+//		EeMainView emv=new EeMainView(em_vo);
+//		List<EeAppVO> eavo=new ArrayList<EeAppVO>();
+		new EeAppView(null,null);
+	}// main
 	
-}
+}// class
