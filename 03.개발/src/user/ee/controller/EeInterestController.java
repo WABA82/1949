@@ -109,9 +109,9 @@ public class EeInterestController extends WindowAdapter implements ActionListene
 
 	}// setDTM
 
-	private void showDetailErinfo() {
-		new EeDetailErView(null, null, null, null, null, null);
-	}// showDetailErinfo
+//	private void showDetailErinfo() {
+//		new EeDetailErView(null, null, null, null, null, null);
+//	}// showDetailErinfo
 
 	////////// 안쓰는 메소드//////////
 	@Override

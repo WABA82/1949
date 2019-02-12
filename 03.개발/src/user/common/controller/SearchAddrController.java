@@ -19,19 +19,25 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
 		this.sav = sav;
 		this.jd = jd;
 		this.addrSeq = addrSeq;
-	}
+	}//积己磊
 	
-	public void search(String dong) {
-		
-	}
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		
-	}
+	public void actionPerformed(ActionEvent ae) {
+		if(ae.getSource()==sav.getJbSearch()) {
+			search(addrSeq);
+		}else if(ae.getSource()==sav.getJbOk()) {
+			
+		}else if(ae.getSource()==sav.getJbCancel()) {
+			sav.dispose();
+		}
+	}//滚瓢 贸府
 	
 	@Override
 	public void windowClosing(WindowEvent e) {
 		sav.dispose();
-	}
-}
+	}//closing
+	public void search(String dong) {
+		
+	}//search
+}//class

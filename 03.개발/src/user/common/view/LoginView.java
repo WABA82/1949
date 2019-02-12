@@ -75,7 +75,7 @@ public class LoginView extends JFrame {
 		jlFindPass.addMouseListener(lc);
 		addWindowListener(lc);
 		
-		setBounds(0,0,400,400);
+		setBounds(200,200,400,400);
 		setVisible(true);
 		setResizable(true);
 		
