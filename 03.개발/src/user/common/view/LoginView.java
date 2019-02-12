@@ -17,6 +17,8 @@ public class LoginView extends JFrame {
 	private JPasswordField jpfPass;
 	private JButton jbLogin;
 	private JLabel jlSignUp, jlFindID,jlFindPass;
+	
+
 
 	public LoginView() {
 		ImageIcon logoImg = new ImageIcon("C:/Users/owner/Desktop/1949logo2.png");
