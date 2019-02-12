@@ -18,12 +18,12 @@ public class EeMainView extends JFrame {
 	
 	private JButton jbEeInfo, jbErInfo, jbInterestEr, jbApp;
 	private JLabel jlUserInfo, jlLogOut, jlActivation;
-	
+	 
 	public EeMainView(EeMainVO emv) {
 //		super("1949 - 일반사용자 ["+emv.getName()+"]");
 		
 		JLabel jlAct = new JLabel("기본정보 등록여부 : ");
-		JLabel jlImg = new JLabel(new ImageIcon("C:/dev/homework/1949/1949/03.개발/no_img_files/no_ee_img.png"));
+		JLabel jlImg = new JLabel(new ImageIcon("C:/dev/1949/03.개발/가데이터/구직자사진/150x200px/각키.jpg"));
 		jlImg.setBorder(new TitledBorder("내 이미지"));
 		
 		jlActivation = new JLabel("O"/*emv.getActivation()*/);

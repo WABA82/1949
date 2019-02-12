@@ -19,7 +19,8 @@ public class SignUpView extends JDialog {
 	private JButton jbSignUp, jbCancel, jbAddr;
 	private JComboBox<String> jcbQuestion;
 	
-	public SignUpView() {
+	public SignUpView(LoginView lv) {
+		super(lv, "회원가입", true);
 		setTitle("회원 가입"); //다음 작업에 상위 프레임으로 타이틀이랑 모달구현하기(x좌표 y좌표 받아서 화면띄우기)
 		jrbEe = new JRadioButton("일반사용자");
 		jrbEr = new JRadioButton("기업사용자");

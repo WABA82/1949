@@ -15,7 +15,7 @@ public class FindIdView extends JDialog {
 	private JButton jbValidate, jbClose;
 	
 	public FindIdView(LoginView lv) {
-		super(lv, "1949 - 아이디 찾기 인증");
+		super(lv, "1949 - 아이디 찾기 인증",true);
 //	public FindIdView() {
 		
 		jtfName = new JTextField();
