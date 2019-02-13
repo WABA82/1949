@@ -468,15 +468,15 @@ public class AdminDAO {
 		.append(" where er_num = ? ");
 		
 		pstmt1 = con.prepareStatement(updateEr.toString());
-		pstmt1.setString(1, emvo.getSubject());
-		pstmt1.setString(2, emvo.getEducation());
-		pstmt1.setString(3, emvo.getRank());
-		pstmt1.setString(4, emvo.getLoc());
-		pstmt1.setString(5, emvo.getHireType());
-		pstmt1.setString(6, emvo.getPortfolio());
-		pstmt1.setString(7, emvo.getErDesc());
-		pstmt1.setInt(8, emvo.getSal());
-		pstmt1.setString(9, emvo.getErNum());
+//		pstmt1.setString(1, emvo.getSubject());
+//		pstmt1.setString(2, emvo.getEducation());
+//		pstmt1.setString(3, emvo.getRank());
+//		pstmt1.setString(4, emvo.getLoc());
+//		pstmt1.setString(5, emvo.getHireType());
+//		pstmt1.setString(6, emvo.getPortfolio());
+//		pstmt1.setString(7, emvo.getErDesc());
+//		pstmt1.setInt(8, emvo.getSal());
+//		pstmt1.setString(9, emvo.getErNum());
 		
 		int cnt1 = pstmt1.executeUpdate();
 		
