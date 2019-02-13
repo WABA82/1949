@@ -139,11 +139,6 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 				case "C" :
 					rowData[7] = "경력";
 					break;
-				///////////////////////////// 가데이터 수정 후 삭제 예정 //////////////////
-				default:
-					rowData[7] = "신입";
-					break;
-				//////////////////////////////////////////////////////////////////
 				}
 				rowData[8] = elvo.getLoc();
 				rowData[9] = elvo.getEducation();

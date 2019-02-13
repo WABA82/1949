@@ -9,9 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import user.ee.vo.EeHiringVO;
+import user.ee.vo.EeInterestVO;
 import user.er.vo.ErAddVO;
 import user.er.vo.ErDefaultVO;
 import user.er.vo.ErDetailVO;
+import user.er.vo.ErInterestVO;
 import user.er.vo.ErListVO;
 import user.er.vo.ErModifyVO;
 
@@ -275,6 +277,56 @@ public class ErDAO {
 		
 		return edtvo;
 	}
+
+	public List<ErInterestVO> selectInterestEEInfoList(String er_id) {
+		List<ErInterestVO> list = new ArrayList<>();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {// try : DB에서 조회하기
+
+			con = getConn(); // 커넥션 얻기.
+
+			StringBuilder slcInterestErInfo = new StringBuilder(); // 관심구인정보조회 하기
+			slcInterestErInfo
+					.append(" select ei.ER_NUM, ei.SUBJECT, c.CO_NAME, ei.RANK, ei.LOC, ei.EDUCATION, ei.SAL,");
+			slcInterestErInfo.append(
+					" ei.HIRE_TYPE, ei.PORTFOLIO, ei.ER_DESC,  to_char(ei.INPUT_DATE, 'yyyy-dd-mm') INPUT_DATE");
+			slcInterestErInfo.append(" from interest_er ie, er_info ei, company c");
+			slcInterestErInfo.append(" where (ie.er_num = ei.er_num) and (c.co_num=ei.co_num) and ie.ee_id = ?");
+			pstmt = con.prepareStatement(slcInterestErInfo.toString());
+
+			// 바인드변수 값 넣기
+			pstmt.setString(1, ee_id);
+
+			rs = pstmt.executeQuery();
+			EeInterestVO eivo = null;
+			// 조회된 데이터
+			while (rs.next()) {
+				eivo = new EeInterestVO(rs.getString("er_num"), rs.getString("SUBJECT"), rs.getString("CO_NAME"),
+						rs.getString("RANK"), rs.getString("LOC"), rs.getString("EDUCATION"), rs.getString("HIRE_TYPE"),
+						rs.getString("INPUT_DATE"), rs.getInt("SAL"));
+				list.add(eivo);
+			} // end if
+
+		} finally { // finally : 연결끊기.
+			if (rs != null) {
+				rs.close();
+			} // end if
+			if (pstmt != null) {
+				pstmt.close();
+			} // end if
+			if (con != null) {
+				con.close();
+			} // end if
+		} // end finally
+
+		return list;
+		
+		return null;
+	}//selectInterestEEInfoList
 	
 	public ErDefaultVO selectErDefault(String erId) throws SQLException{
 		ErDefaultVO edfvo= null;
@@ -318,4 +370,12 @@ public class ErDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}*/
-}
+	
+	
+	//////////////////////////////////////////재현 시작///////////////////////////////////////////////
+	
+	
+	
+}// class
+
+
