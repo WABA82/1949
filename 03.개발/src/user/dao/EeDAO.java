@@ -395,9 +395,10 @@ public class EeDAO {
 			EeAppVO eavo = null;
 			// VO생성 후 list에 담기
 			while (rs.next()) {
-				eavo = new EeAppVO(rs.getString("app_num"),rs.getString("er_num"), rs.getString("subject"), rs.getString("co_name"),
+				eavo = new EeAppVO(rs.getString("app_num"), rs.getString("er_num"), rs.getString("subject"), rs.getString("co_name"),
 						rs.getString("rank"), rs.getString("loc"), rs.getString("education"), rs.getString("hire_type"),
 						rs.getString("app_date"), rs.getString("app_status"), rs.getInt("sal"));
+				System.out.println(rs.getString("er_num"));
 				list.add(eavo);
 			} // end while
 
@@ -416,13 +417,13 @@ public class EeDAO {
 		return list;
 	}// selectAppList
 
-//	public static void main(String[] args) {
-//		EeDAO ee_dao = EeDAO.getInstance();
-//		try {
-//			System.out.println(ee_dao.selectAppList("gong1"));
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}// end catch
-//	}// main
+	public static void main(String[] args) {
+		EeDAO ee_dao = EeDAO.getInstance();
+		try {
+			System.out.println(ee_dao.selectAppList("gong1"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}// end catch
+	}// main
 
 }// class
