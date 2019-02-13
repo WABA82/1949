@@ -16,6 +16,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import admin.controller.ErModifyController;
 import admin.vo.ErInfoVO;
 
 /**
@@ -36,7 +37,8 @@ public class ErModifyView extends JDialog {
 
 		/* 컴포넌트 생성하기 */
 		// 이미지아이콘 : 회사로고
-		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/admin/img/co/no_co_img1.png");
+		///////////////////////////// 파일서버 구현 후 변경예정 ////////////////////////////////////
+		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/img/coImg/"+eivo.getImg()); 
 
 		// 라벨들
 		JLabel jlImage = new JLabel(erLogo);
@@ -53,21 +55,21 @@ public class ErModifyView extends JDialog {
 		JLabel jlPortfolio = new JLabel("포트폴리오");
 
 		// 텍스트 필드 - 수정불가
-		JTextField jtfName = new JTextField();
-		JTextField jtfTel = new JTextField();
-		JTextField jtfEmail = new JTextField();
-		JTextField jtfCoName = new JTextField();
+		JTextField jtfName = new JTextField(eivo.getName());
+		JTextField jtfTel = new JTextField(eivo.getTel());
+		JTextField jtfEmail = new JTextField(eivo.getEmail());
+		JTextField jtfCoName = new JTextField(eivo.getCoName());
 		jtfName.setEditable(false);
 		jtfTel.setEditable(false);
 		jtfEmail.setEditable(false);
 		jtfCoName.setEditable(false);
 
 		// 텍스트 필드
-		jtfSubject = new JTextField();
-		jtfSal = new JTextField();
+		jtfSubject = new JTextField(eivo.getSubject());
+		jtfSal = new JTextField(String.valueOf(eivo.getSal()));
 
 		// 상세정보
-		jtaErDesc = new JTextArea();
+		jtaErDesc = new JTextArea(eivo.getErDesc());
 		jtaErDesc.setRows(5);
 		jtaErDesc.setColumns(25);
 		JScrollPane jspErDesc = new JScrollPane(jtaErDesc);
@@ -85,16 +87,31 @@ public class ErModifyView extends JDialog {
 		// 구인정보 콤보박스
 		String[] rItem = { "신입", "경력" };
 		jcbRank = new JComboBox<>(rItem);
+		jcbRank.setSelectedItem(eivo.getRank().equals("N") ? "신입" : "경력");
 		String[] eItem = { "고졸", "초대졸", "석사", "박사" };
 		jcbEducation = new JComboBox<>(eItem);
+		jcbEducation.setSelectedItem(eivo.getEducation());
 		String[] lItem = { "서울", "경기", "인천", "대전", "세종", "충남", "충북", "광주", "전남", "전북", "대구", "경북", "부산", "울산", "경남",
 				"강원", "제주", "전국" };
 		jcbLoc = new JComboBox<>(lItem);
+		jcbLoc.setSelectedItem(eivo.getLoc());
 		String[] hItem = { "정규직", "계약직", "프리 " };
 		jcbHireType = new JComboBox<>(hItem);
+		switch(eivo.getHireType()) {
+		case "C":
+			jcbHireType.setSelectedItem("정규직");
+			break;
+		case "N":
+			jcbHireType.setSelectedItem("계약직");
+			break;
+		case "F":
+			jcbHireType.setSelectedItem("프리");
+			break;
+		}
 		String[] pItem = { "YES", "NO" };
 		jcbPortfolio = new JComboBox<>(pItem);
-
+		jcbPortfolio.setSelectedItem(eivo.getPortfolio().equals("Y") ? "YES" : "NO");
+		
 		// 버튼들
 		jbModify = new JButton("수정");
 		jbRemove = new JButton("삭제");
@@ -190,6 +207,35 @@ public class ErModifyView extends JDialog {
 		skillGridPanel.add(jchCSS);
 		skillGridPanel.add(jchLinux);
 		skillGridPanel.add(jchJS);
+		
+		for(String skill : eivo.getListSkill()) {
+			switch(skill) {
+			case "s_01":
+				jchJava.setSelected(true);
+				break;
+			case "s_02":
+				jchJspServlet.setSelected(true);
+				break;
+			case "s_03":
+				jchSpring.setSelected(true);
+				break;
+			case "s_04":
+				jchOracle.setSelected(true);
+				break;
+			case "s_05":
+				jchHTML.setSelected(true);
+				break;
+			case "s_06":
+				jchCSS.setSelected(true);
+				break;
+			case "s_07":
+				jchLinux.setSelected(true);
+				break;
+			case "s_08":
+				jchJS.setSelected(true);
+				break;
+			}
+		}
 
 		// 최하단 버튼
 		jbModify.setBounds(180, 575, 60, 25);
@@ -212,6 +258,12 @@ public class ErModifyView extends JDialog {
 		add(jbCancel);
 
 		/* 이벤트등록 */
+		
+		ErModifyController emc = new ErModifyController(this, ammv, eivo);
+		jbCancel.addActionListener(emc);
+		jbModify.addActionListener(emc);
+		jbRemove.addActionListener(emc);
+		addWindowListener(emc);
 
 		/* 프레임 크기 설정 및 가시화 */
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
