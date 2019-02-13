@@ -50,19 +50,17 @@ public class FindPassController extends WindowAdapter implements ActionListener 
 		}
 		
 		FindPassVO fpvo= new FindPassVO(id, qType, answer);
-		boolean	flag= false;
 		LoginView lv=new LoginView();
-		String ID="";
 		
 		try {
-			flag=CommonDAO.getInstance().selectFindPass(fpvo);
+			//flag=CommonDAO.getInstance().selectFindPass(fpvo);
 			
-			if(flag=false) {
-				JOptionPane.showMessageDialog(fpv, "정보가 올바르지 않습니다.");
-			}else{
+			if(CommonDAO.getInstance().selectFindPass(fpvo)) {
 				JOptionPane.showMessageDialog(fpv, "입력하신 정보가 일치합니다.");
-				//새비밀번호변경창띄우기
-				SetNewPassView snpv=new SetNewPassView(lv,ID);
+				SetNewPassView snpv=new SetNewPassView(lv,id);
+				return;
+			}else{
+				JOptionPane.showMessageDialog(fpv, "정보가 올바르지 않습니다.");
 				
 			}
 			
