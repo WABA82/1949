@@ -40,6 +40,33 @@ public class CommonDAO {
 		return con;
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public String selectFindId(FindIdVO fivo)throws SQLException {
 		String searchId="";
 		
@@ -86,6 +113,11 @@ public class CommonDAO {
 			pstmt.setString(2, fpvo.getqType());
 			pstmt.setString(3, fpvo.getAnswer());
 			
+/*			int cnt=pstmt.executeUpdate();
+			if(cnt==1) {
+				flag=true;
+			}==========================다시하기!!!
+*/			
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				searchPass = rs.getString("count(*)");
@@ -119,18 +151,16 @@ public class CommonDAO {
 			pstmt.setString(2, spvo.getId());
 			
 			int cnt=pstmt.executeUpdate();
+			if(cnt==1) {
+				flag=true;
+			}
 		}finally {
 			
 			if(pstmt!=null) {pstmt.close();}
 			if(con!=null) {con.close();}
 		}
-		
-		
-		
-		
-		
-		
 		return flag;
+		
 	}
 	
 }
