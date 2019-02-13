@@ -278,7 +278,7 @@ public class ErDAO {
 		return edtvo;
 	}
 
-	public List<ErInterestVO> selectInterestEEInfoList(String er_id) {
+	public List<ErInterestVO> selectInterestEEInfoList(String er_id)throws SQLException {
 		List<ErInterestVO> list = new ArrayList<>();
 		
 		Connection con = null;
@@ -299,7 +299,7 @@ public class ErDAO {
 			pstmt = con.prepareStatement(slcInterestErInfo.toString());
 
 			// 바인드변수 값 넣기
-			pstmt.setString(1, ee_id);
+			pstmt.setString(1, er_id);
 
 			rs = pstmt.executeQuery();
 			EeInterestVO eivo = null;
@@ -308,7 +308,7 @@ public class ErDAO {
 				eivo = new EeInterestVO(rs.getString("er_num"), rs.getString("SUBJECT"), rs.getString("CO_NAME"),
 						rs.getString("RANK"), rs.getString("LOC"), rs.getString("EDUCATION"), rs.getString("HIRE_TYPE"),
 						rs.getString("INPUT_DATE"), rs.getInt("SAL"));
-				list.add(eivo);
+//				list.add(eivo);
 			} // end if
 
 		} finally { // finally : 연결끊기.
@@ -325,7 +325,6 @@ public class ErDAO {
 
 		return list;
 		
-		return null;
 	}//selectInterestEEInfoList
 	
 	public ErDefaultVO selectErDefault(String erId) throws SQLException{

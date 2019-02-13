@@ -9,12 +9,12 @@ import java.awt.event.WindowAdapter;
 public class ErHiringController extends WindowAdapter implements ActionListener, MouseListener {
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mouseClicked(MouseEvent me) {
 		
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent ae) {
 		
 	}
 

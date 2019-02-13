@@ -6,12 +6,10 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import user.common.vo.ErMainVO;
 import user.er.vo.ErHiringVO;
 
 @SuppressWarnings("serial")
