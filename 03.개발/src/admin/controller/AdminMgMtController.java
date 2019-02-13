@@ -15,10 +15,12 @@ import javax.swing.table.DefaultTableModel;
 import admin.dao.AdminDAO;
 import admin.view.AdminMgMtView;
 import admin.view.CoModifyView;
+import admin.view.ErModifyView;
 import admin.view.UserModifyView;
 import admin.vo.CoInfoVO;
 import admin.vo.CoListVO;
 import admin.vo.EeListVO;
+import admin.vo.ErInfoVO;
 import admin.vo.ErListVO;
 import admin.vo.UserInfoVO;
 import admin.vo.UserListVO;
@@ -84,7 +86,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 				elvo = list.get(i);
 				rowData[0] = String.valueOf(i+1);
 				rowData[1] = elvo.getEeNum();
-				rowData[2] = new ImageIcon("C:/Users/owner/youngRepositories/1949/03.개발/src/img/eeImg/"+elvo.getImg());
+				rowData[2] = new ImageIcon("C:/dev/1949/03.개발/src/img/eeImg/"+elvo.getImg());
 				rowData[3] = elvo.getEeId();
 				rowData[4] = elvo.getName();
 				switch(elvo.getRank()) {
@@ -181,7 +183,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 				clvo = list.get(i);
 				rowData[0] = String.valueOf(i+1);
 				rowData[1] = clvo.getCoNum();
-				rowData[2] = new ImageIcon("C:/Users/owner/youngRepositories/1949/03.개발/src/img/coImg/"+clvo.getImg1());
+				rowData[2] = new ImageIcon("C:/dev/1949/03.개발/src/img/coImg/"+clvo.getImg1());
 				rowData[3] = clvo.getCoName();
 				rowData[4] = clvo.getErId();
 				rowData[5] = clvo.getEstDate();
@@ -266,7 +268,21 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 					e.printStackTrace();
 				}
 			}
-			break;
+			
+			if (me.getSource() == ammv.getJtEr()) {
+				
+				jt = ammv.getJtEr();
+				
+				String erNum = (String)jt.getValueAt(jt.rowAtPoint(me.getPoint()), 1);
+				
+				try {
+					ErInfoVO eivo = a_dao.selectOneEr(erNum);
+					new ErModifyView(ammv, eivo);
+				} catch (SQLException e) {
+					msgCenter("DB 접속 실패했습니다.");
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 

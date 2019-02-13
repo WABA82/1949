@@ -13,6 +13,7 @@ import admin.vo.CoInfoVO;
 import admin.vo.CoListVO;
 import admin.vo.CoModifyVO;
 import admin.vo.EeListVO;
+import admin.vo.ErInfoVO;
 import admin.vo.ErListVO;
 import admin.vo.UserInfoVO;
 import admin.vo.UserListVO;
@@ -102,7 +103,7 @@ public class AdminDAO {
 			
 			StringBuilder selectAllEe = new StringBuilder();
 			selectAllEe
-			.append(" select ee_num, img, ee_id, name, rank, loc, education, age, portfolio, gender, ext_resume, ei.input_date ")
+			.append(" select ee_num, img, ee_id, name, rank, loc, education, age, portfolio, gender, ext_resume, TO_CHAR(ei.input_date, 'yyyy-mm-dd') input_date ")
 			.append(" from ee_info ei, user_table u ")
 			.append(" where ei.ee_id = u.id order by ee_num desc  ");
 			
@@ -141,7 +142,7 @@ public class AdminDAO {
 			
 			StringBuilder selectAllEr = new StringBuilder();
 			selectAllEr
-			.append(" select er_num, subject, co_name, er_id, name, tel, rank, loc, education, hire_type, sal, ei.input_date ")
+			.append(" select er_num, subject, co_name, er_id, name, tel, rank, loc, education, hire_type, sal, TO_CHAR(ei.input_date, 'yyyy-mm-dd') input_date ")
 			.append(" from company c, er_info ei, user_table u ")
 			.append(" where c.co_num = ei.co_num AND c.er_id = u.id order by er_num desc ");
 			
@@ -181,7 +182,7 @@ public class AdminDAO {
 			
 			StringBuilder selectAllCo = new StringBuilder();
 			selectAllCo
-			.append(" select co_num, img1, co_name, er_id, est_date, member_num, input_date ")
+			.append(" select co_num, img1, co_name, er_id, est_date, member_num, TO_CHAR(input_date, 'yyyy-mm-dd') input_date ")
 			.append(" from company order by co_num desc ");
 			
 			pstmt = con.prepareStatement(selectAllCo.toString());
@@ -354,6 +355,67 @@ public class AdminDAO {
 		}
 		
 		return list;
+	}
+	
+	public ErInfoVO selectOneEr(String erNum) throws SQLException {
+		ErInfoVO eivo = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt1 = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs1 = null;
+		ResultSet rs2 = null;
+		
+		try {
+			con = getConn();
+			
+			StringBuilder selectListSkill = new StringBuilder();
+			selectListSkill
+			.append(" select skill_num ")
+			.append(" from selected_skill  ")
+			.append(" where er_num=? ");
+			
+			pstmt1 = con.prepareStatement(selectListSkill.toString());
+			pstmt1.setString(1, erNum);
+			
+			rs1 = pstmt1.executeQuery();
+			List<String> listSkill = new ArrayList<String>();
+			while(rs1.next()) {
+				listSkill.add(rs1.getString("skill_num"));
+			}
+			System.out.println(listSkill);
+			
+			StringBuilder selectOneEr = new StringBuilder();
+			selectOneEr
+			.append(" select c.img1, ut.id er_id, ut.name, ut.email,  ")
+			.append(" ut.tel, to_char(ei.input_date, 'yyyy-MM-dd') input_date,  ")
+			.append(" ei.subject, c.co_name, ei.education, ei.rank, ei.loc, ei.hire_type,  ")
+			.append(" ei.portfolio, ei.er_desc, ei.sal  ")
+			.append(" from er_info ei, company c, user_table ut  ")
+			.append(" where c.co_num = ei.co_num and c.er_id = ut.id and ei.er_num=? ");
+			
+			pstmt2 = con.prepareStatement(selectOneEr.toString());
+			pstmt2.setString(1, erNum);
+			
+			rs2 = pstmt1.executeQuery();
+			
+			if(rs2.next()) { /////////////////////////////////////////////////////// 에러발생 수정 필요 0212
+				eivo = new ErInfoVO(rs2.getString("img1"), erNum, rs2.getString("er_id"), rs2.getString("name"), 
+						rs2.getString("email"), rs2.getString("tel"), rs2.getString("input_date"), rs2.getString("subject"), 
+						rs2.getString("co_name"), rs2.getString("education"), rs2.getString("rank"), rs2.getString("loc"), 
+						rs2.getString("hire_type"), rs2.getString("portfolio"), rs2.getString("er_desc"), rs2.getInt("sal"), 
+						listSkill);
+			}
+			
+		} finally {
+			if (rs2 != null) { rs2.close(); }
+			if (rs1 != null) { rs1.close(); }
+			if (pstmt1 != null) { pstmt1.close(); }
+			if (pstmt2 != null) { pstmt2.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		return eivo;
 	}
 	
 	public CoInfoVO selectOneCo(String coNum) throws SQLException {
