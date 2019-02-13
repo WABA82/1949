@@ -14,6 +14,9 @@ import user.common.view.FindIdView;
 import user.common.view.FindPassView;
 import user.common.view.LoginView;
 import user.common.view.SignUpView;
+import user.dao.CommonDAO;
+import user.ee.view.EeMainView;
+import user.er.view.ErMainView;
 
 public class LoginController extends WindowAdapter implements ActionListener, MouseListener {
 	private LoginView lv;
@@ -37,6 +40,7 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 	}
 	@Override
 	public void actionPerformed(ActionEvent ae) {
+		
 		if(ae.getSource()==lv.getJbLogin()) {
 			login();
 		}//end if
@@ -67,7 +71,15 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 			lv.getJpfPass().requestFocus();
 			return;
 		}
-	
+		String userType="";
+		CommonDAO c_dao = CommonDAO.getInstance();
+		
+		userType=c_dao.login(id, pass );
+		if(userType=="E") {
+			new EeMainView();//생성자 안에 들어갈 emvo....등등 만들기
+		}else {
+			new ErMainView();//DAO의 selecteemain...등등 만들기
+		}
 		
 	}//login
 	
