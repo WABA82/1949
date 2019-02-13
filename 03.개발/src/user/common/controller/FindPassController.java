@@ -11,6 +11,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import user.common.view.FindPassView;
+import user.common.view.LoginView;
+import user.common.view.SetNewPassView;
 import user.common.vo.FindPassVO;
 import user.dao.CommonDAO;
 
@@ -36,27 +38,32 @@ public class FindPassController extends WindowAdapter implements ActionListener 
 			jtfId.requestFocus();
 			return;
 		}
-		if(qType==null||qType.equals("")) {//qType==null||answer==null
+		if(qType==null||qType.equals("")) {
 			JOptionPane.showMessageDialog(fpv, "인증질문을 선택해주세요.");
 			jcbQ.requestFocus();
 			return;
 		}
-		if(answer==null||answer.equals("")) {//qType==null||answer==null
+		if(answer==null||answer.equals("")) {
 			JOptionPane.showMessageDialog(fpv, "질문답을 입력해주세요.");
 			jtfAnswer.requestFocus();
 			return;
 		}
 		
 		FindPassVO fpvo= new FindPassVO(id, qType, answer);
-		boolean	searchPass= false;
+		boolean	flag= false;
+		LoginView lv=new LoginView();
+		String ID="";
 		
 		try {
-		 searchPass=CommonDAO.getInstance().selectFindPass(fpvo);
+			flag=CommonDAO.getInstance().selectFindPass(fpvo);
 			
-			if(searchPass=true) {
+			if(flag=false) {
 				JOptionPane.showMessageDialog(fpv, "정보가 올바르지 않습니다.");
-			}else {
+			}else{
 				JOptionPane.showMessageDialog(fpv, "입력하신 정보가 일치합니다.");
+				//새비밀번호변경창띄우기
+				SetNewPassView snpv=new SetNewPassView(lv,ID);
+				
 			}
 			
 		} catch (SQLException e) {
@@ -81,3 +88,4 @@ public class FindPassController extends WindowAdapter implements ActionListener 
 		fpv.dispose();
 	}
 }
+//count(*)가1이면존재 0이면 존재하지않음
