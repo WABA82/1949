@@ -14,6 +14,7 @@ import user.ee.vo.EeAppVO;
 import user.ee.vo.EeHiringVO;
 import user.ee.vo.EeInsertVO;
 import user.ee.vo.EeInterestAndAppVO;
+import user.ee.vo.EeRegVO;
 import user.ee.vo.EeInterestVO;
 
 public class EeDAO {
@@ -163,14 +164,8 @@ public class EeDAO {
 					.append(" from er_info ei, company c, user_table ut ")
 					.append(" where (ei.co_num= c.co_num)and(ut.id=c.er_id) ").append(" and (ei.er_num= ? )");
 
-			/*
-			 * select ei.er_num, ei.subject, ut.name, ut.tel, ut.email,
-			 * to_char(ei.input_date,'yyyy-mm-dd-hh-mi') input_date, c.img1, c.co_name,
-			 * ei.education, ei.rank, ei.loc, ei.hire_type, ei.portfolio, ei.er_desc,
-			 * ei.sal, (select COUNT(*) from interest_er where ee_id = 'gong1' and
-			 * er_num='er_000031') interest from er_info ei, company c, user_table ut where
-			 * (ei.co_num= c.co_num) and (ut.id=c.er_id) and (ei.er_num= 'er_000031' );
-			 */
+			
+
 			pstmt = con.prepareStatement(selectDetail.toString());
 			// 4.
 			pstmt.setString(1, eeId);
@@ -204,8 +199,6 @@ public class EeDAO {
 		List<EeHiringVO> list = null;
 		return list;
 	}// selectInterestEr
-
-	// 0210 선의 관심구인공고 추가
 
 	// 0210 선의 관심구인공고 추가
 	public void insertInterestEr(EeInterestAndAppVO eiaavo) throws SQLException {
@@ -279,14 +272,10 @@ public class EeDAO {
 		try {
 			con = getConn();
 
-			// String eeNum, img, rank, loc, education, portfolio, extResume, inputDate,
-			// eeId;
-
 			StringBuilder insertInfo = new StringBuilder();
-			insertInfo.append("insert into ee_info").append(
-					"(ee_num, img, rank, loc, education, portfolio, ext_resume, to_char( input_date,'YYYY-MM-DD') input_date, ee_id)")
-					.append("values('ee_num', ?, ?, ?, ?, ?, ?, ?, ? 	)");
-
+			insertInfo
+			.append("		insert into ee_info(ee_num, img, rank, loc, education, portfolio, ext_resume, ee_id)	")
+			.append("		values( ee_code, ?, ?, ?, ?, ?, ?, ? 	)	");
 			pstmt = con.prepareStatement(insertInfo.toString());
 
 			pstmt.setString(1, eivo.getImg());
@@ -295,10 +284,10 @@ public class EeDAO {
 			pstmt.setString(4, eivo.getEducation());
 			pstmt.setString(5, eivo.getPortfolio());
 			pstmt.setString(6, eivo.getExtResume());
-			pstmt.setString(7, eivo.getInputDate());
-			pstmt.setString(8, eivo.getEeId());
+			pstmt.setString(7, eivo.getEeId());
 
 			pstmt.executeUpdate();
+			
 
 		} finally {
 			if (pstmt != null) {
@@ -307,9 +296,57 @@ public class EeDAO {
 			if (con != null) {
 				con.close();
 			}
-		}
-	}// end finally
+		} // end finally
 
+	}// insertEeinfo
+
+	public static void main(String[] args) {
+		EeInsertVO eivo= new EeInsertVO("12", "2", "3", "4", "5", "6", "kun90");
+		try {
+			EeDAO.getInstance().insertEeinfo(eivo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}//main
+
+	/**
+	 * 19.02.11 김건하 EeRegVO
+	 * 
+	 * @return
+	 * @throws SQLException
+	 */
+	public EeRegVO selectEeReg(String ee_id) throws SQLException {
+		EeRegVO ervo = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			// 커넥션 얻기.
+			con = getConn();
+
+			// 쿼리문생성
+			String selectMyInfo = "select name, gender, age from user_table where id=?";
+			pstmt = con.prepareStatement(selectMyInfo);
+			// 바인드변수 값 할당.
+			pstmt.setString(1, ee_id);
+
+			// DB에서 조회하기
+			rs = pstmt.executeQuery(); // 쿼리실행
+			if (rs.next()) {
+				ervo = new EeRegVO(rs.getString("name"),rs.getString("gender"), rs.getInt("age"));
+			} // end if
+
+		}finally {
+			if( rs !=null ) { rs.close(); }
+			if( pstmt !=null ) { pstmt.close(); }
+			if( con !=null ) { con.close(); }
+		}//selectEeReg
+		return ervo;
+		
+		}//
 	//////////// 재현코드 ////////////
 	/**
 	 * selectInterestErInfo : 일반사용자가 하트를 누른 구인정보를 DB에서 조회.

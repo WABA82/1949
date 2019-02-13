@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import user.common.view.FindIdView;
-import user.common.view.LoginView;
 import user.common.vo.FindIdVO;
 import user.dao.CommonDAO;
 
@@ -51,10 +50,8 @@ public class FindIdController extends WindowAdapter implements ActionListener {
 				jtfTel.setText("");
 				jtfName.requestFocus();
 			}else {
-			//팝업창띄우기!!!!-------------------------------
 				JOptionPane.showMessageDialog(fiv, "입력하신 정보가 일치합니다.");
-				JOptionPane.showMessageDialog(fiv, "회원님의 아이디는"+searchId+"입니다.");
-				
+				JOptionPane.showMessageDialog(fiv, "회원님의 아이디는 "+searchId+" 입니다.");
 			}
 			
 		} catch (SQLException e) {
@@ -71,7 +68,9 @@ public class FindIdController extends WindowAdapter implements ActionListener {
 		
 		if(ae.getSource()==fiv.getJbValidate()) {
 			checkUser();
-			
+		}
+		if(ae.getSource()==fiv.getJbClose()) {
+			fiv.dispose();
 		}
 	}
 		

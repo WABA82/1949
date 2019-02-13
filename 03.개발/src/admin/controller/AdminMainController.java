@@ -200,7 +200,7 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 			// 파일서버로부터 파일명을 전달받음
 			List<String> listImg = (List<String>)ois.readObject();
 			
-			File dir = new File("C:/Users/owner/youngRepositories/1949/03.개발/src/admin/img/co");
+			File dir = new File("C:/dev/1949/03.개발/src/admin/img/co");
 			for(File f : dir.listFiles()) {
 				listImg.remove(f.getName()); // 존재하는 파일은 제외
 			}

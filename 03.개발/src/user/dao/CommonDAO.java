@@ -5,14 +5,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
-import user.common.view.FindIdView;
 import user.common.view.LoginView;
 import user.common.vo.FindIdVO;
 import user.common.vo.FindPassVO;
-import user.common.vo.UserInsertVO;
 
 public class CommonDAO {
 	private static CommonDAO C_dao;
@@ -36,21 +32,14 @@ public class CommonDAO {
 	private Connection getConn() throws SQLException{
 		Connection con =null;
 		
-		String url = "jdbc:oracle:thin:@localhost:1522:orcl";
+		String url = "jdbc:oracle:thin:@localhost:1522:orcl";//학원에서 바꿀것!!
 		String id ="kanu";
 		String pass ="share";
 		con = DriverManager.getConnection(url, id, pass);
 		return con;
 	}
-
-	
-	
-	
-	
-	
 	
 	public String selectFindId(FindIdVO fivo)throws SQLException {
-		FindIdView fiv=new FindIdView(lv);
 		String searchId="";
 		
 		Connection con=null;

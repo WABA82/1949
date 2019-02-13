@@ -10,13 +10,18 @@ import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import user.dao.ErDAO;
+import user.ee.view.EeDetailErView;
+import user.ee.vo.DetailErInfoVO;
 import user.ee.vo.EeHiringVO;
 import user.er.view.ErAddView;
 import user.er.view.ErMgMtView;
+import user.er.view.ErModifyView;
 import user.er.vo.ErDefaultVO;
+import user.er.vo.ErDetailVO;
 import user.er.vo.ErListVO;
 
 public class ErMgMtController extends WindowAdapter implements MouseListener, ActionListener {
@@ -66,22 +71,37 @@ public class ErMgMtController extends WindowAdapter implements MouseListener, Ac
 		}
 	}
 	public void showDetail() {
+		JTable jt = emmv.getJtEr();
+		String erNum= String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
+		ErDetailVO edvo = null;
+		try {
+			edvo = er_dao.selectErDetail(erNum);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		ErModifyView eav = new ErModifyView(emmv, edvo, erNum,erId);
 		
 	}
+	
 	public void addEr() {
-		edvo = null;
+		ErAddView eav = new ErAddView(emmv, this, edvo);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if(ae.getSource()==emmv.getJbRegEr()) {
-			ErAddView eav = new ErAddView(emmv, this, edvo);
+			addEr();
 		}
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent me) {
-		
+		switch(me.getClickCount()) {
+		case 2:
+			if(me.getSource()==emmv.getJtEr()){
+				showDetail();
+			}
+		}
 	}
 	
 	@Override

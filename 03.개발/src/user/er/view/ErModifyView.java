@@ -16,6 +16,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import user.er.controller.ErModifyController;
 import user.er.vo.ErDetailVO;
 
 @SuppressWarnings("serial")
@@ -28,9 +29,9 @@ public class ErModifyView extends JDialog {
 	JComboBox<String> jcbRank, jcbEducation, jcbLoc, jcbHireType, jcbPortfolio;
 	JButton jbReg /* 수정버튼 */, jbDelete, jbCancel;
 
-	public ErModifyView(ErMgMtView emmv, ErDetailVO edvo, String er_id) {
+	public ErModifyView(ErMgMtView emmv, ErDetailVO edvo, String erNum, String erId) {
 		super(emmv, "구인 정보 수정", true);/* 창의 제목 */
-
+		
 		/* 컴포넌트 생성하기 */
 		// 이미지아이콘 : 회사로고
 		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/admin/img/co/no_co_img1.png");
@@ -50,21 +51,21 @@ public class ErModifyView extends JDialog {
 		JLabel jlPortfolio = new JLabel("포트폴리오");
 
 		// 텍스트 필드 - 수정불가
-		JTextField jtfName = new JTextField();
-		JTextField jtfTel = new JTextField();
-		JTextField jtfEmail = new JTextField();
-		JTextField jtfCoName = new JTextField();
+		JTextField jtfName = new JTextField(edvo.getName());
+		JTextField jtfTel = new JTextField(edvo.getTel());
+		JTextField jtfEmail = new JTextField(edvo.getEmail());
+		JTextField jtfCoName = new JTextField(edvo.getCoName());
 		jtfName.setEditable(false);
 		jtfTel.setEditable(false);
 		jtfEmail.setEditable(false);
 		jtfCoName.setEditable(false);
 
 		// 텍스트 필드
-		jtfSubject = new JTextField();
-		jtfSal = new JTextField();
+		jtfSubject = new JTextField(edvo.getSubject());
+		jtfSal = new JTextField(edvo.getSal());
 
 		// 상세정보
-		jtaErDesc = new JTextArea();
+		jtaErDesc = new JTextArea(edvo.getErDesc());
 		jtaErDesc.setRows(5);
 		jtaErDesc.setColumns(25);
 		JScrollPane jspErDesc = new JScrollPane(jtaErDesc);
@@ -82,6 +83,9 @@ public class ErModifyView extends JDialog {
 		// 구인정보 콤보박스
 		String[] rItem = { "신입", "경력" };
 		jcbRank = new JComboBox<>(rItem);
+		//////////////////////////////////////////0213 할 것: 채워넣기
+		jcbRank.setSelectedItem(0);
+		jcbRank.setSelectedItem(1);
 		String[] eItem = { "고졸", "초대졸", "석사", "박사" };
 		jcbEducation = new JComboBox<>(eItem);
 		String[] lItem = { "서울", "경기", "인천", "대전", "세종", "충남", "충북", "광주", "전남", "전북", "대구", "경북", "부산", "울산", "경남",
@@ -209,7 +213,12 @@ public class ErModifyView extends JDialog {
 		add(jbCancel);
 
 		/* 이벤트등록 */
-
+		ErModifyController emc = new ErModifyController(this,erNum,erId);
+		jbCancel.addActionListener(emc);
+		jbReg.addActionListener(emc);
+		jbDelete.addActionListener(emc);
+		addWindowListener(emc);
+		
 		/* 프레임 크기 설정 및 가시화 */
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 410, 660);
@@ -296,8 +305,8 @@ public class ErModifyView extends JDialog {
 
 	/******** getter ********/
 
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		new ErModifyView(null, null, null);
 	}// main
-
+*/
 }// class

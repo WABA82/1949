@@ -21,6 +21,11 @@ public class FindPassVO {
 	public String getAnswer() {
 		return answer;
 	}
+
+	@Override
+	public String toString() {
+		return "FindPassVO [id=" + id + ", qType=" + qType + ", answer=" + answer + "]";
+	}
 	
 	
 }

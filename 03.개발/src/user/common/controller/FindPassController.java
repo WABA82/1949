@@ -31,7 +31,7 @@ public class FindPassController extends WindowAdapter implements ActionListener 
 		String qType=jcbQ.getSelectedItem().toString();
 		String answer=jtfAnswer.getText().trim();
 		
-		if(id==null||id.equals("")) {//qType==null||answer==null
+		if(id==null||id.equals("")) {
 			JOptionPane.showMessageDialog(fpv, "아이디를 입력해주세요.");
 			jtfId.requestFocus();
 			return;
@@ -48,13 +48,15 @@ public class FindPassController extends WindowAdapter implements ActionListener 
 		}
 		
 		FindPassVO fpvo= new FindPassVO(id, qType, answer);
-		boolean flag=false;
-	
+		boolean	searchPass= false;
+		
 		try {
-			flag=CommonDAO.getInstance().selectFindPass(fpvo);
+		 searchPass=CommonDAO.getInstance().selectFindPass(fpvo);
 			
-			if(flag=true) {
-				JOptionPane.showMessageDialog(fpv, "");
+			if(searchPass=true) {
+				JOptionPane.showMessageDialog(fpv, "정보가 올바르지 않습니다.");
+			}else {
+				JOptionPane.showMessageDialog(fpv, "입력하신 정보가 일치합니다.");
 			}
 			
 		} catch (SQLException e) {
@@ -65,8 +67,12 @@ public class FindPassController extends WindowAdapter implements ActionListener 
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
+		
 		if(ae.getSource()==fpv.getJbValidation()) {
 			checkUserData();
+		}
+		if(ae.getSource()==fpv.getJbClose()) {
+			fpv.dispose();
 		}
 	}
 	

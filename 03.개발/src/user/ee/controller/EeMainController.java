@@ -16,6 +16,7 @@ import user.ee.view.EeInfoRegView;
 import user.ee.view.EeInterestView;
 import user.ee.view.EeMainView;
 import user.ee.vo.EeHiringVO;
+import user.ee.vo.EeRegVO;
 
 public class EeMainController extends WindowAdapter implements ActionListener, MouseListener {
 

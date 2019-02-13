@@ -87,4 +87,5 @@ public class FindPassView extends JDialog {
 	public JButton getJbClose() {
 		return jbClose;
 	}
+
 }
