@@ -75,13 +75,9 @@ public class ErHiringView extends JDialog {
 	}
 
 
-/*	public static void main(String[] args) {
-		ErMainVO em_vo = new ErMainVO("ad", "dsa", "sad", "sd");
-		ErMainView rmv=new ErMainView(em_vo);
-		List<ErHiringVO> rhvo=new ArrayList<ErHiringVO>();
-		String s=new String();
-		new ErHiringView(rmv,rhvo,s);
-	}*/
+	public static void main(String[] args) {
+		new ErHiringView(null, null, null);
+	}
 
 	
 	

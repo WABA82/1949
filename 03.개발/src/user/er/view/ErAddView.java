@@ -16,6 +16,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import user.er.controller.ErAddController;
 import user.er.controller.ErMgMtController;
 import user.er.vo.ErDefaultVO;
 
@@ -29,15 +30,15 @@ public class ErAddView extends JDialog {
 	JComboBox<String> jcbRank, jcbEducation, jcbLoc, jcbHireType, jcbPortfolio;
 	JButton jbReg, jbCancel;
 
-	public ErAddView(ErMgMtView emmv, ErMgMtController emmc, ErDefaultVO edvo) {
+	public ErAddView(ErMgMtView emmv, ErMgMtController emmc, ErDefaultVO edfvo) {
 		super(emmv, "구인 정보 등록", true);/* 창의 제목 */
 
 		/* 컴포넌트 생성하기 */
 		// 이미지아이콘 : 회사로고
 		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/admin/img/co/no_co_img1.png");
-
+		
 		// 라벨들
-		JLabel jlImage = new JLabel(erLogo);
+		JLabel jlImage = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/img/coImg/"+edfvo.getImg1()));
 		JLabel jlName = new JLabel("이름");
 		JLabel jlTel = new JLabel("연락처");
 		JLabel jlEmail = new JLabel("이메일");
@@ -51,10 +52,11 @@ public class ErAddView extends JDialog {
 		JLabel jlPortfolio = new JLabel("포트폴리오");
 
 		// 텍스트 필드 - 수정불가
-		JTextField jtfName = new JTextField();
-		JTextField jtfTel = new JTextField();
-		JTextField jtfEmail = new JTextField();
-		JTextField jtfCoName = new JTextField();
+		//자동 추가요소: 회사로고, 이름, 연락처, 이메일, 회사명
+		JTextField jtfName = new JTextField(edfvo.getName());
+		JTextField jtfTel = new JTextField(edfvo.getTel());
+		JTextField jtfEmail = new JTextField(edfvo.getEmail());
+		JTextField jtfCoName = new JTextField(edfvo.getCoName());
 		jtfName.setEditable(false);
 		jtfTel.setEditable(false);
 		jtfEmail.setEditable(false);
@@ -207,7 +209,10 @@ public class ErAddView extends JDialog {
 		add(jbCancel);
 
 		/* 이벤트등록 */
-
+		ErAddController edc = new ErAddController(this);
+		jbReg.addActionListener(edc);
+		jbCancel.addActionListener(edc);
+		addWindowListener(edc);
 		/* 프레임 크기 설정 및 가시화 */
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 410, 660);
@@ -290,9 +295,9 @@ public class ErAddView extends JDialog {
 	}
 
 	/******** getter ********/
-
+/*
 	public static void main(String[] args) {
 		new ErAddView(null, null, null);
 	}// main
-
+*/
 }// class

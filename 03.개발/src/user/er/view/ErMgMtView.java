@@ -50,7 +50,6 @@ public class ErMgMtView extends JDialog {
 		setBounds(100, 100, 1015, 500);
 		setVisible(true);
 		
-		
 	}
 	
 	 public JButton getJbRegEr() {
