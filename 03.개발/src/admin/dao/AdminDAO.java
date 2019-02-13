@@ -544,37 +544,88 @@ public class AdminDAO {
 		if (con != null) { con.close(); }
 	}
 	
-	public boolean deleteEr(String erNum) throws SQLException { /////////////// 작업 예정 /////////////////
+	public boolean dErTransaction1(String erNum) throws SQLException {
 		boolean flag = false;
 		
-		Connection con = null;
-		PreparedStatement pstmt = null;
+		StringBuilder deleteEr = new StringBuilder();
+		deleteEr
+		.append(" delete from er_info ")
+		.append(" where er_num=? ");
+		
+		pstmt1 = con.prepareStatement(deleteEr.toString());
+		pstmt1.setString(1, erNum);
+		
+		int cnt = pstmt1.executeUpdate();
+		
+		if(cnt == 1) {
+			flag = true;
+		}
+		
+		return flag;
+	}
+	
+	public boolean dErTransaction2(String id) throws SQLException {
+		boolean flag = false;
+		
+		StringBuilder updateEe = new StringBuilder();
+		updateEe
+		.append(" update user_table ")
+		.append(" set activation = 'N' ")
+		.append(" where id=? ");
+		
+		pstmt2 = con.prepareStatement(updateEe.toString());
+		pstmt2.setString(1, id);
+		
+		int cnt = pstmt2.executeUpdate();
+		
+		if(cnt == 1) {
+			flag = true;
+		}
+		
+		return flag;
+	}
+	
+	public boolean deleteEr(ErInfoVO eivo)  { 
+		boolean flag = false;
+		
+		con = null;
 		
 		try {
-			
-			con = getConn();
-			
-			StringBuilder deleteEr = new StringBuilder();
-			deleteEr
-			.append(" delete from er_info ")
-			.append(" where er_num=? ");
-			
-			pstmt = con.prepareStatement(deleteEr.toString());
-			pstmt.setString(1, erNum);
-			
-			int cnt = pstmt.executeUpdate();
-			
-			if(cnt == 1) {
-				flag = true;
+			try {
+				con = getConn();
+				con.setAutoCommit(false);
+				
+				if(dErTransaction1(eivo.getErNum()) && dErTransaction2(eivo.getErId())){
+					con.commit();
+					flag = true;
+				} else {
+					con.rollback();
+				}
+				
+			} catch (SQLException e) {
+				try {
+					con.rollback();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				e.printStackTrace();
 			}
 			
 		} finally {
-			if (pstmt != null) { pstmt.close(); }
-			if (con != null) { con.close(); }
+			try {
+				closeDeleteEr();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		
-		
 		return flag;
+	}
+	
+	public void closeDeleteEr() throws SQLException {
+		if (pstmt2 != null) { pstmt2.close(); }
+		if (pstmt1 != null) { pstmt1.close(); }
+		if (con != null) { con.close(); }
 	}
 	
 	public CoInfoVO selectOneCo(String coNum) throws SQLException {
@@ -688,5 +739,89 @@ public class AdminDAO {
 		}
 		
 		return eivo;
+	}
+	
+	public boolean dEeTransaction1(String eeNum) throws SQLException {
+		boolean flag = false;
+		
+		StringBuilder deleteEe = new StringBuilder();
+		deleteEe
+		.append(" delete from ee_info ")
+		.append(" where ee_num=? ");
+		
+		pstmt1 = con.prepareStatement(deleteEe.toString());
+		pstmt1.setString(1, eeNum);
+		
+		int cnt = pstmt1.executeUpdate();
+		
+		if(cnt == 1) {
+			flag = true;
+		}
+		
+		return flag;
+	}
+	
+	public boolean dEeTransaction2(String id) throws SQLException {
+		boolean flag = false;
+		
+		StringBuilder updateEe = new StringBuilder();
+		updateEe
+		.append(" update user_table ")
+		.append(" set activation = 'N' ")
+		.append(" where id=? ");
+		
+		pstmt1 = con.prepareStatement(updateEe.toString());
+		pstmt1.setString(1, id);
+		
+		int cnt = pstmt1.executeUpdate();
+		
+		if(cnt == 1) {
+			flag = true;
+		}
+		
+		return flag;
+	}
+	
+	public boolean deleteEe(EeInfoVO eivo){
+		boolean flag = false;
+		
+		con = null;
+		
+		try {
+			
+			try {
+				con = getConn();
+				con.setAutoCommit(false);
+				
+				if (dEeTransaction1(eivo.getEeNum()) && dEeTransaction2(eivo.getId())) {
+					con.commit();
+					flag = true;
+				} else {
+					con.rollback();
+				}
+			
+			} catch (SQLException e) {
+				try {
+					con.rollback();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				e.printStackTrace();
+			}
+		} finally {
+			try {
+				closeDeleteEe();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return flag;
+	}
+	
+	public void closeDeleteEe() throws SQLException {
+		if (pstmt2 != null) { pstmt2.close(); }
+		if (pstmt1 != null) { pstmt1.close(); }
+		if (con != null) { con.close(); }
 	}
 }
