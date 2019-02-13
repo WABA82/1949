@@ -11,6 +11,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import user.common.vo.ErMainVO;
+import user.er.controller.ErInterestController;
 import user.er.vo.ErHiringVO;
 
 @SuppressWarnings("serial")
@@ -18,7 +19,7 @@ public class ErInterestView extends JDialog {
 	private JTable jtEeInfo;
 	private DefaultTableModel dtmEeInfo;
 
-	public ErInterestView(ErMainView rmv, List<ErHiringVO> rhvo) {
+	public ErInterestView(ErMainView rmv, String er_id) {
 		super(rmv, "관심 구직자", true);
 
 		String[] eeInfoColumns = { "번호", "기본정보번호", "이미지", "이름", "직급", "근무지역", "학력", "나이", "포트폴리오 유무", "성별", "등록일" };
@@ -40,11 +41,14 @@ public class ErInterestView extends JDialog {
 		add(jlEeInfo);
 		add(jspEeInfo);
 
+		/* 이벤트 등록 */
+		ErInterestController eric = new ErInterestController(this, er_id);
+		addWindowListener(eric);
+		
 		setBounds(100, 100, 1000, 500);
 		setResizable(false);
 		setVisible(true);
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-	}
+	}// 생성자
 
 	public JTable getJtEeInfo() {
 		return jtEeInfo;
@@ -55,10 +59,7 @@ public class ErInterestView extends JDialog {
 	}
 
 	public static void main(String[] args) {
-		ErMainVO em_vo = new ErMainVO("ad", "dsa", "sad", "sd");
-		ErMainView rmv = new ErMainView(em_vo);
-		List<ErHiringVO> rhvo = new ArrayList<ErHiringVO>();
-		new ErInterestView(rmv, rhvo);
+		new ErInterestView(null, "gang123");
 	}
 
 }// class
