@@ -33,17 +33,59 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 	}
 	public void modifyEr() {
 		boolean updateflag=false;
-		
+		String rank = String.valueOf(emv.getJcbRank().getSelectedItem());
+		String hireType = String.valueOf(emv.getJcbHireType().getSelectedItem());
+		String portfolio = String.valueOf(emv.getJcbPortfolio().getSelectedItem());
 		List<String> listSkill = new ArrayList<String>();
+		
+		if(emv.getJchJava().isSelected()) {
+			listSkill.add("Java");
+		}else if(emv.getJchJspServlet().isSelected()) {
+			listSkill.add("JspServlet");
+		}else if(emv.getJchSpring().isSelected()) {
+			listSkill.add("Spring");
+		}else if(emv.getJchOracle().isSelected()) {
+			listSkill.add("Oracle");
+		}else if(emv.getJchHTML().isSelected()) {
+			listSkill.add("HTML");
+		}else if(emv.getJchCSS().isSelected()) {
+			listSkill.add("CSS");
+		}else if(emv.getJchLinux().isSelected()) {
+			listSkill.add("Linux");
+		}else if(emv.getJchJS().isSelected()) {
+			listSkill.add("JS");
+		}
+		
+		if(rank.equals("신입")) {
+			rank="N";
+		}else if(rank.equals("경력")) {
+			rank="C";
+		}
+		// rank: 'N' - 신입 'C' - 경력
+		// hiretype 'C' - 정규직'N' - 비정규직'F' - 프리랜서
+		
+		if(hireType.equals("정규직")) {
+			hireType="C";
+		}else if(hireType.equals("계약직")) {
+			hireType="N";
+		}else if(hireType.equals("프리랜서")) {
+			hireType="F";
+		}
+		
+		if(portfolio.equals("YES")) {
+			portfolio="Y";
+		}else if(portfolio.equals("NO")) {
+			portfolio="N";
+		}
 		
 		ErModifyVO emvo = new ErModifyVO(
 				erNum, 				
 				emv.getJtfSubject().getText().trim(), 
 				String.valueOf(emv.getJcbEducation().getSelectedItem()), 
-				String.valueOf(emv.getJcbRank().getSelectedItem()), 
+				rank, 
 				String.valueOf(emv.getJcbLoc().getSelectedItem()), 
-				String.valueOf(emv.getJcbHireType().getSelectedItem()), 
-				String.valueOf(emv.getJcbPortfolio().getSelectedItem()), 
+				hireType, 
+				portfolio, 
 				emv.getJtaErDesc().getText(),
 				Integer.parseInt(emv.getJtfSal().getText().trim()), 
 				listSkill);
@@ -53,6 +95,7 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 				JOptionPane.showMessageDialog(emv, "구인 정보가 수정되었습니다.");
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
 			JOptionPane.showMessageDialog(emv, "DB오류");
 		}
 	}

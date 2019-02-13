@@ -50,6 +50,12 @@ public class ErModifyVO {
 	public List<String> getListSkill() {
 		return listSkill;
 	}
+	@Override
+	public String toString() {
+		return "ErModifyVO [erNum=" + erNum + ", subject=" + subject + ", education=" + education + ", rank=" + rank
+				+ ", loc=" + loc + ", hireType=" + hireType + ", portfolio=" + portfolio + ", erDesc=" + erDesc
+				+ ", sal=" + sal + ", listSkill=" + listSkill + "]";
+	}
 	
 	
 }

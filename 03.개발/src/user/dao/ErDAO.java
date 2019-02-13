@@ -10,6 +10,7 @@ import java.util.List;
 
 import user.ee.vo.EeHiringVO;
 import user.er.vo.ErAddVO;
+import user.er.vo.ErDefaultVO;
 import user.er.vo.ErDetailVO;
 import user.er.vo.ErListVO;
 import user.er.vo.ErModifyVO;
@@ -112,6 +113,13 @@ public class ErDAO {
 		}
 	}//insertErAdd
 	
+	public boolean insertSkill(String erId) {
+		boolean insertSkillFlag = false;
+		
+		return insertSkillFlag;
+	}//insertSkill
+	
+	
 	public boolean updateErModify(ErModifyVO emvo)throws SQLException {
 		boolean updateFlag =false;
 		Connection con = null;
@@ -119,13 +127,18 @@ public class ErDAO {
 		try {
 			con = getConn();
 			StringBuilder insertErAdd = new StringBuilder();
+			
+			//모든 테이블에 저장되어야한다. 쿼리문 수정
+			//erNum, subject, education, rank, loc, hireType, portfolio, erDesc;
+			//sal;
 			insertErAdd
 			.append(" update er_info ")
-			.append(" set subject=?,education=?,rank=?,loc=?,hire_type=?, portfolio=?, er_desc=? ")
-			.append(" where er_num=?  ");
+			.append(" set subject=?,education=?,rank=?,loc=?,hire_type=?, portfolio=?, er_desc=?,sal=? ")
+			.append(" where er_num=?;  ");
 			
 			pstmt = con.prepareStatement(insertErAdd.toString());
 
+			System.out.println(emvo);
 			pstmt.setString(1, emvo.getSubject());
 			pstmt.setString(2, emvo.getEducation());
 			pstmt.setString(3, emvo.getRank());
@@ -133,7 +146,8 @@ public class ErDAO {
 			pstmt.setString(5, emvo.getHireType());
 			pstmt.setString(6, emvo.getPortfolio());
 			pstmt.setString(7, emvo.getErDesc());
-			pstmt.setString(8, emvo.getErNum());
+			pstmt.setInt(8, emvo.getSal());
+			pstmt.setString(9, emvo.getErNum());
 
 			int cnt= pstmt.executeUpdate();
 			if(cnt==1) {
@@ -150,6 +164,12 @@ public class ErDAO {
 		}
 		return updateFlag;
 	}//updateErModify
+	
+	public boolean modifySkill(ErDetailVO emvo, String erNum) {
+		boolean updateSkillFlag = false;
+		
+		return updateSkillFlag;
+	}//updateSkill
 	
 	public boolean deleteEr(String erNum) throws SQLException {
 		boolean deleteFlag= false;
@@ -216,7 +236,6 @@ public class ErDAO {
 	
 	public ErDetailVO selectErDetail(String erNum)throws SQLException {
 		ErDetailVO edtvo = null;
-		
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs= null;
@@ -239,8 +258,7 @@ public class ErDAO {
 		//5.
 			rs= pstmt.executeQuery();
 			//입력된 코드로 조회된 레코드가 존재할 때 VO를 생성하고 값 추가
-			//erNum, img1, name, tel, email, subject, coName, education, rank
-			//,loc, hireType, portfolio, erDesc,sal, skill;
+
 			if(rs.next()) {
 				edtvo = new ErDetailVO(erNum, rs.getString("img1"), rs.getString("name"), rs.getString("tel"), 
 						rs.getString("email"), rs.getString("subject"), rs.getString("co_name"), rs.getString("education"), 
@@ -256,6 +274,40 @@ public class ErDAO {
 		}
 		
 		return edtvo;
+	}
+	
+	public ErDefaultVO selectErDefault(String erId) throws SQLException{
+		ErDefaultVO edfvo= null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs= null;
+		
+		try {
+			con= getConn();
+			StringBuilder selectErDetail = new StringBuilder();
+			
+			selectErDetail
+			.append(" select c.img1, ut.name, ut.tel, ut.email, c.co_name ")
+			.append(" from company c, user_table ut ")
+			.append(" where (c.er_id=ut.id) and (c.er_id=?) ");
+			
+			pstmt = con.prepareStatement(selectErDetail.toString());
+			pstmt.setString(1,erId );
+			rs= pstmt.executeQuery();
+			//입력된 코드로 조회된 레코드가 존재할 때 VO를 생성하고 값 추가
+
+			if(rs.next()) {
+				edfvo = new ErDefaultVO(erId, rs.getString("img1"), rs.getString("name"),rs.getString("tel"),rs.getString("email"),rs.getString("co_name"));
+			}//end if
+		}finally {
+			//6.
+			if(rs!=null) { rs.close();}
+			if(pstmt!=null) {pstmt.close();}
+			if(rs!=null) {rs.close();}
+			
+		}
+		
+		return edfvo;
 	}
 	
 	//////////////////////////////////////////선의끝///////////////////////////////////////////////

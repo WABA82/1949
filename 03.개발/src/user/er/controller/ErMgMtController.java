@@ -29,7 +29,7 @@ public class ErMgMtController extends WindowAdapter implements MouseListener, Ac
 	private List<ErListVO> list;
 	private String erId;
 	private ErDAO er_dao;
-	private ErDefaultVO edvo;
+	private ErDefaultVO edfvo;
 	
 	public ErMgMtController(ErMgMtView emmv, List<ErListVO> list, String erId) {
 		this.emmv = emmv;
@@ -84,7 +84,12 @@ public class ErMgMtController extends WindowAdapter implements MouseListener, Ac
 	}
 	
 	public void addEr() {
-		ErAddView eav = new ErAddView(emmv, this, edvo);
+		try {
+			edfvo = er_dao.selectErDefault(erId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		ErAddView eav = new ErAddView(emmv, this, edfvo);
 	}
 	
 	@Override
