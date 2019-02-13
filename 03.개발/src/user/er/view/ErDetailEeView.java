@@ -10,6 +10,9 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import user.er.vo.DetailEeInfoVO;
+import user.er.vo.ErDetailVO;
+
 /**
  *	김건하 19.02.08
  * @author owner
@@ -19,7 +22,8 @@ public class ErDetailEeView extends JDialog {
 	private JButton jbRsmDown, jbClose;
 	private JLabel jlHeart;
 	
-	public ErDetailEeView() {
+	public ErDetailEeView(ErHiringView ehv, ErDetailVO edvo, String s) {
+				super(ehv,"구직자 상세 정보",true);
 		//image
 				ImageIcon ii=new ImageIcon("C:/dev/homework/1949/1949/03.개발/가데이터/구직자사진/150x200px/각키.jpg");
 				JLabel jlImage=new JLabel(ii);
@@ -148,7 +152,4 @@ public class ErDetailEeView extends JDialog {
 		
 	}//생성자
 	
-	public static void main(String[] args) {
-		new ErDetailEeView();
-	}
 }//class

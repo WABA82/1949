@@ -24,7 +24,6 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 	private ErMgMtController emmc;
 	
 	
-	
 	public ErModifyController(ErModifyView emv, String erNum,String erId) {
 		this.emv = emv;
 		this.erNum = erNum;
@@ -62,13 +61,13 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 			rank="C";
 		}
 		// rank: 'N' - 신입 'C' - 경력
-		// hiretype 'C' - 정규직'N' - 비정규직'F' - 프리랜서
+		// hiretype 'C' - 정규직'N' - 비정규직'F' - 프리
 		
 		if(hireType.equals("정규직")) {
 			hireType="C";
 		}else if(hireType.equals("계약직")) {
 			hireType="N";
-		}else if(hireType.equals("프리랜서")) {
+		}else if(hireType.equals("프리")) {
 			hireType="F";
 		}
 		
@@ -87,7 +86,7 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 				hireType, 
 				portfolio, 
 				emv.getJtaErDesc().getText(),
-				Integer.parseInt(emv.getJtfSal().getText().trim()), 
+				Integer.parseInt(emv.getJtfSal().getText()), 
 				listSkill);
 		try {
 			updateflag = erdao.updateErModify(emvo);

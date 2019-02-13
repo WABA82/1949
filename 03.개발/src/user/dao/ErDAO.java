@@ -10,9 +10,11 @@ import java.util.List;
 
 import user.ee.vo.EeHiringVO;
 import user.ee.vo.EeInterestVO;
+import user.er.dto.ErHiringCdtDTO;
 import user.er.vo.ErAddVO;
 import user.er.vo.ErDefaultVO;
 import user.er.vo.ErDetailVO;
+import user.er.vo.ErHiringVO;
 import user.er.vo.ErInterestVO;
 import user.er.vo.ErListVO;
 import user.er.vo.ErModifyVO;
@@ -135,8 +137,8 @@ public class ErDAO {
 			//sal;
 			insertErAdd
 			.append(" update er_info ")
-			.append(" set subject=?,education=?,rank=?,loc=?,hire_type=?, portfolio=?, er_desc=?,sal=? ")
-			.append(" where er_num=?;  ");
+			.append(" set subject=?,education=?,rank=?,loc=?,hire_type=?, portfolio=?, er_desc=?, sal=? ")
+			.append(" where er_num=?  ");
 			
 			pstmt = con.prepareStatement(insertErAdd.toString());
 
@@ -151,7 +153,7 @@ public class ErDAO {
 			pstmt.setInt(8, emvo.getSal());
 			pstmt.setString(9, emvo.getErNum());
 
-			int cnt= pstmt.executeUpdate();
+			int cnt = pstmt.executeUpdate();
 			if(cnt==1) {
 				updateFlag=true;
 			}//end if
@@ -359,6 +361,52 @@ public class ErDAO {
 		}
 		
 		return edfvo;
+	}
+	
+	public List<ErHiringVO> selectErHiring(ErHiringCdtDTO erhcdto) throws SQLException{
+		List<ErHiringVO> list =new ArrayList<ErHiringVO>();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = getConn();
+			StringBuilder selectEeHiring = new StringBuilder();
+
+			selectEeHiring.append(" select ei.ee_num, ei.img, ut.name, ei.rank, ei.loc, ")
+					.append(" ei.education, ut.age, ei.portfolio, ut.gender, to_char(ei.input_date,'yyyy-mm-dd-hh-mi') input_date ")
+					.append(" from   ee_info ei, user_table ut ").append(" where ut.id= ei.ee_id ");
+
+			if (!(erhcdto.getCdt() == null || erhcdto.getCdt().equals(""))) {
+				selectEeHiring.append(erhcdto.getCdt());
+			}
+
+			if (!(erhcdto.getSort().trim() == null || erhcdto.getSort().trim().equals(""))) {
+				if (erhcdto.getSort().equals("등록일순")) {
+					selectEeHiring.append("	order by ei.input_date	");
+				} else if (erhcdto.getSort().equals("직급순")) {
+					selectEeHiring.append("	order by ei.rank	 ");
+				}
+			} else {
+				selectEeHiring.append("	order by ei.input_date	");
+			}
+
+			pstmt = con.prepareStatement(selectEeHiring.toString());
+
+			rs = pstmt.executeQuery();
+			ErHiringVO erhvo =null;
+			while (rs.next()) {
+				erhvo = new ErHiringVO(rs.getString("ee_num"), rs.getString("img"), rs.getString("name"), 
+						rs.getString("rank"), rs.getString("loc"),rs.getString("education"), 
+						rs.getString("portfolio"), rs.getString("gender"), rs.getString("input_date"), rs.getInt("age"));
+				list.add(erhvo);
+			}
+		} finally {
+			if (rs != null) {rs.close();}
+			if (pstmt != null) {pstmt.close();}
+			if (con != null) {con.close();}
+		}
+		
+		return list;
 	}
 	
 	//////////////////////////////////////////선의끝///////////////////////////////////////////////

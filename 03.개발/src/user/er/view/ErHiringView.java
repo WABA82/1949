@@ -1,17 +1,14 @@
 package user.er.view;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import user.common.vo.ErMainVO;
 import user.er.controller.ErHiringController;
 import user.er.vo.ErHiringVO;
 
@@ -28,7 +25,7 @@ public class ErHiringView extends JDialog {
 	public ErHiringView(ErMainView rmv, List<ErHiringVO> list, String erId) {
 		super(rmv,"구직자 정보 보기",true);
 				
-		String[] erColumns= {"번호","구인정보번호","제목","회사명","직급","근무지역","학력","고용형태","급여","등록일"};
+		String[] erColumns= {"번호","기본정보번호","이미지","이름","직급","근무지역","학력","나이","포트폴리오 유무","성별","등록일"};
 		dtmEeInfo=new DefaultTableModel(erColumns, 40) {
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -51,11 +48,12 @@ public class ErHiringView extends JDialog {
 		add(jcbSort);
 		add(jspEe);
 		add(jbDetailSearch);
-		/////이벤트//////
-		ErHiringController ehc = new ErHiringController(this,list,erId);
-		jbDetailSearch.addActionListener(ehc);
+		
+		ErHiringController ehc = new ErHiringController(this, list, erId);
 		jcbSort.addActionListener(ehc);
-		addWindowListener(ehc);
+		jbDetailSearch.addActionListener(ehc);
+		jtEeInfo.addMouseListener(ehc);
+		addWindowFocusListener(ehc);
 		
 		setBounds(100, 100, 1000, 500);
 		setResizable(false);
@@ -82,7 +80,7 @@ public class ErHiringView extends JDialog {
 
 
 	public static void main(String[] args) {
-		new ErHiringView(null, null, "moonlight");
+		new ErHiringView(null, null, null);
 	}
 
 	

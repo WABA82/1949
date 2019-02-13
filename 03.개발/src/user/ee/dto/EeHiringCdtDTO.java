@@ -1,6 +1,5 @@
 package user.ee.dto;
 
-import user.dao.EeDAO;
 
 public class EeHiringCdtDTO {
 	private String sort, cdt, coName;
