@@ -42,7 +42,7 @@ public class ErInterestController extends WindowAdapter implements MouseListener
 			for (int i = 0; i < list.size(); i++) {
 
 				/* list에 담겨진 VO객체로 EeInterestVO객체 생성하기 */
-				eivo = list.get(i);
+				//eivo = list.get(i);
 
 				// DTM에 데이터를 추가하기 위한 일차원배열(Vector)을 생성하고 데이터를 추가
 				rowData = new Object[10];
