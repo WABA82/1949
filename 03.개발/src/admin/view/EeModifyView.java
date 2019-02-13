@@ -11,6 +11,10 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import admin.controller.AdminMgMtController;
+import admin.controller.EeModifyController;
+import admin.vo.EeInfoVO;
+
 
 public class EeModifyView extends JDialog {
 
@@ -18,11 +22,12 @@ public class EeModifyView extends JDialog {
 	private JComboBox<String>jcbRank, jcbLoc, jcbEducation, jcbPortfolio;
 	private JTextField jtfExtRsm, jtfName;
 	private JLabel jlImg;
-	public EeModifyView() {
-//		super("기본 정보 관리",true);
+	
+	public EeModifyView(AdminMgMtView ammv, EeInfoVO eivo, AdminMgMtController ammc) {
+		super(ammv, "기본 정보 관리",true);
 		
 		//image
-		ImageIcon ii=new ImageIcon("C:\\dev\\1949\\03.개발\\가데이터\\구직자사진\\150x200px\\각키.jpg");
+		ImageIcon ii=new ImageIcon("C:/dev/1949/03.개발/가데이터/구직자사진/150x200px/각키.jpg");
 		jlImg=new JLabel(ii);
 		jlImg.setBorder(new TitledBorder("구직자 이미지"));
 		jlImg.setBounds(38, 20, 160, 225);
@@ -161,14 +166,53 @@ public class EeModifyView extends JDialog {
 		setLayout(null);
 		setBounds(100, 100, 490, 525);
 		
+		EeModifyController emc = new EeModifyController(this, ammv, ammc);
+		jbRemove.addActionListener(emc);
+		jbModify.addActionListener(emc);
+		jbChangeImg.addActionListener(emc);
+		jbChangeExt.addActionListener(emc);
+		jbCancel.addActionListener(emc);
+		addWindowListener(emc);
+		
 		setVisible(true);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
-		
 	}//EeInfoRegView
-	public static void main(String[] args) {
-		new EeModifyView();
-	}//main
-	
+	public JButton getJbModify() {
+		return jbModify;
+	}
+	public JButton getJbChangeExt() {
+		return jbChangeExt;
+	}
+	public JButton getJbChangeImg() {
+		return jbChangeImg;
+	}
+	public JButton getJbRemove() {
+		return jbRemove;
+	}
+	public JButton getJbCancel() {
+		return jbCancel;
+	}
+	public JComboBox<String> getJcbRank() {
+		return jcbRank;
+	}
+	public JComboBox<String> getJcbLoc() {
+		return jcbLoc;
+	}
+	public JComboBox<String> getJcbEducation() {
+		return jcbEducation;
+	}
+	public JComboBox<String> getJcbPortfolio() {
+		return jcbPortfolio;
+	}
+	public JTextField getJtfExtRsm() {
+		return jtfExtRsm;
+	}
+	public JTextField getJtfName() {
+		return jtfName;
+	}
+	public JLabel getJlImg() {
+		return jlImg;
+	}
 }//class

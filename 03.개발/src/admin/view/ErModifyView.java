@@ -16,6 +16,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import admin.controller.AdminMgMtController;
 import admin.controller.ErModifyController;
 import admin.vo.ErInfoVO;
 
@@ -32,7 +33,7 @@ public class ErModifyView extends JDialog {
 	JComboBox<String> jcbRank, jcbEducation, jcbLoc, jcbHireType, jcbPortfolio;
 	JButton jbModify, jbRemove, jbCancel;
 
-	public ErModifyView(AdminMgMtView ammv, ErInfoVO eivo) {
+	public ErModifyView(AdminMgMtView ammv, ErInfoVO eivo, AdminMgMtController ammc) {
 		super(ammv, "상세 구인 정보", true);/* 창의 제목 */
 
 		/* 컴포넌트 생성하기 */
@@ -259,7 +260,7 @@ public class ErModifyView extends JDialog {
 
 		/* 이벤트등록 */
 		
-		ErModifyController emc = new ErModifyController(this, ammv, eivo);
+		ErModifyController emc = new ErModifyController(this, ammv, eivo, ammc);
 		jbCancel.addActionListener(emc);
 		jbModify.addActionListener(emc);
 		jbRemove.addActionListener(emc);
@@ -267,7 +268,7 @@ public class ErModifyView extends JDialog {
 
 		/* 프레임 크기 설정 및 가시화 */
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 410, 660);
+		setBounds(ammv.getX()+400, ammv.getY()+100, 410, 660);
 		setVisible(true);
 
 	}// 생성자
