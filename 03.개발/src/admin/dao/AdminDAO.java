@@ -467,7 +467,7 @@ public class AdminDAO {
 		.append(" set subject=?, education=?, rank=?, loc=?, hire_type=?, portfolio=?, er_desc=?, sal=? ")
 		.append(" where er_num = ? ");
 		
-		pstmt1 = con.prepareStatement(updateEr.toString());
+/*		pstmt1 = con.prepareStatement(updateEr.toString());
 		pstmt1.setString(1, emvo.getSubject());
 		pstmt1.setString(2, emvo.getEducation());
 		pstmt1.setString(3, emvo.getRank());
@@ -476,7 +476,7 @@ public class AdminDAO {
 		pstmt1.setString(6, emvo.getPortfolio());
 		pstmt1.setString(7, emvo.getErDesc());
 		pstmt1.setInt(8, emvo.getSal());
-		pstmt1.setString(9, emvo.getErNum());
+		pstmt1.setString(9, emvo.getErNum());*/
 		
 		int cnt1 = pstmt1.executeUpdate();
 		
