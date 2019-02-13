@@ -265,49 +265,49 @@ public class EeDAO {
 	 * @param eivo
 	 * @throws SQLException
 	 */
-//	public void insertEeinfo(EeInsertVO eivo) throws SQLException {
-//		Connection con = null;
-//		PreparedStatement pstmt = null;
-//
-//		try {
-//			con = getConn();
-//
-//			StringBuilder insertInfo = new StringBuilder();
-//			insertInfo
-//			.append("		insert into ee_info(ee_num, img, rank, loc, education, portfolio, ext_resume, ee_id)	")
-//			.append("		values( seq_ee_num , ?, ?, ?, ?, ?, ?, ? 	)	");
-//			pstmt = con.prepareStatement(insertInfo.toString());
-//
-//			pstmt.setString(1, eivo.getImg());
-//			pstmt.setString(2, eivo.getRank());
-//			pstmt.setString(3, eivo.getLoc());
-//			pstmt.setString(4, eivo.getEducation());
-//			pstmt.setString(5, eivo.getPortfolio());
-//			pstmt.setString(6, eivo.getExtResume());
-//			pstmt.setString(7, eivo.getEeId());
-//
-//			pstmt.executeUpdate();
-//			
-//
-//		} finally {
-//			if (pstmt != null) {
-//				pstmt.close();
-//			}
-//			if (con != null) {
-//				con.close();
-//			}
-//		} // end finally
-//
-//	}// insertEeinfo
+	public void insertEeinfo(EeInsertVO eivo) throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
 
-//	public static void main(String[] args) {
-//		EeInsertVO eivo= new EeInsertVO("12", "2", "3", "4", "5", "6", "kim1");
-//		try {
-//			EeDAO.getInstance().insertEeinfo(eivo);
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}//main
+		try {
+			con = getConn();
+
+			StringBuilder insertInfo = new StringBuilder();
+			insertInfo
+			.append("		insert into ee_info(ee_num, img, rank, loc, education, portfolio, ext_resume, ee_id)	")
+			.append("		values( ee_code, ?, ?, ?, ?, ?, ?, ? 	)	");
+			pstmt = con.prepareStatement(insertInfo.toString());
+
+			pstmt.setString(1, eivo.getImg());
+			pstmt.setString(2, eivo.getRank());
+			pstmt.setString(3, eivo.getLoc());
+			pstmt.setString(4, eivo.getEducation());
+			pstmt.setString(5, eivo.getPortfolio());
+			pstmt.setString(6, eivo.getExtResume());
+			pstmt.setString(7, eivo.getEeId());
+
+			pstmt.executeUpdate();
+			
+
+		} finally {
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+		} // end finally
+
+	}// insertEeinfo
+
+	public static void main(String[] args) {
+		EeInsertVO eivo= new EeInsertVO("12", "2", "3", "4", "5", "6", "kun90");
+		try {
+			EeDAO.getInstance().insertEeinfo(eivo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}//main
 
 	/**
 	 * 19.02.11 김건하 EeRegVO
@@ -432,9 +432,10 @@ public class EeDAO {
 			EeAppVO eavo = null;
 			// VO생성 후 list에 담기
 			while (rs.next()) {
-				eavo = new EeAppVO(rs.getString("app_num"),rs.getString("er_num"), rs.getString("subject"), rs.getString("co_name"),
+				eavo = new EeAppVO(rs.getString("app_num"), rs.getString("er_num"), rs.getString("subject"), rs.getString("co_name"),
 						rs.getString("rank"), rs.getString("loc"), rs.getString("education"), rs.getString("hire_type"),
 						rs.getString("app_date"), rs.getString("app_status"), rs.getInt("sal"));
+				System.out.println(rs.getString("er_num"));
 				list.add(eavo);
 			} // end while
 
@@ -453,13 +454,13 @@ public class EeDAO {
 		return list;
 	}// selectAppList
 
-//	public static void main(String[] args) {
-//		EeDAO ee_dao = EeDAO.getInstance();
-//		try {
-//			System.out.println(ee_dao.selectAppList("gong1"));
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}// end catch
-//	}// main
+	public static void main(String[] args) {
+		EeDAO ee_dao = EeDAO.getInstance();
+		try {
+			System.out.println(ee_dao.selectAppList("gong1"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}// end catch
+	}// main
 
 }// class

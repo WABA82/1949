@@ -136,9 +136,7 @@ public class AdminMgMtView extends JDialog {
 		JScrollPane jspCo=new JScrollPane(jtCo);
 		jtb.add("회사정보 관리", jspCo);
 		
-		
 		add("Center",jtb);
-		
 		
 		AdminMgMtController ammc = new AdminMgMtController(this);
 		jtb.addMouseListener(ammc);

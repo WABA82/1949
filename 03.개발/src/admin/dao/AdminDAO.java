@@ -15,6 +15,7 @@ import admin.vo.CoModifyVO;
 import admin.vo.EeListVO;
 import admin.vo.ErInfoVO;
 import admin.vo.ErListVO;
+import admin.vo.ErModifyVO;
 import admin.vo.UserInfoVO;
 import admin.vo.UserListVO;
 import admin.vo.UserModifyVO;
@@ -50,6 +51,7 @@ public class AdminDAO {
 		
 		con = DriverManager.getConnection(url, user, password);
 		
+		con.setAutoCommit(true);
 		return con;
 	}
 	
@@ -383,7 +385,6 @@ public class AdminDAO {
 			while(rs1.next()) {
 				listSkill.add(rs1.getString("skill_num"));
 			}
-			System.out.println(listSkill);
 			
 			StringBuilder selectOneEr = new StringBuilder();
 			selectOneEr
@@ -397,16 +398,16 @@ public class AdminDAO {
 			pstmt2 = con.prepareStatement(selectOneEr.toString());
 			pstmt2.setString(1, erNum);
 			
-			rs2 = pstmt1.executeQuery();
+			rs2 = pstmt2.executeQuery();
 			
-			if(rs2.next()) { /////////////////////////////////////////////////////// 에러발생 수정 필요 0212
-				eivo = new ErInfoVO(rs2.getString("img1"), erNum, rs2.getString("er_id"), rs2.getString("name"), 
-						rs2.getString("email"), rs2.getString("tel"), rs2.getString("input_date"), rs2.getString("subject"), 
-						rs2.getString("co_name"), rs2.getString("education"), rs2.getString("rank"), rs2.getString("loc"), 
-						rs2.getString("hire_type"), rs2.getString("portfolio"), rs2.getString("er_desc"), rs2.getInt("sal"), 
-						listSkill);
+			if(rs2.next()) {
+				eivo = new ErInfoVO(rs2.getString("img1"), erNum, rs2.getString("er_id"),
+						rs2.getString("name"), rs2.getString("email"), rs2.getString("tel"),
+						rs2.getString("input_date"), rs2.getString("subject"), rs2.getString("co_name"),
+						rs2.getString("education"), rs2.getString("rank"), rs2.getString("loc"),
+						rs2.getString("hire_type"), rs2.getString("portfolio"), rs2.getString("er_desc"),
+						rs2.getInt("sal"), listSkill);
 			}
-			
 		} finally {
 			if (rs2 != null) { rs2.close(); }
 			if (rs1 != null) { rs1.close(); }
@@ -416,6 +417,174 @@ public class AdminDAO {
 		}
 		
 		return eivo;
+	}
+
+	// updateEr 트랜잭션 용 
+	private PreparedStatement pstmt1;
+	private PreparedStatement pstmt2;
+	private PreparedStatement pstmt3;
+	private Connection con;
+	
+	public boolean ueTransaction1(Connection con, ErModifyVO emvo) throws SQLException {
+		boolean flag = false;
+		
+		StringBuilder updateEr = new StringBuilder();
+		updateEr
+		.append(" update er_info ")
+		.append(" set subject=?, education=?, rank=?, loc=?, hire_type=?, portfolio=?, er_desc=?, sal=? ")
+		.append(" where er_num = ? ");
+		
+		pstmt1 = con.prepareStatement(updateEr.toString());
+		pstmt1.setString(1, emvo.getSubject());
+		pstmt1.setString(2, emvo.getEducation());
+		pstmt1.setString(3, emvo.getRank());
+		pstmt1.setString(4, emvo.getLoc());
+		pstmt1.setString(5, emvo.getHireType());
+		pstmt1.setString(6, emvo.getPortfolio());
+		pstmt1.setString(7, emvo.getErDesc());
+		pstmt1.setInt(8, emvo.getSal());
+		pstmt1.setString(9, emvo.getErNum());
+		
+		int cnt1 = pstmt1.executeUpdate();
+		
+		if(cnt1 == 1) {
+			flag = true;
+		}
+		
+		return flag;
+	}
+	
+	public boolean ueTransaction2(Connection con, List<String> listSkill) throws SQLException {
+		boolean flag = false;
+		/* 트랜잭션처리 필요 ///////////////////////////////////////////////////////////////////////////
+		delete from selected_skill
+		where er_num = ?;
+		 */
+		
+		StringBuilder updateEr = new StringBuilder();
+		updateEr
+		.append(" delete from selected_skill ")
+		.append(" set subject=?, education=?, rank=?, loc=?, hire_type=?, portfolio=?, er_desc=?, sal=? ")
+		.append(" where er_num = ? ");
+		
+		pstmt1 = con.prepareStatement(updateEr.toString());
+		pstmt1.setString(1, emvo.getSubject());
+		pstmt1.setString(2, emvo.getEducation());
+		pstmt1.setString(3, emvo.getRank());
+		pstmt1.setString(4, emvo.getLoc());
+		pstmt1.setString(5, emvo.getHireType());
+		pstmt1.setString(6, emvo.getPortfolio());
+		pstmt1.setString(7, emvo.getErDesc());
+		pstmt1.setInt(8, emvo.getSal());
+		pstmt1.setString(9, emvo.getErNum());
+		
+		int cnt1 = pstmt1.executeUpdate();
+		
+		if(cnt1 == 1) {
+			flag = true;
+		}
+		
+		return flag;
+	}
+	
+	public boolean ueTransaction3(Connection con, ErModifyVO emvo) throws SQLException {
+		boolean flag = false;
+		/* 트랜잭션처리 필요 ///////////////////////////////////////////////////////////////////////////
+		 
+		update er_info
+		set subject=?, education=?, rank=?, loc=?, hire_type=?, portfolio=?, er_desc=?, sal=?
+		where er_num = ?;
+		
+		delete from selected_skill
+		where er_num = ?;
+		
+		insert into selected_skill(er_num, skill_num)
+		values (?,?);
+		 
+		 */
+		
+		StringBuilder updateEr = new StringBuilder();
+		updateEr
+		.append("update er_info")
+		.append("set subject=?, education=?, rank=?, loc=?, hire_type=?, portfolio=?, er_desc=?, sal=?")
+		.append("where er_num = ?;");
+		
+		pstmt1 = con.prepareStatement(updateEr.toString());
+		pstmt1.setString(1, emvo.getSubject());
+		pstmt1.setString(2, emvo.getEducation());
+		pstmt1.setString(3, emvo.getRank());
+		pstmt1.setString(4, emvo.getLoc());
+		pstmt1.setString(5, emvo.getHireType());
+		pstmt1.setString(6, emvo.getPortfolio());
+		pstmt1.setString(7, emvo.getErDesc());
+		pstmt1.setInt(8, emvo.getSal());
+		pstmt1.setString(9, emvo.getErNum());
+		
+		int cnt1 = pstmt1.executeUpdate();
+		
+		if(cnt1 == 1) {
+			flag = true;
+		}
+		
+		return flag;
+	}
+	
+	public boolean updateEr(ErModifyVO emvo) throws SQLException {
+		boolean flag = false;
+
+		con = getConn();
+		con.setAutoCommit(false);
+		
+		try {
+			boolean t1 = ueTransaction1(con, emvo); // 새로운 정보로 er정보변경
+			ueTransaction2(con, emvo.getListSkill()); // 기존 selected_skill 삭제
+			
+			
+		} finally {
+			closeUpdateEr();
+		}
+		
+		return flag;
+	}
+	
+	public void closeUpdateEr() throws SQLException {
+		if (pstmt3 != null) { pstmt3.close(); }
+		if (pstmt2 != null) { pstmt2.close(); }
+		if (pstmt1 != null) { pstmt1.close(); }
+		if (con != null) { con.close(); }
+	}
+	
+	public boolean deleteEr(String erNum) throws SQLException { /////////////// 작업 예정 /////////////////
+		boolean flag = false;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			
+			con = getConn();
+			
+			StringBuilder deleteEr = new StringBuilder();
+			deleteEr
+			.append("")
+			.append("")
+			.append("");
+			
+			pstmt = con.prepareStatement(deleteEr.toString());
+			
+			int cnt = pstmt.executeUpdate();
+			
+			if(cnt == 1) {
+				flag = true;
+			}
+			
+		} finally {
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		
+		return flag;
 	}
 	
 	public CoInfoVO selectOneCo(String coNum) throws SQLException {
