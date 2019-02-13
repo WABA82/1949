@@ -8,6 +8,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import user.common.view.FindIdView;
 import user.common.view.FindPassView;
@@ -53,6 +54,20 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 	}
 	
 	public void login() {
+		String id=lv.getJtfId().getText().trim();
+		String pass=new String(lv.getJpfPass().getPassword());
+		
+		if(id==null||id.equals("")) {
+			JOptionPane.showMessageDialog(lv,"아이디를 입력하세요");
+			lv.getJtfId().requestFocus();
+			return;
+		}//end if
+		if(pass==null||pass.equals("")) {
+			JOptionPane.showMessageDialog(lv,"비밀번호를 입력하세요");
+			lv.getJpfPass().requestFocus();
+			return;
+		}
+	
 		
 	}//login
 	
