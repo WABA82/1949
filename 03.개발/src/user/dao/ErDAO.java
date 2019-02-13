@@ -325,7 +325,6 @@ public class ErDAO {
 
 		return list;
 		
-		return null;
 	}//selectInterestEEInfoList
 	
 	public ErDefaultVO selectErDefault(String erId) throws SQLException{
