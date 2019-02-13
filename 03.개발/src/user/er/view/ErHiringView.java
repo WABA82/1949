@@ -6,10 +6,13 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import user.common.vo.ErMainVO;
+import user.er.controller.ErHiringController;
 import user.er.vo.ErHiringVO;
 
 @SuppressWarnings("serial")
@@ -22,7 +25,7 @@ public class ErHiringView extends JDialog {
 	private DefaultTableModel dtmEeInfo;
 	
 	
-	public ErHiringView(ErMainView rmv, List<ErHiringVO> rhvo, String s) {
+	public ErHiringView(ErMainView rmv, List<ErHiringVO> list, String erId) {
 		super(rmv,"구직자 정보 보기",true);
 				
 		String[] erColumns= {"번호","구인정보번호","제목","회사명","직급","근무지역","학력","고용형태","급여","등록일"};
@@ -48,7 +51,12 @@ public class ErHiringView extends JDialog {
 		add(jcbSort);
 		add(jspEe);
 		add(jbDetailSearch);
-	
+		/////이벤트//////
+		ErHiringController ehc = new ErHiringController(this,list,erId);
+		jbDetailSearch.addActionListener(ehc);
+		jcbSort.addActionListener(ehc);
+		addWindowListener(ehc);
+		
 		setBounds(100, 100, 1000, 500);
 		setResizable(false);
 		setVisible(true);
@@ -74,7 +82,7 @@ public class ErHiringView extends JDialog {
 
 
 	public static void main(String[] args) {
-		new ErHiringView(null, null, null);
+		new ErHiringView(null, null, "moonlight");
 	}
 
 	
