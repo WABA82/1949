@@ -18,15 +18,17 @@ public class EeMainView extends JFrame {
 	
 	private JButton jbEeInfo, jbErInfo, jbInterestEr, jbApp;
 	private JLabel jlUserInfo, jlLogOut, jlActivation;
-	 
-	public EeMainView(EeMainVO emv) {
-//		super("1949 - 일반사용자 ["+emv.getName()+"]");
+	private  EeMainVO emvo;
+	
+	public EeMainView(EeMainVO emvo) {
+//		super("1949 - 일반사용자 ["+emvo.getName()+"]");
+		this.emvo=emvo;
 		
 		JLabel jlAct = new JLabel("기본정보 등록여부 : ");
-		JLabel jlImg = new JLabel(new ImageIcon("C:/dev/1949/03.개발/가데이터/구직자사진/150x200px/각키.jpg"));
+		JLabel jlImg = new JLabel(new ImageIcon("C:/dev/homework/1949/1949/03.개발/src/img/eeImg/\"/*+emv.getImg()*/"));
 		jlImg.setBorder(new TitledBorder("내 이미지"));
 		
-		jlActivation = new JLabel("O"/*emv.getActivation()*/);
+		jlActivation = new JLabel("O"/*emvo.getActivation()*/);
 		jlUserInfo = new JLabel("회원정보관리");
 		jlLogOut = new JLabel("로그아웃");
 		
@@ -60,7 +62,7 @@ public class EeMainView extends JFrame {
 		add(jbApp);
 		
 
-		EeMainController emc = new EeMainController(this,emv);
+		EeMainController emc = new EeMainController(this,emvo);
 		jbEeInfo.addActionListener(emc);
 		jbErInfo.addActionListener(emc);
 		jbInterestEr.addActionListener(emc);

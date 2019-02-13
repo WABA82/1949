@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import user.common.view.LoginView;
+import user.common.vo.EeMainVO;
 import user.common.vo.FindIdVO;
 import user.common.vo.FindPassVO;
 import user.common.vo.SetPassVO;
@@ -70,6 +71,51 @@ public class CommonDAO {
 
 	}//selectFindId
 
+	/**
+	 * 	김건하 아이디 받기
+	 * @return
+	 * @param eeId
+	 * @throws SQLException 
+	 */
+	public EeMainVO selectEeMain(String ee_id) throws SQLException {
+		EeMainVO emvo=null;
+		
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		//드라이버 로딩
+		try {
+		con=getConn();
+		//쿼리문 생성
+//		private String eeId, name, img, activation;
+		StringBuilder  selectMyInfo= new StringBuilder();
+		selectMyInfo
+		.append("		select ee_id, name, img, activation	") 
+		.append("		from user_table ut, ee_info ei ")
+		.append("		where (ut.id=ei.ee_id) and ut.id=? ");
+		
+		pstmt=con.prepareStatement(selectMyInfo.toString());
+		
+		pstmt.setString(1, ee_id);
+		
+		rs=pstmt.executeQuery();
+		if(rs.next()) {
+//			private String eeId, name, img, activation;
+			emvo=new EeMainVO(rs.getString("eeId"),rs.getString("name"), rs.getString("img"), rs.getString("activation") );
+		}
+		}finally {
+			if( rs != null) { rs.close(); }
+			if( pstmt != null) { pstmt.close(); }
+			if( con != null) { con.close(); }
+		}//end finally
+		return emvo;
+	};
+	
+	public static void main(String[] args) {
+		
+	}
+	
+	
 	public boolean selectFindPass(FindPassVO fpvo) throws SQLException {
 		String searchPass ="";
 		boolean flag = false;
