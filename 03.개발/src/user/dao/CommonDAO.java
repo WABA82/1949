@@ -10,7 +10,6 @@ import user.common.view.LoginView;
 import user.common.vo.EeMainVO;
 import user.common.vo.FindIdVO;
 import user.common.vo.FindPassVO;
-import user.common.vo.SetPassVO;
 
 public class CommonDAO {
 	private static CommonDAO C_dao;
@@ -34,7 +33,7 @@ public class CommonDAO {
 	private Connection getConn() throws SQLException{
 		Connection con =null;
 		
-		String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl";//학원에서 바꿀것!!
+		String url = "jdbc:oracle:thin:@211.63.89.144:1522:orcl";//학원에서 바꿀것!!
 		String id ="kanu";
 		String pass ="share";
 		con = DriverManager.getConnection(url, id, pass);
@@ -69,52 +68,50 @@ public class CommonDAO {
 		}
 		return searchId;
 
-	}//selectFindId
-
+	}
+	
 	/**
 	 * 	김건하 아이디 받기
 	 * @return
 	 * @param eeId
 	 * @throws SQLException 
 	 */
-	public EeMainVO selectEeMain(String ee_id) throws SQLException {
+	public EeMainVO selectEeMain(String eeid) throws SQLException {
 		EeMainVO emvo=null;
 		
 		Connection con=null;
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
+		
 		//드라이버 로딩
 		try {
 		con=getConn();
 		//쿼리문 생성
-//		private String eeId, name, img, activation;
-		StringBuilder  selectMyInfo= new StringBuilder();
+		StringBuilder selectMyInfo= new StringBuilder();
 		selectMyInfo
-		.append("		select ee_id, name, img, activation	") 
-		.append("		from user_table ut, ee_info ei ")
-		.append("		where (ut.id=ei.ee_id) and ut.id=? ");
+		.append("		select ut.name, ei.img, ut.activation		") 
+		.append("		from ee_info ei, user_table ut	")
+		.append("		where (ee_id = id) and ut.id = ?	"	);
 		
 		pstmt=con.prepareStatement(selectMyInfo.toString());
-		
-		pstmt.setString(1, ee_id);
+		pstmt.setString(1,eeid );
 		
 		rs=pstmt.executeQuery();
+		
 		if(rs.next()) {
-//			private String eeId, name, img, activation;
-			emvo=new EeMainVO(rs.getString("eeId"),rs.getString("name"), rs.getString("img"), rs.getString("activation") );
-		}
+			emvo = new EeMainVO(rs.getString("name"), rs.getString("img"), rs.getString("activation"));
+		}//end if
+		
 		}finally {
 			if( rs != null) { rs.close(); }
 			if( pstmt != null) { pstmt.close(); }
 			if( con != null) { con.close(); }
 		}//end finally
-		return emvo;
-	};
-	
-	public static void main(String[] args) {
 		
-	}
+		return emvo;
+	}// selectEeMain
 	
+
 	
 	public boolean selectFindPass(FindPassVO fpvo) throws SQLException {
 		String searchPass ="";
@@ -125,8 +122,8 @@ public class CommonDAO {
 		ResultSet rs = null;
 		try {
 			con = getConn();
-			String count = "select count(*) from user_table where id = ? and question_type = ? and answer = ? ";
-			pstmt = con.prepareStatement(count);
+			String selectPass = "select pass from user_table where id = ? and question_type = ? and answer = ? ";
+			pstmt = con.prepareStatement(selectPass);
 			
 			pstmt.setString(1, fpvo.getId());
 			pstmt.setString(2, fpvo.getqType());
@@ -134,7 +131,7 @@ public class CommonDAO {
 			
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				searchPass = rs.getString("count(*)");
+				searchPass = rs.getString("pass");
 			}//end while
 		}finally {
 			//6.
@@ -142,41 +139,9 @@ public class CommonDAO {
 			if(pstmt!=null) {pstmt.close();}
 			if(con!=null) {con.close();}
 		}
-		if(searchPass.equals("0")) {
+		if(searchPass.equals("")) {
 			flag = true;
 		}
 		return flag;
-	}//selectFindPass
-	
-	public boolean updatePass(SetPassVO spvo) throws SQLException {
-		boolean flag=false;
-	
-		
-		Connection con=null;
-		PreparedStatement pstmt=null;
-		
-		try {
-			con=getConn();
-			
-			String updatePass="update user_table set pass=? where id=?";
-			pstmt=con.prepareStatement(updatePass);
-			
-			pstmt.setString(1, spvo.getNewPass());
-			pstmt.setString(2, spvo.getId());
-			
-			int cnt=pstmt.executeUpdate();
-		}finally {
-			
-			if(pstmt!=null) {pstmt.close();}
-			if(con!=null) {con.close();}
-		}
-		
-		
-		
-		
-		
-		
-		return flag;
 	}
-	
 }
