@@ -8,6 +8,12 @@ import javax.swing.table.DefaultTableModel;
 
 import user.er.controller.ErInterestController;
 
+/**
+ * 관심구직자 목록을 볼 수 있는 창.
+ * 
+ * @author owner
+ *
+ */
 @SuppressWarnings("serial")
 public class ErInterestView extends JDialog {
 	private JTable jtEeInfo;
@@ -26,7 +32,7 @@ public class ErInterestView extends JDialog {
 			@Override
 			public Class<?> getColumnClass(int column) {
 				return getValueAt(0, column).getClass();
-			}//getColumnClass
+			}// getColumnClass
 		};
 		JScrollPane jspEeInfo = new JScrollPane(jtEeInfo);
 
@@ -44,7 +50,7 @@ public class ErInterestView extends JDialog {
 		ErInterestController eric = new ErInterestController(this, er_id);
 		addWindowListener(eric);
 		jtEeInfo.addMouseListener(eric);
-		
+
 		setBounds(100, 100, 1000, 500);
 		setResizable(false);
 		setVisible(true);

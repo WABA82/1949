@@ -10,8 +10,7 @@ public class ErInterestVO {
 	/* 인스턴스 변수 */
 	private String ee_num, img, name, rank, loc, education, portfolio, gender, input_date;
 	private int age;
-	public ErInterestVO(String ee_num, String img, String name, String rank, String loc, String education, int age,
-			String portfolio, String gender, String input_date) {
+	public ErInterestVO(String ee_num, String img, String name, String rank, String loc, String education, int age, String portfolio, String gender, String input_date) {
 		this.ee_num = ee_num;
 		this.img = img;
 		this.name = name;

@@ -8,8 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import user.ee.vo.EeHiringVO;
-import user.ee.vo.EeInterestVO;
 import user.er.vo.DetailEeInfoVO;
 import user.er.vo.ErAddVO;
 import user.er.vo.ErDetailVO;
