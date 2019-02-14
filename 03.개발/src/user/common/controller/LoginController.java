@@ -1,11 +1,13 @@
 package user.common.controller;
 
 import java.awt.event.ActionEvent;
+
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -14,12 +16,14 @@ import user.common.view.FindIdView;
 import user.common.view.FindPassView;
 import user.common.view.LoginView;
 import user.common.view.SignUpView;
+import user.common.vo.EeMainVO;
 import user.dao.CommonDAO;
 import user.ee.view.EeMainView;
 import user.er.view.ErMainView;
 
 public class LoginController extends WindowAdapter implements ActionListener, MouseListener {
 	private LoginView lv;
+	private EeMainVO emv;
 	public LoginController(LoginView lv) {
 		this.lv = lv;
 	}
@@ -42,7 +46,11 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 	public void actionPerformed(ActionEvent ae) {
 		
 		if(ae.getSource()==lv.getJbLogin()) {
-			login();
+			try {
+				login();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}//end if
 		
 	}//버튼
@@ -57,7 +65,7 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 		System.exit(0);
 	}
 	
-	public void login() {
+	public void login() throws SQLException {
 		String id=lv.getJtfId().getText().trim();
 		String pass=new String(lv.getJpfPass().getPassword());
 		
@@ -71,14 +79,16 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 			lv.getJpfPass().requestFocus();
 			return;
 		}
+		System.out.println(id + pass);
 		String userType="";
 		CommonDAO c_dao = CommonDAO.getInstance();
 		
-		userType=c_dao.login(id, pass );
-		if(userType=="E") {
-			new EeMainView();//생성자 안에 들어갈 emvo....등등 만들기
+		userType=c_dao.login(id, pass);
+		if(userType.equals("E")) {
+			System.out.println("E");
+			new EeMainView(emv);//생성자 안에 들어갈 emvo....등등 만들기
 		}else {
-			new ErMainView();//DAO의 selecteemain...등등 만들기
+			//new ErMainView();//DAO의 selecteemain...등등 만들기
 		}
 		
 	}//login
