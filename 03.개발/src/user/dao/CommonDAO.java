@@ -11,6 +11,7 @@ import user.common.vo.EeMainVO;
 import user.common.vo.FindIdVO;
 import user.common.vo.FindPassVO;
 import user.common.vo.SetPassVO;
+import user.common.vo.UserInfoVO;
 import user.ee.view.EeMainView;
 import user.er.view.ErMainView;
 
@@ -36,7 +37,7 @@ public class CommonDAO {
 	private Connection getConn() throws SQLException{
 		Connection con =null;
 		
-		String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl";//학원에서 바꿀것!!
+		String url = "jdbc:oracle:thin:@211.63.89.144:1522:orcl";//학원에서 바꿀것!!
 		String id ="kanu";
 		String pass ="share";
 		con = DriverManager.getConnection(url, id, pass);
@@ -52,7 +53,7 @@ public class CommonDAO {
 		
 		con=getConn();
 		
-		String match = "SELECT ID, USER_TYPE FROM USER_TABLE WHERE ID=? AND PASS=?";
+		String match = "SELECT USER_TYPE FROM USER_TABLE WHERE ID=? AND PASS=?";
 		pstmt = con.prepareStatement(match);
 		pstmt.setString(1, id);
 		pstmt.setString(2, pass);
@@ -94,8 +95,52 @@ public class CommonDAO {
 		}
 		return searchId;
 
-	}//selectFindId
+	}
+	
+	/**
+	 * 	김건하 아이디 받기
+	 * @return
+	 * @param eeId
+	 * @throws SQLException 
+	 */
+	public EeMainVO selectEeMain(String eeid) throws SQLException {
+		EeMainVO emvo=null;
+		
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		
+		//드라이버 로딩
+		try {
+		con=getConn();
+		//쿼리문 생성
+		StringBuilder selectMyInfo= new StringBuilder();
+		selectMyInfo
+		.append("		select ut.name, ei.img, ut.activation		") 
+		.append("		from ee_info ei, user_table ut	")
+		.append("		where (ee_id = id) and id = ?	"	);
+		
+		pstmt=con.prepareStatement(selectMyInfo.toString());
+		pstmt.setString(1,eeid );
+		
+		rs=pstmt.executeQuery();
+		
+		if(rs.next()) {
+			emvo = new EeMainVO(rs.getString("name"), rs.getString("img"), rs.getString("activation"));
+		}//end if
+		
+		}finally {
+			if( rs != null) { rs.close(); }
+			if( pstmt != null) { pstmt.close(); }
+			if( con != null) { con.close(); }
+		}//end finally
+		
+		return emvo;
+	}// selectEeMain
+	
+	
 
+	
 	public boolean selectFindPass(FindPassVO fpvo) throws SQLException {
 		int searchPass =0;
 		boolean flag = false;
@@ -124,8 +169,8 @@ public class CommonDAO {
 				}
 				System.out.println(flag);
 			}
+
 		}finally {
-			//6.
 			if(rs!=null) {rs.close();}
 			if(pstmt!=null) {pstmt.close();}
 			if(con!=null) {con.close();}
@@ -159,8 +204,31 @@ public class CommonDAO {
 			if(con!=null) {con.close();}
 		}
 		return flag;
+	
+	}//updatePass
+	
+	public UserInfoVO selectUserInfo(String id) throws SQLException {
+		String userInfo="";
 		
+		Connection con=null;
+		PreparedStatement stmt=null;
+		ResultSet rs=null;
+		
+		try {
+			con=getConn();
+			String selectUserInfo="select name, tel, seq, zipcode, addr1, addr2, email from user_info where id=? ";
+		}finally {
+			
+		}
+		
+		
+		
+		return userInfo;
 	}
+
+	
+	
+	
 	
 	public EeMainVO selectEeMain(String id) throws SQLException {
 		EeMainVO emvo=null;
@@ -169,21 +237,28 @@ public class CommonDAO {
 		PreparedStatement pstmt =null;
 		ResultSet rs = null;
 		
+		try {
 		con =getConn();
 		
-		String selectEeInfo = "SELECT EE_ID, NAME, IMG, ACTIVATION FROM EE_INFO WHERE ID=?";
-		pstmt = con.prepareStatement(selectEeInfo);
+		StringBuilder selectEeInfo = new StringBuilder();
+		selectEeInfo.append("select ut.id, ut.name, ei.img, ut.activation").append("from ee_info ei,USER_TABLE ut")
+			.append("where ut.id=ei.ee_id").append("and ut.id=?");
+//		String selectEeInfo = "SELECT EE_ID, NAME, IMG, ACTIVATION FROM EE_INFO WHERE ID=?";
+		pstmt = con.prepareStatement(selectEeInfo.toString());
 		
 		pstmt.setString(1, id);
 		
 		rs=pstmt.executeQuery();
-		//String eeId, name, img, activation;
-		if(rs.next()) {
-//			emvo = new EeMainVO(id, rs.getString("name"),rs.getString() img, activation)
+			if(rs.next()) {
+				emvo = new EeMainVO(rs.getString("id"), rs.getString("name"),rs.getString("img"), rs.getString("activation"));
+			}
+		}finally {
+		if(rs!=null) {	rs.close();	}
+		if(pstmt!=null) {pstmt.close();}
+		if(con!=null) {con.close();}
 		}
 		
 		return emvo;
 	}//selectEeMain
-	
 	
 }

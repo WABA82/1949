@@ -82,9 +82,7 @@ public class LoginView extends JFrame {
 		setResizable(true);
 		
 	}
-	public static void main(String[] args) {
-		new LoginView();
-	}
+
 
 	public JTextField getJtfId() {
 		return jtfId;
