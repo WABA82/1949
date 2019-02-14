@@ -12,12 +12,12 @@ import user.common.vo.FindIdVO;
 import user.common.vo.FindPassVO;
 import user.common.vo.SetPassVO;
 import user.common.vo.UserInfoVO;
+import user.common.vo.UserModifyVO;
 import user.ee.view.EeMainView;
 import user.er.view.ErMainView;
 
 public class CommonDAO {
 	private static CommonDAO C_dao;
-	LoginView lv=new LoginView();
 	
 	private CommonDAO() {
 		try {
@@ -67,6 +67,12 @@ public class CommonDAO {
 	}//login
 
 	
+	/**
+	 * 최혜원 아이디 찾기
+	 * @param fivo
+	 * @return
+	 * @throws SQLException
+	 */
 	public String selectFindId(FindIdVO fivo)throws SQLException {
 		String searchId="";
 		
@@ -97,50 +103,14 @@ public class CommonDAO {
 
 	}
 	
-	/**
-	 * 	김건하 아이디 받기
-	 * @return
-	 * @param eeId
-	 * @throws SQLException 
-	 */
-	public EeMainVO selectEeMain(String eeid) throws SQLException {
-		EeMainVO emvo=null;
-		
-		Connection con=null;
-		PreparedStatement pstmt=null;
-		ResultSet rs=null;
-		
-		//드라이버 로딩
-		try {
-		con=getConn();
-		//쿼리문 생성
-		StringBuilder selectMyInfo= new StringBuilder();
-		selectMyInfo
-		.append("		select ut.name, ei.img, ut.activation		") 
-		.append("		from ee_info ei, user_table ut	")
-		.append("		where (ee_id = id) and id = ?	"	);
-		
-		pstmt=con.prepareStatement(selectMyInfo.toString());
-		pstmt.setString(1,eeid );
-		
-		rs=pstmt.executeQuery();
-		
-		if(rs.next()) {
-			emvo = new EeMainVO(rs.getString("name"), rs.getString("img"), rs.getString("activation"));
-		}//end if
-		
-		}finally {
-			if( rs != null) { rs.close(); }
-			if( pstmt != null) { pstmt.close(); }
-			if( con != null) { con.close(); }
-		}//end finally
-		
-		return emvo;
-	}// selectEeMain
-	
-	
 
 	
+	/**
+	 * 최혜원 비밀번호 변경전 회원정보받아 검증
+	 * @param fpvo
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean selectFindPass(FindPassVO fpvo) throws SQLException {
 		int searchPass =0;
 		boolean flag = false;
@@ -162,12 +132,10 @@ public class CommonDAO {
 			if(rs.next()) {
 				searchPass = rs.getInt("login");
 				
-				System.out.println(searchPass);
 				
 				if(searchPass==1) {
 					flag = true;
 				}
-				System.out.println(flag);
 			}
 
 		}finally {
@@ -178,6 +146,12 @@ public class CommonDAO {
 		return flag;
 	}//selectFindPass
 	
+	/**
+	 * 최혜원 비밀번호 변경하기
+	 * @param spvo
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean updatePass(SetPassVO spvo) throws SQLException {
 		boolean flag=false;
 	
@@ -207,58 +181,131 @@ public class CommonDAO {
 	
 	}//updatePass
 	
+	/**
+	 * 최혜원 사용자 정보조회
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
 	public UserInfoVO selectUserInfo(String id) throws SQLException {
-		String userInfo="";
+		UserInfoVO uivo=null;
 		
 		Connection con=null;
-		PreparedStatement stmt=null;
+		PreparedStatement pstmt=null;
 		ResultSet rs=null;
+		
 		
 		try {
 			con=getConn();
-			String selectUserInfo="select name, tel, seq, zipcode, addr1, addr2, email from user_info where id=? ";
-		}finally {
+			StringBuilder selectUserInfo=new StringBuilder();
+			selectUserInfo.append("select u.id, u.name, u.tel, z.seq, z.zipcode,")
+			.append("z.sido||' '||z.gugun||' '||z.dong||' '||z.bunji addr1 ,")
+			.append("u.addr_detail addr2, u.email")
+			.append("from user_table u, zipcode z ")
+			.append("where u.addr_seq=z.seq ")
+			.append("and u.id in '?' ");
 			
+			pstmt=con.prepareStatement(selectUserInfo.toString());
+			
+			pstmt.setString(1, id);
+			
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				uivo=new UserInfoVO(rs.getString("id"), rs.getString("name"), rs.getString("tel")
+											,rs.getString("seq"), rs.getString("zipcode"), rs.getString("addr1")
+											,rs.getString("addr2"), rs.getString("email"));
+			}
+			
+		}finally {
+			if(rs!=null) {rs.close();}
+			if(pstmt!=null) {pstmt.close();}
+			if(pstmt!=null) {pstmt.close();}
 		}
-		
-		
-		
-		return userInfo;
+		return uivo;
 	}
-
 	
-	
-	
-	
-	public EeMainVO selectEeMain(String id) throws SQLException {
-		EeMainVO emvo=null;
+	/**
+	 * 최혜원 사용자 정보 수정
+	 * @param umvo
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean updateUserInfo(UserModifyVO umvo) throws SQLException {
+		boolean flag=false;
 		
-		Connection con =null;
-		PreparedStatement pstmt =null;
-		ResultSet rs = null;
+		Connection con=null;
+		PreparedStatement pstmt=null;
 		
 		try {
-		con =getConn();
+			con=getConn();
+			
+			StringBuilder updateUserInfo=new StringBuilder();
+			
+			updateUserInfo.append("update user_table")
+			.append("set  name='?',pass='?',tel='?',addr_seq='?',addr_detail='?',email='? ")
+			.append("where id='?' ");
+			
+			pstmt=con.prepareStatement(updateUserInfo.toString());
+			
+			pstmt.setString(1, umvo.getName());
+			pstmt.setString(2, umvo.getPass());
+			pstmt.setString(3, umvo.getTel());
+			pstmt.setString(4, umvo.getSeq());
+			pstmt.setString(5, umvo.getAddrDetail());
+			pstmt.setString(6, umvo.getEmail());
+			pstmt.setString(7, umvo.getId());
+			
+			int cnt=pstmt.executeUpdate();
+			 if(cnt==1) {
+				 flag=true;
+			 }
+		}finally {
+			if(pstmt!=null) {pstmt.close();}
+			if(con!=null) {con.close();}
+		}
+	
+		return flag;
 		
-		StringBuilder selectEeInfo = new StringBuilder();
-		selectEeInfo.append("select ut.id, ut.name, ei.img, ut.activation").append("from ee_info ei,USER_TABLE ut")
-			.append("where ut.id=ei.ee_id").append("and ut.id=?");
-//		String selectEeInfo = "SELECT EE_ID, NAME, IMG, ACTIVATION FROM EE_INFO WHERE ID=?";
-		pstmt = con.prepareStatement(selectEeInfo.toString());
+	}
+	
+/**
+ * 	김건하 아이디 받기
+ * @return
+ * @param eeId
+ * @throws SQLException 
+ */
+public EeMainVO selectEeMain(String eeid) throws SQLException {
+	EeMainVO emvo=null;
+	
+	Connection con=null;
+	PreparedStatement pstmt=null;
+	ResultSet rs=null;
+	
+	//드라이버 로딩
+	try {
+		con=getConn();
+		//쿼리문 생성
+		StringBuilder selectMyInfo= new StringBuilder();
+		selectMyInfo
+		.append("		select ut.name, ei.img, ut.activation		") 
+		.append("		from ee_info ei, user_table ut	")
+		.append("		where (ee_id = id) and id = ?	"	);
 		
-		pstmt.setString(1, id);
+		pstmt=con.prepareStatement(selectMyInfo.toString());
+		pstmt.setString(1,eeid );
 		
 		rs=pstmt.executeQuery();
-			if(rs.next()) {
-				emvo = new EeMainVO(rs.getString("id"), rs.getString("name"),rs.getString("img"), rs.getString("activation"));
-			}
-		}finally {
-		if(rs!=null) {	rs.close();	}
-		if(pstmt!=null) {pstmt.close();}
-		if(con!=null) {con.close();}
-		}
 		
-		return emvo;
-	}//selectEeMain
+		if(rs.next()) {
+			emvo = new EeMainVO(rs.getString("name"), rs.getString("img"), rs.getString("activation"));
+		}//end if
+		
+	}finally {
+		if( rs != null) { rs.close(); }
+		if( pstmt != null) { pstmt.close(); }
+		if( con != null) { con.close(); }
+	}//end finally
 	
+	return emvo;
+}// selectEeMain
 }
