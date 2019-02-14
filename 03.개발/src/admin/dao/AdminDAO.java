@@ -20,6 +20,7 @@ import admin.vo.ErModifyVO;
 import admin.vo.UserInfoVO;
 import admin.vo.UserListVO;
 import admin.vo.UserModifyVO;
+import user.ee.vo.EeModifyVO;
 
 public class AdminDAO {
 	
@@ -739,6 +740,46 @@ public class AdminDAO {
 		}
 		
 		return eivo;
+	}
+	
+	public boolean updateEe(EeModifyVO emvo) throws SQLException {
+		boolean flag = false;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = getConn();
+			
+			StringBuilder updateEe = new StringBuilder();
+			
+			updateEe
+			.append(" update ee_info ")
+			.append(" set img=?, rank=?, loc=?, education=?, portfolio=?, ext_resume=? ")
+			.append(" where ee_num=? ");
+			
+			pstmt = con.prepareStatement(updateEe.toString());
+			pstmt.setString(1, emvo.getImg());
+			pstmt.setString(2, emvo.getRank());
+			pstmt.setString(3, emvo.getLoc());
+			pstmt.setString(4, emvo.getEducation());
+			pstmt.setString(5, emvo.getPortfolio());
+			pstmt.setString(6, emvo.getExtResume());
+			pstmt.setString(7, emvo.getEeNum());
+			
+			int cnt = pstmt.executeUpdate();
+			
+			if (cnt == 1) {
+				flag = true;
+			}
+			
+		} finally {
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		System.out.println("--updateEe flag : " +flag);
+		return flag;
 	}
 	
 	public boolean dEeTransaction1(String eeNum) throws SQLException {

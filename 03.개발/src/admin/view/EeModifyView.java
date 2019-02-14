@@ -29,7 +29,7 @@ public class EeModifyView extends JDialog {
 		setLayout(null);
 
 		//image ///////////////////////////////////// 파일서버완성 후 이미지 경로 수정할 것 ////////////////////////////////
-		ImageIcon ii=new ImageIcon("C:/dev/1949/03.개발/src/img/eeImg/"+eivo.getImg());
+		ImageIcon ii=new ImageIcon("C:/dev/1949/03.개발/src/file/eeImg/"+eivo.getImg());
 		jlImg=new JLabel(ii);
 		jlImg.setBorder(new TitledBorder("구직자 이미지"));
 		jlImg.setBounds(38, 20, 160, 225);
@@ -152,6 +152,7 @@ public class EeModifyView extends JDialog {
 		jcbPortfolio.setBounds(325,272,130,20);
 		
 		JTextField jtfGender=new JTextField(eivo.getGender());
+		jtfGender.setEditable(false);
 		add(jtfGender);
 		jtfGender.setBounds(325, 311, 130, 20);
 		

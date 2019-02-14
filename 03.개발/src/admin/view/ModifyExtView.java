@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import admin.controller.EeModifyController;
 import user.ee.controller.ModifyExtController;
 
 /**
@@ -19,8 +20,10 @@ public class ModifyExtView extends JDialog {
 	private JTextField jtfPath;
 	private JButton jbChoose, jbChange, jbCancel;
 
-	public ModifyExtView(EeModifyView emv) {
+	public ModifyExtView(EeModifyView emv, EeModifyController emc) {
 		super(emv, "외부이력서 등록", true);
+
+		setLayout(null);
 
 		JLabel jlMsg = new JLabel("외부 이력서 첨부");
 		jlMsg.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
@@ -49,18 +52,15 @@ public class ModifyExtView extends JDialog {
 		jbCancel.setBounds(190, 95, 100, 25);
 
 		// 이벤트 등록
-		ModifyExtController mec = new ModifyExtController(this, emv);
+		ModifyExtController mec = new ModifyExtController(this, emv, emc);
 		jbCancel.addActionListener(mec);
 		jbChange.addActionListener(mec);
 		jbChoose.addActionListener(mec);
 		addWindowListener(mec);
 
-		setLayout(null);
 		setResizable(false);
 		setBounds(emv.getX() + 50, emv.getY() + 150, 380, 170);
 		setVisible(true);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
 	}// 생성자
 
 	public JTextField getJtfPath() {

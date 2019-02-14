@@ -88,7 +88,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 				elvo = list.get(i);
 				rowData[0] = String.valueOf(i+1);
 				rowData[1] = elvo.getEeNum();
-				rowData[2] = new ImageIcon("C:/dev/1949/03.개발/src/img/eeImg/"+elvo.getImg());
+				rowData[2] = new ImageIcon("C:/dev/1949/03.개발/src/file/eeImg/"+elvo.getImg());
 				rowData[3] = elvo.getEeId();
 				rowData[4] = elvo.getName();
 				switch(elvo.getRank()) {
@@ -180,7 +180,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 				clvo = list.get(i);
 				rowData[0] = String.valueOf(i+1);
 				rowData[1] = clvo.getCoNum();
-				rowData[2] = new ImageIcon("C:/dev/1949/03.개발/src/img/coImg/"+clvo.getImg1());
+				rowData[2] = new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/"+clvo.getImg1());
 				rowData[3] = clvo.getCoName();
 				rowData[4] = clvo.getErId();
 				rowData[5] = clvo.getEstDate();
