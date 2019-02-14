@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import user.ee.controller.EeInfoRegController;
+import user.ee.vo.EeRegVO;
 
 /**
  *	 기본 정보 관리 -김건하-
@@ -28,7 +29,7 @@ public class EeInfoRegView extends JDialog {
 	
 	private JTextField jtfName, jtfAge, jtfGender, jtfId;
 	
-	public EeInfoRegView(EeMainView emv) {
+	public EeInfoRegView(EeMainView emv, EeRegVO ervo) {
 		super(emv, "기본 정보 관리",true);
 		//image
 		ImageIcon ii=new ImageIcon("C:/dev/homework/1949/1949/03.개발/no_img_files/no_ee_img.png");
