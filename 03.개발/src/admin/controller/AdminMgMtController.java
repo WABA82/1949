@@ -15,10 +15,12 @@ import javax.swing.table.DefaultTableModel;
 import admin.dao.AdminDAO;
 import admin.view.AdminMgMtView;
 import admin.view.CoModifyView;
+import admin.view.EeModifyView;
 import admin.view.ErModifyView;
 import admin.view.UserModifyView;
 import admin.vo.CoInfoVO;
 import admin.vo.CoListVO;
+import admin.vo.EeInfoVO;
 import admin.vo.EeListVO;
 import admin.vo.ErInfoVO;
 import admin.vo.ErListVO;
@@ -86,7 +88,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 				elvo = list.get(i);
 				rowData[0] = String.valueOf(i+1);
 				rowData[1] = elvo.getEeNum();
-				rowData[2] = new ImageIcon("C:/dev/1949/03.개발/src/img/eeImg/"+elvo.getImg());
+				rowData[2] = new ImageIcon("C:/dev/1949/03.개발/src/file/eeImg/"+elvo.getImg());
 				rowData[3] = elvo.getEeId();
 				rowData[4] = elvo.getName();
 				switch(elvo.getRank()) {
@@ -178,7 +180,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 				clvo = list.get(i);
 				rowData[0] = String.valueOf(i+1);
 				rowData[1] = clvo.getCoNum();
-				rowData[2] = new ImageIcon("C:/dev/1949/03.개발/src/img/coImg/"+clvo.getImg1());
+				rowData[2] = new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/"+clvo.getImg1());
 				rowData[3] = clvo.getCoName();
 				rowData[4] = clvo.getErId();
 				rowData[5] = clvo.getEstDate();
@@ -242,7 +244,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 				
 				try {
 					UserInfoVO ulvo = a_dao.selectOneUser(id);
-					new UserModifyView(ammv, ulvo);
+					new UserModifyView(ammv, ulvo, this);
 				} catch (SQLException e) {
 					msgCenter("DB 접속 실패했습니다.");
 					e.printStackTrace();
@@ -272,7 +274,22 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 				
 				try {
 					ErInfoVO eivo = a_dao.selectOneEr(erNum);
-					new ErModifyView(ammv, eivo);
+					new ErModifyView(ammv, eivo, this);
+				} catch (SQLException e) {
+					msgCenter("DB 접속 실패했습니다.");
+					e.printStackTrace();
+				}
+			}
+			
+			if (me.getSource() == ammv.getJtEe()) {
+				
+				jt = ammv.getJtEe();
+				
+				String eeNum = (String)jt.getValueAt(jt.rowAtPoint(me.getPoint()), 1);
+				
+				try {
+					EeInfoVO eivo = a_dao.selectOneEe(eeNum);
+					new EeModifyView(ammv, eivo, this);
 				} catch (SQLException e) {
 					msgCenter("DB 접속 실패했습니다.");
 					e.printStackTrace();

@@ -148,6 +148,7 @@ public class AdminMgMtView extends JDialog {
 		
 		
 		setBounds(100, 100, 1500, 700);
+		setResizable(false);
 		setVisible(true);
 		
 	}//AdminMainView
