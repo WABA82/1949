@@ -19,6 +19,7 @@ import user.dao.CommonDAO;
 public class FindPassController extends WindowAdapter implements ActionListener {
 	
 	private FindPassView fpv;
+	private LoginView lv;
 	
 	public FindPassController(FindPassView fpv) {
 		this.fpv = fpv;
@@ -30,7 +31,8 @@ public class FindPassController extends WindowAdapter implements ActionListener 
 		JTextField jtfAnswer=fpv.getJtfAnswer();
 		
 		String id=jtfId.getText().trim();
-		String qType=jcbQ.getSelectedItem().toString();
+		String qType=String.valueOf((jcbQ.getSelectedIndex()));///
+		System.out.println(qType);
 		String answer=jtfAnswer.getText().trim();
 		
 		if(id==null||id.equals("")) {
@@ -49,21 +51,16 @@ public class FindPassController extends WindowAdapter implements ActionListener 
 			return;
 		}
 		
-		FindPassVO fpvo= new FindPassVO(id, qType, answer);
-		LoginView lv=new LoginView();
 		
 		try {
-			//flag=CommonDAO.getInstance().selectFindPass(fpvo);
+			FindPassVO fpvo= new FindPassVO(id, qType, answer);
 			
 			if(CommonDAO.getInstance().selectFindPass(fpvo)) {
 				JOptionPane.showMessageDialog(fpv, "입력하신 정보가 일치합니다.");
-				SetNewPassView snpv=new SetNewPassView(lv,id);
-				return;
+				new SetNewPassView(lv, id);
 			}else{
 				JOptionPane.showMessageDialog(fpv, "정보가 올바르지 않습니다.");
-				
 			}
-			
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(fpv, "DB에서 문제가 발생했습니다.");
 			e.printStackTrace();
