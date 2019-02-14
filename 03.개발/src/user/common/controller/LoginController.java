@@ -62,10 +62,6 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 		lv.dispose();
 	}
 
-	@Override
-	public void windowClosed(WindowEvent e) {
-		System.exit(0);
-	}
 	
 	public void login() throws SQLException {
 		String id=lv.getJtfId().getText().trim();
@@ -89,6 +85,9 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 		if(userType.equals("E")) {
 			System.out.println("E");
 			new EeMainView(emv);//생성자 안에 들어갈 emvo....등등 만들기
+			System.out.println("111");
+			lv.dispose();
+			System.out.println("222");
 		}else {
 			//new ErMainView();//DAO의 selecteemain...등등 만들기
 		}
