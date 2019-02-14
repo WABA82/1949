@@ -10,7 +10,6 @@ import user.common.view.LoginView;
 import user.common.vo.EeMainVO;
 import user.common.vo.FindIdVO;
 import user.common.vo.FindPassVO;
-
 import user.common.vo.SetPassVO;
 import user.common.vo.UserInfoVO;
 import user.ee.view.EeMainView;
@@ -151,11 +150,9 @@ public class CommonDAO {
 		ResultSet rs = null;
 		try {
 			con = getConn();
-
 			
 			String count = "select count(*) login from user_table where id=? and question_type=? and answer=?";
 			pstmt = con.prepareStatement(count);
-
 			
 			pstmt.setString(1, fpvo.getId());
 			pstmt.setString(2, fpvo.getqType());
@@ -163,7 +160,6 @@ public class CommonDAO {
 		
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-
 				searchPass = rs.getInt("login");
 				
 				System.out.println(searchPass);
@@ -174,7 +170,6 @@ public class CommonDAO {
 				System.out.println(flag);
 			}
 
-		
 		}finally {
 			if(rs!=null) {rs.close();}
 			if(pstmt!=null) {pstmt.close();}
@@ -235,7 +230,7 @@ public class CommonDAO {
 	
 	
 	
-	/*public EeMainVO selectEeMain(String id) throws SQLException {
+	public EeMainVO selectEeMain(String id) throws SQLException {
 		EeMainVO emvo=null;
 		
 		Connection con =null;
@@ -265,10 +260,5 @@ public class CommonDAO {
 		
 		return emvo;
 	}//selectEeMain
-	*/
 	
-
-	
-	
-
 }
