@@ -35,10 +35,9 @@ public class ErAddView extends JDialog {
 
 		/* 컴포넌트 생성하기 */
 		// 이미지아이콘 : 회사로고
-		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/admin/img/co/no_co_img1.png");
 		
 		// 라벨들
-		JLabel jlImage = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/img/coImg/"+edfvo.getImg1()));
+		JLabel jlImage = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/"+edfvo.getImg1()));
 		JLabel jlName = new JLabel("이름");
 		JLabel jlTel = new JLabel("연락처");
 		JLabel jlEmail = new JLabel("이메일");

@@ -68,7 +68,7 @@ public class ErMgMtView extends JDialog {
 
 
 	public static void main(String[] args) {
-		ErMgMtView emmv = new ErMgMtView(null, null, null);
+		new ErMgMtView(null, null, null);
 	}
 	
 }

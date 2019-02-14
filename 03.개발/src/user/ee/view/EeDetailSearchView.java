@@ -73,7 +73,6 @@ public class EeDetailSearchView extends JDialog {
 		setResizable(false);
 		setVisible(true);
 	}
-	
 
 	public JButton getJbSearch() {
 		return jbSearch;
