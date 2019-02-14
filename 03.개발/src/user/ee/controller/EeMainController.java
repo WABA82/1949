@@ -6,10 +6,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
 import user.common.vo.EeMainVO;
+import user.dao.CommonDAO;
 import user.dao.EeDAO;
 import user.ee.view.EeHiringView;
 import user.ee.view.EeInfoRegView;
@@ -23,12 +28,15 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 	private EeMainView emv;
 	private EeMainVO emvo;
 
-	private EeDAO EeDAO;
+	private EeDAO eedao;
+	private CommonDAO C_dao;
 	private EeHiringView ehv;
 
 	public EeMainController(EeMainView emv, EeMainVO emvo) {
 		this.emv = emv;
-		EeDAO = EeDAO.getInstance();
+		eedao = EeDAO.getInstance();
+//		C_dao=CommonDAO.getInstance();
+//		setInfo("kun90");
 	}
 
 	public void checkActivation() {
@@ -36,7 +44,8 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 	}
 
 	public void mngUser() {
-		new EeInfoRegView(emv);
+		EeRegVO ervo= new EeRegVO("kun90", "M", 25);
+			new EeInfoRegView(emv, ervo);
 	}
 
 	public void mngEe() {
@@ -44,7 +53,7 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 	}
 
 	public void showHiring() {
-		EeMainView emv = new EeMainView(emvo);
+//		EeMainView emv = new EeMainView(emvo);
 		List<EeHiringVO> ehvo = new ArrayList<EeHiringVO>();
 		String eeid = "testId";
 		new EeHiringView(emv, ehvo, eeid);
@@ -74,6 +83,22 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 
 	}// mouseClicked
 
+	public void setInfo(String eeid) {
+	JLabel activation=emv.getJlActivation();
+	JLabel img=emv.getJlImg();
+	EeMainVO emvo= null;
+	
+	try {
+		emvo=C_dao.selectEeMain(eeid);
+		activation.setText(emvo.getActivation());
+		img.setText(emvo.getImg());
+		
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 

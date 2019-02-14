@@ -14,8 +14,8 @@ import user.ee.vo.EeAppVO;
 import user.ee.vo.EeHiringVO;
 import user.ee.vo.EeInsertVO;
 import user.ee.vo.EeInterestAndAppVO;
-import user.ee.vo.EeRegVO;
 import user.ee.vo.EeInterestVO;
+import user.ee.vo.EeRegVO;
 
 public class EeDAO {
 	private static EeDAO Ee_dao;
@@ -278,13 +278,13 @@ public class EeDAO {
 			.append("		values( ee_code, ?, ?, ?, ?, ?, ?, ? 	)	");
 			pstmt = con.prepareStatement(insertInfo.toString());
 
-			pstmt.setString(1, eivo.getImg());
-			pstmt.setString(2, eivo.getRank());
-			pstmt.setString(3, eivo.getLoc());
-			pstmt.setString(4, eivo.getEducation());
-			pstmt.setString(5, eivo.getPortfolio());
-			pstmt.setString(6, eivo.getExtResume());
-			pstmt.setString(7, eivo.getEeId());
+			pstmt.setString(1, eivo.getEeId());
+			pstmt.setString(2, eivo.getImg());
+			pstmt.setString(3, eivo.getRank());
+			pstmt.setString(4, eivo.getLoc());
+			pstmt.setString(5, eivo.getEducation());
+			pstmt.setString(6, eivo.getPortfolio());
+			pstmt.setString(7, eivo.getExtResume());
 
 			pstmt.executeUpdate();
 			
@@ -300,20 +300,19 @@ public class EeDAO {
 
 	}// insertEeinfo
 
-/*	
- * public static void main(String[] args) {
-		EeInsertVO eivo= new EeInsertVO("12", "2", "3", "4", "5", "6", "kun90");
-		try {
-			EeDAO.getInstance().insertEeinfo(eivo);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}//main
-*/
-
+	
+	
+//	public static void main(String[] args) {
+//		EeInsertVO eivo= new EeInsertVO("ee1.jpg", "C", "인천", "대졸", "Y", "이력서", "choi7");
+//		try {
+//			EeDAO.getInstance().insertEeinfo(eivo);
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}//main
+	
 	/**
 	 * 19.02.11 김건하 EeRegVO
-	 * 
 	 * @return
 	 * @throws SQLException
 	 */
@@ -379,7 +378,7 @@ public class EeDAO {
 
 			// 바인드변수 값 넣기
 			pstmt.setString(1, ee_id);
-
+			
 			rs = pstmt.executeQuery();
 			EeInterestVO eivo = null;
 			// 조회된 데이터
@@ -408,7 +407,7 @@ public class EeDAO {
 	/**
 	 * 일반사용자의 지원현황 목록을 채울 값을 조회하는 메소드.
 	 * @param ee_id
-	 * @return
+	 * @return	
 	 * @throws SQLException
 	 */
 	public List<EeAppVO> selectAppList(String ee_id) throws SQLException {
