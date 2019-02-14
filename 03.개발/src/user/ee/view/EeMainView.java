@@ -107,7 +107,5 @@ public class EeMainView extends JFrame {
 		return jlImg;
 	}
 
-	public static void main(String[] args) {
-		new EeMainView(null);
-	}
+
 }

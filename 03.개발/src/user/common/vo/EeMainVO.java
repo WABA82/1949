@@ -2,12 +2,17 @@ package user.common.vo;
 
 public class EeMainVO {
 
-	private String name, img, activation;
+	private String eeId, name, img, activation;
 
-	public EeMainVO(String name, String img, String activation) {
+	public EeMainVO(String eeId, String name, String img, String activation) {
+		this.eeId = eeId;
 		this.name = name;
 		this.img = img;
 		this.activation = activation;
+	}
+	
+	public String getEeId() {
+		return eeId;
 	}
 
 	public String getName() {
@@ -24,8 +29,8 @@ public class EeMainVO {
 
 	@Override
 	public String toString() {
-		return "EeMainVO [name=" + name + ", img=" + img + ", activation=" + activation + "]";
+		return "EeMainVO [eeId=" + eeId + ", name=" + name + ", img=" + img + ", activation=" + activation + "]";
 	}
 
-	
+
 }

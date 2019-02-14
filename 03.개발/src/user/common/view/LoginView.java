@@ -78,9 +78,8 @@ public class LoginView extends JFrame {
 		addWindowListener(lc);
 		
 		setBounds(200,200,400,400);
-		setVisible(true);
 		setResizable(true);
-		
+		setVisible(true);
 	}
 
 

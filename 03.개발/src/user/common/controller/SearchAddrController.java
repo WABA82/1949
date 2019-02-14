@@ -6,6 +6,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 import user.common.view.SearchAddrView;
 
@@ -38,6 +39,10 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
 		sav.dispose();
 	}//closing
 	public void search(String dong) {
+		if(sav.getJtfDong().getText().trim().equals("")||sav.getJtfDong().getText().trim()==null) {
+			JOptionPane.showMessageDialog(sav, "동을 입력하세요.");
+			return;
+		}
 		
 	}//search
 }//class

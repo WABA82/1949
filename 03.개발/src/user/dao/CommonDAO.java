@@ -5,9 +5,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import user.common.view.LoginView;
+import user.common.vo.AddrVO;
 import user.common.vo.EeMainVO;
+import user.common.vo.ErMainVO;
 import user.common.vo.FindIdVO;
 import user.common.vo.FindPassVO;
 import user.common.vo.SetPassVO;
@@ -37,7 +41,7 @@ public class CommonDAO {
 	private Connection getConn() throws SQLException{
 		Connection con =null;
 		
-		String url = "jdbc:oracle:thin:@211.63.89.144:1522:orcl";//학원에서 바꿀것!!
+		String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl";//학원에서 바꿀것!!
 		String id ="kanu";
 		String pass ="share";
 		con = DriverManager.getConnection(url, id, pass);
@@ -50,7 +54,7 @@ public class CommonDAO {
 		Connection con=null;
 		PreparedStatement pstmt=null;
 		ResultSet rs= null;
-		
+		try {
 		con=getConn();
 		
 		String match = "SELECT USER_TYPE FROM USER_TABLE WHERE ID=? AND PASS=?";
@@ -60,12 +64,41 @@ public class CommonDAO {
 		
 		rs = pstmt.executeQuery();
 		
-		if(rs.next()) {
-			userType = rs.getString("USER_TYPE");
-		}//end if
+			if(rs.next()) {
+				userType = rs.getString("USER_TYPE");
+			}//end if
+		}finally {
+			if(rs!=null) {rs.close();}
+			if(pstmt!=null) {pstmt.close();}
+			if(con!=null) {con.close();}
+		}
 		return userType;
 	}//login
 
+	public List<AddrVO> selectAddr(String dong) throws SQLException{
+		List<AddrVO> list = new ArrayList<AddrVO>();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con=getConn();
+			String selectAddr="select seq,zipcode,sido,gugun,dong,nvl(bunji,' ') bunji from zipcode where dong like '%'||?||'%'  ";
+			pstmt.getConnection().prepareStatement(selectAddr);
+			pstmt.setString(1, dong);
+			rs = pstmt.executeQuery();
+			AddrVO av = null;
+			if(rs.next()) {
+				av = new AddrVO(rs.getString("seq"), rs.getString("zipcode"), rs.getString("sido"), rs.getString("gugun"), rs.getString("dong"), rs.getString("bunji"));
+				list.add(av);
+			}//end if
+		}finally {
+			if(rs!=null) {rs.close();}
+			if(pstmt!=null) {pstmt.close();}
+			if(con!=null) {con.close();}
+		}//end finally
+		return list;
+	}
 	
 	public String selectFindId(FindIdVO fivo)throws SQLException {
 		String searchId="";
@@ -96,14 +129,15 @@ public class CommonDAO {
 		return searchId;
 
 	}
-	
+
+	///////////에러떠서 임시로 막아둠- 내꺼 테스트해보고 주석지우기 
 	/**
 	 * 	김건하 아이디 받기
 	 * @return
 	 * @param eeId
 	 * @throws SQLException 
 	 */
-	public EeMainVO selectEeMain(String eeid) throws SQLException {
+	/*public EeMainVO selectEeMain(String eeid) throws SQLException {
 		EeMainVO emvo=null;
 		
 		Connection con=null;
@@ -138,7 +172,7 @@ public class CommonDAO {
 		return emvo;
 	}// selectEeMain
 	
-	
+	*/
 
 	
 	public boolean selectFindPass(FindPassVO fpvo) throws SQLException {
@@ -207,7 +241,7 @@ public class CommonDAO {
 	
 	}//updatePass
 	
-	public UserInfoVO selectUserInfo(String id) throws SQLException {
+	/*public UserInfoVO selectUserInfo(String id) throws SQLException {
 		String userInfo="";
 		
 		Connection con=null;
@@ -224,7 +258,7 @@ public class CommonDAO {
 		
 		
 		return userInfo;
-	}
+	}*/
 
 	
 	
@@ -243,7 +277,6 @@ public class CommonDAO {
 		StringBuilder selectEeInfo = new StringBuilder();
 		selectEeInfo.append("select ut.id, ut.name, ei.img, ut.activation").append("from ee_info ei,USER_TABLE ut")
 			.append("where ut.id=ei.ee_id").append("and ut.id=?");
-//		String selectEeInfo = "SELECT EE_ID, NAME, IMG, ACTIVATION FROM EE_INFO WHERE ID=?";
 		pstmt = con.prepareStatement(selectEeInfo.toString());
 		
 		pstmt.setString(1, id);
@@ -261,5 +294,35 @@ public class CommonDAO {
 		return emvo;
 	}//selectEeMain
 	
+	public ErMainVO selectErMain(String id) throws SQLException {
+		ErMainVO emv=null;
+		
+		Connection con =null;
+		PreparedStatement pstmt =null;
+		ResultSet rs = null;
+		
+		try {
+			con =getConn();
+			
+			StringBuilder selectErInfo = new StringBuilder();
+			selectErInfo.append("select ut.id, ut.name, co.img1, ut.activation")
+			.append("from company co, user_table ut").append("where ut.id=co.er_id")
+			.append("and ut.id=?");
+			pstmt =con.prepareStatement(selectErInfo.toString());
+			
+			pstmt.setString(1, id );
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()){
+				emv= new ErMainVO(rs.getString("id"), rs.getString("name"), 
+						rs.getString("img1"), rs.getString("activation"));
+			}
+		}finally {
+			if(rs!=null) {	rs.close();	}
+			if(pstmt!=null) {pstmt.close();}
+			if(con!=null) {con.close();}
+		}//end finally
+		return emv;
+	}//selectErMain
 	
-}
+	}
