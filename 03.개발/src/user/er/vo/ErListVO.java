@@ -1,11 +1,10 @@
 package user.er.vo;
 
 public class ErListVO {
-	private String erNum,subject, rank, loc, education, hireType,inputDate;
+	private String erNum, subject, rank, loc, education, hireType, inputDate;
 
 	public ErListVO(String erNum, String subject, String rank, String loc, String education, String hireType,
 			String inputDate) {
-		super();
 		this.erNum = erNum;
 		this.subject = subject;
 		this.rank = rank;
@@ -47,7 +46,6 @@ public class ErListVO {
 	public String toString() {
 		return "ErListVO [erNum=" + erNum + ", subject=" + subject + ", rank=" + rank + ", loc=" + loc + ", education="
 				+ education + ", hireType=" + hireType + ", inputDate=" + inputDate + "]";
-	}
-	
-	
-}
+	}// toString
+
+}// class

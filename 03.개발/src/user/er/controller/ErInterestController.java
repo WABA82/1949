@@ -36,8 +36,8 @@ public class ErInterestController extends WindowAdapter implements MouseListener
 	 * @param er_id
 	 */
 	private void setDTM(String er_id) {
-		DefaultTableModel dtmErInfo = eriv.getDtmEeInfo();
-		dtmErInfo.setRowCount(0); // DTM 0으로 초기화.
+		DefaultTableModel dtm = eriv.getDtmEeInfo();
+		dtm.setRowCount(0); // DTM 0으로 초기화.
 
 		try {
 			// DB에서 관심회사를 조회.
@@ -68,7 +68,7 @@ public class ErInterestController extends WindowAdapter implements MouseListener
 				rowData[10] = eivo.getInput_date();
 
 				// DTM에 추가
-				dtmErInfo.addRow(rowData);
+				dtm.addRow(rowData);
 			} // end for
 
 			if (list.isEmpty()) {// 등록한 메뉴가 없을 때 : 도시락 추가 버튼을 통해 메뉴를 추가 할 수 있다.

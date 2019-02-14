@@ -137,13 +137,13 @@ public class EeHiringView extends JDialog {
 		return jcbSort;
 	}
 
-	public static void main(String[] args) {
-		EeMainVO em_vo= new EeMainVO("ds", "sdf", "ds", "asd");
-		EeMainView emv=new EeMainView(em_vo);
-		List<EeHiringVO> ehvo=new ArrayList<EeHiringVO>();
-		String eeid= "gong1";
-		new EeHiringView(emv, ehvo, eeid);
-	}
+//	public static void main(String[] args) {
+//		EeMainVO em_vo= new EeMainVO("ds", "sdf", "ds", "asd");
+//		EeMainView emv=new EeMainView(em_vo);
+//		List<EeHiringVO> ehvo=new ArrayList<EeHiringVO>();
+//		String eeid= "gong1";
+//		new EeHiringView(emv, ehvo, eeid);
+//	}
 	
 	
 }//class
