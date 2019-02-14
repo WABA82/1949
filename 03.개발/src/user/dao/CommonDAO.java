@@ -241,7 +241,7 @@ public class CommonDAO {
 	
 	}//updatePass
 	
-	/*public UserInfoVO selectUserInfo(String id) throws SQLException {
+	public UserInfoVO selectUserInfo(String id) throws SQLException {
 		String userInfo="";
 		
 		Connection con=null;
@@ -258,7 +258,7 @@ public class CommonDAO {
 		
 		
 		return userInfo;
-	}*/
+	}
 
 	
 	
