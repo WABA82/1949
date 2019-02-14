@@ -300,7 +300,9 @@ public class EeDAO {
 
 	}// insertEeinfo
 
-	public static void main(String[] args) {
+
+/*	
+ * public static void main(String[] args) {
 		EeInsertVO eivo= new EeInsertVO("12", "2", "3", "4", "5", "6", "kun90");
 		try {
 			EeDAO.getInstance().insertEeinfo(eivo);
@@ -308,6 +310,8 @@ public class EeDAO {
 			e.printStackTrace();
 		}
 	}//main
+*/
+
 
 	/**
 	 * 19.02.11 ±è°ÇÇÏ EeRegVO
@@ -454,13 +458,13 @@ public class EeDAO {
 		return list;
 	}// selectAppList
 
-	public static void main(String[] args) {
-		EeDAO ee_dao = EeDAO.getInstance();
-		try {
-			System.out.println(ee_dao.selectAppList("gong1"));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}// end catch
-	}// main
+//	public static void main(String[] args) {
+//		EeDAO ee_dao = EeDAO.getInstance();
+//		try {
+//			System.out.println(ee_dao.selectAppList("gong1"));
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}// end catch
+//	}// main
 
 }// class

@@ -7,27 +7,20 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import sun.awt.AWTAccessor.FileDialogAccessor;
-import user.ee.view.EeInfoRegView;
-import user.ee.view.ModifyExtView;
+import admin.view.EeModifyView;
+import admin.view.ModifyExtView;
 
-/**
- *	19.02.10 김건하
- *	외부파일 등록 이벤트 클래스
- * @author 82102
- */
 public class ModifyExtController extends WindowAdapter implements ActionListener {
 
 	private ModifyExtView mev;
-	private EeInfoRegView erv;
+	private EeModifyView emv;
 	
-	public ModifyExtController( ModifyExtView mev, EeInfoRegView erv) {
+	public ModifyExtController(ModifyExtView mev, EeModifyView emv) {
 		this.mev=mev;
-		this.erv=erv;
+		this.emv=emv;
 	}//생성자
 	
 	private void chooseFile() {
@@ -51,7 +44,7 @@ public class ModifyExtController extends WindowAdapter implements ActionListener
 			}else {
 				mev.getJtfPath().setText(extResume);
 				mev.getJtfPath().setEditable(false);
-				JTextField jtf=erv.getJtfExtResume();
+				JTextField jtf=emv.getJtfExtRsm();
 				jtf.setText(extResume);
 			}//end else
 			
@@ -68,7 +61,6 @@ public class ModifyExtController extends WindowAdapter implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if( ae.getSource() == mev.getJbCancel()) {
-			erv.getJtfExtResume().setText("");
 			mev.dispose();
 		}//end if
 		

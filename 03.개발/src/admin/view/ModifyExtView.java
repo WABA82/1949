@@ -9,15 +9,18 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import user.ee.controller.ModifyExtController;
-import user.ee.view.EeInfoRegView;
 
-public class ModifyExtView extends JDialog { /////////////////////// 0213 작업중(user꺼 복붙했음, 수정필요) /////
+/**
+ * 19.02.14 이력서수정 기능구현
+ * @author 영근
+ */
+public class ModifyExtView extends JDialog { 
 
 	private JTextField jtfPath;
 	private JButton jbChoose, jbChange, jbCancel;
 
-	public ModifyExtView(EeInfoRegView eirv) {
-		super(eirv, "외부이력서 등록", true);
+	public ModifyExtView(EeModifyView emv) {
+		super(emv, "외부이력서 등록", true);
 
 		JLabel jlMsg = new JLabel("외부 이력서 첨부");
 		jlMsg.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
@@ -46,14 +49,15 @@ public class ModifyExtView extends JDialog { /////////////////////// 0213 작업중
 		jbCancel.setBounds(190, 95, 100, 25);
 
 		// 이벤트 등록
-		ModifyExtController mec = new ModifyExtController(this, eirv);
+		ModifyExtController mec = new ModifyExtController(this, emv);
 		jbCancel.addActionListener(mec);
 		jbChange.addActionListener(mec);
 		jbChoose.addActionListener(mec);
+		addWindowListener(mec);
 
 		setLayout(null);
 		setResizable(false);
-		setBounds(eirv.getX() + 50, eirv.getY() + 150, 380, 170);
+		setBounds(emv.getX() + 50, emv.getY() + 150, 380, 170);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -73,4 +77,5 @@ public class ModifyExtView extends JDialog { /////////////////////// 0213 작업중
 
 	public JButton getJbCancel() {
 			return jbCancel;
-		}
+	}
+}
