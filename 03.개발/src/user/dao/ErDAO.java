@@ -10,6 +10,7 @@ import java.util.List;
 
 import user.ee.vo.EeHiringVO;
 import user.ee.vo.EeInterestVO;
+import user.er.vo.DetailEeInfoVO;
 import user.er.vo.ErAddVO;
 import user.er.vo.ErDetailVO;
 import user.er.vo.ErInterestVO;
@@ -296,12 +297,13 @@ public class ErDAO {
 
 			rs = pstmt.executeQuery();
 			ErInterestVO erivo = null;
-		
+
 			// 조회된 데이터
 			while (rs.next()) {
 				erivo = new ErInterestVO(rs.getString("ee_num"), rs.getString("img"), rs.getString("name"),
-						rs.getString("rank"), rs.getString("loc"), rs.getString("education"), rs.getString("age"),
+						rs.getString("rank"), rs.getString("loc"), rs.getString("education"), rs.getInt("age"),
 						rs.getString("portfolio"), rs.getString("gender"), rs.getString("input_date"));
+				//리스트에 담기.
 				list.add(erivo);
 			} // end if
 
@@ -320,6 +322,18 @@ public class ErDAO {
 		return list;
 	}// selectInterestEEInfoList
 
+	
+	/**
+	 * 관심구직자 - 구직자 상세 정보 : 기업이 선택한 관심 구직자의 상세 정보를 조회하는 메소드.
+	 * @param er_id
+	 * @param ee_num
+	 * @return
+	 */
+	public DetailEeInfoVO selectDetailEEInfo(String er_id, String ee_num) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	public static void main(String[] args) {
 		try {
 			System.out.println(ErDAO.getInstance().selectInterestEEInfoList("gang123"));
@@ -328,4 +342,6 @@ public class ErDAO {
 			e.printStackTrace();
 		}
 	}// main
+
+	
 }// class
