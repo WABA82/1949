@@ -25,6 +25,7 @@ import user.er.vo.DetailEeInfoVO;
 import user.er.vo.ErDetailVO;
 import user.er.vo.ErHiringVO;
 
+
 public class ErHiringController extends WindowAdapter implements ActionListener, MouseListener {
 	private ErHiringView ehv;
 	private List<ErHiringVO> list;
@@ -101,6 +102,7 @@ public class ErHiringController extends WindowAdapter implements ActionListener,
 			{
 				showDetailErInfo();
 			}
+
 		}
 	}
 	
@@ -116,6 +118,7 @@ public class ErHiringController extends WindowAdapter implements ActionListener,
 	}
 	
 	@Override
+
 	public void windowClosing(WindowEvent e) {
 		ehv.dispose();
 	}

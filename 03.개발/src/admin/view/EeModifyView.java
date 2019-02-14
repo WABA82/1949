@@ -11,6 +11,10 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import admin.controller.AdminMgMtController;
+import admin.controller.EeModifyController;
+import admin.vo.EeInfoVO;
+
 
 public class EeModifyView extends JDialog {
 
@@ -18,11 +22,14 @@ public class EeModifyView extends JDialog {
 	private JComboBox<String>jcbRank, jcbLoc, jcbEducation, jcbPortfolio;
 	private JTextField jtfExtRsm, jtfName;
 	private JLabel jlImg;
-	public EeModifyView() {
-//		super("기본 정보 관리",true);
+	
+	public EeModifyView(AdminMgMtView ammv, EeInfoVO eivo, AdminMgMtController ammc) {
+		super(ammv, "기본 정보 관리",true);
 		
-		//image
-		ImageIcon ii=new ImageIcon("C:\\dev\\1949\\03.개발\\가데이터\\구직자사진\\150x200px\\각키.jpg");
+		setLayout(null);
+
+		//image ///////////////////////////////////// 파일서버완성 후 이미지 경로 수정할 것 ////////////////////////////////
+		ImageIcon ii=new ImageIcon("C:/dev/1949/03.개발/src/file/eeImg/"+eivo.getImg());
 		jlImg=new JLabel(ii);
 		jlImg.setBorder(new TitledBorder("구직자 이미지"));
 		jlImg.setBounds(38, 20, 160, 225);
@@ -117,12 +124,12 @@ public class EeModifyView extends JDialog {
 		//JText
 		
 		//추가
-		JTextField jtfId=new JTextField();
+		JTextField jtfId=new JTextField(eivo.getId());
 		add(jtfId);
 		jtfId.setBounds(325, 25, 130, 20);
 		jtfId.setEditable(false);
 		
-		jtfName=new JTextField(10);
+		jtfName=new JTextField(eivo.getName());
 		add(jtfName);
 		jtfName.setBounds(325, 65, 130, 20);
 		
@@ -136,7 +143,7 @@ public class EeModifyView extends JDialog {
 		add(jcbEducation);
 		jcbEducation.setBounds(325,188,130,20);
 		
-		JTextField jtfAge=new JTextField(10);
+		JTextField jtfAge=new JTextField(String.valueOf(eivo.getAge()));
 		add(jtfAge);
 		jtfAge.setBounds(325, 232, 130, 20);
 		jtfAge.setEditable(false);
@@ -144,31 +151,69 @@ public class EeModifyView extends JDialog {
 		add(jcbPortfolio);
 		jcbPortfolio.setBounds(325,272,130,20);
 		
-		JTextField jtfGender=new JTextField(10);
+		JTextField jtfGender=new JTextField(eivo.getGender());
+		jtfGender.setEditable(false);
 		add(jtfGender);
 		jtfGender.setBounds(325, 311, 130, 20);
 		
-		JTextField jtfRegDate=new JTextField();
+		JTextField jtfRegDate=new JTextField(eivo.getInputDate());
 		add(jtfRegDate);
 		jtfRegDate.setBounds(325, 351, 130, 20);
 		jtfRegDate.setEditable(false);
 		
-		jtfExtRsm=new JTextField(10);
+		jtfExtRsm=new JTextField(eivo.getExtResume() == null ? "없음" : eivo.getExtResume());
+		jtfExtRsm.setEditable(false);
 		add(jtfExtRsm);
 		jtfExtRsm.setBounds(325, 391, 130, 20);
 		
 		//레이아웃
-		setLayout(null);
-		setBounds(100, 100, 490, 525);
+		setBounds(ammv.getX()+400, ammv.getY()+100, 500, 540);
 		
-		setVisible(true);
+		EeModifyController emc = new EeModifyController(this, ammv, ammc, eivo);
+		jbRemove.addActionListener(emc);
+		jbModify.addActionListener(emc);
+		jbChangeImg.addActionListener(emc);
+		jbChangeExt.addActionListener(emc);
+		jbCancel.addActionListener(emc);
+		addWindowListener(emc);
+		
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
-		
+		setVisible(true);
 	}//EeInfoRegView
-	public static void main(String[] args) {
-		new EeModifyView();
-	}//main
-	
+	public JButton getJbModify() {
+		return jbModify;
+	}
+	public JButton getJbChangeExt() {
+		return jbChangeExt;
+	}
+	public JButton getJbChangeImg() {
+		return jbChangeImg;
+	}
+	public JButton getJbRemove() {
+		return jbRemove;
+	}
+	public JButton getJbCancel() {
+		return jbCancel;
+	}
+	public JComboBox<String> getJcbRank() {
+		return jcbRank;
+	}
+	public JComboBox<String> getJcbLoc() {
+		return jcbLoc;
+	}
+	public JComboBox<String> getJcbEducation() {
+		return jcbEducation;
+	}
+	public JComboBox<String> getJcbPortfolio() {
+		return jcbPortfolio;
+	}
+	public JTextField getJtfExtRsm() {
+		return jtfExtRsm;
+	}
+	public JTextField getJtfName() {
+		return jtfName;
+	}
+	public JLabel getJlImg() {
+		return jlImg;
+	}
 }//class

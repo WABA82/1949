@@ -138,7 +138,7 @@ public class EeHiringView extends JDialog {
 	}
 
 	public static void main(String[] args) {
-		EeMainVO em_vo= new EeMainVO("ds", "sdf", "ds", "asd");
+		EeMainVO em_vo= new EeMainVO("ds", "sdf", "ds");
 		EeMainView emv=new EeMainView(em_vo);
 		List<EeHiringVO> ehvo=new ArrayList<EeHiringVO>();
 		String eeid= "gong1";

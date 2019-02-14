@@ -9,6 +9,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+
+import user.common.vo.ErMainVO;
+
 import user.er.controller.ErHiringController;
 import user.er.vo.ErHiringVO;
 
@@ -48,12 +51,12 @@ public class ErHiringView extends JDialog {
 		add(jcbSort);
 		add(jspEe);
 		add(jbDetailSearch);
-		
-		ErHiringController ehc = new ErHiringController(this, list, erId);
-		jcbSort.addActionListener(ehc);
+
+		/////¿Ã∫•∆Æ//////
+		ErHiringController ehc = new ErHiringController(this,list,erId);
 		jbDetailSearch.addActionListener(ehc);
-		jtEeInfo.addMouseListener(ehc);
-		addWindowFocusListener(ehc);
+		jcbSort.addActionListener(ehc);
+		addWindowListener(ehc);
 		
 		setBounds(100, 100, 1000, 500);
 		setResizable(false);
@@ -80,7 +83,7 @@ public class ErHiringView extends JDialog {
 
 
 	public static void main(String[] args) {
-		new ErHiringView(null, null, null);
+		new ErHiringView(null, null, "moonlight");
 	}
 
 	

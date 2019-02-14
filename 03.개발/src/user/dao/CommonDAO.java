@@ -10,7 +10,6 @@ import user.common.view.LoginView;
 import user.common.vo.EeMainVO;
 import user.common.vo.FindIdVO;
 import user.common.vo.FindPassVO;
-import user.common.vo.SetPassVO;
 
 public class CommonDAO {
 	private static CommonDAO C_dao;
@@ -34,7 +33,7 @@ public class CommonDAO {
 	private Connection getConn() throws SQLException{
 		Connection con =null;
 		
-		String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl";//학원에서 바꿀것!!
+		String url = "jdbc:oracle:thin:@211.63.89.144:1522:orcl";//학원에서 바꿀것!!
 		String id ="kanu";
 		String pass ="share";
 		con = DriverManager.getConnection(url, id, pass);
@@ -69,7 +68,8 @@ public class CommonDAO {
 		}
 		return searchId;
 
-	}//selectFindId
+	}
+	
 
 	/**
 	 * 	김건하 아이디 받기
@@ -125,8 +125,8 @@ public class CommonDAO {
 		ResultSet rs = null;
 		try {
 			con = getConn();
-			String count = "select count(*) from user_table where id = ? and question_type = ? and answer = ? ";
-			pstmt = con.prepareStatement(count);
+			String selectPass = "select pass from user_table where id = ? and question_type = ? and answer = ? ";
+			pstmt = con.prepareStatement(selectPass);
 			
 			pstmt.setString(1, fpvo.getId());
 			pstmt.setString(2, fpvo.getqType());
@@ -134,7 +134,7 @@ public class CommonDAO {
 			
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				searchPass = rs.getString("count(*)");
+				searchPass = rs.getString("pass");
 			}//end while
 		}finally {
 			//6.
@@ -142,41 +142,9 @@ public class CommonDAO {
 			if(pstmt!=null) {pstmt.close();}
 			if(con!=null) {con.close();}
 		}
-		if(searchPass.equals("0")) {
+		if(searchPass.equals("")) {
 			flag = true;
 		}
 		return flag;
-	}//selectFindPass
-	
-	public boolean updatePass(SetPassVO spvo) throws SQLException {
-		boolean flag=false;
-	
-		
-		Connection con=null;
-		PreparedStatement pstmt=null;
-		
-		try {
-			con=getConn();
-			
-			String updatePass="update user_table set pass=? where id=?";
-			pstmt=con.prepareStatement(updatePass);
-			
-			pstmt.setString(1, spvo.getNewPass());
-			pstmt.setString(2, spvo.getId());
-			
-			int cnt=pstmt.executeUpdate();
-		}finally {
-			
-			if(pstmt!=null) {pstmt.close();}
-			if(con!=null) {con.close();}
-		}
-		
-		
-		
-		
-		
-		
-		return flag;
 	}
-	
 }
