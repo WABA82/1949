@@ -19,9 +19,11 @@ public class ModifyExtView extends JDialog {
 
 	private JTextField jtfPath;
 	private JButton jbChoose, jbChange, jbCancel;
+	private EeInfoRegView eirv;
 	
 	public ModifyExtView( EeInfoRegView eirv) {
 		super(eirv,"외부이력서 등록",true);
+		this.eirv=eirv;
 		
 		JLabel jlMsg=new JLabel("외부 이력서 첨부");
 		jlMsg.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));

@@ -12,28 +12,28 @@ import user.common.vo.FindIdVO;
 import user.common.vo.FindPassVO;
 
 public class CommonDAO {
-	private static CommonDAO C_dao;
-	LoginView lv=new LoginView();
 	
-	private CommonDAO() {
+	private static CommonDAO C_dao;
+	
+	public CommonDAO() {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-	}
+	}//C_dao
 	
 	public static CommonDAO getInstance() {
 		if(C_dao==null) {
 			C_dao = new CommonDAO();
-		}
+		}// end if
 		return C_dao;
 	}
 	
 	private Connection getConn() throws SQLException{
 		Connection con =null;
 		
-		String url = "jdbc:oracle:thin:@211.63.89.144:1522:orcl";//학원에서 바꿀것!!
+		String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl";//학원에서 바꿀것!!
 		String id ="kanu";
 		String pass ="share";
 		con = DriverManager.getConnection(url, id, pass);
@@ -89,9 +89,9 @@ public class CommonDAO {
 		//쿼리문 생성
 		StringBuilder selectMyInfo= new StringBuilder();
 		selectMyInfo
-		.append("		select ut.name, ei.img, ut.activation		") 
+		.append("		select ei.ee_id , ut.name, ei.img, ut.activation		") 
 		.append("		from ee_info ei, user_table ut	")
-		.append("		where (ee_id = id) and ut.id = ?	"	);
+		.append("		where (ee_id = id) and ei.ee_id = ?	 "	);
 		
 		pstmt=con.prepareStatement(selectMyInfo.toString());
 		pstmt.setString(1,eeid );
@@ -99,7 +99,7 @@ public class CommonDAO {
 		rs=pstmt.executeQuery();
 		
 		if(rs.next()) {
-			emvo = new EeMainVO(rs.getString("name"), rs.getString("img"), rs.getString("activation"));
+			emvo = new EeMainVO(rs.getString("EE_ID"), rs.getString("NAME"), rs.getString("IMG"), rs.getString("ACTIVATION"));
 		}//end if
 		
 		}finally {
@@ -111,6 +111,14 @@ public class CommonDAO {
 		return emvo;
 	}// selectEeMain
 	
+	public static void main(String[] args) {
+		try {
+			System.out.println(CommonDAO.getInstance().selectEeMain("gong1"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	
 	public boolean selectFindPass(FindPassVO fpvo) throws SQLException {

@@ -12,18 +12,26 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import admin.vo.EeInfoVO;
+import user.ee.controller.EeInfoModifyController;
+import user.ee.controller.EeInfoRegController;
+import user.ee.controller.EeMainController;
+
 public class EeInfoModifyView extends JDialog {
 
 	private JButton jbModify, jbModifyExt, jbModifyImg, jbClose;
 	private JComboBox<String> jcbRank, jcbLoc, jcbEducation, jcbPortfolio;
 	private JTextField jtfExtResume;
 	private JLabel jlImag;
-	public EeInfoModifyView() {
-//		super("기본 정보 관리",true);
+	private EeMainView emv;
+
+	public EeInfoModifyView(EeMainView emv, String ee_id) {
+		super(emv, "기본 정보 관리", true);
+		this.emv = emv;
 
 		// image
-		ImageIcon ii=new ImageIcon("C:/dev/homework/1949/1949/03.개발/가데이터/구직자사진/150x200px/각키.jpg");
-		jlImag=new JLabel(ii);
+		ImageIcon ii = new ImageIcon("C:/dev/homework/1949/1949/03.개발/가데이터/구직자사진/150x200px/각키.jpg");
+		jlImag = new JLabel(ii);
 		jlImag.setBorder(new TitledBorder("구직자 이미지"));
 		jlImag.setBounds(38, 20, 160, 225);
 		add(jlImag);
@@ -98,32 +106,37 @@ public class EeInfoModifyView extends JDialog {
 		add(jlResume);
 		jlResume.setBounds(235, 295, 100, 30);
 
-		//JText
-				JTextField jtfName=new JTextField(10);
-				add(jtfName);
-				jtfName.setBounds(325, 22, 130, 20);
-				
-				JTextField jtfAge=new JTextField(10);
-				add(jtfAge);
-				jtfAge.setBounds(325, 182, 130, 20);
-				
-				JTextField jtfGender=new JTextField(10);
-				add(jtfGender);
-				jtfGender.setBounds(325, 262, 130, 20);
-				
-				jtfExtResume=new JTextField(10);
-				add(jtfExtResume);
-				jtfExtResume.setBounds(325, 302, 130, 20);
-				
-				//Combobox
-				add(jcbRank);
-				jcbRank.setBounds(325,62,130,20);
-				add(jcbLoc);
-				jcbLoc.setBounds(325,102,130,20);
-				add(jcbEducation);
-				jcbEducation.setBounds(325,142,130,20);
-				add(jcbPortfolio);
-				jcbPortfolio.setBounds(325,222,130,20);
+		// JText
+		JTextField jtfName = new JTextField(10);
+		add(jtfName);
+		jtfName.setBounds(325, 22, 130, 20);
+
+		JTextField jtfAge = new JTextField(10);
+		add(jtfAge);
+		jtfAge.setBounds(325, 182, 130, 20);
+
+		JTextField jtfGender = new JTextField(10);
+		add(jtfGender);
+		jtfGender.setBounds(325, 262, 130, 20);
+
+		jtfExtResume = new JTextField(10);
+		add(jtfExtResume);
+		jtfExtResume.setBounds(325, 302, 130, 20);
+
+		// Combobox
+		add(jcbRank);
+		jcbRank.setBounds(325, 62, 130, 20);
+		add(jcbLoc);
+		jcbLoc.setBounds(325, 102, 130, 20);
+		add(jcbEducation);
+		jcbEducation.setBounds(325, 142, 130, 20);
+		add(jcbPortfolio);
+		jcbPortfolio.setBounds(325, 222, 130, 20);
+
+		// 이벤트등록
+
+		EeInfoModifyController emc = new EeInfoModifyController(this, ee_id);
+		jbClose.addActionListener(emc);
 
 		setLayout(null);
 		setBounds(100, 100, 490, 460);
@@ -131,10 +144,10 @@ public class EeInfoModifyView extends JDialog {
 		setVisible(true);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
-	}//생성자
+
+	}// 생성자
 
 	public static void main(String[] args) {
-		new EeInfoModifyView();
+		new EeInfoModifyView(null, "gong1");
 	}
-}//class
+}// class

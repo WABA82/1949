@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import admin.vo.EeInfoVO;
 import user.ee.dto.EeHiringCdtDTO;
 import user.ee.vo.DetailErInfoVO;
 import user.ee.vo.EeAppVO;
@@ -336,7 +337,7 @@ public class EeDAO {
 			// DB에서 조회하기
 			rs = pstmt.executeQuery(); // 쿼리실행
 			if (rs.next()) {
-				ervo = new EeRegVO(rs.getString("name"),rs.getString("gender"), rs.getInt("age"));
+				ervo = new EeRegVO( rs.getString("name"),rs.getString("gender"), rs.getInt("age"));
 			} // end if
 
 		}finally {
@@ -347,6 +348,63 @@ public class EeDAO {
 		return ervo;
 		
 		}//
+	
+	/**
+	 * 	김건하 eeinfoVO
+	 * @param eeid
+	 * @return
+	 * @throws SQLException
+	 */
+	public EeInfoVO selectEeInfo(String eeid) throws SQLException {
+		EeInfoVO eivo=null;
+		
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		
+		try {
+		con=getConn();
+
+		//String eeNum, img, id, name, rank, loc, education, portfolio, gender, inputDate, extResume;
+		//int age;
+		
+		//쿼리문 생성
+		StringBuilder selectInfo=new StringBuilder();
+		selectInfo
+		.append("		select ei.ee_num, ei.img, ut.name, ei.rank, ei.loc, ei.education, ei.portfolio, ut.gender, ei.ext_resume, to_char(ei.input_date,'yyyy-mm-dd')input_date, ut.age  ")
+		.append("		from ee_info ei, user_table ut		")
+		.append("		where (ee_id = id) and ei.ee_id = ?  ");
+		
+		pstmt=con.prepareStatement(selectInfo.toString());
+		pstmt.setString(1, eeid);
+		rs=pstmt.executeQuery();
+		
+		if(rs.next()) {
+			eivo=new EeInfoVO(rs.getString("EE_NUM"), rs.getString("IMG"),rs.getString("NAME"), rs.getString("RANK"),rs.getString("LOC"),
+						rs.getString("EDUCATION"), rs.getString("PORTFOLIO"), rs.getString("GENDER"),
+						rs.getString("INPUT_DATE"), rs.getString("EXT_RESUME"), rs.getInt("AGE"));
+		}
+			
+		}finally {
+			if( rs != null ) { rs.close(); }
+			if( pstmt != null ) { pstmt.close(); }
+			if( con != null ) { con.close(); }
+		}//end finally
+		
+		return eivo;
+	}//selectEeinfo
+	
+	//VO제대로 작동함. 수정안함
+//	public static void main(String[] args) {
+//		try {
+//			System.out.println(EeDAO.getInstance().selectEeInfo("gong1"));
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
+	
+	
 	//////////// 재현코드 ////////////
 	/**
 	 * selectInterestErInfo : 일반사용자가 하트를 누른 구인정보를 DB에서 조회.
