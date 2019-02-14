@@ -36,7 +36,7 @@ public class ErModifyView extends JDialog {
 		// 이미지아이콘 : 회사로고
 		// 라벨들
 		//C:\dev\1949\03.개발\src\img\coImg\sssdi_logo.png
-		JLabel jlImage = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/img/coImg/"+edvo.getImg1()));
+		JLabel jlImage = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/"+edvo.getImg1()));
 		JLabel jlName = new JLabel("이름");
 		JLabel jlTel = new JLabel("연락처");
 		JLabel jlEmail = new JLabel("이메일");

@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import user.er.controller.ErDetailEeController;
 import user.er.vo.DetailEeInfoVO;
 import user.er.vo.ErDetailVO;
 
@@ -21,20 +22,28 @@ public class ErDetailEeView extends JDialog {
 
 	private JButton jbRsmDown, jbClose;
 	private JLabel jlHeart;
+	private boolean flagHeart;
 	
-	public ErDetailEeView(ErHiringView ehv, DetailEeInfoVO devo, String eeNum) {
+	public ErDetailEeView(ErHiringView ehv, DetailEeInfoVO devo, String eeNum,String erId, String interest) {
 				super(ehv,"구직자 상세 정보",true);
 		//image
+				setLayout(null);
 				ImageIcon ii=new ImageIcon("C:/dev/1949/03.개발/가데이터/구직자사진/150x200px/"+devo.getImg());
 				JLabel jlImage=new JLabel(ii);
 				jlImage.setBorder(new TitledBorder("구직자 이미지"));
 				jlImage.setBounds(38, 20, 160, 225);
 				add(jlImage);
 		
-				ImageIcon iiHeart=new ImageIcon("C:/dev/homework/1949/1949/03.개발/가데이터/하트/하트2.png");
-				jlHeart=new JLabel(iiHeart);
-				add(jlHeart);
+				if(interest.equals("0")) {
+					ImageIcon iiheart = new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/b_heart.png");
+					jlHeart = new JLabel(iiheart);
+				}else if(interest.equals("1")) {
+					ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/r_heart.png");
+					jlHeart = new JLabel(heart);
+					flagHeart=true;
+				}
 				jlHeart.setBounds(280, 413, 60, 60);
+				add(jlHeart);
 				
 				jbRsmDown = new JButton("클릭하여 다운로드");
 				add(jbRsmDown);
@@ -146,18 +155,31 @@ public class ErDetailEeView extends JDialog {
 				jtfGender.setBounds(315, 342, 130, 20);
 				jtfGender.setEditable(false);
 				
+				System.out.println(flagHeart);
+				ErDetailEeController edec= new ErDetailEeController(this,eeNum,erId,flagHeart);
 				
+				jlHeart.addMouseListener(edec);
+				jbRsmDown.addActionListener(edec);
+				jbClose.addActionListener(edec);
+				addWindowListener(edec);
 				
-				
-				setLayout(null);
 				setBounds(100, 100, 490, 520);
-				
-				
 				setVisible(true);
 				setResizable(false);
-				setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				
-		
+				
 	}//생성자
+
+	public JButton getJbRsmDown() {
+		return jbRsmDown;
+	}
+
+	public JButton getJbClose() {
+		return jbClose;
+	}
+
+	public JLabel getJlHeart() {
+		return jlHeart;
+	}
 	
 }//class

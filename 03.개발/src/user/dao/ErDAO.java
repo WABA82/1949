@@ -8,7 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import user.ee.vo.DetailErInfoVO;
 import user.ee.vo.EeHiringVO;
+import user.ee.vo.EeInterestAndAppVO;
 import user.ee.vo.EeInterestVO;
 import user.er.dto.ErHiringCdtDTO;
 import user.er.vo.DetailEeInfoVO;
@@ -88,6 +90,159 @@ public class ErDAO {
 		}
 		return list;
 	}//selectErList
+	
+	public void insertInterestEe(ErInterestVO eivo) throws SQLException {
+		System.out.println("----1");
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		try {
+			con = getConn();
+			String insertInterestEe = "insert into interest_ee(ee_num,er_id) values(?,?)";
+			pstmt = con.prepareStatement(insertInterestEe);
+
+			System.out.println("----2");
+			pstmt.setString(1, eivo.getEeNum());
+			pstmt.setString(2, eivo.getErId());
+
+			System.out.println("----3");
+			pstmt.executeUpdate();
+
+		} finally {
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+		}
+	}// insertInterestEr
+	public boolean deleteInterestEe(ErInterestVO eivo) throws SQLException {
+		boolean flag = false;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			// 1.
+			// 2.
+			con = getConn();
+			// 3.
+			String deleteQuery = "delete from interest_ee where ee_num=? and er_id=?";
+			pstmt = con.prepareStatement(deleteQuery);
+			// 4.
+			pstmt.setString(1, eivo.getEeNum());
+			pstmt.setString(2, eivo.getErId());
+			// 5.
+			int cnt = pstmt.executeUpdate();
+			if (cnt == 1) {
+				flag = true;
+			} // end if
+
+		} finally {
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+		}
+		return flag;
+	}
+	
+	
+	public ErDetailVO selectErDetail(String erNum)throws SQLException {
+		ErDetailVO edvo = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = getConn();
+
+			StringBuilder selectErDetail = new StringBuilder();
+			selectErDetail
+			.append(" select c.img1, ut.name, ut.tel, ut.email, ei.subject, c.co_name, ei.rank, ei.loc, ei.education,  ")
+			.append(" ei.hire_type, ei.portfolio, ei.er_desc, ei.sal  ")
+			.append(" from er_info ei, user_table ut,company c  ")
+			.append(" where (ei.co_num=c.co_num) and (c.er_id= ut.id) and (er_num=?)  ");
+
+			
+			pstmt = con.prepareStatement(selectErDetail.toString());
+			pstmt.setString(1, erNum);
+			rs = pstmt.executeQuery();
+			ErListVO elvo = null;
+			if(rs.next()) {
+				edvo = new ErDetailVO(erNum, rs.getString("img1"), rs.getString("name"), 
+						rs.getString("tel"), rs.getString("email"), rs.getString("subject"), 
+						rs.getString("co_name"), rs.getString("education"), 
+						rs.getString("rank"), rs.getString("loc"), rs.getString("hire_type"), 
+						rs.getString("portfolio"), rs.getString("er_desc"), rs.getInt("sal"),
+						selectSkill(erNum));
+			}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+		}
+		
+		return edvo;
+	}
+	
+	public DetailEeInfoVO selectDeatilEe(String eeNum, String erId) throws SQLException{
+		DetailEeInfoVO devo= null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = getConn();
+			StringBuilder selectDetail = new StringBuilder();
+			selectDetail.append(" select ei.img, ut.name,ut.tel,ut.email,ei.rank,ei.loc, ")
+					.append(" ei.education,ei.portfolio, ut.gender, ei.ext_resume, ut.age, ")
+					.append("  (select COUNT(*) from interest_ee where er_id = ? and ee_num=? ) interest ")
+					.append(" from ee_info ei, company c, user_table ut  ")
+					.append("  where ut.id=ei.ee_id and ei.ee_num= ? ");
+			
+			pstmt = con.prepareStatement(selectDetail.toString());
+			// 4.
+			pstmt.setString(1, erId);
+			pstmt.setString(2, eeNum);
+			pstmt.setString(3, eeNum);
+			// 5.
+			rs = pstmt.executeQuery();
+			// 입력된 코드로 조회된 레코드가 존재할 때 VO를 생성하고 값 추가
+			if (rs.next()) {
+				
+				devo = new DetailEeInfoVO(eeNum, rs.getString("img"), rs.getString("name"), 
+						rs.getString("tel"), rs.getString("email"), rs.getString("rank"), 
+						rs.getString("loc"), rs.getString("education"), rs.getString("portfolio"), 
+						rs.getString("gender"), rs.getString("ext_resume"), rs.getString("interest"), rs.getInt("age"));
+				
+				
+/*				devo = new DetailErInfoVO(rs.getString("er_num"), rs.getString("subject"), rs.getString("name"),
+						rs.getString("tel"), rs.getString("email"), rs.getString("input_date"), rs.getString("img1"),
+						rs.getString("co_name"), rs.getString("education"), rs.getString("rank"), rs.getString("loc"),
+						rs.getString("hire_type"), rs.getString("portfolio"), rs.getString("er_desc"),
+						rs.getString("interest"), rs.getInt("sal"), selectSkill(erNum));*/
+			} // end if
+		} finally {
+			if (con != null) {
+				con.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (rs != null) {
+				rs.close();
+			}
+		}
+		return devo;
+	}
 	
 	public void insertErAdd(ErAddVO eavo) throws SQLException {
 		Connection con = null;
@@ -239,7 +394,7 @@ public class ErDAO {
 	}
 	
 	
-	public DetailEeInfoVO selectDetailEe(String eeNum)throws SQLException {
+	/*public DetailEeInfoVO selectDetailEe(String eeNum)throws SQLException {
 		DetailEeInfoVO devo = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -260,11 +415,9 @@ public class ErDAO {
 			if(rs.next()) {
 				devo = new DetailEeInfoVO(eeNum, rs.getString("img"), rs.getString("name"), rs.getString("tel"),
 						rs.getString("email"),rs.getString("rank"), rs.getString("loc"), rs.getString("education"), 
-						rs.getString("portfolio"), rs.getString("gender"), rs.getString("ext_resume")," ", rs.getInt("age"));
+						rs.getString("portfolio"), rs.getString("gender"), rs.getString("ext_resume"),rs.getString("interest"), rs.getInt("age"));
 			}//end if
 			
-		//String eeNum, String img, String name, String tel, String email, String rank, String loc,
-		//String education, String portfolio, String gender, String extResume, String interest, int age
 		}finally {
 			//6.
 			if(con!=null) { con.close();}
@@ -274,7 +427,7 @@ public class ErDAO {
 		}
 		
 		return devo;
-	}
+	}*/
 
 	public List<ErInterestVO> selectInterestEEInfoList(String er_id)throws SQLException {
 		List<ErInterestVO> list = new ArrayList<>();

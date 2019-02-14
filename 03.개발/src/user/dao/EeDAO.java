@@ -237,10 +237,11 @@ public class EeDAO {
 			// 2.
 			con = getConn();
 			// 3.
-			String deleteQuery = "delete from interest_er where er_num=?";
+			String deleteQuery = "delete from interest_er where er_num=? ee_Id=?";
 			pstmt = con.prepareStatement(deleteQuery);
 			// 4.
 			pstmt.setString(1, eiaavo.getErNum());
+			pstmt.setString(2, eiaavo.getEeId());
 			// 5.
 			int cnt = pstmt.executeUpdate();
 			if (cnt == 1) {

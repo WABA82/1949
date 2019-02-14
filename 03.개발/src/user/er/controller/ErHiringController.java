@@ -27,17 +27,16 @@ public class ErHiringController extends WindowAdapter implements ActionListener,
 	private String erId;
 	private ErDAO erdao;
 	private ErHiringCdtDTO erhcdto;
-	public ErHiringController(ErHiringView ehv, List<ErHiringVO> list, String erId) {
+	public ErHiringController(ErHiringView ehv,String erId) {
 		this.ehv = ehv;
-		this.list = list;
-		erId = "moonlight";
+		this.erId = erId;
 		erhcdto =ErHiringCdtDTO.getInstance();
 		erdao= ErDAO.getInstance();
 		erhcdto.setSort(" ");
 		erhcdto.setCdt(" ");
-		setDtm(list);
+		setDtm();
 	}
-	public void setDtm(List<ErHiringVO> list) {
+	public void setDtm() {
 		DefaultTableModel dtmHiring = ehv.getDtmEeInfo();
 		dtmHiring.setRowCount(0);
 		
@@ -77,16 +76,23 @@ public class ErHiringController extends WindowAdapter implements ActionListener,
 		String eeNum= String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
 		DetailEeInfoVO devo = null;
 		try {
-			devo = erdao.selectDetailEe(eeNum);
+			devo = erdao.selectDeatilEe(eeNum, erId);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		new ErDetailEeView(ehv,devo,eeNum);
+		System.out.println(erId);
+		new ErDetailEeView(ehv,devo, eeNum,erId,devo.getInterest());
 	}
 	
 	public void detailSearch() {
 		erhcdto.setSort(String.valueOf(ehv.getJcbSort().getSelectedItem()));
-		setDtm(list);
+		setDtm();
+	}
+	
+	public void searchAll() {
+		erhcdto.setSort(" ");
+		erhcdto.setCdt(" ");
+		setDtm();
 	}
 	
 	@Override
@@ -109,6 +115,10 @@ public class ErHiringController extends WindowAdapter implements ActionListener,
 			//나열하는 콤보박스
 			detailSearch();
 		}
+		if(ae.getSource()==ehv.getJbSelectAll()) {
+			searchAll();
+		}
+		
 	}
 	
 	@Override
