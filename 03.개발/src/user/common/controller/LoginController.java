@@ -27,21 +27,23 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 	public LoginController(LoginView lv) {
 		this.lv = lv;
 	}
+
 	@Override
 	public void mouseClicked(MouseEvent me) {
-		if(me.getSource()==lv.getJlSignUp()) {
+		if (me.getSource() == lv.getJlSignUp()) {
 			signUp();
-		}else if(me.getSource()==lv.getJlFindID()) {
+		} else if (me.getSource() == lv.getJlFindID()) {
 			findId();
-		}else if(me.getSource()==lv.getJlFindPass()) {
+		} else if (me.getSource() == lv.getJlFindPass()) {
 			findPass();
-		}//end else
-	}//mouseClicked
+		} // end else
+	}// mouseClicked
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 
 	}
+
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		
@@ -59,7 +61,7 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 	public void windowClosing(WindowEvent we) {
 		lv.dispose();
 	}
-	
+
 	@Override
 	public void windowClosed(WindowEvent e) {
 		System.exit(0);
@@ -73,9 +75,9 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 			JOptionPane.showMessageDialog(lv,"아이디를 입력하세요");
 			lv.getJtfId().requestFocus();
 			return;
-		}//end if
-		if(pass==null||pass.equals("")) {
-			JOptionPane.showMessageDialog(lv,"비밀번호를 입력하세요");
+		} // end if
+		if (pass == null || pass.equals("")) {
+			JOptionPane.showMessageDialog(lv, "비밀번호를 입력하세요");
 			lv.getJpfPass().requestFocus();
 			return;
 		}
@@ -90,24 +92,30 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 		}else {
 			//new ErMainView();//DAO의 selecteemain...등등 만들기
 		}
-		
-	}//login
-	
+
+	}// login
+
 	public void signUp() {
 		new SignUpView(lv);
-	}//signUp
-	
+	}// signUp
+
 	public void findId() {
 		new FindIdView(lv);
-	}//findId
-	
+	}// findId
+
 	public void findPass() {
 		new FindPassView(lv);
-	}//findPass
+	}// findPass
+
 	@Override
-	public void mouseReleased(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {
+	}
+
 	@Override
-	public void mouseEntered(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {
+	}
+
 	@Override
-	public void mouseExited(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {
+	}
 }
