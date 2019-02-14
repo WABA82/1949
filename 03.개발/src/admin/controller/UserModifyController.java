@@ -18,12 +18,14 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 
 	private UserModifyView umv;
 	private AdminMgMtView ammv;
+	private AdminMgMtController ammc;
 	private String addrSeq;
 	
-	public UserModifyController(UserModifyView umv, AdminMgMtView ammv, String addrSeq) {
+	public UserModifyController(UserModifyView umv, AdminMgMtView ammv, String addrSeq, AdminMgMtController ammc) {
 		this.umv = umv;
 		this.ammv = ammv;
 		this.addrSeq = addrSeq;
+		this.ammc = ammc;
 	}
 	
 	public void msgCenter(String msg) {
@@ -40,6 +42,7 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 				AdminDAO.getInstance().deleteUser(id);
 				umv.dispose();
 				msgCenter("회원정보가 삭제되었습니다.");
+				ammc.setUser();
 			} catch (SQLException e) {
 				msgCenter("DB에 문제가 발생했습니다.");
 				e.printStackTrace();
@@ -73,7 +76,8 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 				msgCenter("회원정보가 수정되었습니다.");
 				umv.dispose();
 				UserInfoVO ulvo = AdminDAO.getInstance().selectOneUser(id);
-				new UserModifyView(ammv, ulvo);
+				ammc.setUser();
+				new UserModifyView(ammv, ulvo, ammc);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

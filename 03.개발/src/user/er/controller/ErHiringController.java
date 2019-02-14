@@ -22,6 +22,7 @@ public class ErHiringController extends WindowAdapter implements ActionListener,
 		this.ehv = ehv;
 	}
 	
+	
 	@Override
 	public void mouseClicked(MouseEvent me) {
 		switch(me.getClickCount()) {
@@ -43,7 +44,7 @@ public class ErHiringController extends WindowAdapter implements ActionListener,
 	public void windowClosing(WindowEvent e) {
 		ehv.dispose();
 	}
-
+	
 	@Override
 	public void mousePressed(MouseEvent e) {}
 	@Override
