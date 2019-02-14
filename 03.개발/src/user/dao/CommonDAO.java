@@ -7,9 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import user.common.view.LoginView;
+import user.common.vo.EeMainVO;
 import user.common.vo.FindIdVO;
 import user.common.vo.FindPassVO;
 import user.common.vo.SetPassVO;
+import user.ee.view.EeMainView;
+import user.er.view.ErMainView;
 
 public class CommonDAO {
 	private static CommonDAO C_dao;
@@ -40,32 +43,28 @@ public class CommonDAO {
 		return con;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public String login(String id, String pass)throws SQLException{
+		String userType ="";
+		
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs= null;
+		
+		con=getConn();
+		
+		String match = "SELECT ID, USER_TYPE FROM USER_TABLE WHERE ID=? AND PASS=?";
+		pstmt = con.prepareStatement(match);
+		pstmt.setString(1, id);
+		pstmt.setString(2, pass);
+		
+		rs = pstmt.executeQuery();
+		
+		if(rs.next()) {
+			userType = rs.getString("USER_TYPE");
+		}//end if
+		return userType;
+	}//login
+
 	
 	public String selectFindId(FindIdVO fivo)throws SQLException {
 		String searchId="";
@@ -162,5 +161,29 @@ public class CommonDAO {
 		return flag;
 		
 	}
+	
+	public EeMainVO selectEeMain(String id) throws SQLException {
+		EeMainVO emvo=null;
+		
+		Connection con =null;
+		PreparedStatement pstmt =null;
+		ResultSet rs = null;
+		
+		con =getConn();
+		
+		String selectEeInfo = "SELECT EE_ID, NAME, IMG, ACTIVATION FROM EE_INFO WHERE ID=?";
+		pstmt = con.prepareStatement(selectEeInfo);
+		
+		pstmt.setString(1, id);
+		
+		rs=pstmt.executeQuery();
+		//String eeId, name, img, activation;
+		if(rs.next()) {
+			emvo = new EeMainVO(id, rs.getString("name"),rs.getString() img, activation)
+		}
+		
+		return emvo;
+	}//selectEeMain
+	
 	
 }
