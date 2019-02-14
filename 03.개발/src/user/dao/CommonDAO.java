@@ -21,7 +21,6 @@ import user.er.view.ErMainView;
 
 public class CommonDAO {
 	private static CommonDAO C_dao;
-	LoginView lv=new LoginView();
 	
 	private CommonDAO() {
 		try {
