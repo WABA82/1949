@@ -14,15 +14,11 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import user.dao.ErDAO;
-import user.ee.view.EeDetailErView;
-import user.ee.vo.DetailErInfoVO;
-import user.ee.vo.EeHiringVO;
 import user.er.dto.ErHiringCdtDTO;
 import user.er.view.ErDetailEeView;
 import user.er.view.ErDetailSearchView;
 import user.er.view.ErHiringView;
 import user.er.vo.DetailEeInfoVO;
-import user.er.vo.ErDetailVO;
 import user.er.vo.ErHiringVO;
 
 public class ErHiringController extends WindowAdapter implements ActionListener, MouseListener {

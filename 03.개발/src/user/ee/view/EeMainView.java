@@ -22,6 +22,7 @@ public class EeMainView extends JFrame {
 	public EeMainView(EeMainVO emvo) {
 //		super("1949 - 일반사용자 ["+emvo.getName()+"]");
 		this.emvo=emvo;
+
 		JLabel jlAct = new JLabel("기본정보 등록여부 : ");
 		jlImg = new JLabel(new ImageIcon("C:/dev/homework/1949/1949/03.개발/src/img/eeImg/"/*+emvo.getImg()*/));
 		jlImg.setBorder(new TitledBorder("내 이미지"));
