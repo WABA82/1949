@@ -33,8 +33,6 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 		//JTextField jtfNewPass2= cuiv.getJpfNewPass2();
 		JTextField jtfTel= cuiv.getJtfTel();
 		JTextField jtfEmail= cuiv.getJtfEmail();
-		JTextField jtfZipcode= cuiv.getJtfZipcode();
-		JTextField jtfAddr1= cuiv.getJtfAddr1();
 		JTextField jtfAddr2= cuiv.getJtfAddr2();
 		
 		String id=jtfId.getText().trim();
@@ -44,7 +42,6 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 		//String newPass2=jtfNewPass2.getText().trim();		
 		String tel=jtfTel.getText().trim();
 		String email=jtfEmail.getText().trim();
-		String zipcode=jtfZipcode.getText().trim();
 		String addrDetail=jtfAddr2.getText().trim();
 		
 		
