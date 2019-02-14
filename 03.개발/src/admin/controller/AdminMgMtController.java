@@ -101,7 +101,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 				}
 				rowData[6] = elvo.getLoc();
 				rowData[7] = elvo.getEducation();
-				rowData[8] = elvo.getAge();
+				rowData[8] = String.valueOf(elvo.getAge())+"세";
 				rowData[9] = elvo.getPortfolio().equals("Y") ? "있음" : "없음";
 				rowData[10] = elvo.getGender().equals("M") ? "남자" : "여자";
 				rowData[11] = elvo.getExtRsm() == null ? "없음" : elvo.getExtRsm();
@@ -184,7 +184,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 				rowData[3] = clvo.getCoName();
 				rowData[4] = clvo.getErId();
 				rowData[5] = clvo.getEstDate();
-				rowData[6] = clvo.getMemberNum();
+				rowData[6] = String.valueOf(clvo.getMemberNum())+"명";
 				rowData[7] = clvo.getInputDate();
 				dtm.addRow(rowData);
 			}
@@ -259,7 +259,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 				
 				try {
 					CoInfoVO clvo = a_dao.selectOneCo(coNum);
-					new CoModifyView(ammv, clvo);
+					new CoModifyView(ammv, clvo, this);
 				} catch (SQLException e) {
 					msgCenter("DB 접속 실패했습니다.");
 					e.printStackTrace();

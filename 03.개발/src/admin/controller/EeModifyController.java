@@ -14,7 +14,6 @@ import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 import admin.dao.AdminDAO;
 import admin.view.AdminMgMtView;
@@ -109,6 +108,7 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 			if(AdminDAO.getInstance().updateEe(emvo)) {
 				
 				msgCenter("기본정보를 수정했습니다.");
+				ammc.setEe();
 				
 				// DB 업데이트 후 이미지, 이력서 삭제 및 저장
 				if (changeImgFlag) { // 이미지가 변경되었다면 기존 이미지 삭제, 새 이미지 업로드
@@ -198,13 +198,14 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 
 		if (fd.getFile().toLowerCase().endsWith(".png") || 
 				fd.getFile().toLowerCase().endsWith(".jpg") || 
-				fd.getFile().toLowerCase().endsWith(".jpeg")) {
+				fd.getFile().toLowerCase().endsWith(".jpeg") ||
+				fd.getFile().toLowerCase().endsWith(".gif")) {
 			changeImgFile = new File(fd.getDirectory()+fd.getFile());
 			changeImgFlag = true;
 			
 			emv.getJlImg().setIcon(new ImageIcon(changeImgFile.getAbsolutePath()));
 		} else {
-			msgCenter("확장자가 png, jpg, jpeg인 파일만 등록가능합니다.");
+			msgCenter("확장자가 png, jpg, jpeg, gif인 파일만 등록가능합니다.");
 		}
 	}
 	

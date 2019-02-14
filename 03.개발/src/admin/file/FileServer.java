@@ -1,14 +1,18 @@
 package admin.file;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,22 +30,26 @@ public class FileServer extends Thread {
 			ObjectInputStream ois = null;
 			FileInputStream fis = null;
 			String flag = "";
+
+//			BufferedReader br = null;
 			
 			try {
 				serverFile = new ServerSocket(7002); // 파일서버 7002포트
+				
 				while(true) {
 					client = serverFile.accept();
 					dis = new DataInputStream(client.getInputStream());
 					dos = new DataOutputStream(client.getOutputStream());
 					
 					flag = dis.readUTF();
+					
 					switch(flag) {
 					case "coImgs_list_req": // co 파일목록 요청
 						
 						// 현재 파일서버가 가진 파일명들을 리스트로 저장
 						List<String> listImg = new ArrayList<String>();
 						
-						File dir = new File("C:/dev/1949/03.개발/src/img/coImg");
+						File dir = new File("C:/dev/1949/03.개발/src/file/coImg");
 						
 						for(File f : dir.listFiles()) {
 							listImg.add(f.getName());
@@ -52,8 +60,11 @@ public class FileServer extends Thread {
 						oos.flush();
 						
 						ois = new ObjectInputStream(client.getInputStream());
-						listImg = (List<String>)ois.readObject(); // 없는 파일명 리스트를 전송받음
-						System.out.println("서버에 없는파일 : "+listImg);
+						
+						// Admin이 없는 파일명 리스트를 전송받음
+						listImg = (List<String>)ois.readObject(); 
+						
+						System.out.println("Admin에 없는파일 : "+listImg);
 						
 						String filePath = dir.getAbsolutePath();
 						byte[] readData = new byte[512];;
@@ -61,31 +72,40 @@ public class FileServer extends Thread {
 						int len = 0;
 						String fileName = "";
 						
-						dos.writeInt(listImg.size()); // 전송할 파일의 수 전달
-						dos.flush();
-						
 						for(int i=0; i<listImg.size(); i++) { // 없는 파일의 수만큼 반복전송
 							fileName = listImg.get(i);
 							
+							System.out.println("fsName : "+fileName);
 							dos.writeUTF(fileName); // 파일명 전송
 							dos.flush();
 
+							/*br = new BufferedReader(new FileReader(filePath+"/"+fileName));
+							String temp = "";
+							while((temp = br.readLine()) != null) { 
+								arrCnt++;
+							}*/
 							fis = new FileInputStream(new File(filePath+"/"+fileName));
-							
 							while((len = fis.read(readData)) != -1) { 
 								arrCnt++;
 							}
 							
+							System.out.println("fs크기 : "+arrCnt);
 							dos.writeInt(arrCnt); // 파일의 크기(배열 수) 전송
 							dos.flush();
 							
-							
-							while((len = fis.read(readData)) != -1) { // 
+							/*while((temp = br.readLine()) != null) {
+								dos.writeUTF(temp);
+								dos.flush();
+							}*/
+							////////////// 문제지점 //////////////////////////////////
+							while((len = fis.read(readData)) != -1) {
 								dos.write(readData, 0, len);
+								dos.flush();
 							}
-							dos.flush();
 							
-							Thread.sleep(500);
+							Thread.sleep(300);
+							System.out.println((i+1)+"번째 파일 전송");
+							////////////// 문제지점 //////////////////////////////////
 						}
 						System.out.println("파일서버 파일 전송완료");
 						
@@ -133,6 +153,9 @@ public class FileServer extends Thread {
 				// thread sleep 예외
 				e.printStackTrace();
 			} finally {
+				
+//				if (br != null) { br.close(); }
+				
 				if (dos != null) { dos.close(); }
 				if (fis != null) { fis.close(); }
 				if (oos != null) { oos.close(); }
