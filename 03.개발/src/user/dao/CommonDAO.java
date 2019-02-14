@@ -179,7 +179,7 @@ public class CommonDAO {
 		rs=pstmt.executeQuery();
 		//String eeId, name, img, activation;
 		if(rs.next()) {
-			emvo = new EeMainVO(id, rs.getString("name"),rs.getString() img, activation)
+//			emvo = new EeMainVO(id, rs.getString("name"),rs.getString() img, activation)
 		}
 		
 		return emvo;
