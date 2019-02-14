@@ -53,7 +53,7 @@ public class CommonDAO {
 		
 		con=getConn();
 		
-		String match = "SELECT ID, USER_TYPE FROM USER_TABLE WHERE ID=? AND PASS=?";
+		String match = "SELECT USER_TYPE FROM USER_TABLE WHERE ID=? AND PASS=?";
 		pstmt = con.prepareStatement(match);
 		pstmt.setString(1, id);
 		pstmt.setString(2, pass);
@@ -218,17 +218,25 @@ public class CommonDAO {
 		PreparedStatement pstmt =null;
 		ResultSet rs = null;
 		
+		try {
 		con =getConn();
 		
-		String selectEeInfo = "SELECT EE_ID, NAME, IMG, ACTIVATION FROM EE_INFO WHERE ID=?";
-		pstmt = con.prepareStatement(selectEeInfo);
+		StringBuilder selectEeInfo = new StringBuilder();
+		selectEeInfo.append("select ut.id, ut.name, ei.img, ut.activation").append("from ee_info ei,USER_TABLE ut")
+			.append("where ut.id=ei.ee_id").append("and ut.id=?");
+//		String selectEeInfo = "SELECT EE_ID, NAME, IMG, ACTIVATION FROM EE_INFO WHERE ID=?";
+		pstmt = con.prepareStatement(selectEeInfo.toString());
 		
 		pstmt.setString(1, id);
 		
 		rs=pstmt.executeQuery();
-		//String eeId, name, img, activation;
-		if(rs.next()) {
-			emvo = new EeMainVO(id, rs.getString("name"),rs.getString() img, activation)
+			if(rs.next()) {
+				emvo = new EeMainVO(rs.getString("id"), rs.getString("name"),rs.getString("img"), rs.getString("activation"));
+			}
+		}finally {
+		if(rs!=null) {	rs.close();	}
+		if(pstmt!=null) {pstmt.close();}
+		if(con!=null) {con.close();}
 		}
 		
 		return emvo;

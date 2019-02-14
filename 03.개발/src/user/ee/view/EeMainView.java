@@ -98,9 +98,6 @@ public class EeMainView extends JFrame {
 		return jlLogOut;
 	}
 
-	public static void main(String[] args) {
-		new EeMainView(null);
-	}
 }
 
 
