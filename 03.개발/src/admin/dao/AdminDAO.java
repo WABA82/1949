@@ -12,6 +12,7 @@ import admin.vo.AddrVO;
 import admin.vo.CoInfoVO;
 import admin.vo.CoListVO;
 import admin.vo.CoModifyVO;
+import admin.vo.EeInfoVO;
 import admin.vo.EeListVO;
 import admin.vo.ErInfoVO;
 import admin.vo.ErListVO;
@@ -19,6 +20,7 @@ import admin.vo.ErModifyVO;
 import admin.vo.UserInfoVO;
 import admin.vo.UserListVO;
 import admin.vo.UserModifyVO;
+import user.ee.vo.EeModifyVO;
 
 public class AdminDAO {
 	
@@ -427,6 +429,7 @@ public class AdminDAO {
 	
 	public boolean ueTransaction1(Connection con, ErModifyVO emvo) throws SQLException {
 		boolean flag = false;
+		System.out.println("t1시작");
 		
 		StringBuilder updateEr = new StringBuilder();
 		updateEr
@@ -440,6 +443,7 @@ public class AdminDAO {
 		pstmt1.setString(3, emvo.getRank());
 		pstmt1.setString(4, emvo.getLoc());
 		pstmt1.setString(5, emvo.getHireType());
+		System.out.println("--ht"+emvo.getHireType());
 		pstmt1.setString(6, emvo.getPortfolio());
 		pstmt1.setString(7, emvo.getErDesc());
 		pstmt1.setInt(8, emvo.getSal());
@@ -450,89 +454,85 @@ public class AdminDAO {
 		if(cnt1 == 1) {
 			flag = true;
 		}
-		
+		System.out.println("t1반환");
 		return flag;
 	}
 	
-	public boolean ueTransaction2(Connection con, ErModifyVO emvo) throws SQLException {
+	public boolean ueTransaction2(Connection con, ErModifyVO emvo, int preSkillNum) throws SQLException {
 		boolean flag = false;
-		/* 트랜잭션처리 필요 ///////////////////////////////////////////////////////////////////////////
-		delete from selected_skill
-		where er_num = ?;
-		 */
+		System.out.println("t2시작");
 		
-		StringBuilder updateEr = new StringBuilder();
-		updateEr
+		StringBuilder deleteSkill = new StringBuilder();
+		deleteSkill
 		.append(" delete from selected_skill ")
 		.append(" where er_num = ? ");
 		
-		pstmt2 = con.prepareStatement(updateEr.toString());
+		pstmt2 = con.prepareStatement(deleteSkill.toString());
 		pstmt2.setString(1, emvo.getErNum());
 		
-		int cnt1 = pstmt1.executeUpdate();
+		int deleteCnt = pstmt2.executeUpdate();
 		
-		if(cnt1 == 1) {
+		if(deleteCnt == preSkillNum) { // 기존 선택한 스킬 수와 삭제된 스킬 수가 같다면 true
 			flag = true;
 		}
 		
+		System.out.println("t2반환");
 		return flag;
 	}
 	
-	public boolean ueTransaction3(Connection con, ErModifyVO emvo) throws SQLException {
-		boolean flag = false;
-		/* 트랜잭션처리 필요 ///////////////////////////////////////////////////////////////////////////
-		 
-		update er_info
-		set subject=?, education=?, rank=?, loc=?, hire_type=?, portfolio=?, er_desc=?, sal=?
-		where er_num = ?;
+	public void ueTransaction3(Connection con, ErModifyVO emvo) throws SQLException {
+		System.out.println("t3시작");
 		
-		delete from selected_skill
-		where er_num = ?;
+		StringBuilder insertSkill = new StringBuilder();
+		insertSkill
+		.append(" insert into selected_skill(er_num, skill_num) ")
+		.append(" values (?,?) ");
 		
-		insert into selected_skill(er_num, skill_num)
-		values (?,?);
-		 
-		 */
+		pstmt3 = con.prepareStatement(insertSkill.toString());
 		
-		StringBuilder updateEr = new StringBuilder();
-		updateEr
-		.append("update er_info")
-		.append("set subject=?, education=?, rank=?, loc=?, hire_type=?, portfolio=?, er_desc=?, sal=?")
-		.append("where er_num = ?;");
-		
-		pstmt1 = con.prepareStatement(updateEr.toString());
-		pstmt1.setString(1, emvo.getSubject());
-		pstmt1.setString(2, emvo.getEducation());
-		pstmt1.setString(3, emvo.getRank());
-		pstmt1.setString(4, emvo.getLoc());
-		pstmt1.setString(5, emvo.getHireType());
-		pstmt1.setString(6, emvo.getPortfolio());
-		pstmt1.setString(7, emvo.getErDesc());
-		pstmt1.setInt(8, emvo.getSal());
-		pstmt1.setString(9, emvo.getErNum());
-		
-		int cnt1 = pstmt1.executeUpdate();
-		
-		if(cnt1 == 1) {
-			flag = true;
+		List<String> listSkill = emvo.getListSkill();
+		for(int i=0; i<emvo.getListSkill().size(); i++) {
+			pstmt3.setString(1, emvo.getErNum());
+			pstmt3.setString(2, listSkill.get(i));
+			
+			pstmt3.executeUpdate();
 		}
 		
-		return flag;
+		System.out.println("t3반환");
 	}
 	
-	public boolean updateEr(ErModifyVO emvo) throws SQLException {
+	public boolean updateEr(ErModifyVO emvo, int preSkillNum) {
 		boolean flag = false;
 
-		con = getConn();
-		con.setAutoCommit(false);
-		
 		try {
-			boolean t1 = ueTransaction1(con, emvo); // 새로운 정보로 er정보변경
-			ueTransaction2(con, emvo.getListSkill()); // 기존 selected_skill 삭제
+			con = getConn();
+			con.setAutoCommit(false);
 			
-			
-		} finally {
-			closeUpdateEr();
+			try {
+				boolean t1 = ueTransaction1(con, emvo); // 새로운 정보로 er_info update
+				System.out.println("t1끝");
+				boolean t2 = ueTransaction2(con, emvo, preSkillNum); // 기존 selected_skill 삭제
+				System.out.println("t2끝");
+				ueTransaction3(con, emvo); // 새롭게 선택된 Skill들 insert
+				System.out.println("t3끝");
+				
+				if (t1 && t2) {
+					flag = true;
+					con.commit();
+				} else {
+					con.rollback();
+				}
+				
+			} finally {
+				closeUpdateEr();
+			}
+		} catch (SQLException e) {
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
 		}
 		
 		return flag;
@@ -545,37 +545,88 @@ public class AdminDAO {
 		if (con != null) { con.close(); }
 	}
 	
-	public boolean deleteEr(String erNum) throws SQLException { /////////////// 작업 예정 /////////////////
+	public boolean dErTransaction1(String erNum) throws SQLException {
 		boolean flag = false;
 		
-		Connection con = null;
-		PreparedStatement pstmt = null;
+		StringBuilder deleteEr = new StringBuilder();
+		deleteEr
+		.append(" delete from er_info ")
+		.append(" where er_num=? ");
+		
+		pstmt1 = con.prepareStatement(deleteEr.toString());
+		pstmt1.setString(1, erNum);
+		
+		int cnt = pstmt1.executeUpdate();
+		
+		if(cnt == 1) {
+			flag = true;
+		}
+		
+		return flag;
+	}
+	
+	public boolean dErTransaction2(String id) throws SQLException {
+		boolean flag = false;
+		
+		StringBuilder updateEe = new StringBuilder();
+		updateEe
+		.append(" update user_table ")
+		.append(" set activation = 'N' ")
+		.append(" where id=? ");
+		
+		pstmt2 = con.prepareStatement(updateEe.toString());
+		pstmt2.setString(1, id);
+		
+		int cnt = pstmt2.executeUpdate();
+		
+		if(cnt == 1) {
+			flag = true;
+		}
+		
+		return flag;
+	}
+	
+	public boolean deleteEr(ErInfoVO eivo)  { 
+		boolean flag = false;
+		
+		con = null;
 		
 		try {
-			
-			con = getConn();
-			
-			StringBuilder deleteEr = new StringBuilder();
-			deleteEr
-			.append("")
-			.append("")
-			.append("");
-			
-			pstmt = con.prepareStatement(deleteEr.toString());
-			
-			int cnt = pstmt.executeUpdate();
-			
-			if(cnt == 1) {
-				flag = true;
+			try {
+				con = getConn();
+				con.setAutoCommit(false);
+				
+				if(dErTransaction1(eivo.getErNum()) && dErTransaction2(eivo.getErId())){
+					con.commit();
+					flag = true;
+				} else {
+					con.rollback();
+				}
+				
+			} catch (SQLException e) {
+				try {
+					con.rollback();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				e.printStackTrace();
 			}
 			
 		} finally {
-			if (pstmt != null) { pstmt.close(); }
-			if (con != null) { con.close(); }
+			try {
+				closeDeleteEr();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		
-		
 		return flag;
+	}
+	
+	public void closeDeleteEr() throws SQLException {
+		if (pstmt2 != null) { pstmt2.close(); }
+		if (pstmt1 != null) { pstmt1.close(); }
+		if (con != null) { con.close(); }
 	}
 	
 	public CoInfoVO selectOneCo(String coNum) throws SQLException {
@@ -651,5 +702,167 @@ public class AdminDAO {
 		}
 		
 		return flag;
+	}
+	
+	public EeInfoVO selectOneEe(String eeNum) throws SQLException {
+		EeInfoVO eivo = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = getConn();
+			StringBuilder selectOneEe = new StringBuilder();
+			selectOneEe
+			.append(" select ee_num, img, id, ut.name, rank, loc, ")
+			.append(" education, portfolio, gender, to_char(ei.input_date, 'yyyy-MM-dd') input_date, ")
+			.append(" ext_resume, ut.age ")
+			.append(" from ee_info ei, user_table ut ")
+			.append(" where ei.ee_id = ut.id and ei.ee_num=? ");
+			pstmt = con.prepareStatement(selectOneEe.toString());
+			pstmt.setString(1, eeNum);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				eivo = new EeInfoVO(rs.getString("ee_num"), rs.getString("img"),
+						rs.getString("id"), rs.getString("name"), rs.getString("rank"),
+						rs.getString("loc"), rs.getString("education"), rs.getString("portfolio"),
+						rs.getString("gender"), rs.getString("input_date"), rs.getString("ext_resume"),
+						rs.getInt("age"));
+			}
+			
+		} finally {
+			if (rs != null) { rs.close(); }
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		return eivo;
+	}
+	
+	public boolean updateEe(EeModifyVO emvo) throws SQLException {
+		boolean flag = false;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = getConn();
+			
+			StringBuilder updateEe = new StringBuilder();
+			
+			updateEe
+			.append(" update ee_info ")
+			.append(" set img=?, rank=?, loc=?, education=?, portfolio=?, ext_resume=? ")
+			.append(" where ee_num=? ");
+			
+			pstmt = con.prepareStatement(updateEe.toString());
+			pstmt.setString(1, emvo.getImg());
+			pstmt.setString(2, emvo.getRank());
+			pstmt.setString(3, emvo.getLoc());
+			pstmt.setString(4, emvo.getEducation());
+			pstmt.setString(5, emvo.getPortfolio());
+			pstmt.setString(6, emvo.getExtResume());
+			pstmt.setString(7, emvo.getEeNum());
+			
+			int cnt = pstmt.executeUpdate();
+			
+			if (cnt == 1) {
+				flag = true;
+			}
+			
+		} finally {
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		System.out.println("--updateEe flag : " +flag);
+		return flag;
+	}
+	
+	public boolean dEeTransaction1(String eeNum) throws SQLException {
+		boolean flag = false;
+		
+		StringBuilder deleteEe = new StringBuilder();
+		deleteEe
+		.append(" delete from ee_info ")
+		.append(" where ee_num=? ");
+		
+		pstmt1 = con.prepareStatement(deleteEe.toString());
+		pstmt1.setString(1, eeNum);
+		
+		int cnt = pstmt1.executeUpdate();
+		
+		if(cnt == 1) {
+			flag = true;
+		}
+		
+		return flag;
+	}
+	
+	public boolean dEeTransaction2(String id) throws SQLException {
+		boolean flag = false;
+		
+		StringBuilder updateEe = new StringBuilder();
+		updateEe
+		.append(" update user_table ")
+		.append(" set activation = 'N' ")
+		.append(" where id=? ");
+		
+		pstmt1 = con.prepareStatement(updateEe.toString());
+		pstmt1.setString(1, id);
+		
+		int cnt = pstmt1.executeUpdate();
+		
+		if(cnt == 1) {
+			flag = true;
+		}
+		
+		return flag;
+	}
+	
+	public boolean deleteEe(EeInfoVO eivo){
+		boolean flag = false;
+		
+		con = null;
+		
+		try {
+			
+			try {
+				con = getConn();
+				con.setAutoCommit(false);
+				
+				if (dEeTransaction1(eivo.getEeNum()) && dEeTransaction2(eivo.getId())) {
+					con.commit();
+					flag = true;
+				} else {
+					con.rollback();
+				}
+			
+			} catch (SQLException e) {
+				try {
+					con.rollback();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				e.printStackTrace();
+			}
+		} finally {
+			try {
+				closeDeleteEe();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return flag;
+	}
+	
+	public void closeDeleteEe() throws SQLException {
+		if (pstmt2 != null) { pstmt2.close(); }
+		if (pstmt1 != null) { pstmt1.close(); }
+		if (con != null) { con.close(); }
 	}
 }
