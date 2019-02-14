@@ -136,7 +136,7 @@ public class CommonDAO {
 	 * @param eeId
 	 * @throws SQLException 
 	 */
-	/*public EeMainVO selectEeMain(String eeid) throws SQLException {
+	public EeMainVO selectEeMain(String eeId) throws SQLException {
 		EeMainVO emvo=null;
 		
 		Connection con=null;
@@ -149,17 +149,17 @@ public class CommonDAO {
 		//Äõ¸®¹® »ý¼º
 		StringBuilder selectMyInfo= new StringBuilder();
 		selectMyInfo
-		.append("		select ut.name, ei.img, ut.activation		") 
+		.append("		select ei.ee_id, ut.name, ei.img, ut.activation		") 
 		.append("		from ee_info ei, user_table ut	")
-		.append("		where (ee_id = id) and id = ?	"	);
+		.append("		where (ee_id = id) and ei.ee_id = ?	"	);
 		
 		pstmt=con.prepareStatement(selectMyInfo.toString());
-		pstmt.setString(1,eeid );
+		pstmt.setString(1,eeId );
 		
 		rs=pstmt.executeQuery();
 		
 		if(rs.next()) {
-			emvo = new EeMainVO(rs.getString("name"), rs.getString("img"), rs.getString("activation"));
+			emvo = new EeMainVO(rs.getString("EE_ID"), rs.getString("NAME"), rs.getString("IMG"), rs.getString("ACTIVATION"));
 		}//end if
 		
 		}finally {
@@ -171,7 +171,15 @@ public class CommonDAO {
 		return emvo;
 	}// selectEeMain
 	
-	*/
+	public static void main(String[] args) {
+		try {
+			System.out.println(CommonDAO.getInstance().selectEeMain("gong1"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 
 	
 	public boolean selectFindPass(FindPassVO fpvo) throws SQLException {
@@ -240,58 +248,58 @@ public class CommonDAO {
 	
 	}//updatePass
 	
-	public UserInfoVO selectUserInfo(String id) throws SQLException {
-		String userInfo="";
-		
-		Connection con=null;
-		PreparedStatement stmt=null;
-		ResultSet rs=null;
-		
-		try {
-			con=getConn();
-			String selectUserInfo="select name, tel, seq, zipcode, addr1, addr2, email from user_info where id=? ";
-		}finally {
-			
-		}
-		
-		
-		
-		return userInfo;
-	}
+//	public UserInfoVO selectUserInfo(String id) throws SQLException {
+//		String userInfo="";
+//		
+//		Connection con=null;
+//		PreparedStatement stmt=null;
+//		ResultSet rs=null;
+//		
+//		try {
+//			con=getConn();
+//			String selectUserInfo="select name, tel, seq, zipcode, addr1, addr2, email from user_info where id=? ";
+//		}finally {
+//			
+//		}
+//		
+//		
+//		
+//		return userInfo;
+//	}
 
 	
 	
 	
 	
-	public EeMainVO selectEeMain(String id) throws SQLException {
-		EeMainVO emvo=null;
-		
-		Connection con =null;
-		PreparedStatement pstmt =null;
-		ResultSet rs = null;
-		
-		try {
-		con =getConn();
-		
-		StringBuilder selectEeInfo = new StringBuilder();
-		selectEeInfo.append("select ut.id, ut.name, ei.img, ut.activation").append("from ee_info ei,USER_TABLE ut")
-			.append("where ut.id=ei.ee_id").append("and ut.id=?");
-		pstmt = con.prepareStatement(selectEeInfo.toString());
-		
-		pstmt.setString(1, id);
-		
-		rs=pstmt.executeQuery();
-			if(rs.next()) {
-				emvo = new EeMainVO(rs.getString("id"), rs.getString("name"),rs.getString("img"), rs.getString("activation"));
-			}
-		}finally {
-		if(rs!=null) {	rs.close();	}
-		if(pstmt!=null) {pstmt.close();}
-		if(con!=null) {con.close();}
-		}
-		
-		return emvo;
-	}//selectEeMain
+//	public EeMainVO selectEeMain(String id) throws SQLException {
+//		EeMainVO emvo=null;
+//		
+//		Connection con =null;
+//		PreparedStatement pstmt =null;
+//		ResultSet rs = null;
+//		
+//		try {
+//		con =getConn();
+//		
+//		StringBuilder selectEeInfo = new StringBuilder();
+//		selectEeInfo.append("select ut.id, ut.name, ei.img, ut.activation").append("from ee_info ei,USER_TABLE ut")
+//			.append("where ut.id=ei.ee_id").append("and ut.id=?");
+//		pstmt = con.prepareStatement(selectEeInfo.toString());
+//		
+//		pstmt.setString(1, id);
+//		
+//		rs=pstmt.executeQuery();
+//			if(rs.next()) {
+//				emvo = new EeMainVO(rs.getString("id"), rs.getString("name"),rs.getString("img"), rs.getString("activation"));
+//			}
+//		}finally {
+//		if(rs!=null) {	rs.close();	}
+//		if(pstmt!=null) {pstmt.close();}
+//		if(con!=null) {con.close();}
+//		}
+//		
+//		return emvo;
+//	}//selectEeMain
 	
 	public ErMainVO selectErMain(String id) throws SQLException {
 		ErMainVO emv=null;

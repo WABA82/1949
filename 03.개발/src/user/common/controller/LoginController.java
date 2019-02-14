@@ -26,9 +26,13 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 	private LoginView lv;
 	private EeMainVO emvo;
 	private ErMainVO emv;
+	private CommonDAO C_dao;
+
 	public LoginController(LoginView lv) {
 		this.lv = lv;
-	}
+		C_dao=CommonDAO.getInstance();
+
+	}// 생성자
 
 	@Override
 	public void mouseClicked(MouseEvent me) {
@@ -43,20 +47,20 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		if(ae.getSource()==lv.getJbLogin()) {
+		if (ae.getSource() == lv.getJbLogin()) {
 			try {
 				login();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}//end if
-	}//버튼
-	
+		} // end if
+	}// 버튼
+
 	@Override
 	public void windowClosing(WindowEvent we) {
 		lv.dispose();
 	}
-	
+
 	public void login() throws SQLException {
 		String id=lv.getJtfId().getText().trim();
 		String pass=new String(lv.getJpfPass().getPassword());
@@ -77,6 +81,8 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 		
 		userType=c_dao.login(id, pass);
 		if(userType.equals("E")) {
+			emvo = C_dao.selectEeMain(lv.getJtfId().getText());
+			System.out.println(emvo);
 			new EeMainView(emvo);
 			lv.dispose();
 			System.out.println("E");
@@ -102,16 +108,20 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 	public void findPass() {
 		new FindPassView(lv);
 	}// findPass
-	
-	@Override
-	public void mousePressed(MouseEvent e) {}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {	}
+	public void mousePressed(MouseEvent e) {
+	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {
+	}
 
 	@Override
-	public void mouseExited(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+	}
 }
