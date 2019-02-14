@@ -11,6 +11,7 @@ import user.common.vo.EeMainVO;
 import user.common.vo.FindIdVO;
 import user.common.vo.FindPassVO;
 import user.common.vo.SetPassVO;
+import user.common.vo.UserInfoVO;
 import user.ee.view.EeMainView;
 import user.er.view.ErMainView;
 
@@ -159,10 +160,58 @@ public class CommonDAO {
 			if(con!=null) {con.close();}
 		}
 		return flag;
-		
-	}
 	
-	public EeMainVO selectEeMain(String id) throws SQLException {
+	}//updatePass
+	
+	public UserInfoVO selectUserInfo(String id) throws SQLException {
+		String userInfo="";
+		
+		Connection con=null;
+		PreparedStatement stmt=null;
+		ResultSet rs=null;
+		
+		try {
+			con=getConn();
+			String selectUserInfo="select name, tel, seq, zipcode, addr1, addr2, email from user_info where id=? ";
+		}finally {
+			
+		}
+		
+		
+		
+		return userInfo;
+	}
+/*	String searchId="";
+	
+	Connection con=null;
+	PreparedStatement pstmt=null;
+	ResultSet rs=null;
+	
+	try {
+		con=getConn();
+		String selectId="select id from user_table where name=? and tel=?";
+
+		pstmt=con.prepareStatement(selectId);
+		
+		pstmt.setString(1, fivo.getName());
+		pstmt.setString(2, fivo.getTel());
+
+		rs=pstmt.executeQuery();
+		if(rs.next()) {
+			searchId=rs.getString("id");
+		}
+
+	}finally {
+		if(rs!=null) {rs.close();}
+		if(pstmt!=null) {pstmt.close();}
+		if(con!=null) {con.close();}
+	}
+	*/
+	
+	
+	
+	
+	/*public EeMainVO selectEeMain(String id) throws SQLException {
 		EeMainVO emvo=null;
 		
 		Connection con =null;
@@ -184,6 +233,6 @@ public class CommonDAO {
 		
 		return emvo;
 	}//selectEeMain
-	
+	*/
 	
 }
