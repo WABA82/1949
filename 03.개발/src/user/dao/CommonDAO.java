@@ -97,7 +97,7 @@ public class CommonDAO {
 	}//selectFindId
 
 	public boolean selectFindPass(FindPassVO fpvo) throws SQLException {
-		String searchPass ="";
+		int searchPass =0;
 		boolean flag = false;
 		
 		Connection con = null;
@@ -105,30 +105,30 @@ public class CommonDAO {
 		ResultSet rs = null;
 		try {
 			con = getConn();
-			String count = "select count(*) from user_table where id = ? and question_type = ? and answer = ? ";
+			
+			String count = "select count(*) login from user_table where id=? and question_type=? and answer=?";
 			pstmt = con.prepareStatement(count);
 			
 			pstmt.setString(1, fpvo.getId());
 			pstmt.setString(2, fpvo.getqType());
 			pstmt.setString(3, fpvo.getAnswer());
-			
-/*			int cnt=pstmt.executeUpdate();
-			if(cnt==1) {
-				flag=true;
-			}==========================다시하기!!!
-*/			
+		
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				searchPass = rs.getString("count(*)");
-			}//end while
+				searchPass = rs.getInt("login");
+				
+				System.out.println(searchPass);
+				
+				if(searchPass==1) {
+					flag = true;
+				}
+				System.out.println(flag);
+			}
 		}finally {
 			//6.
 			if(rs!=null) {rs.close();}
 			if(pstmt!=null) {pstmt.close();}
 			if(con!=null) {con.close();}
-		}
-		if(searchPass.equals("0")) {
-			flag = true;
 		}
 		return flag;
 	}//selectFindPass
