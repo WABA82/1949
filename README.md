@@ -3,7 +3,7 @@
 * **SIST Java SE 2번째 Team Project**
 * **일 구하고 사람 구하고**  
   * 개발자 구인구직 플랫폼
-  * CS 프로그래밍, Network, JDBC, Thread를 사용한 프로젝트
+  * JAVA SE CS 프로그래밍, Network, JDBC, Thread를 사용한 프로젝트
 
 ## 분석
 * [요구사항 명세서, 요구사항 정의서, 개발표준정의서](https://github.com/younggeun0/1949/tree/master/01.%EB%B6%84%EC%84%9D)
