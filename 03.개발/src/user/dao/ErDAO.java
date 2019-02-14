@@ -11,6 +11,7 @@ import java.util.List;
 import user.ee.vo.EeHiringVO;
 import user.ee.vo.EeInterestVO;
 import user.er.dto.ErHiringCdtDTO;
+import user.er.vo.DetailEeInfoVO;
 import user.er.vo.ErAddVO;
 import user.er.vo.ErDefaultVO;
 import user.er.vo.ErDetailVO;
@@ -238,47 +239,43 @@ public class ErDAO {
 	}
 	
 	
-	public ErDetailVO selectErDetail(String erNum)throws SQLException {
-		ErDetailVO edtvo = null;
+	public DetailEeInfoVO selectDetailEe(String eeNum)throws SQLException {
+		DetailEeInfoVO devo = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs= null;
 		
 		try {
-		//1.
-		//2.
 			con= getConn();
-		//3.
 			StringBuilder selectErDetail = new StringBuilder();
-			
 			selectErDetail
-			.append(" select ei.er_num, c.img1 , ut.name, ut.tel, ")
-			.append(" ut.email, ei.subject, c.co_name, ei.education, ei.rank, ei.sal,ei.er_desc, ei.loc, ei.hire_type,ei.portfolio ")
-			.append(" from er_info ei, company c, user_table ut ")
-			.append(" where (ei.co_num=c.co_num)and(c.er_id= ut.id)and(er_num=?) ");
+			.append(" select ei.img, ut.name, ei.rank, ei.loc, ei.education, ei.portfolio, ut.gender,ut.age,ut.tel ,ut.email, ei.ext_resume")
+			.append(" from ee_info ei, user_table ut ")
+			.append(" where (ei.ee_id=ut.id) and ee_num=? ");
+			
 			pstmt = con.prepareStatement(selectErDetail.toString());
-		//4.
-			pstmt.setString(1,erNum );
-		//5.
-			rs= pstmt.executeQuery();
+			pstmt.setString(1,eeNum );
 			//입력된 코드로 조회된 레코드가 존재할 때 VO를 생성하고 값 추가
-
+			rs= pstmt.executeQuery();
 			if(rs.next()) {
-				edtvo = new ErDetailVO(erNum, rs.getString("img1"), rs.getString("name"), rs.getString("tel"), 
-						rs.getString("email"), rs.getString("subject"), rs.getString("co_name"), rs.getString("education"), 
-						rs.getString("rank"), rs.getString("loc"),rs.getString("hire_type"),rs.getString("portfolio"),
-						rs.getString("er_desc"), rs.getInt("sal"), selectSkill(erNum));
+				devo = new DetailEeInfoVO(eeNum, rs.getString("img"), rs.getString("name"), rs.getString("tel"),
+						rs.getString("email"),rs.getString("rank"), rs.getString("loc"), rs.getString("education"), 
+						rs.getString("portfolio"), rs.getString("gender"), rs.getString("ext_resume")," ", rs.getInt("age"));
 			}//end if
+			
+		//String eeNum, String img, String name, String tel, String email, String rank, String loc,
+		//String education, String portfolio, String gender, String extResume, String interest, int age
 		}finally {
 			//6.
-			if(rs!=null) { rs.close();}
+			if(con!=null) { con.close();}
 			if(pstmt!=null) {pstmt.close();}
 			if(rs!=null) {rs.close();}
 			
 		}
 		
-		return edtvo;
+		return devo;
 	}
+
 
 	public List<ErInterestVO> selectInterestEEInfoList(String er_id)throws SQLException {
 		List<ErInterestVO> list = new ArrayList<>();

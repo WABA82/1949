@@ -21,6 +21,7 @@ import user.er.dto.ErHiringCdtDTO;
 import user.er.view.ErDetailEeView;
 import user.er.view.ErDetailSearchView;
 import user.er.view.ErHiringView;
+import user.er.vo.DetailEeInfoVO;
 import user.er.vo.ErDetailVO;
 import user.er.vo.ErHiringVO;
 
@@ -78,13 +79,13 @@ public class ErHiringController extends WindowAdapter implements ActionListener,
 	public void showDetailErInfo() {
 		JTable jt = ehv.getJtEeInfo();
 		String eeNum= String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
-		ErDetailVO erdvo = null;
+		DetailEeInfoVO devo = null;
 		try {
-			erdvo = erdao.selectErDetail(eeNum);
+			devo = erdao.selectDetailEe(eeNum);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		new ErDetailEeView(ehv,erdvo,eeNum);
+		new ErDetailEeView(ehv,devo,eeNum);
 	}
 	
 	public void detailSearch() {
