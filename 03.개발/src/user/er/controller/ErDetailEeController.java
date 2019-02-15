@@ -69,12 +69,9 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 		}
 	}//removeInterestEr
 	
-	public void showCoDetail() {
-		
-	}
-	
 	public void extRsmDown() {
-		
+		 //서버가 만들어지면 구현
+		JOptionPane.showMessageDialog(edev, "서버가만들어지면 구현예정");
 	}
 	
 	

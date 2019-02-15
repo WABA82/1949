@@ -26,15 +26,10 @@ public class EeDetailErView extends JDialog {
 	/* 인스턴스 변수 선언 */
 	private JLabel jlHeart;
 	private JButton jbCoInfo, jbApply, jbClose; 
-	private String erNum,eeId,appStatus,interest;
 	private boolean flagHeart;
 	
-	public EeDetailErView(EeHiringView ehv, DetailErInfoVO deivo, String erNum, String eeId,String appStatus,String interest) {
+	public EeDetailErView(EeHiringView ehv, DetailErInfoVO deivo, String erNum, String eeId,String appStatus) {
 		super(ehv, "상세구인정보", true);/* 창의 제목 */
-		this.erNum = erNum;
-		this.eeId = eeId;
-		this.appStatus = appStatus;
-		this.interest = interest;
 		/* 컴포넌트 생성 */
 		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/no_co_img1.png");
 		// 라벨들
@@ -92,10 +87,10 @@ public class EeDetailErView extends JDialog {
 		jlSkill8.setBorder(new LineBorder(Color.BLACK));
 
 		// 버튼들
-		if(interest.equals("0")) {
+		if(deivo.getInterest().equals("0")) {
 			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/b_heart.png");
 			jlHeart = new JLabel(heart);
-		}else if(interest.equals("1")) {
+		}else if(deivo.getInterest().equals("1")) {
 			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/r_heart.png");
 			jlHeart = new JLabel(heart);
 			flagHeart=true;
@@ -233,16 +228,19 @@ public class EeDetailErView extends JDialog {
 
 		wrapPanel.add(skillGridPanel);
 
-		jlHeart.setBounds(65, 572, 32, 32);
-		jbCoInfo.setBounds(105, 575, 100, 25);
-		jbApply.setBounds(210, 575, 100, 25);
 		jbClose.setBounds(315, 575, 60, 25);
-
+		appStatus =null; //지원하기 테스트용
+		if (appStatus == null) {
+			jlHeart.setBounds(65, 572, 32, 32);
+			jbCoInfo.setBounds(105, 575, 100, 25);
+			jbApply.setBounds(210, 575, 100, 25);
+			wrapPanel.add(jbApply);
+		}else {
+			jbCoInfo.setBounds(210, 575, 100, 25);
+			jlHeart.setBounds(165, 572, 32, 32);
+		}
 		wrapPanel.add(jlHeart);
 		wrapPanel.add(jbCoInfo);
-		if (appStatus != null) {
-			wrapPanel.add(jbApply);
-		}
 		wrapPanel.add(jbClose);
 
 		/* 프레임에 배치 */
@@ -277,9 +275,7 @@ public class EeDetailErView extends JDialog {
 			jtfRank.setText("신입");
 
 		}
-
-		
-		
+		//EeHiringView ehv, DetailErInfoVO deivo, String erNum, String eeId,String appStatus
 		//이벤트
 		EeDetailErController edec = new EeDetailErController(this,erNum,eeId,flagHeart);
 		jlHeart.addMouseListener(edec);

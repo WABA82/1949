@@ -49,8 +49,34 @@ public class EeDAO {
 
 	////////////////////////////////////////// 선의
 	////////////////////////////////////////// 소스//////////////////////////////////////////////////////////
+	/**
+	 * 선의 지원하기 누르면 application테이블에 데이터 넣기
+	 */
+	public void insertApplication(EeInterestAndAppVO eiaavo)throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		try {
+			con = getConn();
+			String insertApplication = "insert into application(app_num, er_num,ee_id,app_status) values(app_code,?,?,?)";
+			pstmt = con.prepareStatement(insertApplication);
 
-	///// 02.09 선의 Hiring소스
+			pstmt.setString(1, eiaavo.getErNum());
+			pstmt.setString(2, eiaavo.getEeId());
+			pstmt.setString(3,"U");
+
+			pstmt.executeUpdate();
+
+		} finally {
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+		}
+		
+	}
+
 	public List<EeHiringVO> selectEeHiring(EeHiringCdtDTO eh_dto) throws SQLException {
 		List<EeHiringVO> list = new ArrayList<EeHiringVO>();
 
@@ -109,7 +135,6 @@ public class EeDAO {
 		return list;
 	}// selectEeHiring
 
-	// 0210 선의 추가
 	public List<String> selectSkill(String erNum) throws SQLException {
 		List<String> listSkill = new ArrayList<String>();
 		Connection con = null;
@@ -195,12 +220,6 @@ public class EeDAO {
 		return deivo;
 	}// DetailErInfoVO
 
-	public List<EeHiringVO> selectInterestEr(String erNum) {
-		List<EeHiringVO> list = null;
-		return list;
-	}// selectInterestEr
-
-	// 0210 선의 관심구인공고 추가
 	public void insertInterestEr(EeInterestAndAppVO eiaavo) throws SQLException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -257,6 +276,42 @@ public class EeDAO {
 		}
 		return flag;
 	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////임시로 추가한 메소드(지원하기 버튼없애기 어렵다구욧!!!!!!!!!!!!!!)///////////////////////////////////////////
+	public boolean selectApplication(String eeId,String eeNum ){
+		boolean flag =false;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {// try : DB에서 조회하기
+
+			con = getConn(); // 커넥션 얻기.
+			StringBuilder selectAppList = new StringBuilder(); // 지원현황테이블 list.
+			selectAppList.append("dfdsfds");삭제예정
+
+			pstmt = con.prepareStatement(selectAppList.toString());
+			// 바인드 변수
+			pstmt.setString(1, );
+			pstmt.setString(2, );
+			// ResultSet 얻어오기.
+			rs = pstmt.executeQuery();
+			// VO선언 null;
+			EeAppVO eavo = null;
+			// VO생성 후 list에 담기
+
+		} finally { // finally : 연결끊기.
+			if (rs != null) {rs.close();} // end if
+			if (pstmt != null) {pstmt.close();} // end if
+			if (con != null) {con.close();} // end if
+		} // end finally
+		
+		return flag;
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	////////////////////////////////////////// 선의 소스
 	////////////////////////////////////////// 끝//////////////////////////////////////////////////////////
 
@@ -435,7 +490,6 @@ public class EeDAO {
 				eavo = new EeAppVO(rs.getString("app_num"), rs.getString("er_num"), rs.getString("subject"), rs.getString("co_name"),
 						rs.getString("rank"), rs.getString("loc"), rs.getString("education"), rs.getString("hire_type"),
 						rs.getString("app_date"), rs.getString("app_status"), rs.getInt("sal"));
-				System.out.println(rs.getString("er_num"));
 				list.add(eavo);
 			} // end while
 
@@ -453,6 +507,8 @@ public class EeDAO {
 
 		return list;
 	}// selectAppList
+	
+	
 
 //	public static void main(String[] args) {
 //		EeDAO ee_dao = EeDAO.getInstance();

@@ -15,6 +15,7 @@ import user.ee.vo.EeInterestVO;
 import user.er.dto.ErHiringCdtDTO;
 import user.er.vo.DetailEeInfoVO;
 import user.er.vo.ErAddVO;
+import user.er.vo.ErDefaultVO;
 import user.er.vo.ErDetailVO;
 import user.er.vo.ErHiringVO;
 import user.er.vo.ErInterestVO;
@@ -51,7 +52,7 @@ public class ErDAO {
 		return con;
 	}// getConns
 
-	////////////////////////////// 선의 //////////////////////////////////////////
+	////////////////////////////// 선의시작 //////////////////////////////////////////
 	public List<ErListVO> selectErList(String erId) throws SQLException {
 		List<ErListVO> list = new ArrayList<ErListVO>();
 		Connection con = null;
@@ -74,7 +75,6 @@ public class ErDAO {
 						rs.getString("loc"), rs.getString("education"), rs.getString("hire_type"),
 						rs.getString("input_date"));
 				list.add(elvo);
-
 			}
 		} finally {
 			if (rs != null) {
@@ -147,7 +147,7 @@ public class ErDAO {
 			}
 		}
 		return flag;
-	}
+	}//deleteInterestEe
 	
 	
 	public ErDetailVO selectErDetail(String erNum)throws SQLException {
@@ -169,7 +169,6 @@ public class ErDAO {
 			pstmt = con.prepareStatement(selectErDetail.toString());
 			pstmt.setString(1, erNum);
 			rs = pstmt.executeQuery();
-			ErListVO elvo = null;
 			if(rs.next()) {
 				edvo = new ErDetailVO(erNum, rs.getString("img1"), rs.getString("name"), 
 						rs.getString("tel"), rs.getString("email"), rs.getString("subject"), 
@@ -191,7 +190,7 @@ public class ErDAO {
 		}
 		
 		return edvo;
-	}
+	}//selectErDetail
 	
 	public DetailEeInfoVO selectDeatilEe(String eeNum, String erId) throws SQLException{
 		DetailEeInfoVO devo= null;
@@ -222,13 +221,7 @@ public class ErDAO {
 						rs.getString("tel"), rs.getString("email"), rs.getString("rank"), 
 						rs.getString("loc"), rs.getString("education"), rs.getString("portfolio"), 
 						rs.getString("gender"), rs.getString("ext_resume"), rs.getString("interest"), rs.getInt("age"));
-				
-				
-/*				devo = new DetailErInfoVO(rs.getString("er_num"), rs.getString("subject"), rs.getString("name"),
-						rs.getString("tel"), rs.getString("email"), rs.getString("input_date"), rs.getString("img1"),
-						rs.getString("co_name"), rs.getString("education"), rs.getString("rank"), rs.getString("loc"),
-						rs.getString("hire_type"), rs.getString("portfolio"), rs.getString("er_desc"),
-						rs.getString("interest"), rs.getInt("sal"), selectSkill(erNum));*/
+			
 			} // end if
 		} finally {
 			if (con != null) {
@@ -242,7 +235,41 @@ public class ErDAO {
 			}
 		}
 		return devo;
-	}
+	}//selectDeatilEe
+	
+	public ErDefaultVO selectErDefault(String erId) throws SQLException {
+		ErDefaultVO edfvo= null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs= null;
+		
+		try {
+			con= getConn();
+			StringBuilder selectErDetail = new StringBuilder();
+			
+			selectErDetail
+			.append(" select c.img1, ut.name, ut.tel, ut.email, c.co_name ")
+			.append(" from company c, user_table ut ")
+			.append(" where (c.er_id=ut.id) and (c.er_id=?) ");
+			
+			pstmt = con.prepareStatement(selectErDetail.toString());
+			pstmt.setString(1,erId );
+			rs= pstmt.executeQuery();
+			//입력된 코드로 조회된 레코드가 존재할 때 VO를 생성하고 값 추가
+
+			if(rs.next()) {
+				edfvo = new ErDefaultVO(erId, rs.getString("img1"), rs.getString("name"),rs.getString("tel"),rs.getString("email"),rs.getString("co_name"));
+			}//end if
+		}finally {
+			//6.
+			if(rs!=null) { rs.close();}
+			if(pstmt!=null) {pstmt.close();}
+			if(rs!=null) {rs.close();}
+			
+		}
+		
+		return edfvo;
+	}//selectErDefault
 	
 	public void insertErAdd(ErAddVO eavo) throws SQLException {
 		Connection con = null;
@@ -281,9 +308,6 @@ public class ErDAO {
 			con = getConn();
 			StringBuilder insertErAdd = new StringBuilder();
 			
-			//모든 테이블에 저장되어야한다. 쿼리문 수정
-			//erNum, subject, education, rank, loc, hireType, portfolio, erDesc;
-			//sal;
 			insertErAdd
 			.append(" update er_info ")
 			.append(" set subject=?,education=?,rank=?,loc=?,hire_type=?, portfolio=?, er_desc=?, sal=? ")
@@ -376,49 +400,58 @@ public class ErDAO {
 			}
 		}
 		return listSkill;
-	}
+	}//selectSkill
 	
-	
-	
-	/*public DetailEeInfoVO selectDetailEe(String eeNum)throws SQLException {
-		DetailEeInfoVO devo = null;
-
-	public ErDetailVO selectErDetail(String erNum) throws SQLException {
-		ErDetailVO edtvo = null;
-
+	public List<ErHiringVO> selectErHiring(ErHiringCdtDTO erhcdto) throws SQLException{
+		List<ErHiringVO> list =new ArrayList<ErHiringVO>();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-
 		try {
-			con= getConn();
-			StringBuilder selectErDetail = new StringBuilder();
-			selectErDetail
-			.append(" select ei.img, ut.name, ei.rank, ei.loc, ei.education, ei.portfolio, ut.gender,ut.age,ut.tel ,ut.email, ei.ext_resume")
-			.append(" from ee_info ei, user_table ut ")
-			.append(" where (ei.ee_id=ut.id) and ee_num=? ");
-			
-			pstmt = con.prepareStatement(selectErDetail.toString());
-			pstmt.setString(1,eeNum );
-			//입력된 코드로 조회된 레코드가 존재할 때 VO를 생성하고 값 추가
-			rs= pstmt.executeQuery();
-			if(rs.next()) {
-				devo = new DetailEeInfoVO(eeNum, rs.getString("img"), rs.getString("name"), rs.getString("tel"),
-						rs.getString("email"),rs.getString("rank"), rs.getString("loc"), rs.getString("education"), 
-						rs.getString("portfolio"), rs.getString("gender"), rs.getString("ext_resume"),rs.getString("interest"), rs.getInt("age"));
-			}//end if
-			
-		}finally {
-			//6.
-			if(con!=null) { con.close();}
-			if(pstmt!=null) {pstmt.close();}
-			if(rs!=null) {rs.close();}
-			
+			con = getConn();
+			StringBuilder selectEeHiring = new StringBuilder();
+
+			selectEeHiring.append(" select ei.ee_num, ei.img, ut.name, ei.rank, ei.loc, ")
+					.append(" ei.education, ut.age, ei.portfolio, ut.gender, to_char(ei.input_date,'yyyy-mm-dd-hh-mi') input_date ")
+					.append(" from   ee_info ei, user_table ut ").append(" where ut.id= ei.ee_id ");
+
+			if (!(erhcdto.getCdt() == null || erhcdto.getCdt().equals(""))) {
+				selectEeHiring.append(erhcdto.getCdt());
+			}
+
+			if (!(erhcdto.getSort().trim() == null || erhcdto.getSort().trim().equals(""))) {
+				if (erhcdto.getSort().equals("등록일순")) {
+					selectEeHiring.append("	order by ei.input_date	");
+				} else if (erhcdto.getSort().equals("직급순")) {
+					selectEeHiring.append("	order by ei.rank	 ");
+				}
+			} else {
+				selectEeHiring.append("	order by ei.input_date	");
+			}
+
+			pstmt = con.prepareStatement(selectEeHiring.toString());
+
+			rs = pstmt.executeQuery();
+			ErHiringVO erhvo =null;
+			while (rs.next()) {
+				erhvo = new ErHiringVO(rs.getString("ee_num"), rs.getString("img"), rs.getString("name"), 
+						rs.getString("rank"), rs.getString("loc"),rs.getString("education"), 
+						rs.getString("portfolio"), rs.getString("gender"), rs.getString("input_date"), rs.getInt("age"));
+				list.add(erhvo);
+			}
+		} finally {
+			if (rs != null) {rs.close();}
+			if (pstmt != null) {pstmt.close();}
+			if (con != null) {con.close();}
 		}
 		
-		return devo;
-	}*/
+		return list;
+	}
+	
+	
 	////////////////////////////////////////// 선의끝///////////////////////////////////////////////
+	
+	
 
 	////////////////////////////// 재현 //////////////////////////////
 
@@ -481,88 +514,8 @@ public class ErDAO {
 		return null;
 	}// selectDetailEEInfo
 
-	public List<ErListVO> selectErInfoList(String erId) throws SQLException {
-		List<ErListVO> list = new ArrayList<ErListVO>();
-
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		try {
-			con= getConn();
-			StringBuilder selectErDetail = new StringBuilder();
-			
-			selectErDetail
-			.append(" select c.img1, ut.name, ut.tel, ut.email, c.co_name ")
-			.append(" from company c, user_table ut ")
-			.append(" where (c.er_id=ut.id) and (c.er_id=?) ");
-			
-			pstmt = con.prepareStatement(selectErDetail.toString());
-			pstmt.setString(1,erId );
-			rs= pstmt.executeQuery();
-			//입력된 코드로 조회된 레코드가 존재할 때 VO를 생성하고 값 추가
-
-			if(rs.next()) {
-				edfvo = new ErDefaultVO(erId, rs.getString("img1"), rs.getString("name"),rs.getString("tel"),rs.getString("email"),rs.getString("co_name"));
-			}//end if
-		}finally {
-			//6.
-			if(rs!=null) { rs.close();}
-			if(pstmt!=null) {pstmt.close();}
-			if(rs!=null) {rs.close();}
-			
-		}
-		
-		return edfvo;
-	}
 	
-	public List<ErHiringVO> selectErHiring(ErHiringCdtDTO erhcdto) throws SQLException{
-		List<ErHiringVO> list =new ArrayList<ErHiringVO>();
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			con = getConn();
-			StringBuilder selectEeHiring = new StringBuilder();
-
-			selectEeHiring.append(" select ei.ee_num, ei.img, ut.name, ei.rank, ei.loc, ")
-					.append(" ei.education, ut.age, ei.portfolio, ut.gender, to_char(ei.input_date,'yyyy-mm-dd-hh-mi') input_date ")
-					.append(" from   ee_info ei, user_table ut ").append(" where ut.id= ei.ee_id ");
-
-			if (!(erhcdto.getCdt() == null || erhcdto.getCdt().equals(""))) {
-				selectEeHiring.append(erhcdto.getCdt());
-			}
-
-			if (!(erhcdto.getSort().trim() == null || erhcdto.getSort().trim().equals(""))) {
-				if (erhcdto.getSort().equals("등록일순")) {
-					selectEeHiring.append("	order by ei.input_date	");
-				} else if (erhcdto.getSort().equals("직급순")) {
-					selectEeHiring.append("	order by ei.rank	 ");
-				}
-			} else {
-				selectEeHiring.append("	order by ei.input_date	");
-			}
-
-			pstmt = con.prepareStatement(selectEeHiring.toString());
-
-			rs = pstmt.executeQuery();
-			ErHiringVO erhvo =null;
-			while (rs.next()) {
-				erhvo = new ErHiringVO(rs.getString("ee_num"), rs.getString("img"), rs.getString("name"), 
-						rs.getString("rank"), rs.getString("loc"),rs.getString("education"), 
-						rs.getString("portfolio"), rs.getString("gender"), rs.getString("input_date"), rs.getInt("age"));
-				list.add(erhvo);
-			}
-		} finally {
-			if (rs != null) {rs.close();}
-			if (pstmt != null) {pstmt.close();}
-			if (con != null) {con.close();}
-		}
-		
-		return list;
-	}
 	
-	//////////////////////////////////////////선의끝///////////////////////////////////////////////
 	/*public static void main(String[] args) {
 		ErDAO er_dao = new ErDAO();
 			con = getConn();
