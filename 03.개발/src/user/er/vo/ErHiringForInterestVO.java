@@ -1,16 +1,17 @@
 package user.er.vo;
 
 /**
+ * 
  * 기업사용자에서 관심구직자 윈도우에 목록 띄워주는 VO.
  * 
  * @author 재현.
  *
  */
-public class ErInterest1VO {
+public class ErHiringForInterestVO {
 	/* 인스턴스 변수 */
 	private String ee_num, img, name, rank, loc, education, portfolio, gender, input_date;
 	private int age;
-	public ErInterest1VO(String ee_num, String img, String name, String rank, String loc, String education, int age, String portfolio, String gender, String input_date) {
+	public ErHiringForInterestVO(String ee_num, String img, String name, String rank, String loc, String education, int age, String portfolio, String gender, String input_date) {
 		this.ee_num = ee_num;
 		this.img = img;
 		this.name = name;

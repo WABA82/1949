@@ -114,4 +114,5 @@ public class ErAppController extends WindowAdapter implements MouseListener {
 	public void mouseExited(MouseEvent e) {
 	}
 	/////////// 안쓰는 메소드 ///////////
+	
 }// class
