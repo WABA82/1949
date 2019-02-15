@@ -8,8 +8,7 @@ package user.er.vo;
 public class ErListVO {
 	private String erNum, subject, rank, loc, education, hireType, inputDate;
 
-	public ErListVO(String erNum, String subject, String rank, String loc, String education, String hireType,
-			String inputDate) {
+	public ErListVO(String erNum, String subject, String rank, String loc, String education, String hireType, String inputDate) {
 		this.erNum = erNum;
 		this.subject = subject;
 		this.rank = rank;

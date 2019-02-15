@@ -279,36 +279,36 @@ public class EeDAO {
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////임시로 추가한 메소드(지원하기 버튼없애기 어렵다구욧!!!!!!!!!!!!!!)///////////////////////////////////////////
-	public boolean selectApplication(String eeId,String eeNum ){
-		boolean flag =false;
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		try {// try : DB에서 조회하기
-
-			con = getConn(); // 커넥션 얻기.
-			StringBuilder selectAppList = new StringBuilder(); // 지원현황테이블 list.
-			selectAppList.append("dfdsfds");삭제예정
-
-			pstmt = con.prepareStatement(selectAppList.toString());
-			// 바인드 변수
-			pstmt.setString(1, );
-			pstmt.setString(2, );
-			// ResultSet 얻어오기.
-			rs = pstmt.executeQuery();
-			// VO선언 null;
-			EeAppVO eavo = null;
-			// VO생성 후 list에 담기
-
-		} finally { // finally : 연결끊기.
-			if (rs != null) {rs.close();} // end if
-			if (pstmt != null) {pstmt.close();} // end if
-			if (con != null) {con.close();} // end if
-		} // end finally
-		
-		return flag;
-	}
+//	public boolean selectApplication(String eeId,String eeNum ){
+//		boolean flag =false;
+//		Connection con = null;
+//		PreparedStatement pstmt = null;
+//		ResultSet rs = null;
+//
+//		try {// try : DB에서 조회하기
+//
+//			con = getConn(); // 커넥션 얻기.
+//			StringBuilder selectAppList = new StringBuilder(); // 지원현황테이블 list.
+//			selectAppList.append("dfdsfds");삭제예정
+//
+//			pstmt = con.prepareStatement(selectAppList.toString());
+//			// 바인드 변수
+//			pstmt.setString(1, );
+//			pstmt.setString(2, );
+//			// ResultSet 얻어오기.
+//			rs = pstmt.executeQuery();
+//			// VO선언 null;
+//			EeAppVO eavo = null;
+//			// VO생성 후 list에 담기
+//
+//		} finally { // finally : 연결끊기.
+//			if (rs != null) {rs.close();} // end if
+//			if (pstmt != null) {pstmt.close();} // end if
+//			if (con != null) {con.close();} // end if
+//		} // end finally
+//		
+//		return flag;
+//	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	

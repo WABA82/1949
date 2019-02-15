@@ -38,7 +38,7 @@ public class ErAppController extends WindowAdapter implements MouseListener {
 
 		try {
 			// DB에서 관심회사를 조회.
-			List<ErListVO> list = er_dao.selectErInfoList(er_Id);
+			List<ErListVO> list = er_dao.selectErList(er_Id);
 
 			// JTable에 조회한 정보를 출력.
 			ErListVO eivo = null;
@@ -114,5 +114,5 @@ public class ErAppController extends WindowAdapter implements MouseListener {
 	public void mouseExited(MouseEvent e) {
 	}
 	/////////// 안쓰는 메소드 ///////////
-	
+
 }// class

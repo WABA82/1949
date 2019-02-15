@@ -459,6 +459,12 @@ public class ErDAO {
 
 	/***************************** 이하 재현 *****************************/
 
+	/**
+	 * 
+	 * @param er_id
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<ErHiringForInterestVO> selectInterestEEInfoList(String er_id) throws SQLException {
 		List<ErHiringForInterestVO> list = new ArrayList<>();
 
@@ -610,13 +616,13 @@ public class ErDAO {
 		return daevo;
 	}// selectDetailAppEe()
 
-	public static void main(String[] args) {
-		try {
-			System.out.println(ErDAO.getInstance().selectDetailAppEe("app_000001"));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}// main
+//	public static void main(String[] args) {
+//		try {
+//			System.out.println(ErDAO.getInstance().selectDetailAppEe("app_000001"));
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}// main
 
 	/***************************** 재현 끝 *****************************/
 
