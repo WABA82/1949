@@ -264,7 +264,7 @@ public class CommonDAO {
 			.append("u.addr_detail addr2, u.email")
 			.append("from user_table u, zipcode z ")
 			.append("where u.addr_seq=z.seq ")
-			.append("and u.id in '?' ");
+			.append("and u.id in ? ");
 			
 			pstmt=con.prepareStatement(selectUserInfo.toString());
 			
@@ -302,9 +302,9 @@ public class CommonDAO {
 			
 			StringBuilder updateUserInfo=new StringBuilder();
 			
-			updateUserInfo.append("update user_table")
-			.append("set  name='?',pass='?',tel='?',addr_seq='?',addr_detail='?',email='? ")
-			.append("where id='?' ");
+			updateUserInfo.append("update user_table	")
+			.append("		set  name=?, pass=?, tel=?, addr_seq=?, addr_detail=?, email=? ")
+			.append("		where id=? ");
 			
 			pstmt=con.prepareStatement(updateUserInfo.toString());
 			
@@ -329,45 +329,117 @@ public class CommonDAO {
 		
 	}
 	
-/**
- * 	김건하 아이디 받기
- * @return
- * @param eeId
- * @throws SQLException 
- *//*
-public EeMainVO selectEeMain(String eeid) throws SQLException {
-	EeMainVO emvo=null;
+	/**
+	 * 최혜원 회원 정보 삭제
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean deleteUserInfo(String id)throws SQLException {
+		boolean flag=false;
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		
+		try {
+			con=getConn();
+			
+			String deleteUserInfo="delete from user_table where id=? ";
+			
+			pstmt=con.prepareStatement(deleteUserInfo);
+			
+			pstmt.setString(1, id);
+			
+			int cnt=pstmt.executeUpdate();
+			
+			if( cnt == 1) {
+				flag=true;
+				System.out.println(flag);
+			}
+		}finally {
+			if(pstmt != null) { pstmt.close(); }
+			if(con != null) { con.close(); }
+		}
+		
+		return flag;
+	}
 	
-	Connection con=null;
-	PreparedStatement pstmt=null;
-	ResultSet rs=null;
+	/**
+	 *    김건하 아이디 받기
+	 * @return
+	 * @param eeId
+	 * @throws SQLException 
+	 */
+	public EeMainVO selectEeMain(String eeid) throws SQLException {
+	   EeMainVO emvo=null;
+	   
+	   Connection con=null;
+	   PreparedStatement pstmt=null;
+	   ResultSet rs=null;
+	   
+	   //드라이버 로딩
+	   try {
+	      con=getConn();
+	      //쿼리문 생성
+	      StringBuilder selectMyInfo= new StringBuilder();
+	      selectMyInfo
+	      .append("      select ei.ee_id, ut.name, ei.img, ut.activation      ") 
+	      .append("      from ee_info ei, user_table ut   ")
+	      .append("      where (ee_id = id) and ei.ee_id = ?   "   );
+	      
+	      pstmt=con.prepareStatement(selectMyInfo.toString());
+	      pstmt.setString(1,eeid );
+	      
+	      rs=pstmt.executeQuery();
+	      
+	      if(rs.next()) {
+	         emvo = new EeMainVO(rs.getString("ee_id"),rs.getString("name"), rs.getString("img"), rs.getString("activation"));
+	      }//end if
+	      
+	   }finally {
+	      if( rs != null) { rs.close(); }
+	      if( pstmt != null) { pstmt.close(); }
+	      if( con != null) { con.close(); }
+	   }//end finally
+	   
+	   return emvo;
+	}// selectEeMain
 	
-	//드라이버 로딩
-	try {
-		con=getConn();
-		//쿼리문 생성
-		StringBuilder selectMyInfo= new StringBuilder();
-		selectMyInfo
-		.append("		select ut.name, ei.img, ut.activation		") 
-		.append("		from ee_info ei, user_table ut	")
-		.append("		where (ee_id = id) and id = ?	"	);
-		
-		pstmt=con.prepareStatement(selectMyInfo.toString());
-		pstmt.setString(1,eeid );
-		
-		rs=pstmt.executeQuery();
-		
-		if(rs.next()) {
-			emvo = new EeMainVO(rs.getString("name"), rs.getString("img"), rs.getString("activation"));
-		}//end if
-		
-	}finally {
-		if( rs != null) { rs.close(); }
-		if( pstmt != null) { pstmt.close(); }
-		if( con != null) { con.close(); }
-	}//end finally
-	
-	return emvo;
-}// selectEeMain
-*/
+	   /**
+	    *박정미 er 아이디 받아오기 (출력됨)
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
+	public ErMainVO selectErMain(String id) throws SQLException {
+	      ErMainVO emv=null;
+	      
+	      Connection con =null;
+	      PreparedStatement pstmt =null;
+	      ResultSet rs = null;
+	      
+	      try {
+	         con =getConn();
+	         
+	         StringBuilder selectErInfo = new StringBuilder();
+	         selectErInfo.append(" select ut.id, ut.name, co.img1, ut.activation ")
+	         .append(" from company co, user_table ut ").append(" where (ut.id=co.er_id) ")
+	         .append(" and ut.id=? ");
+	         pstmt =con.prepareStatement(selectErInfo.toString());
+	         
+	         pstmt.setString(1, id );
+	         rs=pstmt.executeQuery();
+	         
+	         if(rs.next()){
+	            emv= new ErMainVO(rs.getString("id"), rs.getString("name"), 
+	                  rs.getString("img1"), rs.getString("activation"));
+	            //System.out.println(emv); 값 받았는지 확인
+	         }
+	      }finally {
+	         if(rs!=null) {   rs.close();   }
+	         if(pstmt!=null) {pstmt.close();}
+	         if(con!=null) {con.close();}
+	      }//end finally
+	      return emv;
+	   }//selectErMain
+
 	}

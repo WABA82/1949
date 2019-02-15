@@ -62,40 +62,35 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 	}
 
 	public void login() throws SQLException {
-		String id=lv.getJtfId().getText().trim();
-		String pass=new String(lv.getJpfPass().getPassword());
-		
-		if(id==null||id.equals("")) {
-			JOptionPane.showMessageDialog(lv,"아이디를 입력하세요");
-			lv.getJtfId().requestFocus();
-			return;
-		} // end if
-		if (pass == null || pass.equals("")) {
-			JOptionPane.showMessageDialog(lv, "비밀번호를 입력하세요");
-			lv.getJpfPass().requestFocus();
-			return;
-		}
-		
-		String userType="";
-		CommonDAO c_dao = CommonDAO.getInstance();
-		
-		userType=c_dao.login(id, pass);
-		if(userType.equals("E")) {
-			emvo = C_dao.selectEeMain(lv.getJtfId().getText());
-			System.out.println(emvo);
-			new EeMainView(emvo);
-			lv.dispose();
-			System.out.println("E");
-		}else{
-			new ErMainView(emv);
-			lv.dispose();
-			System.out.println("R");
-		}
-		System.out.println("11");
-		lv.dispose();
-		System.out.println("22");
-		lv.dispose();
-	}// login
+	      String id=lv.getJtfId().getText().trim();
+	      String pass=new String(lv.getJpfPass().getPassword());
+	      
+	      if(id==null||id.equals("")) {
+	         JOptionPane.showMessageDialog(lv,"아이디를 입력하세요");
+	         lv.getJtfId().requestFocus();
+	         return;
+	      } // end if
+	      if (pass == null || pass.equals("")) {
+	         JOptionPane.showMessageDialog(lv, "비밀번호를 입력하세요");
+	         lv.getJpfPass().requestFocus();
+	         return;
+	      }
+	      
+	      String userType="";
+	      CommonDAO c_dao = CommonDAO.getInstance();
+	      
+	      userType=c_dao.login(id, pass);
+	      if(userType.equals("E")) {
+	         emvo = C_dao.selectEeMain(id);
+	         new EeMainView(emvo);
+	         lv.dispose();
+	      }else{
+	         emv = c_dao.selectErMain(id);
+	         new ErMainView(emv);
+	         lv.dispose();
+	      }
+	      lv.dispose();
+	   }// login
 
 	public void signUp() {
 		new SignUpView(lv);

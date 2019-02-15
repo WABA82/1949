@@ -117,10 +117,20 @@ public class ChangeUserInfoView extends JDialog {
 		add(jbClose);
 		
 		ChangeUserInfoController cuic=new ChangeUserInfoController(this, uivo);
+		addWindowListener(cuic);
+		jbModify.addActionListener(cuic);
+		jbDelete.addActionListener(cuic);
+		jbClose.addActionListener(cuic);
+		
 		
 		setBounds(0,0,390,600);
 		setVisible(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+	}
+	
+	public static void main(String[] args) {
+		UserInfoVO uivo=new UserInfoVO("ooo333",	"박아영",	"010-8888-8888",	"11121",	"606-818",	"부산 영도구 청학2동 61∼64", 	"어ㅇㄹㄴ",	"sdfsd");
+		new ChangeUserInfoView(null, uivo);
 	}
 
 	
