@@ -20,7 +20,7 @@ public class SearchAddrView extends JDialog {
 	private JTable jtZip;
 	private JButton jbSearch, jbOk, jbCancel;
 
-	public SearchAddrView(JDialog jd, String addrSeq) {
+	public SearchAddrView(JDialog jd, String addrSeq , SignUpView suv) {
 		super(jd,"주소검색", true);
 //	public SearchAddrView() {
 		
@@ -47,7 +47,7 @@ public class SearchAddrView extends JDialog {
 		add(BorderLayout.CENTER, jspZip);
 		add(BorderLayout.SOUTH, bottomPanel);
 		
-		SearchAddrController sac = new SearchAddrController(this, jd, addrSeq);
+		SearchAddrController sac = new SearchAddrController(this, jd, addrSeq, suv);
 		jbSearch.addActionListener(sac);
 		jbOk.addActionListener(sac);
 		jbCancel.addActionListener(sac);

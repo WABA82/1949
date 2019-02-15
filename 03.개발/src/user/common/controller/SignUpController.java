@@ -26,7 +26,7 @@ public class SignUpController extends WindowAdapter implements ActionListener {
 		if(ae.getSource()==suv.getJbSignUp()) {
 			signUp();
 		}else if(ae.getSource()==suv.getJbAddr()) {
-			new SearchAddrView(suv, addrSeq);
+			new SearchAddrView(suv, addrSeq, suv);
 		}else if(ae.getSource()==suv.getJbCancel()) {
 			suv.dispose();
 		}//end if
@@ -36,5 +36,6 @@ public class SignUpController extends WindowAdapter implements ActionListener {
 	public void signUp() {
 		
 	}//signUp
+	
 	
 }//class

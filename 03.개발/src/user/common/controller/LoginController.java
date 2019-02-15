@@ -81,19 +81,14 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 		
 		userType=c_dao.login(id, pass);
 		if(userType.equals("E")) {
-			emvo = C_dao.selectEeMain(lv.getJtfId().getText());
-			System.out.println(emvo);
+			emvo = C_dao.selectEeMain(id);
 			new EeMainView(emvo);
 			lv.dispose();
-			System.out.println("E");
 		}else{
+			emv = c_dao.selectErMain(id);
 			new ErMainView(emv);
 			lv.dispose();
-			System.out.println("R");
 		}
-		System.out.println("11");
-		lv.dispose();
-		System.out.println("22");
 		lv.dispose();
 	}// login
 

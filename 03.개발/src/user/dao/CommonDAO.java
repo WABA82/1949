@@ -101,12 +101,12 @@ public class CommonDAO {
       ResultSet rs = null;
       try {
          con = getConn();
-         String selectAddr = "select seq,zipcode,sido,gugun,dong,nvl(bunji,' ') bunji from zipcode where dong like '%'||?||'%'  ";
-         pstmt.getConnection().prepareStatement(selectAddr);
+         String selectAddr = " select seq, zipcode, sido, gugun, dong, nvl(bunji,' ') bunji from zipcode where dong like '%'||?||'%'   ";
+         pstmt= con.prepareStatement(selectAddr);
          pstmt.setString(1, dong);
          rs = pstmt.executeQuery();
          AddrVO av = null;
-         if (rs.next()) {
+         while (rs.next()) {
             av = new AddrVO(rs.getString("seq"), rs.getString("zipcode"), rs.getString("sido"),
                   rs.getString("gugun"), rs.getString("dong"), rs.getString("bunji"));
             list.add(av);
@@ -340,47 +340,93 @@ public class CommonDAO {
       return flag;
       
    }
+
+   /**
+    *    김건하 아이디 받기
+    * @return
+    * @param eeId
+    * @throws SQLException 
+    */
+   public EeMainVO selectEeMain(String eeid) throws SQLException {
+      EeMainVO emvo=null;
+      
+      Connection con=null;
+      PreparedStatement pstmt=null;
+      ResultSet rs=null;
+      
+      //드라이버 로딩
+      try {
+         con=getConn();
+         //쿼리문 생성
+         StringBuilder selectMyInfo= new StringBuilder();
+         selectMyInfo
+         .append("      select ei.ee_id, ut.name, ei.img, ut.activation      ") 
+         .append("      from ee_info ei, user_table ut   ")
+         .append("      where (ee_id = id) and ei.ee_id = ?   "   );
+         
+         pstmt=con.prepareStatement(selectMyInfo.toString());
+         pstmt.setString(1,eeid );
+         
+         rs=pstmt.executeQuery();
+         
+         if(rs.next()) {
+            emvo = new EeMainVO(rs.getString("ee_id"),rs.getString("name"), rs.getString("img"), rs.getString("activation"));
+         }//end if
+         
+      }finally {
+         if( rs != null) { rs.close(); }
+         if( pstmt != null) { pstmt.close(); }
+         if( con != null) { con.close(); }
+      }//end finally
+      
+      return emvo;
+   }// selectEeMain
+
+   /**
+    *박정미 er 아이디 받아오기 (출력됨)
+ * @param id
+ * @return
+ * @throws SQLException
+ */
+public ErMainVO selectErMain(String id) throws SQLException {
+		ErMainVO emv=null;
+		
+		Connection con =null;
+		PreparedStatement pstmt =null;
+		ResultSet rs = null;
+		
+		try {
+			con =getConn();
+			
+			StringBuilder selectErInfo = new StringBuilder();
+			selectErInfo.append(" select ut.id, ut.name, co.img1, ut.activation ")
+			.append(" from company co, user_table ut ").append(" where (ut.id=co.er_id) ")
+			.append(" and ut.id=? ");
+			pstmt =con.prepareStatement(selectErInfo.toString());
+			
+			pstmt.setString(1, id );
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()){
+				emv= new ErMainVO(rs.getString("id"), rs.getString("name"), 
+						rs.getString("img1"), rs.getString("activation"));
+				//System.out.println(emv); 값 받았는지 확인
+			}
+		}finally {
+			if(rs!=null) {	rs.close();	}
+			if(pstmt!=null) {pstmt.close();}
+			if(con!=null) {con.close();}
+		}//end finally
+		return emv;
+	}//selectErMain
+   
+public static void main(String[] args) {
+	try {
+		System.out.println(CommonDAO.getInstance().selectAddr("파장동"));
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 }
 
-/**
- *    김건하 아이디 받기
- * @return
- * @param eeId
- * @throws SQLException 
- *//*
-public EeMainVO selectEeMain(String eeid) throws SQLException {
-   EeMainVO emvo=null;
-   
-   Connection con=null;
-   PreparedStatement pstmt=null;
-   ResultSet rs=null;
-   
-   //드라이버 로딩
-   try {
-      con=getConn();
-      //쿼리문 생성
-      StringBuilder selectMyInfo= new StringBuilder();
-      selectMyInfo
-      .append("      select ut.name, ei.img, ut.activation      ") 
-      .append("      from ee_info ei, user_table ut   ")
-      .append("      where (ee_id = id) and id = ?   "   );
-      
-      pstmt=con.prepareStatement(selectMyInfo.toString());
-      pstmt.setString(1,eeid );
-      
-      rs=pstmt.executeQuery();
-      
-      if(rs.next()) {
-         emvo = new EeMainVO(rs.getString("name"), rs.getString("img"), rs.getString("activation"));
-      }//end if
-      
-   }finally {
-      if( rs != null) { rs.close(); }
-      if( pstmt != null) { pstmt.close(); }
-      if( con != null) { con.close(); }
-   }//end finally
-   
-   return emvo;
-}// selectEeMain
-*/
-
+}
