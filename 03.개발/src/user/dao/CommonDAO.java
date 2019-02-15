@@ -112,14 +112,7 @@ public class CommonDAO {
 		return list;
 	}
 
-	public String selectFindId(FindIdVO fivo) throws SQLException {
-		String searchId = "";
 
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-	
 	/**
 	 * 최혜원 아이디 찾기
 	 * @param fivo
@@ -341,7 +334,7 @@ public class CommonDAO {
  * @return
  * @param eeId
  * @throws SQLException 
- */
+ *//*
 public EeMainVO selectEeMain(String eeid) throws SQLException {
 	EeMainVO emvo=null;
 	
@@ -376,4 +369,5 @@ public EeMainVO selectEeMain(String eeid) throws SQLException {
 	
 	return emvo;
 }// selectEeMain
-}
+*/
+	}
