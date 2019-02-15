@@ -79,7 +79,7 @@ public class ErMgMtController extends WindowAdapter implements MouseListener, Ac
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		ErModifyView eav = new ErModifyView(emmv, edvo, erNum,erId);
+		new ErModifyView(emmv, edvo, erNum,erId);
 		
 	}
 	
@@ -89,7 +89,7 @@ public class ErMgMtController extends WindowAdapter implements MouseListener, Ac
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		ErAddView eav = new ErAddView(emmv, this, edfvo);
+		new ErAddView(emmv, this, edfvo);
 	}
 	
 	@Override

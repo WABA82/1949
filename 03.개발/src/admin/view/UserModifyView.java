@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import admin.controller.AdminMgMtController;
 import admin.controller.UserModifyController;
 import admin.vo.UserInfoVO;
 
@@ -17,7 +18,7 @@ public class UserModifyView extends JDialog {
 	private JButton jbModify, jbSearchAddr, jbRemove, jbClose;
 	private JComboBox<String> jcbQuestion, jcbUser;
 	
-	public UserModifyView(AdminMgMtView ammv, UserInfoVO uivo) {
+	public UserModifyView(AdminMgMtView ammv, UserInfoVO uivo, AdminMgMtController ammc) {
 		super(ammv, "회원 상세 정보", true);
 		
 		JLabel jlId = new JLabel("아이디");
@@ -163,7 +164,7 @@ public class UserModifyView extends JDialog {
 		jbClose.setBounds(235, 576, 70, 30);
 		add(jbClose);
 		
-		UserModifyController umc = new UserModifyController(this, ammv, uivo.getAddrSeq());
+		UserModifyController umc = new UserModifyController(this, ammv, uivo.getAddrSeq(), ammc);
 		jbModify.addActionListener(umc);
 		jbRemove.addActionListener(umc);
 		jbSearchAddr.addActionListener(umc);

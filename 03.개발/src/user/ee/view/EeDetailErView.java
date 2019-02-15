@@ -25,7 +25,6 @@ public class EeDetailErView extends JDialog {
 
 	/* 인스턴스 변수 선언 */
 	private JLabel jlHeart;
-
 	private JButton jbCoInfo, jbApply, jbClose; 
 	private String erNum,eeId,appStatus,interest;
 	private boolean flagHeart;
@@ -93,7 +92,6 @@ public class EeDetailErView extends JDialog {
 		jlSkill8.setBorder(new LineBorder(Color.BLACK));
 
 		// 버튼들
-		System.out.println(interest);
 		if(interest.equals("0")) {
 			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/b_heart.png");
 			jlHeart = new JLabel(heart);
