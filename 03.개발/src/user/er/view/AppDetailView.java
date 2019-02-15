@@ -19,8 +19,9 @@ public class AppDetailView extends JDialog {
 	private JButton jbExtRsm, jbAccept, jbRefuse, jbClose;
 	
 	public AppDetailView() {
+//		super(arg0, arg1, arg2)
 		
-		ImageIcon ii=new ImageIcon("C:/dev/homework/1949/1949/03.개발/가데이터/구직자사진/150x200px/각키.jpg");
+		ImageIcon ii=new ImageIcon();
 		JLabel jlImage=new JLabel(ii);
 		jlImage.setBorder(new TitledBorder("구직자 이미지"));
 		jlImage.setBounds(38, 20, 160, 225);
@@ -134,18 +135,15 @@ public class AppDetailView extends JDialog {
 		add(jtfGender);
 		jtfGender.setBounds(315, 342, 130, 20);
 		
-		
-		
-		
-		
 		setLayout(null);
 		setBounds(100, 100, 490, 520);
-		
+
+		/* 이벤트 등록 */
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
 		
 		setVisible(true);
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
 		
 	}//생성자
 	

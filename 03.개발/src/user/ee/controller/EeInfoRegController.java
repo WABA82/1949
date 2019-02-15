@@ -35,7 +35,7 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 		this.eeid = eeid;
 		uploadImg = "";
 		eedao = EeDAO.getInstance();
-		setInfo("kun90");
+		setInfo(eeid);
 	}// 생성자
 
 	// 이미지전송도 같이 수행
