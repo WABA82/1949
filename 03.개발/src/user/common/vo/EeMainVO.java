@@ -4,15 +4,15 @@ public class EeMainVO {
 
 	private String eeId, name, img, activation;
 
-	public EeMainVO(String eeId,String name, String img, String activation) {
-		this.eeId=eeId;
+	public EeMainVO(String eeId, String name, String img, String activation) {
+		this.eeId = eeId;
 		this.name = name;
 		this.img = img;
 		this.activation = activation;
 	}
 
 	public String getEeId() {
-		return name;
+		return eeId;
 	}
 
 	public String getName() {
@@ -32,6 +32,4 @@ public class EeMainVO {
 		return "EeMainVO [eeId=" + eeId + ", name=" + name + ", img=" + img + ", activation=" + activation + "]";
 	}
 
-
-	
 }

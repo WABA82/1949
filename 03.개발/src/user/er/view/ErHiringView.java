@@ -88,7 +88,6 @@ public class ErHiringView extends JDialog {
 	public static void main(String[] args) {
 		new ErHiringView(null, null, "moonlight");
 	}
-
 	
 	
 }//class

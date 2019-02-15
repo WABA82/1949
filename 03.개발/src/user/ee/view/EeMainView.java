@@ -20,15 +20,15 @@ public class EeMainView extends JFrame {
 //	private JTextField jtfName;
 	
 	public EeMainView(EeMainVO emvo) {
-//		super("1949 - 일반사용자 ["+emvo.getName()+"]");
+		super("1949 - 일반사용자 ["+emvo.getName()+"]");
 		this.emvo=emvo;
 //		String ee_id = emvo.get;
 
 		JLabel jlAct = new JLabel("기본정보 등록여부 : ");
-		jlImg = new JLabel(new ImageIcon("C:/dev/homework/1949/1949/03.개발/src/img/eeImg/"/*+emvo.getImg()*/));
+		jlImg = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/eeImg/"+emvo.getImg()));
 		jlImg.setBorder(new TitledBorder("내 이미지"));
 
-		jlActivation = new JLabel("X"/* emvo.getActivation() */);
+		jlActivation = new JLabel(emvo.getActivation());
 		jlUserInfo = new JLabel("회원정보관리");
 		jlLogOut = new JLabel("로그아웃");
 
@@ -109,7 +109,5 @@ public class EeMainView extends JFrame {
 		return jlImg;
 	}
 
-	public static void main(String[] args) {
-		new EeMainView(null);
-	}
+
 }

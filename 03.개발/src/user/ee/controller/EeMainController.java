@@ -40,7 +40,7 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 	}
 
 	public void checkActivation() {
-
+		
 	}
 
 	public void mngUser() {

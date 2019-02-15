@@ -2,30 +2,35 @@ package user.er.view;
 
 import java.awt.Font;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import user.er.controller.AppDetailController;
+
 /**
- *	김건하 19.02.08
+ * 김건하 19.02.08 : 지원현황 - 상세 지원 현황 - 지원자 상세 정보
+ * 
  * @author owner
  */
+@SuppressWarnings("serial")
 public class AppDetailView extends JDialog {
 
+	/* 인스턴스 변수 */
+	private JLabel jlImage;
+	private JTextField jtfName, jtfTel, jtfEmail, jtfRank, jtfLoc, jtfEdu, jtfAge, jtfPort, jtfGender;
 	private JButton jbExtRsm, jbAccept, jbRefuse, jbClose;
-	
-	public AppDetailView() {
-		
-		ImageIcon ii=new ImageIcon("C:/dev/homework/1949/1949/03.개발/가데이터/구직자사진/150x200px/각키.jpg");
-		JLabel jlImage=new JLabel(ii);
+
+	public AppDetailView(AppListView alv, String app_num) {
+		super(alv, "지원자 상세 정보", true);
+
+		jlImage = new JLabel();
 		jlImage.setBorder(new TitledBorder("구직자 이미지"));
 		jlImage.setBounds(38, 20, 160, 225);
 		add(jlImage);
-		
+
 		jbExtRsm = new JButton("클릭하여 다운로드");
 		add(jbExtRsm);
 		jbExtRsm.setBounds(305, 375, 145, 27);
@@ -33,49 +38,49 @@ public class AppDetailView extends JDialog {
 		jbAccept = new JButton("지원수락");
 		add(jbAccept);
 		jbAccept.setBounds(150, 430, 90, 27);
-		
+
 		jbRefuse = new JButton("지원거절");
 		add(jbRefuse);
 		jbRefuse.setBounds(255, 430, 90, 27);
 		jbClose = new JButton("닫기");
 		add(jbClose);
 		jbClose.setBounds(360, 430, 90, 27);
-		
 
-		//Label
-		JLabel jlName=new JLabel("이름");
+		// Label
+		JLabel jlName = new JLabel("이름");
 		jlName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
-		
-		JLabel jlTel=new JLabel("연락처");
+
+		JLabel jlTel = new JLabel("연락처");
 		jlName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
-		
-		JLabel jlEmail=new JLabel("이메일");
+
+		JLabel jlEmail = new JLabel("이메일");
 		jlName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
-		
-		JLabel jlRank=new JLabel("직급");
+
+		JLabel jlRank = new JLabel("직급");
 		jlRank.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
-		
-		JLabel jlLoc=new JLabel("근무지역");
+
+		JLabel jlLoc = new JLabel("근무지역");
 		jlLoc.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
-		
-		JLabel jlEdu=new JLabel("학력");
+
+		JLabel jlEdu = new JLabel("학력");
 		jlEdu.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
-		
-		JLabel jlAge=new JLabel("나이");
+
+		JLabel jlAge = new JLabel("나이");
 		jlAge.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
-		
-		JLabel jlPort=new JLabel("포트폴리오 유무");
+
+		JLabel jlPort = new JLabel("포트폴리오 유무");
 		jlPort.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
-		
-		JLabel jlGender=new JLabel("성별");
+
+		JLabel jlGender = new JLabel("성별");
 		jlGender.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
-		
-		JLabel jlResume=new JLabel("외부이력서");
+
+		JLabel jlResume = new JLabel("외부이력서");
 		jlResume.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
-		
-		
-		//연락처 이메일,
-		//Label
+
+		setLayout(null);//수동배치 설정
+
+		// 연락처 이메일,
+		// Label
 		add(jlName);
 		jlName.setBounds(255, 20, 50, 20);
 		add(jlTel);
@@ -97,60 +102,126 @@ public class AppDetailView extends JDialog {
 		add(jlResume);
 		jlResume.setBounds(228, 375, 100, 30);
 
-		//text
-		JTextField jtfName=new JTextField(10);
+		// text
+		jtfName = new JTextField(10);
+		jtfName.setEditable(false);
 		add(jtfName);
 		jtfName.setBounds(315, 22, 130, 20);
 		
-		JTextField jtfTel=new JTextField(10);
+		jtfTel = new JTextField(10);
+		jtfTel.setEditable(false);
 		add(jtfTel);
 		jtfTel.setBounds(315, 62, 130, 20);
-		
-		JTextField jtfEmail=new JTextField(10);
+
+		jtfEmail = new JTextField(10);
+		jtfEmail.setEditable(false);
 		add(jtfEmail);
 		jtfEmail.setBounds(315, 102, 130, 20);
-		
-		JTextField jtfRank=new JTextField(10);
+
+		jtfRank = new JTextField(10);
+		jtfRank.setEditable(false);
 		add(jtfRank);
 		jtfRank.setBounds(315, 142, 130, 20);
-		
-		JTextField jtfLoc=new JTextField(10);
+
+		jtfLoc = new JTextField(10);
+		jtfLoc.setEditable(false);
 		add(jtfLoc);
 		jtfLoc.setBounds(315, 182, 130, 20);
-		
-		JTextField jtfEdu=new JTextField(10);
+
+		jtfEdu = new JTextField(10);
+		jtfEdu.setEditable(false);
 		add(jtfEdu);
 		jtfEdu.setBounds(315, 222, 130, 20);
-		
-		JTextField jtfAge=new JTextField(10);
+
+		jtfAge = new JTextField(10);
+		jtfAge.setEditable(false);
 		add(jtfAge);
 		jtfAge.setBounds(315, 262, 130, 20);
-		
-		JTextField jtfPort=new JTextField(10);
+
+		jtfPort = new JTextField(10);
+		jtfPort.setEditable(false);
 		add(jtfPort);
 		jtfPort.setBounds(315, 302, 130, 20);
-		
-		JTextField jtfGender=new JTextField(10);
+
+		jtfGender = new JTextField(10);
+		jtfGender.setEditable(false);
 		add(jtfGender);
 		jtfGender.setBounds(315, 342, 130, 20);
-		
-		
-		
-		
-		
-		setLayout(null);
+
+
+		/* 이벤트 등록 */
+		AppDetailController adc = new AppDetailController(this, app_num);
+		addWindowListener(adc);
+
+		/* 프레임 크기 설정 및 가시화 */
 		setBounds(100, 100, 490, 520);
-		
-		
-		setVisible(true);
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
-		
-	}//생성자
-	
+		setVisible(true);
+
+	}// 생성자
+
+	/****** getter 메서드 ******/
+
+	public JLabel getJlImage() {
+		return jlImage;
+	}
+
+	public JTextField getJtfName() {
+		return jtfName;
+	}
+
+	public JTextField getJtfTel() {
+		return jtfTel;
+	}
+
+	public JTextField getJtfEmail() {
+		return jtfEmail;
+	}
+
+	public JTextField getJtfRank() {
+		return jtfRank;
+	}
+
+	public JTextField getJtfLoc() {
+		return jtfLoc;
+	}
+
+	public JTextField getJtfEdu() {
+		return jtfEdu;
+	}
+
+	public JTextField getJtfAge() {
+		return jtfAge;
+	}
+
+	public JTextField getJtfPort() {
+		return jtfPort;
+	}
+
+	public JTextField getJtfGender() {
+		return jtfGender;
+	}
+
+	public JButton getJbExtRsm() {
+		return jbExtRsm;
+	}
+
+	public JButton getJbAccept() {
+		return jbAccept;
+	}
+
+	public JButton getJbRefuse() {
+		return jbRefuse;
+	}
+
+	public JButton getJbClose() {
+		return jbClose;
+	}
+
+	/****** getter 메서드 끝 ******/
+
 	public static void main(String[] args) {
-		new AppDetailView();
-	}//main
-	
-}//class
+		new AppDetailView(null, "app_000001");
+	}// main
+
+}// class

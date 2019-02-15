@@ -83,13 +83,14 @@ public class ErMgMtController extends WindowAdapter implements MouseListener, Ac
 		
 	}
 	
+	
 	public void addEr() {
-		try {
-			edfvo = er_dao.selectErDefault(erId);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		new ErAddView(emmv, this, edfvo);
+//		try {
+//			edfvo = er_dao.selectErDefault(erId);
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		new ErAddView(emmv, this, edfvo);
 	}
 	
 	@Override

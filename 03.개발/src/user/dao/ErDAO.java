@@ -8,15 +8,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import user.ee.vo.DetailErInfoVO;
-import user.ee.vo.EeHiringVO;
-import user.ee.vo.EeInterestAndAppVO;
-import user.ee.vo.EeInterestVO;
 import user.er.dto.ErHiringCdtDTO;
+import user.er.vo.DetailAppEeVO;
+import user.er.vo.DetailAppListVO;
 import user.er.vo.DetailEeInfoVO;
 import user.er.vo.ErAddVO;
 import user.er.vo.ErDefaultVO;
 import user.er.vo.ErDetailVO;
+import user.er.vo.ErHiringForInterestVO;
 import user.er.vo.ErHiringVO;
 import user.er.vo.ErInterestVO;
 import user.er.vo.ErListVO;
@@ -24,34 +23,35 @@ import user.er.vo.ErModifyVO;
 
 public class ErDAO {
 	private static ErDAO Er_dao;
+
 	public ErDAO() {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		
-	}//EeDAO
-	
+
+	}// EeDAO
+
 	public static ErDAO getInstance() {
-		if(Er_dao==null) {
-			Er_dao= new ErDAO();
-		}//end if
+		if (Er_dao == null) {
+			Er_dao = new ErDAO();
+		} // end if
 		return Er_dao;
-	}//getInstance
-	
-	private Connection getConn() throws SQLException{
-		
+	}// getInstance
+
+	private Connection getConn() throws SQLException {
+
 		Connection con = null;
-		
-		String url="jdbc:oracle:thin:@211.63.89.144:1521:orcl";
-		String id ="kanu";
-		String pass ="share";
+
+		String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl";
+		String id = "kanu";
+		String pass = "share";
 		con = DriverManager.getConnection(url, id, pass);
 		return con;
-	}//getConns
-	
-	//////////////////////////////선의 //////////////////////////////////////////
+	}// getConns
+
+	////////////////////////////// 선의시작 //////////////////////////////////////////
 	public List<ErListVO> selectErList(String erId) throws SQLException {
 		List<ErListVO> list = new ArrayList<ErListVO>();
 		Connection con = null;
@@ -61,21 +61,19 @@ public class ErDAO {
 			con = getConn();
 
 			StringBuilder selectErList = new StringBuilder();
-			selectErList
-			.append(" select ei.er_num,ei.subject,ei.rank,ei.loc,ei.education,ei.hire_type,to_char(ei.input_date,'yyyy-mm-dd-hh-mi') input_date ")
-			.append(" from er_info ei, company c ")
-			.append(" where (ei.co_num = c.co_num)and(c.er_id=?) ");
-			
+			selectErList.append(
+					" select ei.er_num,ei.subject,ei.rank,ei.loc,ei.education,ei.hire_type,to_char(ei.input_date,'yyyy-mm-dd-hh-mi') input_date ")
+					.append(" from er_info ei, company c ").append(" where (ei.co_num = c.co_num)and(c.er_id=?) ");
+
 			pstmt = con.prepareStatement(selectErList.toString());
 			pstmt.setString(1, erId);
 			rs = pstmt.executeQuery();
 			ErListVO elvo = null;
 			while (rs.next()) {
-				elvo = new ErListVO(rs.getString("er_num"),rs.getString("subject"), 
-						rs.getString("rank"), rs.getString("loc"), rs.getString("education"), 
-						rs.getString("hire_type"),rs.getString("input_date"));
+				elvo = new ErListVO(rs.getString("er_num"), rs.getString("subject"), rs.getString("rank"),
+						rs.getString("loc"), rs.getString("education"), rs.getString("hire_type"),
+						rs.getString("input_date"));
 				list.add(elvo);
-				
 			}
 		} finally {
 			if (rs != null) {
@@ -89,8 +87,9 @@ public class ErDAO {
 			}
 		}
 		return list;
-	}//selectErList
-	
+
+	}// selectErList
+
 	public void insertInterestEe(ErInterestVO eivo) throws SQLException {
 		System.out.println("----1");
 		Connection con = null;
@@ -116,6 +115,7 @@ public class ErDAO {
 			}
 		}
 	}// insertInterestEr
+
 	public boolean deleteInterestEe(ErInterestVO eivo) throws SQLException {
 		boolean flag = false;
 
@@ -148,9 +148,8 @@ public class ErDAO {
 		}
 		return flag;
 	}
-	
-	
-	public ErDetailVO selectErDetail(String erNum)throws SQLException {
+
+	public ErDetailVO selectErDetail(String erNum) throws SQLException {
 		ErDetailVO edvo = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -159,25 +158,23 @@ public class ErDAO {
 			con = getConn();
 
 			StringBuilder selectErDetail = new StringBuilder();
-			selectErDetail
-			.append(" select c.img1, ut.name, ut.tel, ut.email, ei.subject, c.co_name, ei.rank, ei.loc, ei.education,  ")
-			.append(" ei.hire_type, ei.portfolio, ei.er_desc, ei.sal  ")
-			.append(" from er_info ei, user_table ut,company c  ")
-			.append(" where (ei.co_num=c.co_num) and (c.er_id= ut.id) and (er_num=?)  ");
+			selectErDetail.append(
+					" select c.img1, ut.name, ut.tel, ut.email, ei.subject, c.co_name, ei.rank, ei.loc, ei.education,  ")
+					.append(" ei.hire_type, ei.portfolio, ei.er_desc, ei.sal  ")
+					.append(" from er_info ei, user_table ut,company c  ")
+					.append(" where (ei.co_num=c.co_num) and (c.er_id= ut.id) and (er_num=?)  ");
 
-			
 			pstmt = con.prepareStatement(selectErDetail.toString());
 			pstmt.setString(1, erNum);
 			rs = pstmt.executeQuery();
-			ErListVO elvo = null;
-			if(rs.next()) {
-				edvo = new ErDetailVO(erNum, rs.getString("img1"), rs.getString("name"), 
-						rs.getString("tel"), rs.getString("email"), rs.getString("subject"), 
-						rs.getString("co_name"), rs.getString("education"), 
-						rs.getString("rank"), rs.getString("loc"), rs.getString("hire_type"), 
-						rs.getString("portfolio"), rs.getString("er_desc"), rs.getInt("sal"),
-						selectSkill(erNum));
+
+			if (rs.next()) {
+				edvo = new ErDetailVO(erNum, rs.getString("img1"), rs.getString("name"), rs.getString("tel"),
+						rs.getString("email"), rs.getString("subject"), rs.getString("co_name"),
+						rs.getString("education"), rs.getString("rank"), rs.getString("loc"), rs.getString("hire_type"),
+						rs.getString("portfolio"), rs.getString("er_desc"), rs.getInt("sal"), selectSkill(erNum));
 			}
+
 		} finally {
 			if (rs != null) {
 				rs.close();
@@ -189,12 +186,12 @@ public class ErDAO {
 				con.close();
 			}
 		}
-		
+
 		return edvo;
-	}
-	
-	public DetailEeInfoVO selectDeatilEe(String eeNum, String erId) throws SQLException{
-		DetailEeInfoVO devo= null;
+	}// selectErDetail
+
+	public DetailEeInfoVO selectDeatilEe(String eeNum, String erId) throws SQLException {
+		DetailEeInfoVO devo = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -207,7 +204,7 @@ public class ErDAO {
 					.append("  (select COUNT(*) from interest_ee where er_id = ? and ee_num=? ) interest ")
 					.append(" from ee_info ei, company c, user_table ut  ")
 					.append("  where ut.id=ei.ee_id and ei.ee_num= ? ");
-			
+
 			pstmt = con.prepareStatement(selectDetail.toString());
 			// 4.
 			pstmt.setString(1, erId);
@@ -217,18 +214,11 @@ public class ErDAO {
 			rs = pstmt.executeQuery();
 			// 입력된 코드로 조회된 레코드가 존재할 때 VO를 생성하고 값 추가
 			if (rs.next()) {
-				
-				devo = new DetailEeInfoVO(eeNum, rs.getString("img"), rs.getString("name"), 
-						rs.getString("tel"), rs.getString("email"), rs.getString("rank"), 
-						rs.getString("loc"), rs.getString("education"), rs.getString("portfolio"), 
-						rs.getString("gender"), rs.getString("ext_resume"), rs.getString("interest"), rs.getInt("age"));
-				
-				
-/*				devo = new DetailErInfoVO(rs.getString("er_num"), rs.getString("subject"), rs.getString("name"),
-						rs.getString("tel"), rs.getString("email"), rs.getString("input_date"), rs.getString("img1"),
-						rs.getString("co_name"), rs.getString("education"), rs.getString("rank"), rs.getString("loc"),
-						rs.getString("hire_type"), rs.getString("portfolio"), rs.getString("er_desc"),
-						rs.getString("interest"), rs.getInt("sal"), selectSkill(erNum));*/
+
+				devo = new DetailEeInfoVO(eeNum, rs.getString("img"), rs.getString("name"), rs.getString("tel"),
+						rs.getString("email"), rs.getString("rank"), rs.getString("loc"), rs.getString("education"),
+						rs.getString("portfolio"), rs.getString("gender"), rs.getString("ext_resume"),
+						rs.getString("interest"), rs.getInt("age"));
 			} // end if
 		} finally {
 			if (con != null) {
@@ -242,8 +232,47 @@ public class ErDAO {
 			}
 		}
 		return devo;
-	}
-	
+	}// selectDeatilEe
+
+	public ErDefaultVO selectErDefault(String erId) throws SQLException {
+		ErDefaultVO edfvo = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = getConn();
+			StringBuilder selectErDetail = new StringBuilder();
+
+			selectErDetail.append(" select c.img1, ut.name, ut.tel, ut.email, c.co_name ")
+					.append(" from company c, user_table ut ").append(" where (c.er_id=ut.id) and (c.er_id=?) ");
+
+			pstmt = con.prepareStatement(selectErDetail.toString());
+			pstmt.setString(1, erId);
+			rs = pstmt.executeQuery();
+			// 입력된 코드로 조회된 레코드가 존재할 때 VO를 생성하고 값 추가
+
+			if (rs.next()) {
+				edfvo = new ErDefaultVO(erId, rs.getString("img1"), rs.getString("name"), rs.getString("tel"),
+						rs.getString("email"), rs.getString("co_name"));
+			} // end if
+		} finally {
+			// 6.
+			if (rs != null) {
+				rs.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (rs != null) {
+				rs.close();
+			}
+
+		}
+
+		return edfvo;
+	}// selectErDefault
+
 	public void insertErAdd(ErAddVO eavo) throws SQLException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -271,34 +300,22 @@ public class ErDAO {
 				con.close();
 			}
 		}
-	}//insertErAdd
-	
-	public boolean insertSkill(String erId) {
-		boolean insertSkillFlag = false;
-		
-		return insertSkillFlag;
-	}//insertSkill
-	
-	
-	public boolean updateErModify(ErModifyVO emvo)throws SQLException {
-		boolean updateFlag =false;
+	}// insertErAdd
+
+	public boolean updateErModify(ErModifyVO emvo) throws SQLException {
+		boolean updateFlag = false;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try {
 			con = getConn();
 			StringBuilder insertErAdd = new StringBuilder();
-			
-			//모든 테이블에 저장되어야한다. 쿼리문 수정
-			//erNum, subject, education, rank, loc, hireType, portfolio, erDesc;
-			//sal;
-			insertErAdd
-			.append(" update er_info ")
-			.append(" set subject=?,education=?,rank=?,loc=?,hire_type=?, portfolio=?, er_desc=?, sal=? ")
-			.append(" where er_num=?  ");
-			
+
+			insertErAdd.append(" update er_info ")
+					.append(" set subject=?,education=?,rank=?,loc=?,hire_type=?, portfolio=?, er_desc=?, sal=? ")
+					.append(" where er_num=?  ");
+
 			pstmt = con.prepareStatement(insertErAdd.toString());
 
-			System.out.println(emvo);
 			pstmt.setString(1, emvo.getSubject());
 			pstmt.setString(2, emvo.getEducation());
 			pstmt.setString(3, emvo.getRank());
@@ -306,13 +323,12 @@ public class ErDAO {
 			pstmt.setString(5, emvo.getHireType());
 			pstmt.setString(6, emvo.getPortfolio());
 			pstmt.setString(7, emvo.getErDesc());
-			pstmt.setInt(8, emvo.getSal());
-			pstmt.setString(9, emvo.getErNum());
+			pstmt.setString(8, emvo.getErNum());
 
 			int cnt = pstmt.executeUpdate();
-			if(cnt==1) {
-				updateFlag=true;
-			}//end if
+			if (cnt == 1) {
+				updateFlag = true;
+			} // end if
 
 		} finally {
 			if (pstmt != null) {
@@ -323,16 +339,10 @@ public class ErDAO {
 			}
 		}
 		return updateFlag;
-	}//updateErModify
-	
-	public boolean modifySkill(ErDetailVO emvo, String erNum) {
-		boolean updateSkillFlag = false;
-		
-		return updateSkillFlag;
-	}//updateSkill
-	
+	}// updateErModify
+
 	public boolean deleteEr(String erNum) throws SQLException {
-		boolean deleteFlag= false;
+		boolean deleteFlag = false;
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -356,8 +366,8 @@ public class ErDAO {
 			}
 		}
 		return deleteFlag;
-	}//deleteEr
-	
+	}// deleteEr
+
 	public List<String> selectSkill(String erNum) throws SQLException {
 		List<String> listSkill = new ArrayList<String>();
 		Connection con = null;
@@ -391,129 +401,10 @@ public class ErDAO {
 			}
 		}
 		return listSkill;
-	}
-	
-	
-	/*public DetailEeInfoVO selectDetailEe(String eeNum)throws SQLException {
-		DetailEeInfoVO devo = null;
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs= null;
-		
-		try {
-			con= getConn();
-			StringBuilder selectErDetail = new StringBuilder();
-			selectErDetail
-			.append(" select ei.img, ut.name, ei.rank, ei.loc, ei.education, ei.portfolio, ut.gender,ut.age,ut.tel ,ut.email, ei.ext_resume")
-			.append(" from ee_info ei, user_table ut ")
-			.append(" where (ei.ee_id=ut.id) and ee_num=? ");
-			
-			pstmt = con.prepareStatement(selectErDetail.toString());
-			pstmt.setString(1,eeNum );
-			//입력된 코드로 조회된 레코드가 존재할 때 VO를 생성하고 값 추가
-			rs= pstmt.executeQuery();
-			if(rs.next()) {
-				devo = new DetailEeInfoVO(eeNum, rs.getString("img"), rs.getString("name"), rs.getString("tel"),
-						rs.getString("email"),rs.getString("rank"), rs.getString("loc"), rs.getString("education"), 
-						rs.getString("portfolio"), rs.getString("gender"), rs.getString("ext_resume"),rs.getString("interest"), rs.getInt("age"));
-			}//end if
-			
-		}finally {
-			//6.
-			if(con!=null) { con.close();}
-			if(pstmt!=null) {pstmt.close();}
-			if(rs!=null) {rs.close();}
-			
-		}
-		
-		return devo;
-	}*/
+	}// selectSkill
 
-	public List<ErInterestVO> selectInterestEEInfoList(String er_id)throws SQLException {
-		List<ErInterestVO> list = new ArrayList<>();
-		
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		try {// try : DB에서 조회하기
-
-			con = getConn(); // 커넥션 얻기.
-
-			StringBuilder slcInterestErInfo = new StringBuilder(); // 관심구인정보조회 하기
-			slcInterestErInfo
-					.append(" select ei.ER_NUM, ei.SUBJECT, c.CO_NAME, ei.RANK, ei.LOC, ei.EDUCATION, ei.SAL,");
-			slcInterestErInfo.append(
-					" ei.HIRE_TYPE, ei.PORTFOLIO, ei.ER_DESC,  to_char(ei.INPUT_DATE, 'yyyy-dd-mm') INPUT_DATE");
-			slcInterestErInfo.append(" from interest_er ie, er_info ei, company c");
-			slcInterestErInfo.append(" where (ie.er_num = ei.er_num) and (c.co_num=ei.co_num) and ie.ee_id = ?");
-			pstmt = con.prepareStatement(slcInterestErInfo.toString());
-
-			// 바인드변수 값 넣기
-			pstmt.setString(1, er_id);
-
-			rs = pstmt.executeQuery();
-			EeInterestVO eivo = null;
-			// 조회된 데이터
-			while (rs.next()) {
-				eivo = new EeInterestVO(rs.getString("er_num"), rs.getString("SUBJECT"), rs.getString("CO_NAME"),
-						rs.getString("RANK"), rs.getString("LOC"), rs.getString("EDUCATION"), rs.getString("HIRE_TYPE"),
-						rs.getString("INPUT_DATE"), rs.getInt("SAL"));
-//				list.add(eivo);
-			} // end if
-
-		} finally { // finally : 연결끊기.
-			if (rs != null) {
-				rs.close();
-			} // end if
-			if (pstmt != null) {
-				pstmt.close();
-			} // end if
-			if (con != null) {
-				con.close();
-			} // end if
-		} // end finally
-
-		return list;
-		
-	}//selectInterestEEInfoList
-	
-	public ErDefaultVO selectErDefault(String erId) throws SQLException{
-		ErDefaultVO edfvo= null;
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs= null;
-		
-		try {
-			con= getConn();
-			StringBuilder selectErDetail = new StringBuilder();
-			
-			selectErDetail
-			.append(" select c.img1, ut.name, ut.tel, ut.email, c.co_name ")
-			.append(" from company c, user_table ut ")
-			.append(" where (c.er_id=ut.id) and (c.er_id=?) ");
-			
-			pstmt = con.prepareStatement(selectErDetail.toString());
-			pstmt.setString(1,erId );
-			rs= pstmt.executeQuery();
-			//입력된 코드로 조회된 레코드가 존재할 때 VO를 생성하고 값 추가
-
-			if(rs.next()) {
-				edfvo = new ErDefaultVO(erId, rs.getString("img1"), rs.getString("name"),rs.getString("tel"),rs.getString("email"),rs.getString("co_name"));
-			}//end if
-		}finally {
-			//6.
-			if(rs!=null) { rs.close();}
-			if(pstmt!=null) {pstmt.close();}
-			if(rs!=null) {rs.close();}
-			
-		}
-		
-		return edfvo;
-	}
-	
-	public List<ErHiringVO> selectErHiring(ErHiringCdtDTO erhcdto) throws SQLException{
-		List<ErHiringVO> list =new ArrayList<ErHiringVO>();
+	public List<ErHiringVO> selectErHiring(ErHiringCdtDTO erhcdto) throws SQLException {
+		List<ErHiringVO> list = new ArrayList<ErHiringVO>();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -521,8 +412,8 @@ public class ErDAO {
 			con = getConn();
 			StringBuilder selectEeHiring = new StringBuilder();
 
-			selectEeHiring.append(" select ei.ee_num, ei.img, ut.name, ei.rank, ei.loc, ")
-					.append(" ei.education, ut.age, ei.portfolio, ut.gender, to_char(ei.input_date,'yyyy-mm-dd-hh-mi') input_date ")
+			selectEeHiring.append(" select ei.ee_num, ei.img, ut.name, ei.rank, ei.loc, ").append(
+					" ei.education, ut.age, ei.portfolio, ut.gender, to_char(ei.input_date,'yyyy-mm-dd-hh-mi') input_date ")
 					.append(" from   ee_info ei, user_table ut ").append(" where ut.id= ei.ee_id ");
 
 			if (!(erhcdto.getCdt() == null || erhcdto.getCdt().equals(""))) {
@@ -542,36 +433,197 @@ public class ErDAO {
 			pstmt = con.prepareStatement(selectEeHiring.toString());
 
 			rs = pstmt.executeQuery();
-			ErHiringVO erhvo =null;
+			ErHiringVO erhvo = null;
 			while (rs.next()) {
-				erhvo = new ErHiringVO(rs.getString("ee_num"), rs.getString("img"), rs.getString("name"), 
-						rs.getString("rank"), rs.getString("loc"),rs.getString("education"), 
-						rs.getString("portfolio"), rs.getString("gender"), rs.getString("input_date"), rs.getInt("age"));
+				erhvo = new ErHiringVO(rs.getString("ee_num"), rs.getString("img"), rs.getString("name"),
+						rs.getString("rank"), rs.getString("loc"), rs.getString("education"), rs.getString("portfolio"),
+						rs.getString("gender"), rs.getString("input_date"), rs.getInt("age"));
 				list.add(erhvo);
 			}
 		} finally {
-			if (rs != null) {rs.close();}
-			if (pstmt != null) {pstmt.close();}
-			if (con != null) {con.close();}
+			if (rs != null) {
+				rs.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (con != null) {
+				con.close();
+			}
 		}
-		
+
 		return list;
 	}
-	
-	//////////////////////////////////////////선의끝///////////////////////////////////////////////
-	/*public static void main(String[] args) {
-		ErDAO er_dao = new ErDAO();
+
+	////////////////////////////////////////// 선의끝///////////////////////////////////////////////
+
+	/***************************** 이하 재현 *****************************/
+
+	/**
+	 * 
+	 * @param er_id
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<ErHiringForInterestVO> selectInterestEEInfoList(String er_id) throws SQLException {
+		List<ErHiringForInterestVO> list = new ArrayList<>();
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {// try : DB에서 조회하기
+
+			con = getConn(); // 커넥션 얻기.
+
+			StringBuilder slcInterestEeInfo = new StringBuilder(); // 관심구인정보조회 하기
+			slcInterestEeInfo.append(
+					" select ie.ee_num, ei.img, ut.name, ei.rank, ei.loc, ei.education, ut.age, ei.portfolio, ut.gender, to_char(ie.input_date,'yyyy-mm-dd') input_date ");
+			slcInterestEeInfo.append(" from interest_ee ie, ee_info ei, user_table ut");
+			slcInterestEeInfo.append(" where (ie.ee_num = ei.ee_num) and (ei.ee_id = ut.id) and (ie.er_id=?)");
+			pstmt = con.prepareStatement(slcInterestEeInfo.toString());
+
+			// 바인드변수 값 넣기
+			pstmt.setString(1, er_id);
+
+			rs = pstmt.executeQuery();
+			ErHiringForInterestVO ehfivo = null;
+
+			// 조회된 데이터
+			while (rs.next()) {
+				ehfivo = new ErHiringForInterestVO(rs.getString("ee_num"), rs.getString("img"), rs.getString("name"),
+						rs.getString("rank"), rs.getString("loc"), rs.getString("education"), rs.getInt("age"),
+						rs.getString("portfolio"), rs.getString("gender"), rs.getString("input_date"));
+				// 리스트에 담기.
+				list.add(ehfivo);
+			} // end if
+
+		} finally { // finally : 연결끊기.
+			if (rs != null) {
+				rs.close();
+			} // end if
+			if (pstmt != null) {
+				pstmt.close();
+			} // end if
+			if (con != null) {
+				con.close();
+			} // end if
+		} // end finally
+
+		return list;
+	}// selectInterestEEInfoList
+
+	/**
+	 * 재현 0214 : 상세 지원 현황 창의 테이블을 채울 데이터를 조회하는 메서드.
+	 * 
+	 * @param er_num
+	 * @return
+	 */
+	public List<DetailAppListVO> selectDetailApplist(String er_num) throws SQLException {
+		List<DetailAppListVO> list = new ArrayList<>();
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
 		try {
-			er_dao.selectErList("lucky012");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}*/
-	
-	
-	//////////////////////////////////////////재현 시작///////////////////////////////////////////////
-	
-	
-	
+			con = getConn();
+
+			StringBuilder selectDetailApplist = new StringBuilder();
+			selectDetailApplist.append(
+					" select a.app_num, eei.img, ut.name, eei.rank, eei.loc, eei.education, ut.age, eei.portfolio, ut.gender, to_char(a.app_date,'yyyy-mm-dd') app_date, a.app_status ");
+			selectDetailApplist.append(" from application a, user_table ut, ee_info eei ");
+			selectDetailApplist.append(" where (a.ee_id = ut.id) and (ut.id = eei.ee_id) and er_num = ? ");
+			pstmt = con.prepareStatement(selectDetailApplist.toString());
+
+			// 반인드 변수 값 할당.
+			pstmt.setString(1, er_num);
+
+			// rs받아오기
+			rs = pstmt.executeQuery();
+			DetailAppListVO elvo = null;
+			while (rs.next()) {
+				elvo = new DetailAppListVO(rs.getString("app_num"), rs.getString("img"), rs.getString("name"),
+						rs.getString("rank"), rs.getString("loc"), rs.getString("education"), rs.getString("portfolio"),
+						rs.getString("gender"), rs.getString("app_date"), rs.getString("app_status"), rs.getInt("age"));
+
+				list.add(elvo);
+			} // end while
+
+		} finally {
+			if (rs != null) {
+				rs.close();
+			} // end if
+			if (pstmt != null) {
+				pstmt.close();
+			} // end if
+			if (con != null) {
+				con.close();
+			} // end if
+		} // end catch
+
+		return list;
+
+	}// selectDetailApplist
+
+	public DetailEeInfoVO selectDetailEEInfo(String er_id, String ee_num) {
+		return null;
+	}// selectDetailEEInfo
+
+	/**
+	 * 재현 : 지원 현황 - 상세 지원 현황 - 지원자 상세 정보 창의 텍스트필드를 채울 정보 조회.
+	 * 
+	 * @return DetailAppEeVO
+	 */
+	public DetailAppEeVO selectDetailAppEe(String app_num) throws SQLException {
+		DetailAppEeVO daevo = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = getConn();
+
+			StringBuilder selectDetailAppEe = new StringBuilder();
+			selectDetailAppEe
+					.append(" select img, name, tel, email, rank, loc, education, age, portfolio, gender, ext_resume ");
+			selectDetailAppEe.append(" from application a, user_table ut, ee_info eei ");
+			selectDetailAppEe.append(" where (a.ee_id = ut.id) and (ut.id = eei.ee_id) and (a.app_num = ?) ");
+			pstmt = con.prepareStatement(selectDetailAppEe.toString());
+			pstmt.setString(1, app_num);
+
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				daevo = new DetailAppEeVO(rs.getString("img"), rs.getString("name"), rs.getString("tel"),
+						rs.getString("email"), rs.getString("rank"), rs.getString("loc"), rs.getString("education"),
+						rs.getString("portfolio"), rs.getString("gender"), rs.getString("ext_resume"),
+						rs.getInt("age"));
+			} // end while
+
+		} finally {
+			if (rs != null) {
+				rs.close();
+			} // end if
+			if (pstmt != null) {
+				pstmt.close();
+			} // end if
+			if (con != null) {
+				con.close();
+			} // end if
+		} // end catch
+
+		return daevo;
+	}// selectDetailAppEe()
+
+//	public static void main(String[] args) {
+//		try {
+//			System.out.println(ErDAO.getInstance().selectDetailAppEe("app_000001"));
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}// main
+
+	/***************************** 재현 끝 *****************************/
+
 }// class
-
-

@@ -5,19 +5,18 @@ import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import user.er.controller.ErDetailEeController;
 import user.er.vo.DetailEeInfoVO;
-import user.er.vo.ErDetailVO;
 
 /**
  *	±è°ÇÇÏ 19.02.08
  * @author owner
  */
+@SuppressWarnings("serial")
 public class ErDetailEeView extends JDialog {
 
 	private JButton jbRsmDown, jbClose;
@@ -156,7 +155,7 @@ public class ErDetailEeView extends JDialog {
 				jtfGender.setEditable(false);
 				
 				System.out.println(flagHeart);
-				ErDetailEeController edec= new ErDetailEeController(this,eeNum,erId,flagHeart);
+				ErDetailEeController edec= new ErDetailEeController(this, eeNum, erId, flagHeart);
 				
 				jlHeart.addMouseListener(edec);
 				jbRsmDown.addActionListener(edec);

@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -15,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
 
 import user.dao.ErDAO;
 import user.er.dto.ErHiringCdtDTO;
-import user.er.view.ErDetailEeView;
+//import user.er.view.ErDetailEeView;
 import user.er.view.ErDetailSearchView;
 import user.er.view.ErHiringView;
 import user.er.vo.DetailEeInfoVO;
@@ -81,7 +80,7 @@ public class ErHiringController extends WindowAdapter implements ActionListener,
 			e.printStackTrace();
 		}
 		System.out.println(erId);
-		new ErDetailEeView(ehv,devo, eeNum,erId,devo.getInterest());
+//		new ErDetailEeView(ehv,devo, eeNum,erId,devo.getInterest());
 	}
 	
 	public void detailSearch() {
@@ -120,12 +119,7 @@ public class ErHiringController extends WindowAdapter implements ActionListener,
 		}
 		
 	}
-	
-	@Override
-	public void windowClosing(WindowEvent e) {
-		ehv.dispose();
-	}
-	
+
 	@Override
 	public void mousePressed(MouseEvent e) {}
 	@Override

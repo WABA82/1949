@@ -12,10 +12,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import user.dao.ErDAO;
-import user.ee.view.EeDetailCoView;
-import user.ee.vo.CoDetailVO;
-import user.ee.vo.DetailErInfoVO;
-import user.ee.vo.EeInterestAndAppVO;
 import user.er.view.ErDetailEeView;
 import user.er.vo.DetailEeInfoVO;
 import user.er.vo.ErInterestVO;
@@ -73,12 +69,9 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 		}
 	}//removeInterestEr
 	
-	public void showCoDetail() {
-		
-	}
-	
 	public void extRsmDown() {
-		
+		 //서버가 만들어지면 구현
+		JOptionPane.showMessageDialog(edev, "서버가만들어지면 구현예정");
 	}
 	
 	

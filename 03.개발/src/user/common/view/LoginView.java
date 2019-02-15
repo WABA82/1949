@@ -78,13 +78,10 @@ public class LoginView extends JFrame {
 		addWindowListener(lc);
 		
 		setBounds(200,200,400,400);
-		setVisible(true);
 		setResizable(true);
-		
+		setVisible(true);
 	}
-	public static void main(String[] args) {
-		new LoginView();
-	}
+
 
 	public JTextField getJtfId() {
 		return jtfId;
