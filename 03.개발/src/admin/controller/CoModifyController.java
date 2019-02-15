@@ -61,7 +61,6 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 			try {
 				modify();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}else if(ae.getSource()==cmv.getJbRemove()){
@@ -206,11 +205,9 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 				img4 = newImg4.getName();
 			}
 			
-			// NumberFormatException 예외처리 필요
 			int memberNum = 0;
 			try {
 				memberNum = Integer.parseInt(cmv.getMemberNum().getText().trim());
-				
 			} catch (NumberFormatException npe) {
 				msgCenter("사원수는 숫자만 입력가능합니다.");
 				return;
@@ -221,21 +218,20 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 		
 			if(AdminDAO.getInstance().updateCo(cmvo)) {
 				// 변경된 이미지는 삭제하고 새로운 이미지로 변경
-
 				try {
 					if (newImg1 != null) {
+						System.out.println("뭐가 문제여");
 						// 1. 내가 보관하던 이미지 지우기
-						File originFile = new File("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg1());
+						/*File originFile = new File("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg1());
 						originFile.delete();
 						
-						System.out.println("기존이미지 -- "+civo.getImg1());
+						System.out.println("기존이미지 -- "+civo.getImg1());*/
 						// 2. 파일 서버에 존재하는 이미지도 지우기
 						// 3. 파일 서버에 새 파일을 전송
-						System.out.println("-----");
+						/*System.out.println("새 이미지 -- "+newImg1.getName());
 						changeFile(civo.getImg1(), newImg1);
-						System.out.println("====");
-						System.out.println("새 이미지 -- "+newImg1.getName());
-						
+						System.out.println("---");
+						*/
 						// 4. 파일 서버에 새 파일을 요청
 						// reqFile(newImg1.getName());
 					}
