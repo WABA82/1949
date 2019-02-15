@@ -33,11 +33,10 @@ import admin.view.AdminMgMtView;
 public class AdminMainController extends WindowAdapter implements ActionListener, Runnable {
 
 	private AdminMainView amv;
-	private Thread threadLog, threadServer;
+	private Thread threadLog, threadFileServer;
 	
 	public AdminMainController(AdminMainView amv) {
 		this.amv = amv;
-		
 	}
 
 	private void msgCenter(String msg) {
@@ -150,11 +149,12 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 			threadLog.start();
 			
 			// 파일서버(스레드) 시작
-			threadServer = new FileServer(); 
-			threadServer.start();
+			threadFileServer = new FileServer(); 
+			threadFileServer.start();
 		
 			try {
-				getImgFiles();
+				getCoImgs();
+				getEeImgs();
 			} catch (UnknownHostException e1) {
 				e1.printStackTrace();
 			} catch (ClassNotFoundException e1) {
@@ -184,8 +184,75 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 		}
 	}
 	
-	public void getImgFiles() throws UnknownHostException, IOException, ClassNotFoundException { 
-		// 파일서버에 접속해서 없는 이미지를 내려받는 메소드
+	public void getEeImgs() throws UnknownHostException, IOException, ClassNotFoundException { 
+		// 파일서버에 접속해서 없는 ee이미지를 내려받는 메소드
+		
+		Socket client = null;
+		DataOutputStream dos = null;
+		DataInputStream dis = null;
+		ObjectInputStream ois = null;
+		ObjectOutputStream oos = null;
+		FileOutputStream fos = null;
+		
+		try {
+			client = new Socket("localhost", 7002);
+			
+			dos = new DataOutputStream(client.getOutputStream());
+			dis = new DataInputStream(client.getInputStream());
+			
+			dos.writeUTF("eeImgs_list_req"); // flag - co전체 파일목록 요청
+			dos.flush();
+
+			ois = new ObjectInputStream(client.getInputStream());
+
+			// 파일서버로부터 파일명리스트를 전달받음
+			List<String> listImg = (List<String>)ois.readObject();
+			
+			File dir = new File("C:/dev/1949/03.개발/src/admin/img/ee");
+			for(File f : dir.listFiles()) {
+				listImg.remove(f.getName()); // 존재하는 파일은 제외
+			}
+			
+			oos = new ObjectOutputStream(client.getOutputStream());
+			
+			// Admin에 없는 파일들, 파일서버에 전송
+			oos.writeObject(listImg);
+			oos.flush();
+			
+			byte[] readData = new byte[512];
+			int arrCnt = 0;
+			int len = 0;
+			String fileName = "";
+			for(int i=0; i<listImg.size(); i++) {
+				fileName = dis.readUTF(); // 파일명 받기
+				
+				arrCnt = dis.readInt(); // 파일 크기 받기
+				
+				fos = new FileOutputStream(dir.getAbsolutePath()+"/"+fileName);
+				
+				
+				for(int j=0; j<arrCnt; j++) {
+					len = dis.read(readData);
+					fos.write(readData, 0, len);
+					fos.flush();
+					System.out.println("client===="+ j);
+				}
+				fos.close();
+				dos.writeUTF("downDone");
+				dos.flush();
+			}
+		} finally {
+			if (fos != null) { fos.close(); }
+			if (dis != null) { dis.close(); }
+			if (oos != null) { oos.close(); }
+			if (ois != null) { ois.close(); }
+			if (dos != null) { dos.close(); }
+			if (client != null) { client.close(); }
+		}
+	}
+	
+	public void getCoImgs() throws UnknownHostException, IOException, ClassNotFoundException { 
+		// 파일서버에 접속해서 없는 co이미지를 내려받는 메소드
 		
 		Socket client = null;
 		DataOutputStream dos = null;
@@ -202,9 +269,9 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 			
 			dos.writeUTF("coImgs_list_req"); // flag - co전체 파일목록 요청
 			dos.flush();
-
+			
 			ois = new ObjectInputStream(client.getInputStream());
-
+			
 			// 파일서버로부터 파일명리스트를 전달받음
 			List<String> listImg = (List<String>)ois.readObject();
 			
@@ -230,18 +297,15 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 				
 				fos = new FileOutputStream(dir.getAbsolutePath()+"/"+fileName);
 				
-				/////////////////////////////////////////////////////////////////////////
 				
 				for(int j=0; j<arrCnt; j++) {
 					len = dis.read(readData);
 					fos.write(readData, 0, len);
 					fos.flush();
-					System.out.println("client===="+ j);
 				}
 				fos.close();
 				dos.writeUTF("downDone");
 				dos.flush();
-				/////////////////////////////////////////////////////////////////////////
 			}
 		} finally {
 			if (fos != null) { fos.close(); }

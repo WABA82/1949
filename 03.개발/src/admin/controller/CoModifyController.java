@@ -7,10 +7,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.Socket;
 import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
@@ -89,6 +92,86 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 		
 		return flag;
 	}
+	
+	private Socket client;
+	private DataOutputStream dos;
+	private DataInputStream dis;
+	private FileInputStream fis;
+	private FileOutputStream fos;
+	
+	public void changeFile(String imgName, File newFile) throws IOException {
+		client = new Socket("localhost", 7002);
+		
+		dos = new DataOutputStream(client.getOutputStream());
+		dis = new DataInputStream(client.getInputStream());
+		
+		dos.writeUTF("coImgs_change"); 
+		dos.flush();
+		
+		dos.writeUTF(imgName);  // 기존 이미지명 전달
+		dos.flush();
+		
+		dos.writeUTF(newImg1.getName()); // 새로운 이미지명 전달
+		dos.flush();
+		
+		fis = new FileInputStream(newImg1);
+		
+		byte[] readData = new byte[512];
+		int len = 0;
+		int arrCnt = 0;
+		while((len = fis.read(readData)) != -1) {
+			arrCnt++;
+		}
+		
+		fis.close();
+
+		dos.writeInt(arrCnt); // 파일의 크기 전송
+		dos.flush();
+
+		fis = new FileInputStream(newImg1);
+		
+		while((len = fis.read(readData)) != -1) {
+			dos.write(readData, 0, len);
+			dos.flush();
+		}
+		
+		dos.writeUTF("done");
+		System.out.println("새로운 이미지 전송  완료");
+	}
+	
+	public void reqFile(String newFileName) throws IOException {
+		System.out.println("1111");
+		client = new Socket("localhost", 7002);
+		
+		System.out.println("2222");
+		dos = new DataOutputStream(client.getOutputStream());
+		dis = new DataInputStream(client.getInputStream());
+		
+		System.out.println("33333");
+		dos.writeUTF("coImgs_req");
+		dos.flush();
+		
+		System.out.println("44444");
+		dos.writeUTF(newFileName);
+		dos.flush();
+		
+		int arrCnt = dis.readInt();
+		
+		byte[] readData = new byte[512];
+		int len = 0;
+		
+		fos = new FileOutputStream("C:/dev/1949/03.개발/src/admin/img/co/"+newFileName);
+		
+		for(int i=0; i<arrCnt; i++) {
+			len = dis.read(readData);
+			fos.write(readData,0,len);
+			fos.flush();
+		}
+		
+		dos.writeUTF("done");
+		dos.flush();
+		System.out.println("변경파일 admin 저장완료");
+	}
 
 	public void modify() throws IOException {
 		try {
@@ -136,36 +219,33 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 			CoModifyVO cmvo = new CoModifyVO(coNum, coName, estDate, coDesc, 
 					img1, img2, img3, img4, memberNum);
 		
-			
 			if(AdminDAO.getInstance().updateCo(cmvo)) {
-				// DB에 정보를 변경하고 이미지를 fileServer에 전송하는 메소드 필요 ////////////////////////
-				// 일단 이미지를 file패키지에 전송저장, 기존 이미지를 삭제처리
-
 				// 변경된 이미지는 삭제하고 새로운 이미지로 변경
-				FileInputStream fis = null;
-				FileOutputStream fos = null;
-				
-				try { 
+
+				try {
 					if (newImg1 != null) {
-						File originFile = new File("C:/dev/1949/03.개발/src/file/coImg/"+civo.getImg1());
+						// 1. 내가 보관하던 이미지 지우기
+						File originFile = new File("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg1());
 						originFile.delete();
 						
-						fis = new FileInputStream(newImg1);
-						fos = new FileOutputStream("C:/dev/1949/03.개발/src/file/coImg/"+newImg1.getName());
+						System.out.println("기존이미지 -- "+civo.getImg1());
+						// 2. 파일 서버에 존재하는 이미지도 지우기
+						// 3. 파일 서버에 새 파일을 전송
+						System.out.println("-----");
+						changeFile(civo.getImg1(), newImg1);
+						System.out.println("====");
+						System.out.println("새 이미지 -- "+newImg1.getName());
 						
-						byte[] readData = new byte[512];
-						int len = 0;
-						while((len = fis.read(readData)) != -1) {
-							fos.write(readData, 0, len);
-							fos.flush();
-						}
+						// 4. 파일 서버에 새 파일을 요청
+						// reqFile(newImg1.getName());
 					}
-					if (newImg2 != null) {
-						File originFile = new File("C:/dev/1949/03.개발/src/file/coImg/"+civo.getImg2());
+					
+					/*if (newImg2 != null) {
+						File originFile = new File("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg2());
 						originFile.delete();
 						
 						fis = new FileInputStream(newImg2);
-						fos = new FileOutputStream("C:/dev/1949/03.개발/src/file/coImg/"+newImg2.getName());
+						fos = new FileOutputStream("C:/dev/1949/03.개발/src/admin/img/co/"+newImg2.getName());
 						
 						byte[] readData = new byte[512];
 						int len = 0;
@@ -175,11 +255,11 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 						}
 					}
 					if (newImg3 != null) {
-						File originFile = new File("C:/dev/1949/03.개발/src/file/coImg/"+civo.getImg3());
+						File originFile = new File("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg3());
 						originFile.delete();
 						
 						fis = new FileInputStream(newImg3);
-						fos = new FileOutputStream("C:/dev/1949/03.개발/src/file/coImg/"+newImg3.getName());
+						fos = new FileOutputStream("C:/dev/1949/03.개발/src/admin/img/co/"+newImg3.getName());
 						
 						byte[] readData = new byte[512];
 						int len = 0;
@@ -189,11 +269,11 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 						}
 					}
 					if (newImg4 != null) {
-						File originFile = new File("C:/dev/1949/03.개발/src/file/coImg/"+civo.getImg4());
+						File originFile = new File("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg4());
 						originFile.delete();
 						
 						fis = new FileInputStream(newImg4);
-						fos = new FileOutputStream("C:/dev/1949/03.개발/src/file/coImg/"+newImg4.getName());
+						fos = new FileOutputStream("C:/dev/1949/03.개발/src/admin/img/co/"+newImg4.getName());
 						
 						byte[] readData = new byte[512];
 						int len = 0;
@@ -201,10 +281,10 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 							fos.write(readData, 0, len);
 							fos.flush();
 						}
-					}
+					}*/
+					
 				} finally {
-					if(fos != null) {fos.close();}
-					if(fis != null) {fis.close();}
+					closeStreams();
 				}
 				
 				msgCenter("회사정보가 수정되었습니다.");
@@ -220,6 +300,14 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 			e.printStackTrace();
 		}
 	}//modify
+	
+	public void closeStreams() throws IOException {
+		if(fos != null) {fos.close();}
+		if(fis != null) {fis.close();}
+		if (dos != null) { dos.close(); }
+		if (dis != null) { dis.close(); }
+		if (client != null) { client.close(); }
+	}
 	
 	public void remove() { //////////////////// 삭제는 집에서 작업 ///////////////////////
 		System.out.println("삭제");

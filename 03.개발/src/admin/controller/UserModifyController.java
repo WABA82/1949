@@ -53,17 +53,75 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		}
 	}
 	
+	public boolean checkPass(String pass) { // 비밀번호 검증, 최대 12자리, 대문자 소문자 특수문자 조합
+		boolean resultFlag = false;
+		
+		boolean lowerCaseFlag = false;
+		boolean upperCaseFlag = false;
+		boolean spSymbolFlag = false;
+		
+		char[] lowerCase = { 
+				'a','b','c','d','e','f','g',
+				'h','i','j','k','l','m','n','o','p','q','r',
+				's','t','u','v','w','x','y','z'};
+		
+		char[] upperCase = {
+				'A','B','C','D','E','F','G',
+				'H','I','J','K','L','M','N','O','P','Q','R',
+				'S','T','U','V','W','X','Y','Z'};
+		
+		char[] spSymbol = {'!','@','#','$','%','^','&','*','(',')','-','_','+','='};
+		
+		if(!(pass.equals("") || pass.length() > 13)) {
+
+			for(int i=0; i<pass.length(); i++) {
+				for(int j=0; j<lowerCase.length; j++) {
+					if(pass.charAt(i) == lowerCase[j]) {
+						lowerCaseFlag = true;
+					}
+				}
+				for(int j=0; j<upperCase.length; j++) {
+					if(pass.charAt(i) == upperCase[j]) {
+						upperCaseFlag = true;
+					}
+				}
+				for(int j=0; j<spSymbol.length; j++) {
+					if(pass.charAt(i) == spSymbol[j]) {
+						spSymbolFlag = true;
+					}
+				}
+			}
+			
+			if(lowerCaseFlag && upperCaseFlag && spSymbolFlag) {
+				resultFlag = true;
+			}
+		}
+		return resultFlag;
+	}
+	
 	public void modify() {
 		UserModifyVO umvo = null;
-		msgCenter("코딩해라 혜원, 정미");
-		////////////////////////////////// 혜원, 정미 알고리즘 만들면 같은 메소드로 검증 수행예정 /////////////////////////////////
 		
 		String id = umv.getJtfId().getText().trim();
 		String pass = new String(umv.getJpfPass().getPassword()).trim();
+		
+		if(!checkPass(pass)) { // 비밀번호 검증
+			msgCenter("비밀번호를 확인해주세요.\n 최대 12자리, 대소문자, 특수문자 조합으로 만들어주세요.");
+			return;
+		}
+		
 		String name = umv.getJtfName().getText().trim();
+		
+		////////////////////////////////////////////// ssn 검증필요 /////////////////////////////////////////////////
 		String ssn = umv.getJtfSsn1().getText().trim()+"-"+umv.getJtfSsn2().getText().trim();
+		
+		////////////////////////////////////////////// tel 검증필요 /////////////////////////////////////////////////
+		// tel - 000-0000-0000 
 		String tel = umv.getJtfTel().getText().trim();
 		String addrDetail = umv.getJtfAddr2().getText().trim();
+		
+		///////////////////////////////////////////// addr 검증 필요 ////////////////////////////////////////////////
+		// email - @ . 필수, 최대 254자리 이내(@.제외 18자리)
 		String email = umv.getJtfEmail().getText().trim();
 		String questionType = String.valueOf(umv.getJcbQuestion().getSelectedIndex());
 		String answer = umv.getJtfAnswer().getText().trim();
