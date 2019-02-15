@@ -194,9 +194,6 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 		ObjectOutputStream oos = null;
 		FileOutputStream fos = null;
 		
-//		BufferedWriter bw = null;
-//		OutputStreamWriter osw = null;
-		
 		try {
 			client = new Socket("localhost", 7002);
 			
@@ -226,36 +223,27 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 			int arrCnt = 0;
 			int len = 0;
 			String fileName = "";
-			
 			for(int i=0; i<listImg.size(); i++) {
 				fileName = dis.readUTF(); // 파일명 받기
-				System.out.println("ad파일명 : "+fileName);
 				
 				arrCnt = dis.readInt(); // 파일 크기 받기
-				System.out.println("ad크기 : "+arrCnt);
 				
 				fos = new FileOutputStream(dir.getAbsolutePath()+"/"+fileName);
-//				osw = new OutputStreamWriter(fos);
-//				bw = new BufferedWriter(new FileWriter(dir.getAbsolutePath()+"/"+fileName));
 				
 				/////////////////////////////////////////////////////////////////////////
+				
 				for(int j=0; j<arrCnt; j++) {
 					len = dis.read(readData);
 					fos.write(readData, 0, len);
 					fos.flush();
+					System.out.println("client===="+ j);
 				}
-				
-//				for(int j=0; j<arrCnt; j++) {
-//					bw.write(dis.readUTF());
-//					bw.flush();
-//				}
-				System.out.println((i+1)+"번째 파일 다운완료");
+				fos.close();
+				dos.writeUTF("downDone");
+				dos.flush();
 				/////////////////////////////////////////////////////////////////////////
 			}
 		} finally {
-			
-//			if (bw != null) { bw.close(); }
-			
 			if (fos != null) { fos.close(); }
 			if (dis != null) { dis.close(); }
 			if (oos != null) { oos.close(); }

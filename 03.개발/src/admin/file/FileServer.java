@@ -31,8 +31,6 @@ public class FileServer extends Thread {
 			FileInputStream fis = null;
 			String flag = "";
 
-//			BufferedReader br = null;
-			
 			try {
 				serverFile = new ServerSocket(7002); // 파일서버 7002포트
 				
@@ -79,11 +77,6 @@ public class FileServer extends Thread {
 							dos.writeUTF(fileName); // 파일명 전송
 							dos.flush();
 
-							/*br = new BufferedReader(new FileReader(filePath+"/"+fileName));
-							String temp = "";
-							while((temp = br.readLine()) != null) { 
-								arrCnt++;
-							}*/
 							fis = new FileInputStream(new File(filePath+"/"+fileName));
 							while((len = fis.read(readData)) != -1) { 
 								arrCnt++;
@@ -93,18 +86,19 @@ public class FileServer extends Thread {
 							dos.writeInt(arrCnt); // 파일의 크기(배열 수) 전송
 							dos.flush();
 							
-							/*while((temp = br.readLine()) != null) {
-								dos.writeUTF(temp);
-								dos.flush();
-							}*/
 							////////////// 문제지점 //////////////////////////////////
+							fis.close();
+							fis = new FileInputStream(new File(filePath+"/"+fileName));
+							int cn=0;
 							while((len = fis.read(readData)) != -1) {
 								dos.write(readData, 0, len);
 								dos.flush();
+								cn++;
 							}
+							dis.readUTF();
+							arrCnt=0;
+							len=0;
 							
-							Thread.sleep(300);
-							System.out.println((i+1)+"번째 파일 전송");
 							////////////// 문제지점 //////////////////////////////////
 						}
 						System.out.println("파일서버 파일 전송완료");
@@ -148,9 +142,6 @@ public class FileServer extends Thread {
 					}
 				}
 			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				// thread sleep 예외
 				e.printStackTrace();
 			} finally {
 				
