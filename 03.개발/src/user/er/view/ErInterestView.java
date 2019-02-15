@@ -1,19 +1,19 @@
 package user.er.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import user.common.vo.ErMainVO;
 import user.er.controller.ErInterestController;
-import user.er.vo.ErHiringVO;
 
+/**
+ * 관심구직자 목록을 볼 수 있는 창.
+ * 
+ * @author owner
+ *
+ */
 @SuppressWarnings("serial")
 public class ErInterestView extends JDialog {
 	private JTable jtEeInfo;
@@ -28,7 +28,12 @@ public class ErInterestView extends JDialog {
 				return false;
 			}
 		};
-		jtEeInfo = new JTable(dtmEeInfo);
+		jtEeInfo = new JTable(dtmEeInfo) {
+			@Override
+			public Class<?> getColumnClass(int column) {
+				return getValueAt(0, column).getClass();
+			}// getColumnClass
+		};
 		JScrollPane jspEeInfo = new JScrollPane(jtEeInfo);
 
 		JLabel jlEeInfo = new JLabel("내 관심 구직자 수 : ");
@@ -44,7 +49,8 @@ public class ErInterestView extends JDialog {
 		/* 이벤트 등록 */
 		ErInterestController eric = new ErInterestController(this, er_id);
 		addWindowListener(eric);
-		
+		jtEeInfo.addMouseListener(eric);
+
 		setBounds(100, 100, 1000, 500);
 		setResizable(false);
 		setVisible(true);

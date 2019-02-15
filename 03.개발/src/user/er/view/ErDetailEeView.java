@@ -5,19 +5,19 @@ import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import user.er.controller.ErDetailEeController;
 import user.er.vo.DetailEeInfoVO;
-import user.er.vo.ErDetailVO;
 
 /**
- *	김건하 19.02.08
+ * 김건하 19.02.08 : '관심 구직자 상세 정보' 관심구직자 목록현황에서 더블클릭 했을 때 띄워지는 창.
+ * 
  * @author owner
  */
+@SuppressWarnings("serial")
 public class ErDetailEeView extends JDialog {
 
 	private JButton jbRsmDown, jbClose;
