@@ -1,19 +1,16 @@
 package user.ee.view;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import user.common.vo.EeMainVO;
 import user.ee.controller.EeHiringController;
 import user.ee.vo.EeHiringVO;
 
@@ -109,7 +106,6 @@ public class EeHiringView extends JDialog {
 	public JTextField getJtfSearch() {
 		return jtfSearch;
 	}
-
 	
 
 	public JButton getJbAllView() {

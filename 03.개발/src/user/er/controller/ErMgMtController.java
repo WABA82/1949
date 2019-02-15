@@ -83,6 +83,7 @@ public class ErMgMtController extends WindowAdapter implements MouseListener, Ac
 		
 	}
 	
+	
 	public void addEr() {
 //		try {
 //			edfvo = er_dao.selectErDefault(erId);

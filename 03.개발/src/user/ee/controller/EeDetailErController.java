@@ -7,6 +7,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -16,6 +18,7 @@ import user.ee.view.EeDetailCoView;
 import user.ee.view.EeDetailErView;
 import user.ee.vo.CoDetailVO;
 import user.ee.vo.DetailErInfoVO;
+import user.ee.vo.EeAppVO;
 import user.ee.vo.EeInterestAndAppVO;
 ////////////0210 다음할것 : 지원하기 구현(창을 닫고 다시 켯을때 하트가 리셋), 관심눌렀을때 값 보내는 방법///////////
 public class EeDetailErController extends WindowAdapter implements ActionListener, MouseListener {
@@ -82,6 +85,37 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 	
 	public void apply(){
 		//관심구인정보에 전달(eeAppVO)
+		boolean flag=false;
+		List<EeAppVO> list= new ArrayList<EeAppVO>();
+		eiaavo = new EeInterestAndAppVO(erNum, eeId);
+		try {
+			list = ee_dao.selectAppList(eeId);
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			if(list.size()==0) {
+				flag=true;
+			}else {
+				for(int i=0; i<list.size();i++) {
+					if(!(list.get(i).getEr_num().equals(erNum))){
+						flag=true;
+					}else {
+						JOptionPane.showMessageDialog(edev, "이미 지원한 공고입니다.");
+						return;
+					}
+				}
+			}
+			if(flag) {
+				ee_dao.insertApplication(eiaavo);
+				JOptionPane.showMessageDialog(edev, "지원이 완료되었습니다!");
+			}else {
+				JOptionPane.showMessageDialog(edev, "이미 지원한 공고입니다.");
+			}
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(edev, "DB오류");
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -100,7 +134,6 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 			int apply=JOptionPane.showConfirmDialog(edev, "지원하시겠습니까?");
 			if(apply==0) {
 				apply();
-				JOptionPane.showMessageDialog(edev, "지원이 완료되었습니다. \n 지원해주셔서 감사합니다.");
 			}
 		}
 		if(ae.getSource()==edev.getJbClose()) {
