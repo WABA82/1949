@@ -340,7 +340,8 @@ public class CommonDAO {
       return flag;
       
    }
-   
+}
+
 /**
  *    김건하 아이디 받기
  * @return
@@ -382,4 +383,4 @@ public EeMainVO selectEeMain(String eeid) throws SQLException {
    return emvo;
 }// selectEeMain
 */
-   }
+
