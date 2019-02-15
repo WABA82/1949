@@ -8,14 +8,8 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
-
-import admin.vo.EeInfoVO;
-import user.ee.controller.EeInfoModifyController;
-import user.ee.controller.EeInfoRegController;
-import user.ee.controller.EeMainController;
 
 public class EeInfoModifyView extends JDialog {
 
@@ -135,8 +129,8 @@ public class EeInfoModifyView extends JDialog {
 
 		// 이벤트등록
 
-		EeInfoModifyController emc = new EeInfoModifyController(this, ee_id);
-		jbClose.addActionListener(emc);
+//		EeInfoModifyController emc = new EeInfoModifyController(this, ee_id);
+//		jbClose.addActionListener(emc);
 
 		setLayout(null);
 		setBounds(100, 100, 490, 460);
@@ -147,7 +141,7 @@ public class EeInfoModifyView extends JDialog {
 
 	}// 생성자
 
-	public static void main(String[] args) {
-		new EeInfoModifyView(null, "gong1");
-	}
+//	public static void main(String[] args) {
+//		new EeInfoModifyView(null, "gong1");
+//	}
 }// class
