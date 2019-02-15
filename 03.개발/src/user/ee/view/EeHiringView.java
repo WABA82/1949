@@ -85,6 +85,7 @@ public class EeHiringView extends JDialog {
 		add(jbAllView);
 		
 		//이벤트 추가
+		eeId= "gong1";
 		EeHiringController ehc = new EeHiringController(this,eeId);
 		jcbSort.addActionListener(ehc);
 		jbDetailSearch.addActionListener(ehc);
@@ -116,7 +117,6 @@ public class EeHiringView extends JDialog {
 	}
 
 
-
 	public JTable getJtErInfo() {
 		return jtErInfo;
 	}
@@ -138,11 +138,8 @@ public class EeHiringView extends JDialog {
 	}
 
 	public static void main(String[] args) {
-		EeMainVO em_vo= new EeMainVO("ds", "sdf", "ds");
-		EeMainView emv=new EeMainView(em_vo);
-		List<EeHiringVO> ehvo=new ArrayList<EeHiringVO>();
-		String eeid= "gong1";
-		new EeHiringView(emv, ehvo, eeid);
+		
+		new EeHiringView(null,null,null);
 	}
 	
 	

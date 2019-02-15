@@ -93,7 +93,7 @@ public class ErInterestController extends WindowAdapter implements MouseListener
 			if (me.getSource() == eriv.getJtEeInfo()) {
 				JTable jt = eriv.getJtEeInfo(); // 테이블 받아오기
 				String ee_num = ((String) jt.getValueAt(jt.getSelectedRow(), 1));
-				new ErDetailEeView(eriv, er_id, ee_num);
+				new ErDetailEeView(eriv, er_id, ee_num,null);
 			} // end if
 
 		}// end switch

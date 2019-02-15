@@ -236,7 +236,7 @@ public class EeDAO {
 			// 2.
 			con = getConn();
 			// 3.
-			String deleteQuery = "delete from interest_er where er_num=? ee_Id=?";
+			String deleteQuery = "delete from interest_er where er_num=? and ee_Id=?";
 			pstmt = con.prepareStatement(deleteQuery);
 			// 4.
 			pstmt.setString(1, eiaavo.getErNum());

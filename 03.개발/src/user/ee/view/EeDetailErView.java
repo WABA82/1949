@@ -36,7 +36,7 @@ public class EeDetailErView extends JDialog {
 		this.appStatus = appStatus;
 		this.interest = interest;
 		/* 컴포넌트 생성 */
-		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/no_co_img1.png");
+		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/no_co_img1.png");
 		// 라벨들
 		JLabel jlImage = new JLabel(erLogo);
 		JLabel jlSubject = new JLabel("제목");
@@ -249,7 +249,7 @@ public class EeDetailErView extends JDialog {
 		add(wrapPanel);
 
 		jtfSubject.setText(deivo.getSubject());
-		jlImage.setIcon(new ImageIcon("C:/dev/1949/03.개발/src/img/coImg/" + deivo.getImg1()));
+		jlImage.setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/" + deivo.getImg1()));
 		jtfCoName.setText(deivo.getCoName());
 		jtfName.setText(deivo.getName());
 		jtfTel.setText(deivo.getTel());

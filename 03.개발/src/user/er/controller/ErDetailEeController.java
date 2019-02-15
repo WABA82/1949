@@ -12,22 +12,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import user.dao.ErDAO;
-import user.ee.view.EeDetailCoView;
-import user.ee.vo.CoDetailVO;
-import user.ee.vo.DetailErInfoVO;
-import user.ee.vo.EeInterestAndAppVO;
 import user.er.view.ErDetailEeView;
 import user.er.vo.DetailEeInfoVO;
 import user.er.vo.ErInterestVO;
 
-import user.dao.ErDAO;
-import user.er.vo.DetailEeInfoVO;
-
-/**
- * 
- * @author owner
- *
- */
 public class ErDetailEeController extends WindowAdapter implements ActionListener, MouseListener {
 	private ErDetailEeView edev;
 	private String eeNum, erId;
@@ -56,46 +44,74 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 		JOptionPane.showMessageDialog(edev, "관심 구인글에 추가되었습니다!");
 		try {
 			DetailEeInfoVO devo= erdao.selectDeatilEe(eeNum, erId);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
-
-	private ErDAO er_dao;
-
-	public ErDetailEeController(String er_id, String ee_num) {
-		er_dao = ErDAO.getInstance();
-		setInfo(er_id, ee_num);
-	}// 생성자
-
-	////////////////// 재현 0213 진행중 //////////////////
-
-	private void setInfo(String er_id, String ee_num) {
-		DetailEeInfoVO deivo = er_dao.selectDetailEEInfo(er_id, ee_num);
-	}// setInfo
-
+	
+	public void removeInterestEe() {
+		boolean deleteFlag=false;
+		eivo = new ErInterestVO(eeNum, erId);
+		
+		try {
+			deleteFlag = erdao.deleteInterestEe(eivo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(edev, "리스트삭제에 실패했습니다.");
+			
+		}
+		if(deleteFlag) {
+			JOptionPane.showMessageDialog(edev, "관심 구인글을 취소했습니다.");
+			edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/b_heart.png"));
+		}else {
+			JOptionPane.showMessageDialog(edev, "리스트삭제에 실패했습니다.");
+		}
+	}//removeInterestEr
+	
+	public void showCoDetail() {
+		
+	}
+	
+	public void extRsmDown() {
+		
+	}
+	
+	
 	@Override
-	public void mouseClicked(MouseEvent e) {
-	}// mouseClicked
-
+	public void mouseClicked(MouseEvent me) {
+		if(me.getSource()==edev.getJlHeart()) {
+			System.out.println(mouseClickFlag);
+			mouseClickFlag = !mouseClickFlag;
+		}
+		if(mouseClickFlag) {
+			addInterestEe();
+		}else {
+			removeInterestEe();
+		}
+	}
+	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-
-	}// actionPerformed
-
-	//////////////// 안쓰는 메서드////////////////
+	public void actionPerformed(ActionEvent ae) {
+		if(ae.getSource()==edev.getJbRsmDown()) {
+			extRsmDown();
+		}
+		if(ae.getSource()==edev.getJbClose()) {
+			edev.dispose();
+		}
+	}
+	
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public void windowClosing(WindowEvent e) {
+		edev.dispose();
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
-	}
-
+	public void mousePressed(MouseEvent e) {}
 	@Override
-	public void mouseEntered(MouseEvent e) {
-	}
-
+	public void mouseReleased(MouseEvent e) {}
 	@Override
-	public void mouseExited(MouseEvent e) {
-	}
-	//////////////// 안쓰는 메서드////////////////
-}// class
+	public void mouseEntered(MouseEvent e) {}
+	@Override
+	public void mouseExited(MouseEvent e) {}
+}

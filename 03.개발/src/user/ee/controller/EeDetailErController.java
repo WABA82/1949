@@ -36,6 +36,7 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 
 	public void addUInterestEr() {
 		eiaavo = new EeInterestAndAppVO(erNum, eeId);
+
 		
 		try {
 			ee_dao.insertInterestEr(eiaavo);
