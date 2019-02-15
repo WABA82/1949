@@ -5,9 +5,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-import user.common.view.LoginView;
+import user.common.vo.AddrVO;
 import user.common.vo.EeMainVO;
+import user.common.vo.ErMainVO;
 import user.common.vo.FindIdVO;
 import user.common.vo.FindPassVO;
 import user.common.vo.SetPassVO;
@@ -26,45 +29,95 @@ public class CommonDAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static CommonDAO getInstance() {
-		if(C_dao==null) {
+		if (C_dao == null) {
 			C_dao = new CommonDAO();
 		}
 		return C_dao;
 	}
-	
-	private Connection getConn() throws SQLException{
-		Connection con =null;
-		
-		String url = "jdbc:oracle:thin:@211.63.89.144:1522:orcl";//학원에서 바꿀것!!
-		String id ="kanu";
-		String pass ="share";
+
+	private Connection getConn() throws SQLException {
+		Connection con = null;
+
+		String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl";// 학원에서 바꿀것!!
+		String id = "kanu";
+		String pass = "share";
 		con = DriverManager.getConnection(url, id, pass);
 		return con;
 	}
-	
-	public String login(String id, String pass)throws SQLException{
-		String userType ="";
-		
-		Connection con=null;
-		PreparedStatement pstmt=null;
-		ResultSet rs= null;
-		
-		con=getConn();
-		
-		String match = "SELECT USER_TYPE FROM USER_TABLE WHERE ID=? AND PASS=?";
-		pstmt = con.prepareStatement(match);
-		pstmt.setString(1, id);
-		pstmt.setString(2, pass);
-		
-		rs = pstmt.executeQuery();
-		
-		if(rs.next()) {
-			userType = rs.getString("USER_TYPE");
-		}//end if
+
+	public String login(String id, String pass) throws SQLException {
+		String userType = "";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = getConn();
+
+			String match = "SELECT USER_TYPE FROM USER_TABLE WHERE ID=? AND PASS=?";
+			pstmt = con.prepareStatement(match);
+			pstmt.setString(1, id);
+			pstmt.setString(2, pass);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				userType = rs.getString("USER_TYPE");
+			} // end if
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+		}
 		return userType;
-	}//login
+	}// login
+
+	public List<AddrVO> selectAddr(String dong) throws SQLException {
+		List<AddrVO> list = new ArrayList<AddrVO>();
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = getConn();
+			String selectAddr = "select seq,zipcode,sido,gugun,dong,nvl(bunji,' ') bunji from zipcode where dong like '%'||?||'%'  ";
+			pstmt.getConnection().prepareStatement(selectAddr);
+			pstmt.setString(1, dong);
+			rs = pstmt.executeQuery();
+			AddrVO av = null;
+			if (rs.next()) {
+				av = new AddrVO(rs.getString("seq"), rs.getString("zipcode"), rs.getString("sido"),
+						rs.getString("gugun"), rs.getString("dong"), rs.getString("bunji"));
+				list.add(av);
+			} // end if
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+		} // end finally
+		return list;
+	}
+
+	public String selectFindId(FindIdVO fivo) throws SQLException {
+		String searchId = "";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 
 	
 	/**
@@ -81,23 +134,29 @@ public class CommonDAO {
 		ResultSet rs=null;
 		
 		try {
-			con=getConn();
-			String selectId="select id from user_table where name=? and tel=?";
+			con = getConn();
+			String selectId = "select id from user_table where name=? and tel=?";
 
-			pstmt=con.prepareStatement(selectId);
-			
+			pstmt = con.prepareStatement(selectId);
+
 			pstmt.setString(1, fivo.getName());
 			pstmt.setString(2, fivo.getTel());
 
-			rs=pstmt.executeQuery();
-			if(rs.next()) {
-				searchId=rs.getString("id");
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				searchId = rs.getString("id");
 			}
 
-		}finally {
-			if(rs!=null) {rs.close();}
-			if(pstmt!=null) {pstmt.close();}
-			if(con!=null) {con.close();}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (con != null) {
+				con.close();
+			}
 		}
 		return searchId;
 
@@ -112,24 +171,24 @@ public class CommonDAO {
 	 * @throws SQLException
 	 */
 	public boolean selectFindPass(FindPassVO fpvo) throws SQLException {
-		int searchPass =0;
+		int searchPass = 0;
 		boolean flag = false;
-		
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
 			con = getConn();
-			
+
 			String count = "select count(*) login from user_table where id=? and question_type=? and answer=?";
 			pstmt = con.prepareStatement(count);
-			
+
 			pstmt.setString(1, fpvo.getId());
 			pstmt.setString(2, fpvo.getqType());
 			pstmt.setString(3, fpvo.getAnswer());
-		
+
 			rs = pstmt.executeQuery();
-			if(rs.next()) {
+			if (rs.next()) {
 				searchPass = rs.getInt("login");
 				
 				
@@ -138,10 +197,16 @@ public class CommonDAO {
 				}
 			}
 
-		}finally {
-			if(rs!=null) {rs.close();}
-			if(pstmt!=null) {pstmt.close();}
-			if(con!=null) {con.close();}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (con != null) {
+				con.close();
+			}
 		}
 		return flag;
 	}//selectFindPass
@@ -153,29 +218,32 @@ public class CommonDAO {
 	 * @throws SQLException
 	 */
 	public boolean updatePass(SetPassVO spvo) throws SQLException {
-		boolean flag=false;
-	
-		
-		Connection con=null;
-		PreparedStatement pstmt=null;
-		
+		boolean flag = false;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
 		try {
-			con=getConn();
-			
-			String updatePass="update user_table set pass=? where id=?";
-			pstmt=con.prepareStatement(updatePass);
-			
+			con = getConn();
+
+			String updatePass = "update user_table set pass=? where id=?";
+			pstmt = con.prepareStatement(updatePass);
+
 			pstmt.setString(1, spvo.getNewPass());
 			pstmt.setString(2, spvo.getId());
-			
-			int cnt=pstmt.executeUpdate();
-			if(cnt==1) {
-				flag=true;
+
+			int cnt = pstmt.executeUpdate();
+			if (cnt == 1) {
+				flag = true;
 			}
-		}finally {
-			
-			if(pstmt!=null) {pstmt.close();}
-			if(con!=null) {con.close();}
+		} finally {
+
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (con != null) {
+				con.close();
+			}
 		}
 		return flag;
 	

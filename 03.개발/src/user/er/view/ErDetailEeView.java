@@ -141,9 +141,6 @@ public class ErDetailEeView extends JDialog {
 		/* 이벤트 등록 */
 		ErDetailEeController edec = new ErDetailEeController(er_id, ee_num);
 		addWindowListener(edec);
-
-		
-		
 		
 		/*크기 설정 및 가시화*/
 		setBounds(100, 100, 490, 520);

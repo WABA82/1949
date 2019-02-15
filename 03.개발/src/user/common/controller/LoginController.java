@@ -17,16 +17,22 @@ import user.common.view.FindPassView;
 import user.common.view.LoginView;
 import user.common.view.SignUpView;
 import user.common.vo.EeMainVO;
+import user.common.vo.ErMainVO;
 import user.dao.CommonDAO;
 import user.ee.view.EeMainView;
 import user.er.view.ErMainView;
 
 public class LoginController extends WindowAdapter implements ActionListener, MouseListener {
 	private LoginView lv;
-	private EeMainVO emv;
+	private EeMainVO emvo;
+	private ErMainVO emv;
+	private CommonDAO C_dao;
+
 	public LoginController(LoginView lv) {
 		this.lv = lv;
-	}
+		C_dao=CommonDAO.getInstance();
+
+	}// 생성자
 
 	@Override
 	public void mouseClicked(MouseEvent me) {
@@ -40,29 +46,21 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 	}// mouseClicked
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-
-	}
-
-	@Override
 	public void actionPerformed(ActionEvent ae) {
-		
-		if(ae.getSource()==lv.getJbLogin()) {
+		if (ae.getSource() == lv.getJbLogin()) {
 			try {
 				login();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}//end if
-		
-	}//버튼
-	
+		} // end if
+	}// 버튼
+
 	@Override
 	public void windowClosing(WindowEvent we) {
 		lv.dispose();
 	}
 
-	
 	public void login() throws SQLException {
 		String id=lv.getJtfId().getText().trim();
 		String pass=new String(lv.getJpfPass().getPassword());
@@ -77,21 +75,26 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 			lv.getJpfPass().requestFocus();
 			return;
 		}
-		System.out.println(id + pass);
+		
 		String userType="";
 		CommonDAO c_dao = CommonDAO.getInstance();
 		
 		userType=c_dao.login(id, pass);
 		if(userType.equals("E")) {
-			System.out.println("E");
-			new EeMainView(emv);//생성자 안에 들어갈 emvo....등등 만들기
-			System.out.println("111");
+			emvo = C_dao.selectEeMain(lv.getJtfId().getText());
+			System.out.println(emvo);
+			new EeMainView(emvo);
 			lv.dispose();
-			System.out.println("222");
-		}else {
-			//new ErMainView();//DAO의 selecteemain...등등 만들기
+			System.out.println("E");
+		}else{
+			new ErMainView(emv);
+			lv.dispose();
+			System.out.println("R");
 		}
-
+		System.out.println("11");
+		lv.dispose();
+		System.out.println("22");
+		lv.dispose();
 	}// login
 
 	public void signUp() {
@@ -105,6 +108,10 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 	public void findPass() {
 		new FindPassView(lv);
 	}// findPass
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {

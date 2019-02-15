@@ -8,8 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import user.ee.vo.EeHiringVO;
-import user.ee.vo.EeInterestVO;
+import user.er.vo.DetailAppVO;
 import user.er.vo.DetailEeInfoVO;
 import user.er.vo.ErAddVO;
 import user.er.vo.ErDetailVO;
@@ -265,14 +264,8 @@ public class ErDAO {
 	}
 
 	////////////////////////////////////////// 선의끝///////////////////////////////////////////////
-	/*
-	 * public static void main(String[] args) { ErDAO er_dao = new ErDAO(); try {
-	 * er_dao.selectErList("lucky012"); } catch (SQLException e) {
-	 * e.printStackTrace(); }
-	 */
 
-	////////////////////////////////////////// 재현
-	////////////////////////////////////////// 시작///////////////////////////////////////////////
+	////////////////////////////// 재현 //////////////////////////////
 
 	public List<ErInterestVO> selectInterestEEInfoList(String er_id) throws SQLException {
 		List<ErInterestVO> list = new ArrayList<>();
@@ -303,7 +296,7 @@ public class ErDAO {
 				erivo = new ErInterestVO(rs.getString("ee_num"), rs.getString("img"), rs.getString("name"),
 						rs.getString("rank"), rs.getString("loc"), rs.getString("education"), rs.getInt("age"),
 						rs.getString("portfolio"), rs.getString("gender"), rs.getString("input_date"));
-				//리스트에 담기.
+				// 리스트에 담기.
 				list.add(erivo);
 			} // end if
 
@@ -322,26 +315,123 @@ public class ErDAO {
 		return list;
 	}// selectInterestEEInfoList
 
-	
 	/**
 	 * 관심구직자 - 구직자 상세 정보 : 기업이 선택한 관심 구직자의 상세 정보를 조회하는 메소드.
+	 * 
 	 * @param er_id
 	 * @param ee_num
 	 * @return
 	 */
 	public DetailEeInfoVO selectDetailEEInfo(String er_id, String ee_num) {
-		// TODO Auto-generated method stub
 		return null;
-	}
-	
+	}// selectDetailEEInfo
+
+	public List<ErListVO> selectErInfoList(String erId) throws SQLException {
+		List<ErListVO> list = new ArrayList<ErListVO>();
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = getConn();
+
+			StringBuilder selectErList = new StringBuilder();
+			selectErList.append(
+					" select ei.er_num,ei.subject,ei.rank,ei.loc,ei.education,ei.hire_type,to_char(ei.input_date,'yyyy-mm-dd-hh-mi') input_date ");
+			selectErList.append(" from er_info ei, company c ");
+			selectErList.append(" where (ei.co_num = c.co_num) and (c.er_id=?) ");
+			pstmt = con.prepareStatement(selectErList.toString());
+
+			pstmt.setString(1, erId);
+			rs = pstmt.executeQuery();
+
+			ErListVO elvo = null;
+			while (rs.next()) {
+				elvo = new ErListVO(rs.getString("er_num"), rs.getString("subject"), rs.getString("rank"),
+						rs.getString("loc"), rs.getString("education"), rs.getString("hire_type"),
+						rs.getString("input_date"));
+				list.add(elvo);
+			} // end while
+
+		} finally {
+			if (rs != null) {
+				rs.close();
+			} // end if
+			if (pstmt != null) {
+				pstmt.close();
+			} // end if
+			if (con != null) {
+				con.close();
+			} // end if
+		} // end catch
+
+		return list;
+	}// selectErList
+
+	/**
+	 * 재현 0214 : 상세 지원 현황 창의 테이블을 채울 데이터를 조회하는 메서드.
+	 * 
+	 * @param er_num
+	 * @return
+	 */
+	public List<DetailAppVO> selectDetailApplist(String er_num) throws SQLException {
+		List<DetailAppVO> list = new ArrayList<>();
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = getConn();
+
+//			select a.app_num, eei.img, ut.name, eei.rank, eei.loc, eei.education, ut.age, eei.portfolio, ut.gender, a.app_date, a.app_status
+//			from application a, user_table ut, ee_info eei
+//			where (a.ee_id = ut.id) and (ut.id = eei.ee_id) and (er_num = 'er_000028');
+
+			StringBuilder selectDetailApplist = new StringBuilder();
+			selectDetailApplist.append(
+					" select a.app_num, eei.img, ut.name, eei.rank, eei.loc, eei.education, ut.age, eei.portfolio, ut.gender, to_char(a.app_date,'yyyy-mm-dd') app_date, a.app_status ");
+			selectDetailApplist.append(" from application a, user_table ut, ee_info eei ");
+			selectDetailApplist.append(" where (a.ee_id = ut.id) and (ut.id = eei.ee_id) and er_num = ? ");
+			pstmt = con.prepareStatement(selectDetailApplist.toString());
+
+			// 반인드 변수 값 할당.
+			pstmt.setString(1, er_num);
+
+			// rs받아오기
+			rs = pstmt.executeQuery();
+			DetailAppVO elvo = null;
+			while (rs.next()) {
+				elvo = new DetailAppVO(rs.getString("app_num"), rs.getString("img"), rs.getString("name"),
+						rs.getString("rank"), rs.getString("loc"), rs.getString("education"), rs.getString("portfolio"),
+						rs.getString("gender"), rs.getString("app_date"), rs.getString("app_status"), rs.getInt("age"));
+
+				list.add(elvo);
+			} // end while
+
+		} finally {
+			if (rs != null) {
+				rs.close();
+			} // end if
+			if (pstmt != null) {
+				pstmt.close();
+			} // end if
+			if (con != null) {
+				con.close();
+			} // end if
+		} // end catch
+
+		return list;
+
+	}// selectDetailApplist
+
 	public static void main(String[] args) {
 		try {
-			System.out.println(ErDAO.getInstance().selectInterestEEInfoList("gang123"));
+			System.out.println(ErDAO.getInstance().selectErInfoList("lucky012"));
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}// main
 
-	
 }// class
