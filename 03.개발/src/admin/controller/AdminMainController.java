@@ -184,16 +184,21 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 		}
 	}
 	
+	private Socket client;
+	private DataOutputStream dos;
+	private DataInputStream dis;
+	private ObjectInputStream ois;
+	private ObjectOutputStream oos;
+	private FileOutputStream fos;
+	
+	/**
+	 * 파일서버로부터 admin.img.ee에 없는 이미지를 받는 메소드
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public void getEeImgs() throws UnknownHostException, IOException, ClassNotFoundException { 
 		// 파일서버에 접속해서 없는 ee이미지를 내려받는 메소드
-		
-		Socket client = null;
-		DataOutputStream dos = null;
-		DataInputStream dis = null;
-		ObjectInputStream ois = null;
-		ObjectOutputStream oos = null;
-		FileOutputStream fos = null;
-		
 		try {
 			client = new Socket("localhost", 7002);
 			
@@ -235,31 +240,24 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 					len = dis.read(readData);
 					fos.write(readData, 0, len);
 					fos.flush();
-					System.out.println("client===="+ j);
 				}
 				fos.close();
 				dos.writeUTF("downDone");
 				dos.flush();
 			}
 		} finally {
-			if (fos != null) { fos.close(); }
-			if (dis != null) { dis.close(); }
-			if (oos != null) { oos.close(); }
-			if (ois != null) { ois.close(); }
-			if (dos != null) { dos.close(); }
-			if (client != null) { client.close(); }
+			closeStreams();
 		}
 	}
 	
+	/**
+	 * 파일서버로부터 admin.img.co에 없는 이미지를 받는 메소드
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public void getCoImgs() throws UnknownHostException, IOException, ClassNotFoundException { 
 		// 파일서버에 접속해서 없는 co이미지를 내려받는 메소드
-		
-		Socket client = null;
-		DataOutputStream dos = null;
-		DataInputStream dis = null;
-		ObjectInputStream ois = null;
-		ObjectOutputStream oos = null;
-		FileOutputStream fos = null;
 		
 		try {
 			client = new Socket("localhost", 7002);
@@ -308,12 +306,16 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 				dos.flush();
 			}
 		} finally {
-			if (fos != null) { fos.close(); }
-			if (dis != null) { dis.close(); }
-			if (oos != null) { oos.close(); }
-			if (ois != null) { ois.close(); }
-			if (dos != null) { dos.close(); }
-			if (client != null) { client.close(); }
+			closeStreams();
 		}
+	}
+	
+	public void closeStreams() throws IOException {
+		if (fos != null) { fos.close(); }
+		if (dis != null) { dis.close(); }
+		if (oos != null) { oos.close(); }
+		if (ois != null) { ois.close(); }
+		if (dos != null) { dos.close(); }
+		if (client != null) { client.close(); }
 	}
 }

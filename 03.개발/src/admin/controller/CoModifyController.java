@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
@@ -64,12 +65,23 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 				e.printStackTrace();
 			}
 		}else if(ae.getSource()==cmv.getJbRemove()){
-			remove();
+			try {
+				remove();
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}else if(ae.getSource()==cmv.getJbClose()) {
 			cmv.dispose();
 		}//버튼
 	}
 	
+	/**
+	 * 설립일 검증 메소드
+	 * @param estDate
+	 * @return
+	 */
 	private boolean chkEstDate(String estDate) {
 		boolean flag = false;
 
@@ -98,22 +110,37 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 	private FileInputStream fis;
 	private FileOutputStream fos;
 	
-	public void changeFile(String imgName, File newFile) throws IOException {
+	public void deleteFile(String imgName) throws UnknownHostException, IOException {
 		client = new Socket("localhost", 7002);
 		
 		dos = new DataOutputStream(client.getOutputStream());
 		dis = new DataInputStream(client.getInputStream());
 		
-		dos.writeUTF("coImgs_change"); 
+		dos.writeUTF("coImg_delete"); 
 		dos.flush();
 		
 		dos.writeUTF(imgName);  // 기존 이미지명 전달
 		dos.flush();
 		
-		dos.writeUTF(newImg1.getName()); // 새로운 이미지명 전달
+		dis.readUTF(); // 응답 후 연결 종료
+		System.out.println("del res");
+		
+		closeStreams();
+	}
+	
+	public void addNewFile(File newFile) throws IOException {
+		client = new Socket("localhost", 7002);
+		
+		dos = new DataOutputStream(client.getOutputStream());
+		dis = new DataInputStream(client.getInputStream());
+		
+		dos.writeUTF("coImg_register"); 
 		dos.flush();
 		
-		fis = new FileInputStream(newImg1);
+		dos.writeUTF(newFile.getName()); // 새로운 이미지명 전달
+		dos.flush();
+		
+		fis = new FileInputStream(newFile);
 		
 		byte[] readData = new byte[512];
 		int len = 0;
@@ -127,30 +154,27 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 		dos.writeInt(arrCnt); // 파일의 크기 전송
 		dos.flush();
 
-		fis = new FileInputStream(newImg1);
+		fis = new FileInputStream(newFile);
 		
+		len = 0;
 		while((len = fis.read(readData)) != -1) {
 			dos.write(readData, 0, len);
 			dos.flush();
 		}
 		
-		dos.writeUTF("done");
-		System.out.println("새로운 이미지 전송  완료");
+		dis.readUTF(); // 저장완료 응답 받은 후 연결 종료
+		closeStreams();
 	}
 	
 	public void reqFile(String newFileName) throws IOException {
-		System.out.println("1111");
 		client = new Socket("localhost", 7002);
 		
-		System.out.println("2222");
 		dos = new DataOutputStream(client.getOutputStream());
 		dis = new DataInputStream(client.getInputStream());
 		
-		System.out.println("33333");
-		dos.writeUTF("coImgs_req");
+		dos.writeUTF("coImg_request");
 		dos.flush();
 		
-		System.out.println("44444");
 		dos.writeUTF(newFileName);
 		dos.flush();
 		
@@ -161,6 +185,7 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 		
 		fos = new FileOutputStream("C:/dev/1949/03.개발/src/admin/img/co/"+newFileName);
 		
+		System.out.println("55");
 		for(int i=0; i<arrCnt; i++) {
 			len = dis.read(readData);
 			fos.write(readData,0,len);
@@ -169,7 +194,26 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 		
 		dos.writeUTF("done");
 		dos.flush();
-		System.out.println("변경파일 admin 저장완료");
+		
+		closeStreams();
+	}
+	
+	/**
+	 * no_img파일은 삭제를 막기위해 검증하는 메소드
+	 * @param fileName
+	 * @return
+	 */
+	public boolean checkNoImg(String fileName) {
+		boolean flag = false;
+		
+		String[] noImgNames = {"no_co_img2.png", "no_co_img3.png", "no_co_img1.png", "no_co_img4.png", "no_ee_img.png" };
+		for(int i=0; i<noImgNames.length; i++) {
+			if(fileName.equals(noImgNames[i])) {
+				flag = true;
+			}
+		}
+		
+		return flag;
 	}
 
 	public void modify() throws IOException {
@@ -218,96 +262,148 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 		
 			if(AdminDAO.getInstance().updateCo(cmvo)) {
 				// 변경된 이미지는 삭제하고 새로운 이미지로 변경
-				try {
-					if (newImg1 != null) {
-						System.out.println("뭐가 문제여");
-						// 1. 내가 보관하던 이미지 지우기
-						/*File originFile = new File("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg1());
+				if (newImg1 != null) {
+					// 1. 내가 보관하던 이미지 지우기
+					File originFile = new File("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg1());
+					
+					if (!checkNoImg(civo.getImg1())) { // noImg파일인지 판단, noImg가 아니면 삭제
 						originFile.delete();
-						
-						System.out.println("기존이미지 -- "+civo.getImg1());*/
 						// 2. 파일 서버에 존재하는 이미지도 지우기
-						// 3. 파일 서버에 새 파일을 전송
-						/*System.out.println("새 이미지 -- "+newImg1.getName());
-						changeFile(civo.getImg1(), newImg1);
-						System.out.println("---");
-						*/
-						// 4. 파일 서버에 새 파일을 요청
-						// reqFile(newImg1.getName());
+						deleteFile(civo.getImg1());
 					}
 					
-					/*if (newImg2 != null) {
-						File originFile = new File("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg2());
-						originFile.delete();
-						
-						fis = new FileInputStream(newImg2);
-						fos = new FileOutputStream("C:/dev/1949/03.개발/src/admin/img/co/"+newImg2.getName());
-						
-						byte[] readData = new byte[512];
-						int len = 0;
-						while((len = fis.read(readData)) != -1) {
-							fos.write(readData, 0, len);
-							fos.flush();
-						}
-					}
-					if (newImg3 != null) {
-						File originFile = new File("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg3());
-						originFile.delete();
-						
-						fis = new FileInputStream(newImg3);
-						fos = new FileOutputStream("C:/dev/1949/03.개발/src/admin/img/co/"+newImg3.getName());
-						
-						byte[] readData = new byte[512];
-						int len = 0;
-						while((len = fis.read(readData)) != -1) {
-							fos.write(readData, 0, len);
-							fos.flush();
-						}
-					}
-					if (newImg4 != null) {
-						File originFile = new File("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg4());
-						originFile.delete();
-						
-						fis = new FileInputStream(newImg4);
-						fos = new FileOutputStream("C:/dev/1949/03.개발/src/admin/img/co/"+newImg4.getName());
-						
-						byte[] readData = new byte[512];
-						int len = 0;
-						while((len = fis.read(readData)) != -1) {
-							fos.write(readData, 0, len);
-							fos.flush();
-						}
-					}*/
+					// 3. 파일 서버에 새 파일을 전송
+					addNewFile(newImg1);
 					
-				} finally {
-					closeStreams();
+					// 4. 파일 서버에 새 파일을 요청
+					reqFile(newImg1.getName());
 				}
+				if (newImg2 != null) {
+					// 1. 내가 보관하던 이미지 지우기
+					File originFile = new File("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg2());
+					
+					if (!checkNoImg(civo.getImg2())) {
+						originFile.delete();
+						// 2. 파일 서버에 존재하는 이미지도 지우기
+						deleteFile(civo.getImg2());
+					}
+					
+					// 3. 파일 서버에 새 파일을 전송
+					addNewFile(newImg2);
+					
+					// 4. 파일 서버에 새 파일을 요청
+					reqFile(newImg2.getName());
+				}
+				if (newImg3 != null) {
+					// 1. 내가 보관하던 이미지 지우기
+					File originFile = new File("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg3());
+					
+					if (!checkNoImg(civo.getImg3())) {
+						originFile.delete();
+						// 2. 파일 서버에 존재하는 이미지도 지우기
+						deleteFile(civo.getImg3());
+					}
+					
+					// 3. 파일 서버에 새 파일을 전송
+					addNewFile(newImg3);
+					
+					// 4. 파일 서버에 새 파일을 요청
+					reqFile(newImg3.getName());
+				}
+				if (newImg4 != null) {
+					// 1. 내가 보관하던 이미지 지우기
+					File originFile = new File("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg4());
+					
+					if (!checkNoImg(civo.getImg4())) {
+						originFile.delete();
+						// 2. 파일 서버에 존재하는 이미지도 지우기
+						deleteFile(civo.getImg4());
+					}
+					
+					// 3. 파일 서버에 새 파일을 전송
+					addNewFile(newImg4);
+					
+					// 4. 파일 서버에 새 파일을 요청
+					reqFile(newImg4.getName());
+				}
+				
 				
 				msgCenter("회사정보가 수정되었습니다.");
 				cmv.dispose();
+				
 				CoInfoVO clvo = AdminDAO.getInstance().selectOneCo(coNum);
-				new CoModifyView(ammv, clvo, ammc);
+				
 				ammc.setCo();
-			} else {
-				msgCenter("회사정보 변경에 실패했습니다.");
-			}
+				new CoModifyView(ammv, clvo, ammc);
+			} 
 		} catch (SQLException e) {
 			msgCenter("DB에 문제가 발생했습니다.");
 			e.printStackTrace();
 		}
 	}//modify
 	
+	/**
+	 * FileServer와 연결을 끊는 메소드
+	 * @throws IOException
+	 */
 	public void closeStreams() throws IOException {
-		if(fos != null) {fos.close();}
-		if(fis != null) {fis.close();}
+		if (fos != null) {fos.close();}
+		if (fis != null) {fis.close();}
 		if (dos != null) { dos.close(); }
 		if (dis != null) { dis.close(); }
 		if (client != null) { client.close(); }
 	}
 	
-	public void remove() { //////////////////// 삭제는 집에서 작업 ///////////////////////
-		System.out.println("삭제");
-	}//remove /////////////////////////////////////////////////////////////////////////////
+	/**
+	 * 기업 정보를 삭제하는 메소드
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 */
+	public void remove() throws UnknownHostException, IOException { 
+		switch (JOptionPane.showConfirmDialog(cmv, "정말 삭제하시겠습니까?")) {
+		case JOptionPane.OK_OPTION:
+			try {
+				if (AdminDAO.getInstance().deleteCo(civo.getCoNum())) { // DB 데이터 삭제
+					
+					File originFile1 = new File("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg1());
+					File originFile2 = new File("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg2());
+					File originFile3 = new File("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg3());
+					File originFile4 = new File("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg4());
+					
+					// 로컬 이미지 삭제 + FS 데이터 삭제
+					if (!checkNoImg(civo.getImg1())) { // noImg파일인지 판단, noImg가 아니면 삭제
+						originFile1.delete();
+						// 2. 파일 서버에 존재하는 이미지도 지우기
+						deleteFile(civo.getImg1());
+					}
+					if (!checkNoImg(civo.getImg2())) { // noImg파일인지 판단, noImg가 아니면 삭제
+						originFile2.delete();
+						// 2. 파일 서버에 존재하는 이미지도 지우기
+						deleteFile(civo.getImg2());
+					}
+					if (!checkNoImg(civo.getImg3())) { // noImg파일인지 판단, noImg가 아니면 삭제
+						originFile3.delete();
+						// 2. 파일 서버에 존재하는 이미지도 지우기
+						deleteFile(civo.getImg3());
+					}
+					if (!checkNoImg(civo.getImg4())) { // noImg파일인지 판단, noImg가 아니면 삭제
+						originFile4.delete();
+						// 2. 파일 서버에 존재하는 이미지도 지우기
+						deleteFile(civo.getImg4());
+					}
+					
+					msgCenter("회사 정보가 삭제되었습니다.");
+					cmv.dispose();
+					ammc.setCo();
+				}
+			} catch (SQLException e) {
+				msgCenter("DB에 문제 발생");
+				e.printStackTrace();
+			}
+			break;
+		}
+		
+	}//remove 
 	
 	public void changeImg(JLabel jl, int imgNum) {
 		
@@ -355,7 +451,6 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 				newImg4 = newImgFile;
 				break;
 			}
-			
 		} else {
 			msgCenter("확장자가 png, jpg, jpeg, gif인 파일만 등록가능합니다.");
 		}
@@ -369,15 +464,12 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 			if(e.getSource() == cmv.getJlImg1()) {
 				changeImg(cmv.getJlImg1(), 1);
 			}
-			
 			if(e.getSource() == cmv.getJlImg2()) {
 				changeImg(cmv.getJlImg2(), 2);
 			}
-			
 			if(e.getSource() == cmv.getJlImg3()) {
 				changeImg(cmv.getJlImg3(), 3);
 			}
-			
 			if(e.getSource() == cmv.getJlImg4()) {
 				changeImg(cmv.getJlImg4(), 4);
 			}

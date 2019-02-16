@@ -1,4 +1,4 @@
-package user.ee.controller;
+package admin.dao;
 
 import java.awt.FileDialog;
 import java.awt.event.ActionEvent;

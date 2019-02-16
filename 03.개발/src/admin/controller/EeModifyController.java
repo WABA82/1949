@@ -20,7 +20,7 @@ import admin.view.AdminMgMtView;
 import admin.view.EeModifyView;
 import admin.view.ModifyExtView;
 import admin.vo.EeInfoVO;
-import user.ee.vo.EeModifyVO;
+import admin.vo.EeModifyVO;
 
 public class EeModifyController extends WindowAdapter implements ActionListener {
 
@@ -118,7 +118,7 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 					try {
 						
 						// 기존 파일 삭제 oh99로 테스트 완료
-						File originFile = new File("C:/dev/1949/03.개발/src/file/eeImg/"+eivo.getImg());
+						File originFile = new File("C:/dev/1949/03.개발/src/admin/img/ee/"+eivo.getImg());
 						originFile.delete();
 						
 						// 변경 파일 추가 // 파일서버 완성 후 변경 예정 ///////////////////////////////////////
@@ -181,8 +181,8 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 	}
 	
 	public void removeEe() {
-////////////파일서버 완성 후 파일 삭제요청처리해야 함 //////////////////////////////////////////////////
 		if(AdminDAO.getInstance().deleteEe(eivo)) {
+////////////파일서버 완성 후 파일 삭제요청처리해야 함 //////////////////////////////////////////////////
 			msgCenter("기본정보가 삭제되었습니다.");
 			emv.dispose();
 			ammc.setEe();

@@ -20,7 +20,7 @@ import admin.vo.ErModifyVO;
 import admin.vo.UserInfoVO;
 import admin.vo.UserListVO;
 import admin.vo.UserModifyVO;
-import user.ee.vo.EeModifyVO;
+import admin.vo.EeModifyVO;
 
 public class AdminDAO {
 	
@@ -699,6 +699,39 @@ public class AdminDAO {
 		} finally {
 			if(pstmt != null) { pstmt.close(); }
 			if(con != null) { con.close(); }
+		}
+		
+		return flag;
+	}
+	
+	public boolean deleteCo(String coNum) throws SQLException {
+		boolean flag = false;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			
+			con = getConn();
+			
+			StringBuilder deleteCo = new StringBuilder();
+			
+			deleteCo
+			.append(" delete from company ")
+			.append(" where co_num = ? ");
+			
+			pstmt = con.prepareStatement(deleteCo.toString());
+			pstmt.setString(1, coNum);
+			
+			int cnt = pstmt.executeUpdate();
+			
+			if (cnt == 1) {
+				flag = true;
+			}
+			
+		} finally {
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
 		}
 		
 		return flag;

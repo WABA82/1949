@@ -146,11 +146,9 @@ public class AdminMgMtView extends JDialog {
 		jtCo.addMouseListener(ammc);
 		addWindowListener(ammc);
 		
-		
 		setBounds(100, 100, 1500, 700);
 		setResizable(false);
 		setVisible(true);
-		
 	}//AdminMainView
 	
 	public JTabbedPane getJtb() {
