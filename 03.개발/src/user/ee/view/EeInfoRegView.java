@@ -8,17 +8,18 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import user.ee.controller.EeInfoRegController;
+import user.ee.vo.EeRegVO;
 
 /**
  *	 기본 정보 관리 -김건하-
  *	19.02.07
  * @author owner
  */
+@SuppressWarnings("serial")
 public class EeInfoRegView extends JDialog {
 
 	private JButton jbRegister, jbRegisterExt, jbRegisterImg, jbClose;
@@ -26,13 +27,12 @@ public class EeInfoRegView extends JDialog {
 	private JTextField jtfExtResume;
 	private JLabel jlImage;
 	
-	private JTextField eeNum;
-	private JTextField jtfName;
-	public EeInfoRegView(EeMainView emv) {
+	private JTextField jtfName, jtfAge, jtfGender, jtfId;
+	
+	public EeInfoRegView(EeMainView emv, EeRegVO ervo) {
 		super(emv, "기본 정보 관리",true);
-		
 		//image
-		ImageIcon ii=new ImageIcon("C:\\dev\\1949\\03.개발\\no_img_files\\no_ee_img.png");
+		ImageIcon ii=new ImageIcon("C:/dev/homework/1949/1949/03.개발/no_img_files/no_ee_img.png");
 		jlImage=new JLabel(ii);
 		jlImage.setBorder(new TitledBorder("구직자 이미지"));
 		jlImage.setBounds(38, 20, 160, 225);
@@ -53,10 +53,6 @@ public class EeInfoRegView extends JDialog {
 		jbClose=new JButton("닫기");
 		add(jbClose);
 		jbClose.setBounds(355, 360, 100, 30);
-				
-		
-		//삭제용 넘버
-		eeNum=new JTextField();
 		
 		
 		//Label
@@ -115,20 +111,23 @@ public class EeInfoRegView extends JDialog {
 		jlResume.setBounds(235, 295, 100, 30);
 		
 		//JText
-		jtfName=new JTextField(10);
+		jtfName=new JTextField();
 		add(jtfName);
 		jtfName.setBounds(325, 22, 130, 20);
-//		jtfName.setEditable(false);
+		jtfName.setEditable(false);
 		
-		JTextField jtfAge=new JTextField(10);
+		jtfAge=new JTextField();
 		add(jtfAge);
 		jtfAge.setBounds(325, 182, 130, 20);
 		jtfAge.setEditable(false);
 		
-		JTextField jtfGender=new JTextField(10);
+		jtfGender=new JTextField();
 		add(jtfGender);
 		jtfGender.setBounds(325, 262, 130, 20);
 		jtfGender.setEditable(false);
+		
+		jtfId=new JTextField();
+		add(jtfId);
 		
 		
 		jtfExtResume=new JTextField(10);
@@ -147,7 +146,7 @@ public class EeInfoRegView extends JDialog {
 		jcbPortfolio.setBounds(325,222,130,20);
 		
 		//이벤트 등록
-		EeInfoRegController eirc=new EeInfoRegController(this ,"아이디받아옴");
+		EeInfoRegController eirc=new EeInfoRegController(this, EeMainView.EE_ID );
 		jbRegisterExt.addActionListener(eirc);
 		jbClose.addActionListener(eirc);
 		jbRegisterImg.addActionListener(eirc);
@@ -162,6 +161,7 @@ public class EeInfoRegView extends JDialog {
 		
 	}//EeInfoRegView
 
+	
 	public JButton getJbRegister() {
 		return jbRegister;
 	}
@@ -203,18 +203,20 @@ public class EeInfoRegView extends JDialog {
 	}
 
 	
-	
-	public JTextField getEeNum() {
-		return eeNum;
-	}
 
 	public JTextField getJtfName() {
 		return jtfName;
 	}
-	
-	
-	
-	
+
+
+	public JTextField getJtfAge() {
+		return jtfAge;
+	}
+
+
+	public JTextField getJtfGender() {
+		return jtfGender;
+	}
 	
 	
 //	public static void main(String[] args) {

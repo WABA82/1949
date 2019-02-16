@@ -13,20 +13,24 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import user.dao.JaeHyunEEDAO;
+import user.dao.EeDAO;
 import user.ee.view.EeDetailErView;
 import user.ee.view.EeInterestView;
-import user.ee.vo.EeHiringVO;
+import user.ee.vo.DetailErInfoVO;
+import user.ee.vo.EeInterestVO;
 
 public class EeInterestController extends WindowAdapter implements ActionListener, MouseListener {
 
+	private String ee_id = "";
 	private EeInterestView eiv;
-	private JaeHyunEEDAO jhee_dao;
-	public static final int DBL_CLICK = 2; // 더블 클릭 상수.
+	private EeDAO ee_dao;
+	private final int DBL_CLICK = 2; // 더블 클릭 상수.
 
-	public EeInterestController(EeInterestView eiv, List<EeHiringVO> ehvo) {
+	public EeInterestController(EeInterestView eiv, String ee_id) {
 		this.eiv = eiv;
-		jhee_dao = JaeHyunEEDAO.getInstance();
+		this.ee_id = ee_id;
+		ee_dao = EeDAO.getInstance();
+		setDTM(ee_id);
 	}// 생성자
 
 	@Override
@@ -44,52 +48,52 @@ public class EeInterestController extends WindowAdapter implements ActionListene
 		switch (me.getClickCount()) { // 클릭 횟수 비교.
 		case DBL_CLICK: // 더블 클릭 시
 			if (me.getSource() == eiv.getjtErInfo()) { // 테이블 더블클릭 시.
-				JTable jt = eiv.getjtErInfo();
+				showDetailErinfo();
 			} // end if
 		} // end switch
-//		try {
-//			LunchDetailVO ldvo = la_dao.selectDetailLunch((String) jt.getValueAt(jt.getSelectedRow(), 1));
-//			new LunchDetailView(lmv, ldvo, this);
-//		} catch (SQLException se) {
-//			JOptionPane.showMessageDialog(lmv, "DB에서 문제가 발생했습니다.");
-//			se.printStackTrace();
-//		} // end catch
 	}// mouseClicked
 
 	/**
 	 * 관심 구인정보창의 table목록을 셋팅하는 메소드.
 	 */
-	private void setDTM() {
+	private void setDTM(String ee_id) {
 		DefaultTableModel dtmErInfo = eiv.getdtmErInfo();
 		dtmErInfo.setRowCount(0); // DTM 0으로 초기화.
 
 		try {
 			// DB에서 관심회사를 조회.
-			List<EeHiringVO> list = jhee_dao.selectInterestErInfo();
+			List<EeInterestVO> list = ee_dao.selectInterestErInfoList(ee_id);
 
-//			// JTable에 조회한 정보를 출력.
-//			LunchVO lv = null;
-//
-//			Object[] rowData = null;
-//			for (int i = 0; i < listLunch.size(); i++) {
-//				lv = listLunch.get(i);
-//				// DTM에 데이터를 추가하기 위한 일차원배열(Vector)을 생성하고 데이터를 추가
-//				rowData = new Object[5];
-//				rowData[0] = new Integer(i + 1);
-//				rowData[1] = lv.getLunchCode();
-//				rowData[2] = new ImageIcon(imgPath + lv.getImg());
-//				rowData[3] = lv.getLunchName();
-//				rowData[4] = new Integer(lv.getPrice());
-//
-//				// DTM에 추가
-//				dtmLunch.addRow(rowData);
-//
-//			} // end for
-//
-//			if (listLunch.isEmpty()) {// 등록한 메뉴가 없을 때 : 도시락 추가 버튼을 통해 메뉴를 추가 할 수 있다.
-//				JOptionPane.showMessageDialog(lmv, "입력된 제품이 없습니다. 도시락을 추가해 주세요.");
-//			} // end if
-//
+			// JTable에 조회한 정보를 출력.
+			EeInterestVO eivo = null;
+
+			Object[] rowData = null;
+			for (int i = 0; i < list.size(); i++) {
+
+				/* list에 담겨진 VO객체로 EeInterestVO객체 생성하기 */
+				eivo = list.get(i);
+
+				// DTM에 데이터를 추가하기 위한 일차원배열(Vector)을 생성하고 데이터를 추가
+				rowData = new Object[10];
+				rowData[0] = new Integer(i + 1);
+				rowData[1] = eivo.getErNum();
+				rowData[2] = eivo.getSubject();
+				rowData[3] = eivo.getCoName();
+				rowData[4] = eivo.getRank();
+				rowData[5] = eivo.getLoc();
+				rowData[6] = eivo.getEducation();
+				rowData[7] = eivo.getHireType();
+				rowData[8] = new Integer(eivo.getSal());
+				rowData[9] = eivo.getInputDate();
+
+				// DTM에 추가
+				dtmErInfo.addRow(rowData);
+			} // end for
+
+			if (list.isEmpty()) {// 등록한 메뉴가 없을 때 : 도시락 추가 버튼을 통해 메뉴를 추가 할 수 있다.
+				JOptionPane.showMessageDialog(eiv, "관심구인정보가 없습니다. 먼저 구인정보에서 하트를 눌러주세요.");
+			} // end if
+
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(eiv, "DB에서 데이터를 받아오는 중 문제 발생...");
 			e.printStackTrace();
@@ -97,8 +101,19 @@ public class EeInterestController extends WindowAdapter implements ActionListene
 
 	}// setDTM
 
+	/**
+	 * 더블 클릭시 띄우는 창
+	 */
 	private void showDetailErinfo() {
-		new EeDetailErView(null, null, null, null);
+		JTable jt = eiv.getjtErInfo();
+		String erNum = String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
+		DetailErInfoVO deivo = null;
+		try {
+			deivo = ee_dao.selectDetail(erNum, ee_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} // end catch
+		new EeDetailErView(null, deivo, erNum, ee_id, null, deivo.getInterest());
 	}// showDetailErinfo
 
 	////////// 안쓰는 메소드//////////

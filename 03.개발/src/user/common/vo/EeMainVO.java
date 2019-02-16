@@ -10,20 +10,27 @@ public class EeMainVO {
 		this.img = img;
 		this.activation = activation;
 	}
+	
 	public String getEeId() {
 		return eeId;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public String getImg() {
 		return img;
 	}
+
 	public String getActivation() {
 		return activation;
 	}
+
 	@Override
 	public String toString() {
 		return "EeMainVO [eeId=" + eeId + ", name=" + name + ", img=" + img + ", activation=" + activation + "]";
 	}
+
+
 }

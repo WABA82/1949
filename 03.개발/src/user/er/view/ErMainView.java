@@ -75,9 +75,7 @@ public class ErMainView extends JFrame {
 		setVisible(true);
 	}
 	
-	public static void main(String[] args) {
-		new ErMainView(null);
-	}
+
 	
 	public JButton getJbCoMgmt() {
 		return jbCoMgmt;

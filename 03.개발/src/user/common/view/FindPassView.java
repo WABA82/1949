@@ -6,7 +6,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import user.common.controller.FindPassController;
@@ -62,6 +61,8 @@ public class FindPassView extends JDialog {
 		FindPassController fpc = new FindPassController(this);
 		
 		addWindowListener(fpc);
+		jbValidation.addActionListener(fpc);
+		jbClose.addActionListener(fpc);
 		
 		setBounds(500, 200, 400, 310);
 		setResizable(false);
@@ -87,4 +88,5 @@ public class FindPassView extends JDialog {
 	public JButton getJbClose() {
 		return jbClose;
 	}
+
 }
