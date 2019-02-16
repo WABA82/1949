@@ -25,6 +25,9 @@ public class ModifyExtController extends WindowAdapter implements ActionListener
 		this.emc=emc;
 	}//생성자
 	
+	/**
+	 * 파일을 선택해서 changeExt 호출하는 메소드
+	 */
 	private void chooseFile() {
 		FileDialog fd=new FileDialog(mev, "파일을 선택해주세요", FileDialog.LOAD);
 		fd.setVisible(true);
@@ -33,11 +36,16 @@ public class ModifyExtController extends WindowAdapter implements ActionListener
 		String fileDir=fd.getDirectory();
 		String fileName=fd.getFile();
 		
-		File file=new File(fileDir+fileName);
-		changeExt(file);
+		if(fileDir != null && fileName != null) { // 선택시에만(취소 예외처리)
+			File file=new File(fileDir+fileName);
+			changeExt(file);
+		}
 	}//chooseFile
 	
-	//jtfExtResume; 외부이력서는 doc, pdf만 첨부가능 합니다
+	/**
+	 * 파일을 선택하면 emc의 이력서 변경 flag를 바꾸고 파일을 저장하는 메소드 
+	 * @param file
+	 */
 	private void changeExt(File file) {
 		
 		String extResume = file.getName();

@@ -27,7 +27,7 @@ import admin.vo.ErListVO;
 import admin.vo.UserInfoVO;
 import admin.vo.UserListVO;
 
-public class AdminMgMtController extends WindowAdapter implements MouseListener, Runnable {
+public class AdminMgMtController extends WindowAdapter implements MouseListener {
 
 	private AdminMgMtView ammv;
 	private AdminDAO a_dao;
@@ -195,27 +195,26 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 		}
 	}
 	
-	public void showUserModify() {
-		
+	public void showUserModify(String id) throws SQLException {
+		UserInfoVO ulvo = a_dao.selectOneUser(id);
+		new UserModifyView(ammv, ulvo, this);
 	}
 	
-	public void showEeModify() {
-		
+	public void showEeModify(String eeNum) throws SQLException {
+		EeInfoVO eivo = a_dao.selectOneEe(eeNum);
+		new EeModifyView(ammv, eivo, this);
 	}
 	
-	public void showErModify() {
-		
+	public void showErModify(String erNum) throws SQLException {
+		ErInfoVO eivo = a_dao.selectOneEr(erNum);
+		new ErModifyView(ammv, eivo, this);
 	}
 	
-	public void showCoModify() {
-		
+	public void showCoModify(String coNum) throws SQLException {
+		CoInfoVO clvo = a_dao.selectOneCo(coNum);
+		new CoModifyView(ammv, clvo, this);
 	}
 	
-	@Override
-	public void run() {
-
-	}
-
 	@Override
 	public void mouseClicked(MouseEvent me) {
 		if (ammv.getJtb().getSelectedIndex() == 0) {
@@ -243,8 +242,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 				String id = (String)jt.getValueAt(jt.rowAtPoint(me.getPoint()), 1);
 				
 				try {
-					UserInfoVO ulvo = a_dao.selectOneUser(id);
-					new UserModifyView(ammv, ulvo, this);
+					showUserModify(id);
 				} catch (SQLException e) {
 					msgCenter("DB 접속 실패했습니다.");
 					e.printStackTrace();
@@ -258,8 +256,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 				String coNum = (String)jt.getValueAt(jt.rowAtPoint(me.getPoint()), 1);
 				
 				try {
-					CoInfoVO clvo = a_dao.selectOneCo(coNum);
-					new CoModifyView(ammv, clvo, this);
+					showCoModify(coNum);
 				} catch (SQLException e) {
 					msgCenter("DB 접속 실패했습니다.");
 					e.printStackTrace();
@@ -273,8 +270,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 				String erNum = (String)jt.getValueAt(jt.rowAtPoint(me.getPoint()), 1);
 				
 				try {
-					ErInfoVO eivo = a_dao.selectOneEr(erNum);
-					new ErModifyView(ammv, eivo, this);
+					showErModify(erNum);
 				} catch (SQLException e) {
 					msgCenter("DB 접속 실패했습니다.");
 					e.printStackTrace();
@@ -288,8 +284,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 				String eeNum = (String)jt.getValueAt(jt.rowAtPoint(me.getPoint()), 1);
 				
 				try {
-					EeInfoVO eivo = a_dao.selectOneEe(eeNum);
-					new EeModifyView(ammv, eivo, this);
+					showEeModify(eeNum);
 				} catch (SQLException e) {
 					msgCenter("DB 접속 실패했습니다.");
 					e.printStackTrace();

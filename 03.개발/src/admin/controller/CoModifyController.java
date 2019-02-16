@@ -123,7 +123,6 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 		dos.flush();
 		
 		dis.readUTF(); // 응답 후 연결 종료
-		System.out.println("del res");
 		
 		closeStreams();
 	}
@@ -185,7 +184,6 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 		
 		fos = new FileOutputStream("C:/dev/1949/03.개발/src/admin/img/co/"+newFileName);
 		
-		System.out.println("55");
 		for(int i=0; i<arrCnt; i++) {
 			len = dis.read(readData);
 			fos.write(readData,0,len);
@@ -331,10 +329,10 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 				msgCenter("회사정보가 수정되었습니다.");
 				cmv.dispose();
 				
-				CoInfoVO clvo = AdminDAO.getInstance().selectOneCo(coNum);
+				CoInfoVO newCivo = AdminDAO.getInstance().selectOneCo(coNum);
 				
 				ammc.setCo();
-				new CoModifyView(ammv, clvo, ammc);
+				new CoModifyView(ammv, newCivo, ammc);
 			} 
 		} catch (SQLException e) {
 			msgCenter("DB에 문제가 발생했습니다.");

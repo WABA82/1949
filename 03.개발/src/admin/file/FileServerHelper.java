@@ -17,8 +17,9 @@ public class FileServerHelper {
 	private DataOutputStream dos;
 	private DataInputStream dis;
 	
-	private static final boolean CO = true; // CO이미지 변경 요청 flag변수
-	private static final boolean EE = false;  // EE이미지 변경 요청 flag변수
+	private static final int CO_IMG = 0; // CO이미지 추가 요청 flag변수
+	private static final int EE_IMG = 1;  // EE이미지 추가 요청 flag변수
+	private static final int EE_EXT = 2;  // EE이력서 추가 요청 flag변수
 	
 	private FileInputStream fis;
 	private FileOutputStream fos;
@@ -53,28 +54,31 @@ public class FileServerHelper {
 			eeImgsListRequest();
 			break;
 		case "coImg_register": // co Img 추가
-			ImgReg(CO);
+			fileReg(CO_IMG);
 			break;
 		case "coImg_delete": // co Img 삭제
-			ImgDel(CO);
+			fileDel(CO_IMG);
 			break;
 		case "coImg_request": // co Img 전송
-			ImgReq(CO);
+			fileReq(CO_IMG);
 			break;
 		case "eeImg_register": // ee Img 등록
-			ImgReg(EE);
+			fileReg(EE_IMG);
 			break;
 		case "eeImg_delete": // ee Img 삭제
-			ImgDel(EE);
+			fileDel(EE_IMG);
 			break;
 		case "eeImg_request": // ee Img 전송
-			ImgReq(EE);
+			fileReq(EE_IMG);
 			break;
-		case "ee_ext_req": // ee 외부이력서 전송
-			
+		case "ee_ext_request": // ee 외부이력서 전송
+			fileReq(EE_EXT);
 			break;
-		case "ee_ext_reg": // ee 외부이력서 등록
-			
+		case "ee_ext_register": // ee 외부이력서 등록
+			fileReg(EE_EXT);
+			break;
+		case "ee_ext_delete": // ee 외부이력서 삭제
+			fileDel(EE_EXT);
 			break;
 		}
 		
@@ -200,18 +204,20 @@ public class FileServerHelper {
 	}
 
 	/**
-	 * FileServer에 존재하던 Img를 삭제하는 메소드
+	 * FileServer에 존재하던 file을 삭제하는 메소드
 	 * @throws IOException
 	 */
-	public void ImgDel(boolean flag) throws IOException  {
+	public void fileDel(int flag) throws IOException  {
 		String originName = dis.readUTF(); // 기존 이미지 파일명을 전달 받음
 		
 		File originFile = null;
 		
-		if (flag) { // CO
-			originFile = new File("C:/dev/1949/03.개발/src/file/coImg/"+originName); // 기존 파일들 삭제 
-		} else { // EE
-			originFile = new File("C:/dev/1949/03.개발/src/file/eeImg/"+originName); // 기존 파일들 삭제 
+		if (flag == CO_IMG) { // CO
+			originFile = new File("C:/dev/1949/03.개발/src/file/coImg/"+originName); 
+		} else if (flag == EE_IMG ){ // EE
+			originFile = new File("C:/dev/1949/03.개발/src/file/eeImg/"+originName); 
+		} else if (flag == EE_EXT) {
+			originFile = new File("C:/dev/1949/03.개발/src/file/resume/"+originName);  
 		}
 		
 		originFile.delete();
@@ -221,18 +227,20 @@ public class FileServerHelper {
 	}
 	
 	/**
-	 * 새로운 Img파일을 등록하는 메소드
+	 * 새로운 파일을 등록하는 메소드
 	 * @throws IOException
 	 */
-	public void ImgReg(boolean flag) throws IOException  {
+	public void fileReg(int flag) throws IOException  {
 		String newFileName = dis.readUTF(); // 수정된 파일명
 		
 		int arrCnt = dis.readInt(); // 파일의 크기
 		
-		if (flag) { // CO
+		if (flag == CO_IMG) { // CO
 			fos = new FileOutputStream("C:/dev/1949/03.개발/src/file/coImg/"+newFileName);
-		} else { // EE
+		} else if (flag == EE_IMG){ // EE
 			fos = new FileOutputStream("C:/dev/1949/03.개발/src/file/eeImg/"+newFileName);
+		} else if (flag == EE_EXT) {
+			fos = new FileOutputStream("C:/dev/1949/03.개발/src/file/resume/"+newFileName);
 		}
 		
 		byte[] readData = new byte[512];
@@ -250,16 +258,18 @@ public class FileServerHelper {
 	}
 	
 	/**
-	 * 요청한 Img를 전달하는 메소드
+	 * 요청한 file를 전달하는 메소드
 	 * @throws IOException
 	 */
-	public void ImgReq(boolean flag) throws IOException {
+	public void fileReq(int flag) throws IOException {
 		String fileName = dis.readUTF();
 		
-		if (flag) { // CO
+		if (flag == CO_IMG) { // CO_IMG
 			fis = new FileInputStream("C:/dev/1949/03.개발/src/file/coImg/"+fileName);
-		} else { // EE
+		} else if (flag == EE_IMG){ // EE_IMG
 			fis = new FileInputStream("C:/dev/1949/03.개발/src/file/eeImg/"+fileName);
+		} else if (flag == EE_EXT) { // EE_EXT
+			fis = new FileInputStream("C:/dev/1949/03.개발/src/file/resume/"+fileName);
 		}
 		
 		byte[] readData = new byte[512];
@@ -274,10 +284,12 @@ public class FileServerHelper {
 		dos.writeInt(arrCnt);
 		dos.flush();
 		
-		if (flag) { // CO
+		if (flag == CO_IMG) { // CO_IMG
 			fis = new FileInputStream("C:/dev/1949/03.개발/src/file/coImg/"+fileName);
-		} else { // EE
+		} else if (flag == EE_IMG){ // EE_IMG
 			fis = new FileInputStream("C:/dev/1949/03.개발/src/file/eeImg/"+fileName);
+		} else if (flag == EE_EXT) { // EE_EXT
+			fis = new FileInputStream("C:/dev/1949/03.개발/src/file/resume/"+fileName);
 		}
 
 		while((len = fis.read(readData)) != -1) {

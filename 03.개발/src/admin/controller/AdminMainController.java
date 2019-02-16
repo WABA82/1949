@@ -34,6 +34,7 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 
 	private AdminMainView amv;
 	private Thread threadLog, threadFileServer;
+	private boolean serverFlag;
 	
 	public AdminMainController(AdminMainView amv) {
 		this.amv = amv;
@@ -142,25 +143,31 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 		}
 		
 		if (e.getSource() == amv.getJbServerOn()) {
-			amv.getDlmLog().addElement("서버를 구동합니다..");
-			
-			// 로그서버(스레드) 시작
-			threadLog = new Thread(this);   
-			threadLog.start();
-			
-			// 파일서버(스레드) 시작
-			threadFileServer = new FileServer(); 
-			threadFileServer.start();
-		
-			try {
-				getCoImgs();
-				getEeImgs();
-			} catch (UnknownHostException e1) {
-				e1.printStackTrace();
-			} catch (ClassNotFoundException e1) {
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				e1.printStackTrace();
+			if (!serverFlag) {
+				amv.getDlmLog().addElement("서버를 구동합니다..");
+				serverFlag = true;
+				
+				// 로그서버(스레드) 시작
+				threadLog = new Thread(this);   
+				threadLog.start();
+				
+				// 파일서버(스레드) 시작
+				threadFileServer = new FileServer(); 
+				threadFileServer.start();
+				
+				try {
+					getCoImgs();
+					getEeImgs();
+				} catch (UnknownHostException e1) {
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			} else {
+				msgCenter("이미 서버가 실행중입니다.");
+				return;
 			}
 		}
 		
