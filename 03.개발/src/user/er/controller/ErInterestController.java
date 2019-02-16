@@ -12,10 +12,10 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import user.dao.ErDAO;
-//import user.er.view.ErDetailEeView;
+import user.er.view.ErDetailEeView;
 import user.er.view.ErInterestView;
+import user.er.vo.DetailEeInfoVO;
 import user.er.vo.ErHiringForInterestVO;
-import user.er.vo.ErInterestVO;
 
 public class ErInterestController extends WindowAdapter implements MouseListener {
 
@@ -45,28 +45,28 @@ public class ErInterestController extends WindowAdapter implements MouseListener
 			List<ErHiringForInterestVO> list = er_dao.selectInterestEEInfoList(er_id);
 
 			// JTable에 조회한 정보를 출력.
-			ErHiringForInterestVO ehfivo = null;
+			ErHiringForInterestVO erhForInterest = null;
 			String imgPath = "C:/dev/1949/03.개발/가데이터/구직자사진/150x200px/";
 
 			Object[] rowData = null;
 			for (int i = 0; i < list.size(); i++) {
 
 				/* list에 담겨진 VO객체로 EeInterestVO객체 생성하기 */
-//				eivo = list.get(i);
+				erhForInterest = list.get(i);
 
 				// DTM에 데이터를 추가하기 위한 일차원배열(Vector)을 생성하고 데이터를 추가
 				rowData = new Object[11];
 				rowData[0] = new Integer(i + 1);
-				rowData[1] = ehfivo.getEe_num();
-				rowData[2] = new ImageIcon(imgPath + ehfivo.getImg());
-				rowData[3] = ehfivo.getName();
-				rowData[4] = ehfivo.getRank();
-				rowData[5] = ehfivo.getLoc();
-				rowData[6] = ehfivo.getEducation();
-				rowData[7] = new Integer(ehfivo.getAge());
-				rowData[8] = ehfivo.getPortfolio();
-				rowData[9] = ehfivo.getGender();
-				rowData[10] = ehfivo.getInput_date();
+				rowData[1] = erhForInterest.getEe_num();
+				rowData[2] = new ImageIcon(imgPath + erhForInterest.getImg());
+				rowData[3] = erhForInterest.getName();
+				rowData[4] = erhForInterest.getRank();
+				rowData[5] = erhForInterest.getLoc();
+				rowData[6] = erhForInterest.getEducation();
+				rowData[7] = new Integer(erhForInterest.getAge());
+				rowData[8] = erhForInterest.getPortfolio();
+				rowData[9] = erhForInterest.getGender();
+				rowData[10] = erhForInterest.getInput_date();
 
 				// DTM에 추가
 				dtm.addRow(rowData);
@@ -90,15 +90,24 @@ public class ErInterestController extends WindowAdapter implements MouseListener
 	public void mouseClicked(MouseEvent me) {
 		switch (me.getClickCount()) {
 		case DBL_CLICK:
-
 			if (me.getSource() == eriv.getJtEeInfo()) {
-				JTable jt = eriv.getJtEeInfo(); // 테이블 받아오기
-				String ee_num = ((String) jt.getValueAt(jt.getSelectedRow(), 1));
-				//new ErDetailEeView(ehv, devo, eeNum, erId, interest);
+				showDetailErInfo();
 			} // end if
-
 		}// end switch
 	}// mouseClicked
+
+	public void showDetailErInfo() {
+		JTable jt = eriv.getJtEeInfo();
+		String eeNum = String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
+		DetailEeInfoVO devo = null;
+		try {
+			devo = er_dao.selectDeatilEe(eeNum, er_id);
+			String ee_num = ((String) jt.getValueAt(jt.getSelectedRow(), 1));
+			new ErDetailEeView(eriv, devo, ee_num, er_id, "1");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} // end catch
+	}// showDetailErInfo()
 
 	////////// 안쓰는 메소드 //////////
 	@Override
