@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
+import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -69,7 +70,7 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 				bw.write(logData.toString());
 				bw.flush();
 				
-				msgCenter("로그내용을 log파일로 저장했습니다.");
+				msgCenter("로그내용을 저장했습니다.");
 				
 			} finally {
 				if (bw != null) { bw.close(); }
@@ -120,7 +121,8 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 					
 					msg = new StringBuilder();
 					
-					msg.append(sdf.format(date)).append(" ").append(id).append("(")
+					msg.append("[").append(sdf.format(date)).append("]")
+					.append(" ").append(id).append("(")
 					.append(ipAddr).append(") - ").append(request);
 					
 					// 유저로부터 받은 msg를 로그창에 찍음
@@ -144,18 +146,25 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 		
 		if (e.getSource() == amv.getJbServerOn()) {
 			if (!serverFlag) {
-				amv.getDlmLog().addElement("서버를 구동합니다..");
-				serverFlag = true;
-				
-				// 로그서버(스레드) 시작
-				threadLog = new Thread(this);   
-				threadLog.start();
-				
-				// 파일서버(스레드) 시작
-				threadFileServer = new FileServer(); 
-				threadFileServer.start();
-				
 				try {
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					Date date = new Date();
+					
+					StringBuilder startLog = new StringBuilder();
+					startLog.append("[").append(sdf.format(date)).append("] ADMIN(")
+					.append(Inet4Address.getLocalHost().getHostAddress()).append(") - ").append("서버 구동");
+					
+					amv.getDlmLog().addElement(startLog.toString());
+					serverFlag = true;
+					
+					// 로그서버(스레드) 시작
+					threadLog = new Thread(this);   
+					threadLog.start();
+					
+					// 파일서버(스레드) 시작
+					threadFileServer = new FileServer(); 
+					threadFileServer.start();
+				
 					getCoImgs();
 					getEeImgs();
 				} catch (UnknownHostException e1) {
