@@ -13,6 +13,7 @@ import user.ee.vo.DetailErInfoVO;
 import user.ee.vo.EeAppVO;
 import user.ee.vo.EeHiringVO;
 import user.ee.vo.EeInsertVO;
+import user.ee.vo.EeInterestAndAppVO;
 import user.ee.vo.EeInterestVO;
 import user.ee.vo.EeRegVO;
 
@@ -255,8 +256,6 @@ public class EeDAO {
 		}
 		return flag;
 	}
-
-		////////////////////////////////////////// 선의 소스
 	////////////////////////////////////////// 끝//////////////////////////////////////////////////////////
 
 	/**
