@@ -38,8 +38,7 @@ public class ErModifyView extends JDialog {
 
 		/* 컴포넌트 생성하기 */
 		// 이미지아이콘 : 회사로고
-		///////////////////////////// 파일서버 구현 후 변경예정 ////////////////////////////////////
-		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/"+eivo.getImg()); 
+		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/admin/img/co/"+eivo.getImg()); 
 
 		// 라벨들
 		JLabel jlImage = new JLabel(erLogo);

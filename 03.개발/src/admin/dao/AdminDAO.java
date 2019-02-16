@@ -20,7 +20,7 @@ import admin.vo.ErModifyVO;
 import admin.vo.UserInfoVO;
 import admin.vo.UserListVO;
 import admin.vo.UserModifyVO;
-import user.ee.vo.EeModifyVO;
+import admin.vo.EeModifyVO;
 
 public class AdminDAO {
 	
@@ -429,7 +429,6 @@ public class AdminDAO {
 	
 	public boolean ueTransaction1(Connection con, ErModifyVO emvo) throws SQLException {
 		boolean flag = false;
-		System.out.println("t1시작");
 		
 		StringBuilder updateEr = new StringBuilder();
 		updateEr
@@ -443,7 +442,6 @@ public class AdminDAO {
 		pstmt1.setString(3, emvo.getRank());
 		pstmt1.setString(4, emvo.getLoc());
 		pstmt1.setString(5, emvo.getHireType());
-		System.out.println("--ht"+emvo.getHireType());
 		pstmt1.setString(6, emvo.getPortfolio());
 		pstmt1.setString(7, emvo.getErDesc());
 		pstmt1.setInt(8, emvo.getSal());
@@ -454,13 +452,11 @@ public class AdminDAO {
 		if(cnt1 == 1) {
 			flag = true;
 		}
-		System.out.println("t1반환");
 		return flag;
 	}
 	
 	public boolean ueTransaction2(Connection con, ErModifyVO emvo, int preSkillNum) throws SQLException {
 		boolean flag = false;
-		System.out.println("t2시작");
 		
 		StringBuilder deleteSkill = new StringBuilder();
 		deleteSkill
@@ -487,12 +483,10 @@ public class AdminDAO {
 			flag = true;
 		}
 		
-		System.out.println("t2반환");
 		return flag;
 	}
 	
 	public void ueTransaction3(Connection con, ErModifyVO emvo) throws SQLException {
-		System.out.println("t3시작");
 		
 		StringBuilder insertSkill = new StringBuilder();
 		insertSkill
@@ -508,8 +502,6 @@ public class AdminDAO {
 			
 			pstmt3.executeUpdate();
 		}
-		
-		System.out.println("t3반환");
 	}
 	
 	public boolean updateEr(ErModifyVO emvo, int preSkillNum) {
@@ -521,11 +513,8 @@ public class AdminDAO {
 			
 			try {
 				boolean t1 = ueTransaction1(con, emvo); // 새로운 정보로 er_info update
-				System.out.println("t1끝");
 				boolean t2 = ueTransaction2(con, emvo, preSkillNum); // 기존 selected_skill 삭제
-				System.out.println("t2끝");
 				ueTransaction3(con, emvo); // 새롭게 선택된 Skill들 insert
-				System.out.println("t3끝");
 				
 				if (t1 && t2) {
 					flag = true;
@@ -715,6 +704,39 @@ public class AdminDAO {
 		return flag;
 	}
 	
+	public boolean deleteCo(String coNum) throws SQLException {
+		boolean flag = false;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			
+			con = getConn();
+			
+			StringBuilder deleteCo = new StringBuilder();
+			
+			deleteCo
+			.append(" delete from company ")
+			.append(" where co_num = ? ");
+			
+			pstmt = con.prepareStatement(deleteCo.toString());
+			pstmt.setString(1, coNum);
+			
+			int cnt = pstmt.executeUpdate();
+			
+			if (cnt == 1) {
+				flag = true;
+			}
+			
+		} finally {
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		return flag;
+	}
+	
 	public EeInfoVO selectOneEe(String eeNum) throws SQLException {
 		EeInfoVO eivo = null;
 		
@@ -789,7 +811,6 @@ public class AdminDAO {
 			if (con != null) { con.close(); }
 		}
 		
-		System.out.println("--updateEe flag : " +flag);
 		return flag;
 	}
 	

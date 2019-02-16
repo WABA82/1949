@@ -4,12 +4,11 @@ import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import admin.controller.EeModifyController;
-import user.ee.controller.ModifyExtController;
+import admin.controller.ModifyExtController;
 
 /**
  * 19.02.14 이력서수정 기능구현
