@@ -12,19 +12,25 @@ import admin.vo.AddrVO;
 import admin.vo.CoInfoVO;
 import admin.vo.CoListVO;
 import admin.vo.CoModifyVO;
+import admin.vo.EeDeleteVO;
 import admin.vo.EeInfoVO;
 import admin.vo.EeListVO;
+import admin.vo.EeModifyVO;
 import admin.vo.ErInfoVO;
 import admin.vo.ErListVO;
 import admin.vo.ErModifyVO;
 import admin.vo.UserInfoVO;
 import admin.vo.UserListVO;
 import admin.vo.UserModifyVO;
-import admin.vo.EeModifyVO;
 
 public class AdminDAO {
 	
 	private static AdminDAO a_dao;
+
+	private PreparedStatement pstmt1;
+	private PreparedStatement pstmt2;
+	private PreparedStatement pstmt3;
+	private Connection con;
 	
 	private AdminDAO() {
 		try {
@@ -537,11 +543,6 @@ public class AdminDAO {
 		return eivo;
 	}
 
-	// updateEr 트랜잭션 용 
-	private PreparedStatement pstmt1;
-	private PreparedStatement pstmt2;
-	private PreparedStatement pstmt3;
-	private Connection con;
 	
 	public boolean ueTransaction1(Connection con, ErModifyVO emvo) throws SQLException {
 		boolean flag = false;
@@ -640,7 +641,7 @@ public class AdminDAO {
 				}
 				
 			} finally {
-				closeUpdateEr();
+				closePstmt3();
 			}
 		} catch (SQLException e) {
 			try {
@@ -654,7 +655,7 @@ public class AdminDAO {
 		return flag;
 	}
 	
-	public void closeUpdateEr() throws SQLException {
+	public void closePstmt3() throws SQLException {
 		if (pstmt3 != null) { pstmt3.close(); }
 		if (pstmt2 != null) { pstmt2.close(); }
 		if (pstmt1 != null) { pstmt1.close(); }
@@ -730,7 +731,7 @@ public class AdminDAO {
 			
 		} finally {
 			try {
-				closeDeleteEr();
+				closePstmt2();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -739,11 +740,6 @@ public class AdminDAO {
 		return flag;
 	}
 	
-	public void closeDeleteEr() throws SQLException {
-		if (pstmt2 != null) { pstmt2.close(); }
-		if (pstmt1 != null) { pstmt1.close(); }
-		if (con != null) { con.close(); }
-	}
 	
 	public CoInfoVO selectOneCo(String coNum) throws SQLException {
 		CoInfoVO civo = null;
@@ -820,24 +816,35 @@ public class AdminDAO {
 		return flag;
 	}
 	
-	public boolean deleteCo(String coNum) throws SQLException {
+	public boolean deleteCo(String input, String inputFlag) throws SQLException { //////////////////////////////////// 수정필요 ///////////////
+		// 회사 정보를 삭제하면 해당 유저의 activation 상태를 N으로 바꿔야 함
+		// 3개의 쿼리를 한 트랜잭션 처리
+		// selectedSkill에서 해당 co와 연결된 er데이터 삭제, 
+		// er_info에서 해당 co와 연결된 게시글 삭제
+		// 그다음 company에서 레코드 삭제
+		
 		boolean flag = false;
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		
 		try {
-			
 			con = getConn();
 			
 			StringBuilder deleteCo = new StringBuilder();
 			
-			deleteCo
-			.append(" delete from company ")
-			.append(" where co_num = ? ");
+			if (inputFlag.equals("coNum")) {
+				deleteCo
+				.append(" delete from company ")
+				.append(" where co_num = ? ");
+			} else if (inputFlag.equals("id")) {
+				deleteCo
+				.append(" delete from company ")
+				.append(" where er_id = ? ");
+			}
 			
 			pstmt = con.prepareStatement(deleteCo.toString());
-			pstmt.setString(1, coNum);
+			pstmt.setString(1, input);
 			
 			int cnt = pstmt.executeUpdate();
 			
@@ -853,7 +860,7 @@ public class AdminDAO {
 		return flag;
 	}
 	
-	public EeInfoVO selectOneEe(String eeNum) throws SQLException {
+	public EeInfoVO selectOneEe(String input, String flag) throws SQLException {
 		EeInfoVO eivo = null;
 		
 		Connection con = null;
@@ -867,10 +874,17 @@ public class AdminDAO {
 			.append(" select ee_num, img, id, ut.name, rank, loc, ")
 			.append(" education, portfolio, gender, to_char(ei.input_date, 'yyyy-MM-dd') input_date, ")
 			.append(" ext_resume, ut.age ")
-			.append(" from ee_info ei, user_table ut ")
-			.append(" where ei.ee_id = ut.id and ei.ee_num=? ");
+			.append(" from ee_info ei, user_table ut ");
+			
+			// 동적쿼리, eeNum으로 조회, 또는 id로 조회
+			if (flag.equals("eeNum")) {
+				selectOneEe.append(" where ei.ee_id = ut.id and ei.ee_num=? ");
+			} else if (flag.equals("id")) {
+				selectOneEe.append(" where ut.id=? and ei.ee_id = ut.id ");
+			}
+			
 			pstmt = con.prepareStatement(selectOneEe.toString());
-			pstmt.setString(1, eeNum);
+			pstmt.setString(1, input);
 			
 			rs = pstmt.executeQuery();
 			
@@ -971,7 +985,39 @@ public class AdminDAO {
 		return flag;
 	}
 	
-	public boolean deleteEe(EeInfoVO eivo){
+	public EeDeleteVO selectEDVO(String id) throws SQLException {
+		EeDeleteVO edvo = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = getConn();
+			StringBuilder selectEDVO = new StringBuilder();
+			selectEDVO
+			.append(" select ee_num, ee_id from ee_info ei, user_table ut   ")
+			.append("where ee_id = ut.id and ut.id = ? ");
+			
+			pstmt = con.prepareStatement(selectEDVO.toString());
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				edvo = new EeDeleteVO(rs.getString("ee_num"), rs.getString("ee_id"));
+			}
+			
+		} finally {
+			if (rs != null) { rs.close(); }
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		return edvo;
+	}
+	
+	public boolean deleteEe(EeDeleteVO edvo){
 		boolean flag = false;
 		
 		con = null;
@@ -982,7 +1028,7 @@ public class AdminDAO {
 				con = getConn();
 				con.setAutoCommit(false);
 				
-				if (dEeTransaction1(eivo.getEeNum()) && dEeTransaction2(eivo.getId())) {
+				if (dEeTransaction1(edvo.getEeNum()) && dEeTransaction2(edvo.getEe_id())) {
 					con.commit();
 					flag = true;
 				} else {
@@ -999,7 +1045,7 @@ public class AdminDAO {
 			}
 		} finally {
 			try {
-				closeDeleteEe();
+				closePstmt2();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -1008,7 +1054,7 @@ public class AdminDAO {
 		return flag;
 	}
 	
-	public void closeDeleteEe() throws SQLException {
+	public void closePstmt2() throws SQLException {
 		if (pstmt2 != null) { pstmt2.close(); }
 		if (pstmt1 != null) { pstmt1.close(); }
 		if (con != null) { con.close(); }

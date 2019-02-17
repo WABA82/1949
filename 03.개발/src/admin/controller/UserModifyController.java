@@ -22,6 +22,8 @@ import admin.util.AdminUtil;
 import admin.view.AdminMgMtView;
 import admin.view.SearchAddrView;
 import admin.view.UserModifyView;
+import admin.vo.EeDeleteVO;
+import admin.vo.EeInfoVO;
 import admin.vo.UserInfoVO;
 import admin.vo.UserModifyVO;
 
@@ -30,6 +32,7 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 	private UserModifyView umv;
 	private AdminMgMtView ammv;
 	private AdminMgMtController ammc;
+	private UserInfoVO uivo;
 	private String addrSeq;
 	private AdminUtil au;
 	
@@ -39,10 +42,13 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 	private FileInputStream fis;
 	private FileOutputStream fos;
 	
-	public UserModifyController(UserModifyView umv, AdminMgMtView ammv, String addrSeq, AdminMgMtController ammc) {
+	private boolean userTypeFlag;
+	
+	public UserModifyController(UserModifyView umv, AdminMgMtView ammv, UserInfoVO uivo, AdminMgMtController ammc) {
 		this.umv = umv;
 		this.ammv = ammv;
-		this.addrSeq = addrSeq;
+		this.uivo = uivo;
+		this.addrSeq = uivo.getAddrSeq();
 		this.ammc = ammc;
 		au = new AdminUtil();
 	}
@@ -224,7 +230,7 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		return flag;
 	}
 	
-	public void modify() {
+	public void modify() throws UnknownHostException, IOException {
 		UserModifyVO umvo = null;
 		
 		String id = umv.getJtfId().getText().trim();
@@ -267,7 +273,42 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		umvo = new UserModifyVO(id, pass, name, ssn, tel, addrSeq, addrDetail, email, questionType, answer, userType);
 		
 		try {
-			if(AdminDAO.getInstance().updateUser(umvo)) {
+			if(AdminDAO.getInstance().updateUser(umvo)) { // 유저타입이 변경되었다면, 이전 등록 정보를 모두 삭제필요
+				
+				// 일반 사용자 - 기본 정보(이력서 사진, 이력서 파일)
+				// 기업 사용자 - 기업 정보(기업 사진*4)
+				if (userTypeFlag) {
+					if(uivo.getUserType().equals("E")) { // E->R
+						// 우선 유저의 파일이름을 조회해야 함 
+						EeInfoVO eivo = AdminDAO.getInstance().selectOneEe(id, "id");
+						
+						// 이미지, 이력서 먼저 삭제처리 
+						File imgFile = new File("C:/dev/1949/03.개발/src/admin/img/ee/"+eivo.getImg());
+						imgFile.delete();
+						
+						au.deleteFile(eivo.getImg(), "ee", client, dos, dis);
+						
+						if (eivo.getExtResume() != null) {
+							au.deleteFile(eivo.getExtResume(), "ext", client, dos, dis);
+						}
+						
+						EeDeleteVO edvo = AdminDAO.getInstance().selectEDVO(id);
+						// 일반 사용자였을 때 기본 정보를 삭제처리
+						AdminDAO.getInstance().deleteEe(edvo);
+					} else if (uivo.getUserType().equals("R")) { // R->E
+						
+						// 이미지 삭제 처리
+						List<String> listCoImgs = AdminDAO.getInstance().selectUserImgs(id, "기업");
+						
+						for(String imgName : listCoImgs) {
+							au.deleteFile(imgName, "co", client, dos, dis);
+						}
+						
+						// 기업 사용자였을 때 회사 정보에 올렸던 데이터를 삭제처리
+						AdminDAO.getInstance().deleteCo(id, "id");
+					}
+				}
+				
 				msgCenter("회원정보가 수정되었습니다.");
 				au.sendLog(umv.getJtfId().getText()+" 회원 정보 수정");
 				umv.dispose();
@@ -292,7 +333,13 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == umv.getJbModify()) {
-			modify();
+			try {
+				modify();
+			} catch (UnknownHostException e1) {
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 		
 		if (e.getSource() == umv.getJbRemove()) {
@@ -312,6 +359,19 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		if(e.getSource() == umv.getJbClose()) {
 			umv.dispose();
 		}
+		
+		if (e.getSource() == umv.getJcbUser()) {
+			switch(JOptionPane.showConfirmDialog(umv, "유저타입을 변경하시면 등록했던 모든 기본 정보가 삭제됩니다. 계속하시겠습니까?")) {
+			case JOptionPane.OK_OPTION:
+				userTypeFlag = true;
+				break;
+			case JOptionPane.NO_OPTION:
+			case JOptionPane.CANCEL_OPTION:
+				userTypeFlag = false;
+				umv.getJcbUser().setSelectedItem(uivo.getUserType().equals("E") ? "일반" : "기업");
+				break;
+			}
+		}
 	}
 	
 	@Override
@@ -329,5 +389,4 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 	public String getAddrSeq() {
 		return addrSeq;
 	}
-	
 }
