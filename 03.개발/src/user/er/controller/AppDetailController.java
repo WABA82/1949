@@ -32,6 +32,7 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 	private AppDetailView adv;
 	private ErDAO er_dao;
 	private String app_num;
+	private DetailAppEeVO daevo = null;
 
 	// appStatusFlag는 이미 응답을 했는지 안했는지를 판단하는 flag입니다.
 	// false - 아직 응답하지 않았을 경우
@@ -51,9 +52,7 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 	 * @param app_num
 	 */
 	public void setInfo(String app_num) {
-		DetailAppEeVO daevo = null;
 		try {
-
 			daevo = er_dao.selectDetailAppEe(app_num);
 
 			if (daevo != null) {
@@ -172,7 +171,14 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 	 * 서버로 부터 지원자가 등록한 외부이력서를 다운받는 메서드.
 	 */
 	public void extResumeDown() {
+		if (daevo.getExt_resume() == null) {
+			JOptionPane.showMessageDialog(adv, "이 지원자가 등록한 외부이력서가 없습니다.");
+			return;
+		} // end if
 
+		if (daevo.getExt_resume() != null) {
+			// 자바의 정석 2편의 882p읽어 보기.
+		} // end if
 	}// changeStatusAccept()
 
 }// class

@@ -25,11 +25,11 @@ public class EeDetailErView extends JDialog {
 
 	/* 인스턴스 변수 선언 */
 	private JLabel jlHeart;
-	private JButton jbCoInfo, jbApply, jbClose; 
+	private JButton jbCoInfo, jbApply, jbClose;
 	private boolean flagHeart;
-	
-	public EeDetailErView(EeHiringView ehv, DetailErInfoVO deivo, String erNum, String eeId,String appStatus) {
-		super(ehv, "상세구인정보", true);/* 창의 제목 */
+
+	public EeDetailErView(JDialog SDialog, DetailErInfoVO deivo, String erNum, String eeId, String appStatus) {
+		super(SDialog, "상세구인정보", true);/* 창의 제목 */
 		/* 컴포넌트 생성 */
 		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/no_co_img1.png");
 		// 라벨들
@@ -87,13 +87,13 @@ public class EeDetailErView extends JDialog {
 		jlSkill8.setBorder(new LineBorder(Color.BLACK));
 
 		// 버튼들
-		if(deivo.getInterest().equals("0")) {
+		if (deivo.getInterest().equals("0")) {
 			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/b_heart.png");
 			jlHeart = new JLabel(heart);
-		}else if(deivo.getInterest().equals("1")) {
+		} else if (deivo.getInterest().equals("1")) {
 			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/r_heart.png");
 			jlHeart = new JLabel(heart);
-			flagHeart=true;
+			flagHeart = true;
 		}
 		jbCoInfo = new JButton("회사정보");
 		jbApply = new JButton("지원하기");
@@ -224,18 +224,18 @@ public class EeDetailErView extends JDialog {
 				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/js.png"));
 			}
 			skillGridPanel.add(arrLbSkill[i]);
-		}// end for 
+		} // end for
 
 		wrapPanel.add(skillGridPanel);
 
 		jbClose.setBounds(315, 575, 60, 25);
-		appStatus =null; //지원하기 테스트용
+		appStatus = null; // 지원하기 테스트용
 		if (appStatus == null) {
 			jlHeart.setBounds(65, 572, 32, 32);
 			jbCoInfo.setBounds(105, 575, 100, 25);
 			jbApply.setBounds(210, 575, 100, 25);
 			wrapPanel.add(jbApply);
-		}else {
+		} else {
 			jbCoInfo.setBounds(210, 575, 100, 25);
 			jlHeart.setBounds(165, 572, 32, 32);
 		}
@@ -275,9 +275,10 @@ public class EeDetailErView extends JDialog {
 			jtfRank.setText("신입");
 
 		}
-		//EeHiringView ehv, DetailErInfoVO deivo, String erNum, String eeId,String appStatus
-		//이벤트
-		EeDetailErController edec = new EeDetailErController(this,erNum,eeId,flagHeart);
+		// EeHiringView ehv, DetailErInfoVO deivo, String erNum, String eeId,String
+		// appStatus
+		// 이벤트
+		EeDetailErController edec = new EeDetailErController(this, erNum, eeId, flagHeart);
 		jlHeart.addMouseListener(edec);
 		jbCoInfo.addActionListener(edec);
 		jbClose.addActionListener(edec);
@@ -293,7 +294,7 @@ public class EeDetailErView extends JDialog {
 //	public static void main(String[] args) {
 //		new EeDetailErView(null, null, null, null, null);
 //	}
-	
+
 	public JLabel getJlHeart() {
 		return jlHeart;
 	}

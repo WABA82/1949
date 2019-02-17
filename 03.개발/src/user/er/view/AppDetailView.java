@@ -151,14 +151,10 @@ public class AppDetailView extends JDialog {
 		/* 이벤트 등록 */
 		AppDetailController adc = new AppDetailController(this, app_num);
 		addWindowListener(adc);
-		// 외부이력서 다운 버튼 이벤트 등록
-		jbExtRsm.addActionListener(adc);
-		// 지원 수락 버튼 이벤트 등록
-		jbAccept.addActionListener(adc);
-		// 지원 거절 버튼 이벤트 등록
-		jbRefuse.addActionListener(adc);
-		// 닫기 버튼 이벤트 등록
-		jbClose.addActionListener(adc);
+		jbExtRsm.addActionListener(adc); // 외부이력서 다운 버튼 이벤트 등록
+		jbAccept.addActionListener(adc); // 지원 수락 버튼 이벤트 등록
+		jbRefuse.addActionListener(adc); // 지원 거절 버튼 이벤트 등록
+		jbClose.addActionListener(adc); // 닫기 버튼 이벤트 등록
 
 		/* 프레임 크기 설정 및 가시화 */
 		setBounds(100, 100, 490, 520);
