@@ -150,19 +150,19 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 			// img 변경 시 새로운 이미지명으로 변경
 			img1 = civo.getImg1();
 			if (newImg1 != null) {
-				img1 = newImg1.getName();
+				img1 = System.currentTimeMillis()+newImg1.getName();
 			}
 			img2 = civo.getImg2();
 			if (newImg2 != null) {
-				img2 = newImg2.getName();
+				img2 = System.currentTimeMillis()+newImg2.getName();
 			}
 			img3 = civo.getImg3();
 			if (newImg3 != null) {
-				img3 = newImg3.getName();
+				img3 = System.currentTimeMillis()+newImg3.getName();
 			}
 			img4 = civo.getImg4();
 			if (newImg4 != null) {
-				img4 = newImg4.getName();
+				img4 = System.currentTimeMillis()+newImg4.getName();
 			}
 			
 			int memberNum = 0;
@@ -189,10 +189,10 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 					}
 					
 					// 3. 파일 서버에 새 파일을 전송
-					au.addNewFile(newImg1, "co", client, dos, dis, fis);
+					au.addNewFile(img1, newImg1, "co", client, dos, dis, fis);
 					
 					// 4. 파일 서버에 새 파일을 요청
-					au.reqFile(newImg1.getName(), "co", client, dos, dis, fos);
+					au.reqFile(img1, "co", client, dos, dis, fos);
 				}
 				if (newImg2 != null) {
 					// 1. 내가 보관하던 이미지 지우기
@@ -205,10 +205,10 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 					}
 					
 					// 3. 파일 서버에 새 파일을 전송
-					au.addNewFile(newImg2, "co", client, dos, dis, fis);
+					au.addNewFile(img2, newImg2, "co", client, dos, dis, fis);
 					
 					// 4. 파일 서버에 새 파일을 요청
-					au.reqFile(newImg2.getName(), "co", client, dos, dis, fos);
+					au.reqFile(img2, "co", client, dos, dis, fos);
 				}
 				if (newImg3 != null) {
 					// 1. 내가 보관하던 이미지 지우기
@@ -221,10 +221,10 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 					}
 					
 					// 3. 파일 서버에 새 파일을 전송
-					au.addNewFile(newImg3, "co", client, dos, dis, fis);
+					au.addNewFile(img3, newImg3, "co", client, dos, dis, fis);
 					
 					// 4. 파일 서버에 새 파일을 요청
-					au.reqFile(newImg3.getName(), "co", client, dos, dis, fos);
+					au.reqFile(img3, "co", client, dos, dis, fos);
 				}
 				if (newImg4 != null) {
 					// 1. 내가 보관하던 이미지 지우기
@@ -237,14 +237,15 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 					}
 					
 					// 3. 파일 서버에 새 파일을 전송
-					au.addNewFile(newImg4, "co", client, dos, dis, fis);
+					au.addNewFile(img4, newImg4, "co", client, dos, dis, fis);
 					
 					// 4. 파일 서버에 새 파일을 요청
-					au.reqFile(newImg4.getName(), "co", client, dos, dis, fos);
+					au.reqFile(img4, "co", client, dos, dis, fos);
 				}
 				
 				
 				msgCenter("회사정보가 수정되었습니다.");
+				au.sendLog(civo.getCoNum()+" 회사 정보 수정");
 				cmv.dispose();
 				
 				CoInfoVO newCivo = AdminDAO.getInstance().selectOneCo(coNum);
@@ -298,6 +299,7 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 					}
 					
 					msgCenter("회사 정보가 삭제되었습니다.");
+					au.sendLog(civo.getCoNum()+" 회사 정보 삭제");
 					cmv.dispose();
 					ammc.setCo();
 				}

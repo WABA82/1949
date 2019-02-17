@@ -62,7 +62,7 @@ public class AdminUtil {
 		closeStreams(client, dos, dis, null, null, null, null);
 	}
 	
-	public void addNewFile(File newFile,String flag, Socket client, 
+	public void addNewFile(String newFileName, File newFile,String flag, Socket client, 
 			DataOutputStream dos, DataInputStream dis, 
 			FileInputStream fis) 
 					throws IOException {
@@ -81,7 +81,7 @@ public class AdminUtil {
 		
 		dos.flush();
 		
-		dos.writeUTF(newFile.getName()); // 새로운 이미지명 전달
+		dos.writeUTF(newFileName); // 새로운 이미지명 전달
 		dos.flush();
 		
 		fis = new FileInputStream(newFile);

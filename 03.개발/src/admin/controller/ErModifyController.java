@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import admin.dao.AdminDAO;
+import admin.util.AdminUtil;
 import admin.view.AdminMgMtView;
 import admin.view.ErModifyView;
 import admin.vo.ErInfoVO;
@@ -22,12 +23,15 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 	private AdminMgMtView ammv;
 	private ErInfoVO eivo;
 	private AdminMgMtController ammc;
+	private AdminUtil au;
 	
 	public ErModifyController(ErModifyView emv, AdminMgMtView ammv, ErInfoVO eivo, AdminMgMtController ammc) {
 		this.emv = emv;
 		this.ammv = ammv;
 		this.eivo = eivo;
 		this.ammc = ammc;
+		
+		au = new AdminUtil();
 	}
 	
 	private void msgCenter(String msg) {
@@ -116,9 +120,10 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 				education, rank, loc, hireType, portfolio, erDesc, sal, listSkill);
 				
 		if (AdminDAO.getInstance().updateEr(emvo, eivo.getListSkill().size())) {
-			msgCenter("구인 정보가 수정되었습니다.");
-			emv.dispose();
 			try {
+				msgCenter("구인 정보가 수정되었습니다.");
+				au.sendLog(eivo.getErNum()+"구인 정보 수정");
+				emv.dispose();
 				eivo = AdminDAO.getInstance().selectOneEr(eivo.getErNum());
 				ammc.setEr();
 				new ErModifyView(ammv, eivo, ammc);
@@ -135,7 +140,8 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 		case JOptionPane.OK_OPTION:
 			
 			if(AdminDAO.getInstance().deleteEr(eivo)) {
-				msgCenter("구인 정보가 삭제되었습니다.");
+				msgCenter(eivo.getErNum()+"구인 정보가 삭제되었습니다.");
+				au.sendLog("구인 정보 삭제");
 				emv.dispose();
 				ammc.setEr();
 			} else {

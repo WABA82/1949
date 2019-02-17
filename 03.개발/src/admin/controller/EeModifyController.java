@@ -92,12 +92,12 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
  	}
 	
 	
+	/**
+	 * 회원 정보 수정 메소드
+	 * @throws IOException
+	 */
 	public void modifyEe() throws IOException {
 		// 이미지, 이력서파일 변경되었는지 확인 - flag변수
-		// 이미지가 변경되었다면 img패키지에 파일 전송(파일서버 완성 후 변경예정)
-		// 이력서가 변경되었다면 기존 이력서파일 삭제 후 새로운 이력서파일 전송
-		// 그 전에 변경 정보로 DB에서 update메소드처리
-		
 		String name = emv.getJtfName().getText().trim();
 		
 		if (name.equals("")) {
@@ -113,12 +113,12 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 		
 		String img = eivo.getImg();
 		if (changeImgFlag) { 
-			img = changeImgFile.getName();
+			img = System.currentTimeMillis()+changeImgFile.getName(); // 이름을 유니크하게 변경
 		}
 		
 		String extResume = eivo.getExtResume();
 		if (changeExtFlag) {
-			extResume = emv.getJtfExtRsm().getText().trim();
+			extResume = System.currentTimeMillis()+emv.getJtfExtRsm().getText().trim(); // 이름을 유니크하게 변경
 		}
 		
 		EeModifyVO emvo = new EeModifyVO(eivo.getEeNum(), img, rank, loc, education, portfolio, extResume);
@@ -131,18 +131,19 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 					File originImg = new File("C:/dev/1949/03.개발/src/admin/img/ee/"+eivo.getImg());
 					originImg.delete();
 					au.deleteFile(eivo.getImg(), "ee", client, dos, dis); // 기존 이미지를 FS에서 삭제
-					au.addNewFile(changeImgFile, "ee", client, dos, dis, fis); // 새로운 이미지를 전송
-					au.reqFile(changeImgFile.getName(), "ee", client, dos, dis, fos); // 새로운 이미지를 FS에게 요청, 저장
+					au.addNewFile(img, changeImgFile, "ee", client, dos, dis, fis); // 새로운 이미지를 전송
+					au.reqFile(img, "ee", client, dos, dis, fos); // 새로운 이미지를 FS에게 요청, 저장
 				}
 				
 				if (changeExtFlag) { // 이력서는 Admin Server에 저장할 필요 없음
 					// 기존 이력서를 FS에서 삭제
 					au.deleteFile(eivo.getExtResume(), "ext", client, dos, dis);
 					// 변경된 이력서만 FS에 추가 
-					au.addNewFile(changeExtFile, "ext", client, dos, dis, fis);
+					au.addNewFile(extResume, changeExtFile, "ext", client, dos, dis, fis);
 				}
 				
 				msgCenter("기본정보를 수정했습니다.");
+				au.sendLog(eivo.getEeNum()+" 기본 정보 수정");
 				emv.dispose();
 				
 				EeInfoVO newEivo = AdminDAO.getInstance().selectOneEe(eivo.getEeNum());
@@ -160,14 +161,20 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 		JOptionPane.showMessageDialog(emv, msg);
 	}
 	
+	/**
+	 * 회원 정보 삭제 메소드
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 */
 	public void removeEe() throws UnknownHostException, IOException {
 		if(AdminDAO.getInstance().deleteEe(eivo)) {
 			
 			File originImg = new File("C:/dev/1949/03.개발/src/admin/img/ee/"+eivo.getImg());
-			originImg.delete();
+			originImg.delete(); 
 			au.deleteFile(eivo.getImg(), "ee", client, dos, dis);
 			
-			msgCenter("기본정보가 삭제되었습니다.");
+			msgCenter(eivo.getEeNum()+"기본정보가 삭제되었습니다.");
+			au.sendLog(eivo.getEeNum()+" 기본 정보 삭제");
 			emv.dispose();
 			ammc.setEe();
 		}
