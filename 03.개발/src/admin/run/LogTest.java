@@ -22,6 +22,7 @@ public class LogTest { // 서버에 요청을 보내는 예시
 				
 				
 			} finally {
+				if (dos != null) { dos.close(); }
 				if(client != null) { client.close(); }
 			}
 			

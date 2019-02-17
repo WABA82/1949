@@ -40,7 +40,7 @@ public class UserModifyView extends JDialog {
 		jpfPass = new JPasswordField(uivo.getPass());
 		jtfName = new JTextField(uivo.getName());
 		jtfSsn1 = new JTextField(uivo.getSsn().substring(0, 6));
-		jtfSsn2 = new JTextField(uivo.getSsn().substring(7, 13));
+		jtfSsn2 = new JTextField(uivo.getSsn().substring(7, 14));
 		jtfTel = new JTextField(uivo.getTel()); 
 		jtfZip = new JTextField(uivo.getZipcode());
 		jtfZip.setEditable(false);

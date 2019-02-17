@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import admin.dao.AdminDAO;
+import admin.util.AdminUtil;
 import admin.view.AdminMgMtView;
 import admin.view.CoModifyView;
 import admin.view.UserModifyView;
@@ -31,20 +32,29 @@ import admin.vo.UserInfoVO;
 import sun.applet.resources.MsgAppletViewer_zh_CN;
 
 public class CoModifyController extends WindowAdapter implements MouseListener, ActionListener {
+	
+	private static final int DBL_CLICK = 2;
+	
 	private CoModifyView cmv;
 	private AdminMgMtView ammv;
 	private CoInfoVO civo;
 	private AdminMgMtController ammc;
+	private AdminUtil au;
 	
 	private File newImg1, newImg2, newImg3, newImg4;
 	
-	private static final int DBL_CLICK = 2;
+	private Socket client;
+	private DataOutputStream dos;
+	private DataInputStream dis;
+	private FileInputStream fis;
+	private FileOutputStream fos;
 	
 	public CoModifyController(CoModifyView cmv, AdminMgMtView ammv, CoInfoVO civo, AdminMgMtController ammc) {
 		this.cmv= cmv;
 		this.ammv = ammv;
 		this.civo = civo;
 		this.ammc = ammc;
+		au = new AdminUtil();
 	}//생성자 끝
 	
 	@Override
@@ -104,98 +114,6 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 		return flag;
 	}
 	
-	private Socket client;
-	private DataOutputStream dos;
-	private DataInputStream dis;
-	private FileInputStream fis;
-	private FileOutputStream fos;
-	
-	public void deleteFile(String imgName) throws UnknownHostException, IOException {
-		client = new Socket("localhost", 7002);
-		
-		dos = new DataOutputStream(client.getOutputStream());
-		dis = new DataInputStream(client.getInputStream());
-		
-		dos.writeUTF("coImg_delete"); 
-		dos.flush();
-		
-		dos.writeUTF(imgName);  // 기존 이미지명 전달
-		dos.flush();
-		
-		dis.readUTF(); // 응답 후 연결 종료
-		
-		closeStreams();
-	}
-	
-	public void addNewFile(File newFile) throws IOException {
-		client = new Socket("localhost", 7002);
-		
-		dos = new DataOutputStream(client.getOutputStream());
-		dis = new DataInputStream(client.getInputStream());
-		
-		dos.writeUTF("coImg_register"); 
-		dos.flush();
-		
-		dos.writeUTF(newFile.getName()); // 새로운 이미지명 전달
-		dos.flush();
-		
-		fis = new FileInputStream(newFile);
-		
-		byte[] readData = new byte[512];
-		int len = 0;
-		int arrCnt = 0;
-		while((len = fis.read(readData)) != -1) {
-			arrCnt++;
-		}
-		
-		fis.close();
-
-		dos.writeInt(arrCnt); // 파일의 크기 전송
-		dos.flush();
-
-		fis = new FileInputStream(newFile);
-		
-		len = 0;
-		while((len = fis.read(readData)) != -1) {
-			dos.write(readData, 0, len);
-			dos.flush();
-		}
-		
-		dis.readUTF(); // 저장완료 응답 받은 후 연결 종료
-		closeStreams();
-	}
-	
-	public void reqFile(String newFileName) throws IOException {
-		client = new Socket("localhost", 7002);
-		
-		dos = new DataOutputStream(client.getOutputStream());
-		dis = new DataInputStream(client.getInputStream());
-		
-		dos.writeUTF("coImg_request");
-		dos.flush();
-		
-		dos.writeUTF(newFileName);
-		dos.flush();
-		
-		int arrCnt = dis.readInt();
-		
-		byte[] readData = new byte[512];
-		int len = 0;
-		
-		fos = new FileOutputStream("C:/dev/1949/03.개발/src/admin/img/co/"+newFileName);
-		
-		for(int i=0; i<arrCnt; i++) {
-			len = dis.read(readData);
-			fos.write(readData,0,len);
-			fos.flush();
-		}
-		
-		dos.writeUTF("done");
-		dos.flush();
-		
-		closeStreams();
-	}
-	
 	/**
 	 * no_img파일은 삭제를 막기위해 검증하는 메소드
 	 * @param fileName
@@ -232,19 +150,19 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 			// img 변경 시 새로운 이미지명으로 변경
 			img1 = civo.getImg1();
 			if (newImg1 != null) {
-				img1 = newImg1.getName();
+				img1 = System.currentTimeMillis()+newImg1.getName();
 			}
 			img2 = civo.getImg2();
 			if (newImg2 != null) {
-				img2 = newImg2.getName();
+				img2 = System.currentTimeMillis()+newImg2.getName();
 			}
 			img3 = civo.getImg3();
 			if (newImg3 != null) {
-				img3 = newImg3.getName();
+				img3 = System.currentTimeMillis()+newImg3.getName();
 			}
 			img4 = civo.getImg4();
 			if (newImg4 != null) {
-				img4 = newImg4.getName();
+				img4 = System.currentTimeMillis()+newImg4.getName();
 			}
 			
 			int memberNum = 0;
@@ -267,14 +185,14 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 					if (!checkNoImg(civo.getImg1())) { // noImg파일인지 판단, noImg가 아니면 삭제
 						originFile.delete();
 						// 2. 파일 서버에 존재하는 이미지도 지우기
-						deleteFile(civo.getImg1());
+						au.deleteFile(civo.getImg1(), "co", client, dos, dis);;
 					}
 					
 					// 3. 파일 서버에 새 파일을 전송
-					addNewFile(newImg1);
+					au.addNewFile(img1, newImg1, "co", client, dos, dis, fis);
 					
 					// 4. 파일 서버에 새 파일을 요청
-					reqFile(newImg1.getName());
+					au.reqFile(img1, "co", client, dos, dis, fos);
 				}
 				if (newImg2 != null) {
 					// 1. 내가 보관하던 이미지 지우기
@@ -283,14 +201,14 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 					if (!checkNoImg(civo.getImg2())) {
 						originFile.delete();
 						// 2. 파일 서버에 존재하는 이미지도 지우기
-						deleteFile(civo.getImg2());
+						au.deleteFile(civo.getImg2(), "co", client, dos, dis);
 					}
 					
 					// 3. 파일 서버에 새 파일을 전송
-					addNewFile(newImg2);
+					au.addNewFile(img2, newImg2, "co", client, dos, dis, fis);
 					
 					// 4. 파일 서버에 새 파일을 요청
-					reqFile(newImg2.getName());
+					au.reqFile(img2, "co", client, dos, dis, fos);
 				}
 				if (newImg3 != null) {
 					// 1. 내가 보관하던 이미지 지우기
@@ -299,14 +217,14 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 					if (!checkNoImg(civo.getImg3())) {
 						originFile.delete();
 						// 2. 파일 서버에 존재하는 이미지도 지우기
-						deleteFile(civo.getImg3());
+						au.deleteFile(civo.getImg3(), "co", client, dos, dis);
 					}
 					
 					// 3. 파일 서버에 새 파일을 전송
-					addNewFile(newImg3);
+					au.addNewFile(img3, newImg3, "co", client, dos, dis, fis);
 					
 					// 4. 파일 서버에 새 파일을 요청
-					reqFile(newImg3.getName());
+					au.reqFile(img3, "co", client, dos, dis, fos);
 				}
 				if (newImg4 != null) {
 					// 1. 내가 보관하던 이미지 지우기
@@ -315,18 +233,19 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 					if (!checkNoImg(civo.getImg4())) {
 						originFile.delete();
 						// 2. 파일 서버에 존재하는 이미지도 지우기
-						deleteFile(civo.getImg4());
+						au.deleteFile(civo.getImg4(), "co", client, dos, dis);
 					}
 					
 					// 3. 파일 서버에 새 파일을 전송
-					addNewFile(newImg4);
+					au.addNewFile(img4, newImg4, "co", client, dos, dis, fis);
 					
 					// 4. 파일 서버에 새 파일을 요청
-					reqFile(newImg4.getName());
+					au.reqFile(img4, "co", client, dos, dis, fos);
 				}
 				
 				
 				msgCenter("회사정보가 수정되었습니다.");
+				au.sendLog(civo.getCoNum()+" 회사 정보 수정");
 				cmv.dispose();
 				
 				CoInfoVO newCivo = AdminDAO.getInstance().selectOneCo(coNum);
@@ -340,18 +259,7 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 		}
 	}//modify
 	
-	/**
-	 * FileServer와 연결을 끊는 메소드
-	 * @throws IOException
-	 */
-	public void closeStreams() throws IOException {
-		if (fos != null) {fos.close();}
-		if (fis != null) {fis.close();}
-		if (dos != null) { dos.close(); }
-		if (dis != null) { dis.close(); }
-		if (client != null) { client.close(); }
-	}
-	
+
 	/**
 	 * 기업 정보를 삭제하는 메소드
 	 * @throws UnknownHostException
@@ -372,25 +280,26 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 					if (!checkNoImg(civo.getImg1())) { // noImg파일인지 판단, noImg가 아니면 삭제
 						originFile1.delete();
 						// 2. 파일 서버에 존재하는 이미지도 지우기
-						deleteFile(civo.getImg1());
+						au.deleteFile(civo.getImg1(), "co", client, dos, dis);
 					}
 					if (!checkNoImg(civo.getImg2())) { // noImg파일인지 판단, noImg가 아니면 삭제
 						originFile2.delete();
 						// 2. 파일 서버에 존재하는 이미지도 지우기
-						deleteFile(civo.getImg2());
+						au.deleteFile(civo.getImg2(), "co", client, dos, dis);
 					}
 					if (!checkNoImg(civo.getImg3())) { // noImg파일인지 판단, noImg가 아니면 삭제
 						originFile3.delete();
 						// 2. 파일 서버에 존재하는 이미지도 지우기
-						deleteFile(civo.getImg3());
+						au.deleteFile(civo.getImg3(), "co", client, dos, dis);
 					}
 					if (!checkNoImg(civo.getImg4())) { // noImg파일인지 판단, noImg가 아니면 삭제
 						originFile4.delete();
 						// 2. 파일 서버에 존재하는 이미지도 지우기
-						deleteFile(civo.getImg4());
+						au.deleteFile(civo.getImg4(), "co", client, dos, dis);
 					}
 					
 					msgCenter("회사 정보가 삭제되었습니다.");
+					au.sendLog(civo.getCoNum()+" 회사 정보 삭제");
 					cmv.dispose();
 					ammc.setCo();
 				}
