@@ -320,6 +320,122 @@ public class AdminDAO {
 			if (con != null) { con.close(); }
 		}
 		
+		return flag;
+	}
+	
+	public String selectEeExt(String id) throws SQLException {
+		String extResume = "";
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = getConn();
+			
+			String selectEeExt = "select NVL(ext_resume, ' ') ext_resume from ee_info where ee_id=? ";
+			
+			pstmt = con.prepareStatement(selectEeExt);
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				extResume = rs.getString("ext_resume");
+			}
+			
+		} finally {
+			if (rs != null) { rs.close(); }
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		return extResume;
+	}
+	
+	public List<String> selectUserImgs(String id, String userType) throws SQLException {
+		List<String> list = new ArrayList<String>();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = getConn();
+			
+			StringBuilder selectUserImgs = new StringBuilder();
+			
+			if (userType.equals("일반")) {
+				selectUserImgs.append(" select img from ee_info where ee_id=? ");
+			} else if (userType.equals("기업")) {
+				selectUserImgs
+				.append(" select img1, img2, img3, img4 ")
+				.append(" from company ")
+				.append(" where er_id=? ");
+			}
+			
+			pstmt = con.prepareStatement(selectUserImgs.toString());
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			
+			String img1 = "";
+			String img2 = "";
+			String img3 = "";
+			String img4 = "";
+			while(rs.next()) {
+				if (userType.equals("일반")) {
+					img1 = rs.getString("img");
+					
+					if (!checkDefaultImg(img1)) { // no_img인지 체크
+						list.add(img1);
+					}
+				} else if (userType.equals("기업")) {
+					img1 = rs.getString("img1");
+					img2 = rs.getString("img2");
+					img3 = rs.getString("img3");
+					img4 = rs.getString("img4");
+					
+					if (!checkDefaultImg(img1)) {
+						list.add(img1);
+					}
+					if (!checkDefaultImg(img2)) {
+						list.add(img2);
+					}
+					if (!checkDefaultImg(img3)) {
+						list.add(img3);
+					}
+					if (!checkDefaultImg(img4)) {
+						list.add(img4);
+					}
+				}
+			}
+			
+		} finally {
+			if (rs != null) { rs.close(); }
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		return list;
+	}
+	
+	/**
+	 * no_img인지 체크하는 메소드
+	 * @param imgName
+	 * @return
+	 */
+	public boolean checkDefaultImg(String imgName) {
+		boolean flag = false;
+
+		String[] defaultImgName = { "no_co_img1.png", "no_co_img2.png",
+				"no_co_img3.png", "no_co_img4.png", "no_ee_img.png" };
+		
+		for(String name : defaultImgName) {
+			if(imgName.equals(name)) { // 입력된 이미지명이 no_img명이면 true반환
+				flag = true;
+			}
+		}
 		
 		return flag;
 	}
