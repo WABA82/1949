@@ -4,11 +4,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -28,6 +33,12 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 	private String addrSeq;
 	private AdminUtil au;
 	
+	private Socket client;
+	private DataOutputStream dos;
+	private DataInputStream dis;
+	private FileInputStream fis;
+	private FileOutputStream fos;
+	
 	public UserModifyController(UserModifyView umv, AdminMgMtView ammv, String addrSeq, AdminMgMtController ammc) {
 		this.umv = umv;
 		this.ammv = ammv;
@@ -40,14 +51,42 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		JOptionPane.showMessageDialog(umv, msg);
 	}
 	
-	public void remove() {
+	public void remove() throws UnknownHostException, IOException {
 		
 		String id = umv.getJtfId().getText().trim();
+		
+		String userType = (String)umv.getJcbUser().getSelectedItem();
 		
 		switch(JOptionPane.showConfirmDialog(umv, "회원정보로 등록된 기록도 모두 삭제됩니다.\n정말 삭제하시겠습니까?")) {
 		case JOptionPane.OK_OPTION:
 			try {
-				AdminDAO.getInstance().deleteUser(id);
+				
+				List<String> imgList = AdminDAO.getInstance().selectUserImgs(id, userType);
+
+				// 유저 데이터와 함께 이미지도 삭제 
+				File adminImg = null;
+				if (userType.equals("일반")) {
+					String extName = AdminDAO.getInstance().selectEeExt(id);
+					
+					if (!(extName.trim().equals(""))) {
+						au.deleteFile(extName, "ext", client, dos, dis);
+					}
+					
+					for(String imgName : imgList) {
+						adminImg = new File("C:/dev/1949/03.개발/src/admin/img/ee/"+imgName);
+						adminImg.delete();
+						au.deleteFile(imgName, "ee", client, dos, dis);
+					}
+				} else if (userType.equals("기업")) {
+					for(String imgName : imgList) {
+						adminImg = new File("C:/dev/1949/03.개발/src/admin/img/co/"+imgName);
+						adminImg.delete();
+						au.deleteFile(imgName, "co", client, dos, dis);
+					}
+				}
+				
+				AdminDAO.getInstance().deleteUser(id); // 유저데이터를 DB에서 삭제
+
 				umv.dispose();
 				msgCenter("회원정보가 삭제되었습니다.");
 				au.sendLog(umv.getJtfId().getText()+" 회원 정보 삭제");
@@ -257,7 +296,13 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		}
 		
 		if (e.getSource() == umv.getJbRemove()) {
-			remove();
+			try {
+				remove();
+			} catch (UnknownHostException e1) {
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 		
 		if (e.getSource() == umv.getJbSearchAddr()) {

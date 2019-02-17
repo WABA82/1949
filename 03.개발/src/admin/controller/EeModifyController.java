@@ -137,7 +137,10 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 				
 				if (changeExtFlag) { // 이력서는 Admin Server에 저장할 필요 없음
 					// 기존 이력서를 FS에서 삭제
-					au.deleteFile(eivo.getExtResume(), "ext", client, dos, dis);
+					System.out.println("---"+eivo.getExtResume());
+					if (eivo.getExtResume() != null) {
+						au.deleteFile(eivo.getExtResume(), "ext", client, dos, dis);
+					}
 					// 변경된 이력서만 FS에 추가 
 					au.addNewFile(extResume, changeExtFile, "ext", client, dos, dis, fis);
 				}
@@ -171,6 +174,7 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 			
 			File originImg = new File("C:/dev/1949/03.개발/src/admin/img/ee/"+eivo.getImg());
 			originImg.delete(); 
+			au.deleteFile(eivo.getExtResume(), "ext", client, dos, dis);
 			au.deleteFile(eivo.getImg(), "ee", client, dos, dis);
 			
 			msgCenter(eivo.getEeNum()+"기본정보가 삭제되었습니다.");
