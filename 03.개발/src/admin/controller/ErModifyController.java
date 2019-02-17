@@ -139,13 +139,17 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 		switch(JOptionPane.showConfirmDialog(emv, "해당 구인 정보를 정말 삭제하시겠습니까?")) {
 		case JOptionPane.OK_OPTION:
 			
-			if(AdminDAO.getInstance().deleteEr(eivo)) {
-				msgCenter(eivo.getErNum()+"구인 정보가 삭제되었습니다.");
-				au.sendLog("구인 정보 삭제");
-				emv.dispose();
-				ammc.setEr();
-			} else {
-				msgCenter("구인 정보 삭제가 실패했습니다.");
+			try {
+				if(AdminDAO.getInstance().deleteEr(eivo.getErNum())) {
+					msgCenter(eivo.getErNum()+"구인 정보가 삭제되었습니다.");
+					au.sendLog("구인 정보 삭제");
+					emv.dispose();
+					ammc.setEr();
+				} else {
+					msgCenter("구인 정보 삭제가 실패했습니다.");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 			
 			break;

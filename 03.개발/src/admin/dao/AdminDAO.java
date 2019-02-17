@@ -662,79 +662,34 @@ public class AdminDAO {
 		if (con != null) { con.close(); }
 	}
 	
-	public boolean dErTransaction1(String erNum) throws SQLException {
-		boolean flag = false;
-		
-		StringBuilder deleteEr = new StringBuilder();
-		deleteEr
-		.append(" delete from er_info ")
-		.append(" where er_num=? ");
-		
-		pstmt1 = con.prepareStatement(deleteEr.toString());
-		pstmt1.setString(1, erNum);
-		
-		int cnt = pstmt1.executeUpdate();
-		
-		if(cnt == 1) {
-			flag = true;
-		}
-		
-		return flag;
-	}
+
 	
-	public boolean dErTransaction2(String id) throws SQLException {
+	public boolean deleteEr(String erNum) throws SQLException  { 
 		boolean flag = false;
 		
-		StringBuilder updateEe = new StringBuilder();
-		updateEe
-		.append(" update user_table ")
-		.append(" set activation = 'N' ")
-		.append(" where id=? ");
-		
-		pstmt2 = con.prepareStatement(updateEe.toString());
-		pstmt2.setString(1, id);
-		
-		int cnt = pstmt2.executeUpdate();
-		
-		if(cnt == 1) {
-			flag = true;
-		}
-		
-		return flag;
-	}
-	
-	public boolean deleteEr(ErInfoVO eivo)  { 
-		boolean flag = false;
-		
-		con = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
 		
 		try {
-			try {
-				con = getConn();
-				con.setAutoCommit(false);
-				
-				if(dErTransaction1(eivo.getErNum()) && dErTransaction2(eivo.getErId())){
-					con.commit();
-					flag = true;
-				} else {
-					con.rollback();
-				}
-				
-			} catch (SQLException e) {
-				try {
-					con.rollback();
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
-				e.printStackTrace();
+			con = getConn();
+
+			StringBuilder deleteEr = new StringBuilder();
+			deleteEr
+			.append(" delete from er_info ")
+			.append(" where er_num=? ");
+			
+			pstmt = con.prepareStatement(deleteEr.toString());
+			pstmt.setString(1, erNum);
+			
+			int cnt = pstmt.executeUpdate();
+			
+			if(cnt == 1) {
+				flag = true;
 			}
 			
 		} finally {
-			try {
-				closePstmt2();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
 		}
 		
 		return flag;
@@ -777,6 +732,7 @@ public class AdminDAO {
 		return civo;
 	}
 	
+
 	public boolean updateCo(CoModifyVO cmvo) throws SQLException {
 		boolean flag = false;
 		
@@ -816,7 +772,88 @@ public class AdminDAO {
 		return flag;
 	}
 	
-	public boolean deleteCo(String input, String inputFlag) throws SQLException { //////////////////////////////////// 수정필요 ///////////////
+	public boolean dCoTransaction1(String id) throws SQLException{
+		boolean flag = false;
+		
+		StringBuilder deleteCo = new StringBuilder();
+		
+		deleteCo
+		.append(" delete from company ")
+		.append(" where er_id = ? ");
+	
+		pstmt1 = con.prepareStatement(deleteCo.toString());
+		pstmt1.setString(1, id);
+		
+		int cnt = pstmt1.executeUpdate();
+		
+		if (cnt == 1) {
+			flag = true;
+		}
+		
+		return flag;
+	}
+	
+	
+	public boolean dCoTransaction2(String id) throws SQLException {
+		boolean flag = false;
+		
+		StringBuilder updateEe = new StringBuilder();
+		updateEe
+		.append(" update user_table ")
+		.append(" set activation = 'N' ")
+		.append(" where id=? ");
+		
+		pstmt2 = con.prepareStatement(updateEe.toString());
+		pstmt2.setString(1, id);
+		
+		int cnt = pstmt2.executeUpdate();
+		
+		if(cnt == 1) {
+			flag = true;
+		}
+		
+		return flag;
+	}
+	
+	public boolean deleteCo(String id) throws SQLException { 
+		// co정보만 지워도 er정보, selected_skill정보도 cascade로 삭제됨
+		// co 정보를 지우면 co를 등록한 유저 activation정보를 N으로 변경
+		
+		boolean flag = false;
+
+		try {
+			try {
+				con = getConn();
+				con.setAutoCommit(false);
+
+				if (dCoTransaction1(id) && dCoTransaction2(id)) {
+					con.commit();
+					flag = true;
+				} else {
+					con.rollback();
+				}
+
+			} catch (SQLException e) {
+				try {
+					con.rollback();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				e.printStackTrace();
+			}
+		} finally {
+			try {
+				closePstmt2();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return flag;
+	}
+	
+	
+/*	public boolean deleteCo(String input, String inputFlag) throws SQLException { //////////////////////////////////// 수정필요 ///////////////
 		// 회사 정보를 삭제하면 해당 유저의 activation 상태를 N으로 바꿔야 함
 		// 3개의 쿼리를 한 트랜잭션 처리
 		// selectedSkill에서 해당 co와 연결된 er데이터 삭제, 
@@ -859,6 +896,7 @@ public class AdminDAO {
 		
 		return flag;
 	}
+*/	
 	
 	public EeInfoVO selectOneEe(String input, String flag) throws SQLException {
 		EeInfoVO eivo = null;

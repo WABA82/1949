@@ -305,7 +305,7 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 						}
 						
 						// 기업 사용자였을 때 회사 정보에 올렸던 데이터를 삭제처리
-						AdminDAO.getInstance().deleteCo(id, "id");
+						AdminDAO.getInstance().deleteCo(id);
 					}
 				}
 				
