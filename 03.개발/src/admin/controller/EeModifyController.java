@@ -19,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import admin.dao.AdminDAO;
+import admin.util.AdminUtil;
 import admin.view.AdminMgMtView;
 import admin.view.EeModifyView;
 import admin.view.ModifyExtView;
@@ -31,17 +32,25 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 	private AdminMgMtView ammv;
 	private AdminMgMtController ammc;
 	private EeInfoVO eivo;
+	private AdminUtil au;
 	
 	private File changeImgFile; 
 	private File changeExtFile;
 	private boolean changeImgFlag;
 	private boolean changeExtFlag;
+
+	private Socket client;
+	private DataOutputStream dos;
+	private DataInputStream dis;
+	private FileInputStream fis;
+	private FileOutputStream fos;
 	
 	public EeModifyController(EeModifyView emv, AdminMgMtView ammv, AdminMgMtController ammc, EeInfoVO eivo) {
 		this.emv = emv;
 		this.ammv = ammv;
 		this.ammc = ammc;
 		this.eivo = eivo;
+		au = new AdminUtil();
 	}
 	
 	@Override
@@ -82,113 +91,6 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 		}
  	}
 	
-	private Socket client;
-	private DataOutputStream dos;
-	private DataInputStream dis;
-	private FileInputStream fis;
-	private FileOutputStream fos;
-	
-	public void closeStreams() throws IOException {
-		if (fos != null) {fos.close();}
-		if (fis != null) {fis.close();}
-		if (dos != null) { dos.close(); }
-		if (dis != null) { dis.close(); }
-		if (client != null) { client.close(); }
-	}
-	
-	public void deleteFile(String fileName, String flag) throws UnknownHostException, IOException {
-		client = new Socket("localhost", 7002);
-		
-		dos = new DataOutputStream(client.getOutputStream());
-		dis = new DataInputStream(client.getInputStream());
-		
-		if (flag.equals("img")) {
-			dos.writeUTF("eeImg_delete"); 
-		} else if (flag.equals("ext")) {
-			dos.writeUTF("ee_ext_delete");
-		}
-		dos.flush();
-		
-		dos.writeUTF(fileName);  // 기존 이미지명 전달
-		dos.flush();
-		
-		dis.readUTF(); // 응답 후 연결 종료
-		
-		closeStreams();
-	}
-	
-	public void addNewFile(File newFile, String flag) throws IOException {
-		client = new Socket("localhost", 7002);
-		
-		dos = new DataOutputStream(client.getOutputStream());
-		dis = new DataInputStream(client.getInputStream());
-		
-		if (flag.equals("img")) {
-			dos.writeUTF("eeImg_register"); 
-		} else if (flag.equals("ext")) {
-			dos.writeUTF("ee_ext_register"); 
-		}
-		dos.flush();
-		
-		dos.writeUTF(newFile.getName()); // 새로운 이미지명 전달
-		dos.flush();
-		
-		fis = new FileInputStream(newFile);
-		
-		byte[] readData = new byte[512];
-		int len = 0;
-		int arrCnt = 0;
-		while((len = fis.read(readData)) != -1) {
-			arrCnt++;
-		}
-		
-		fis.close();
-
-		dos.writeInt(arrCnt); // 파일의 크기 전송
-		dos.flush();
-
-		fis = new FileInputStream(newFile);
-		
-		len = 0;
-		while((len = fis.read(readData)) != -1) {
-			dos.write(readData, 0, len);
-			dos.flush();
-		}
-		
-		dis.readUTF(); // 저장완료 응답 받은 후 연결 종료
-		closeStreams();
-	}
-	
-	public void reqImg(String newFileName) throws IOException {
-		client = new Socket("localhost", 7002);
-		
-		dos = new DataOutputStream(client.getOutputStream());
-		dis = new DataInputStream(client.getInputStream());
-		
-		dos.writeUTF("eeImg_request");
-		dos.flush();
-		
-		dos.writeUTF(newFileName);
-		dos.flush();
-		
-		int arrCnt = dis.readInt();
-		
-		byte[] readData = new byte[512];
-		int len = 0;
-		
-		fos = new FileOutputStream("C:/dev/1949/03.개발/src/admin/img/ee/"+newFileName);
-		
-		for(int i=0; i<arrCnt; i++) {
-			len = dis.read(readData);
-			fos.write(readData,0,len);
-			fos.flush();
-		}
-		
-		dos.writeUTF("done");
-		dos.flush();
-		
-		closeStreams();
-	}
 	
 	public void modifyEe() throws IOException {
 		// 이미지, 이력서파일 변경되었는지 확인 - flag변수
@@ -228,16 +130,16 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 					// ee는 no_img일리가 없으므로 삭제할 이미지가 no_img인지 체크 안해도 됨
 					File originImg = new File("C:/dev/1949/03.개발/src/admin/img/ee/"+eivo.getImg());
 					originImg.delete();
-					deleteFile(eivo.getImg(), "img"); // 기존 이미지를 FS에서 삭제
-					addNewFile(changeImgFile, "img"); // 새로운 이미지를 전송
-					reqImg(changeImgFile.getName()); // 새로운 이미지를 FS에게 요청, 저장
+					au.deleteFile(eivo.getImg(), "ee", client, dos, dis); // 기존 이미지를 FS에서 삭제
+					au.addNewFile(changeImgFile, "ee", client, dos, dis, fis); // 새로운 이미지를 전송
+					au.reqFile(changeImgFile.getName(), "ee", client, dos, dis, fos); // 새로운 이미지를 FS에게 요청, 저장
 				}
 				
 				if (changeExtFlag) { // 이력서는 Admin Server에 저장할 필요 없음
 					// 기존 이력서를 FS에서 삭제
-					deleteFile(eivo.getExtResume(), "ext");
+					au.deleteFile(eivo.getExtResume(), "ext", client, dos, dis);
 					// 변경된 이력서만 FS에 추가 
-					addNewFile(changeExtFile, "ext");
+					au.addNewFile(changeExtFile, "ext", client, dos, dis, fis);
 				}
 				
 				msgCenter("기본정보를 수정했습니다.");
@@ -263,7 +165,7 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 			
 			File originImg = new File("C:/dev/1949/03.개발/src/admin/img/ee/"+eivo.getImg());
 			originImg.delete();
-			deleteFile(eivo.getImg(), "img");
+			au.deleteFile(eivo.getImg(), "ee", client, dos, dis);
 			
 			msgCenter("기본정보가 삭제되었습니다.");
 			emv.dispose();
