@@ -269,7 +269,7 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 		switch (JOptionPane.showConfirmDialog(cmv, "정말 삭제하시겠습니까?")) {
 		case JOptionPane.OK_OPTION:
 			try {
-				if (AdminDAO.getInstance().deleteCo(civo.getCoNum())) { // DB 데이터 삭제
+				if (AdminDAO.getInstance().deleteCo(civo.getCoNum(), "coNum")) { // DB 데이터 삭제
 					
 					File originFile1 = new File("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg1());
 					File originFile2 = new File("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg2());

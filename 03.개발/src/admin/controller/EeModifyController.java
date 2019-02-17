@@ -23,6 +23,7 @@ import admin.util.AdminUtil;
 import admin.view.AdminMgMtView;
 import admin.view.EeModifyView;
 import admin.view.ModifyExtView;
+import admin.vo.EeDeleteVO;
 import admin.vo.EeInfoVO;
 import admin.vo.EeModifyVO;
 
@@ -76,6 +77,8 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 				} catch (UnknownHostException e1) {
 					e1.printStackTrace();
 				} catch (IOException e1) {
+					e1.printStackTrace();
+				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
 				break;
@@ -149,7 +152,7 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 				au.sendLog(eivo.getEeNum()+" 기본 정보 수정");
 				emv.dispose();
 				
-				EeInfoVO newEivo = AdminDAO.getInstance().selectOneEe(eivo.getEeNum());
+				EeInfoVO newEivo = AdminDAO.getInstance().selectOneEe(eivo.getEeNum(), "eeNum");
 				
 				ammc.setEe();
 				new EeModifyView(ammv, newEivo, ammc);
@@ -168,9 +171,11 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 	 * 회원 정보 삭제 메소드
 	 * @throws UnknownHostException
 	 * @throws IOException
+	 * @throws SQLException 
 	 */
-	public void removeEe() throws UnknownHostException, IOException {
-		if(AdminDAO.getInstance().deleteEe(eivo)) {
+	public void removeEe() throws UnknownHostException, IOException, SQLException {
+		EeDeleteVO edvo = AdminDAO.getInstance().selectEDVO(eivo.getId());
+		if(AdminDAO.getInstance().deleteEe(edvo)) {
 			
 			File originImg = new File("C:/dev/1949/03.개발/src/admin/img/ee/"+eivo.getImg());
 			originImg.delete(); 

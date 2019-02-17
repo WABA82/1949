@@ -164,11 +164,13 @@ public class UserModifyView extends JDialog {
 		jbClose.setBounds(235, 576, 70, 30);
 		add(jbClose);
 		
-		UserModifyController umc = new UserModifyController(this, ammv, uivo.getAddrSeq(), ammc);
+		UserModifyController umc = new UserModifyController(this, ammv, uivo, ammc);
 		jbModify.addActionListener(umc);
 		jbRemove.addActionListener(umc);
 		jbSearchAddr.addActionListener(umc);
 		jbClose.addActionListener(umc);
+		
+		jcbUser.addActionListener(umc);
 		addWindowListener(umc);
 		
 		setBounds(ammv.getX()+500,ammv.getY()+50,390,680);

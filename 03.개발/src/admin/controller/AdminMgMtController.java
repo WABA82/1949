@@ -196,12 +196,12 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener 
 	}
 	
 	public void showUserModify(String id) throws SQLException {
-		UserInfoVO ulvo = a_dao.selectOneUser(id);
-		new UserModifyView(ammv, ulvo, this);
+		UserInfoVO uivo = a_dao.selectOneUser(id);
+		new UserModifyView(ammv, uivo, this);
 	}
 	
 	public void showEeModify(String eeNum) throws SQLException {
-		EeInfoVO eivo = a_dao.selectOneEe(eeNum);
+		EeInfoVO eivo = a_dao.selectOneEe(eeNum, "eeNum");
 		new EeModifyView(ammv, eivo, this);
 	}
 	
@@ -211,8 +211,8 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener 
 	}
 	
 	public void showCoModify(String coNum) throws SQLException {
-		CoInfoVO clvo = a_dao.selectOneCo(coNum);
-		new CoModifyView(ammv, clvo, this);
+		CoInfoVO civo = a_dao.selectOneCo(coNum);
+		new CoModifyView(ammv, civo, this);
 	}
 	
 	@Override
