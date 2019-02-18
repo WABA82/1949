@@ -22,7 +22,7 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 	private boolean mouseClickFlag; 
 	private ErInterestVO eivo;
 	private ErDAO erdao;
-	public ErDetailEeController(ErDetailEeView edev, String eeNum, String erId,boolean flagHeart) {
+	public ErDetailEeController(ErDetailEeView edev, String eeNum, String erId, boolean flagHeart) {
 		this.edev = edev;
 		this.eeNum = eeNum;
 		this.erId = erId;
@@ -47,7 +47,7 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+		} 
 	}
 	
 	public void removeInterestEe() {

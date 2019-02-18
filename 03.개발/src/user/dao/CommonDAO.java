@@ -25,6 +25,7 @@ public class CommonDAO {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
 	public static CommonDAO getInstance() {
 		if (C_dao == null) {
 			C_dao = new CommonDAO();
