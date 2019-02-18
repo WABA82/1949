@@ -10,7 +10,7 @@ public class EeMainVO {
 		this.img = img;
 		this.activation = activation;
 	}
-	
+
 	public String getEeId() {
 		return eeId;
 	}
@@ -31,6 +31,5 @@ public class EeMainVO {
 	public String toString() {
 		return "EeMainVO [eeId=" + eeId + ", name=" + name + ", img=" + img + ", activation=" + activation + "]";
 	}
-
 
 }

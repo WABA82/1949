@@ -25,19 +25,13 @@ public class EeDetailErView extends JDialog {
 
 	/* 인스턴스 변수 선언 */
 	private JLabel jlHeart;
-
-	private JButton jbCoInfo, jbApply, jbClose; 
-	private String erNum,eeId,appStatus,interest;
+	private JButton jbCoInfo, jbApply, jbClose;
 	private boolean flagHeart;
-	
-	public EeDetailErView(EeHiringView ehv, DetailErInfoVO deivo, String erNum, String eeId,String appStatus,String interest) {
-		super(ehv, "상세구인정보", true);/* 창의 제목 */
-		this.erNum = erNum;
-		this.eeId = eeId;
-		this.appStatus = appStatus;
-		this.interest = interest;
+
+	public EeDetailErView(JDialog SDialog, DetailErInfoVO deivo, String erNum, String eeId, String appStatus) {
+		super(SDialog, "상세구인정보", true);/* 창의 제목 */
 		/* 컴포넌트 생성 */
-		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/no_co_img1.png");
+		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/no_co_img1.png");
 		// 라벨들
 		JLabel jlImage = new JLabel(erLogo);
 		JLabel jlSubject = new JLabel("제목");
@@ -93,14 +87,13 @@ public class EeDetailErView extends JDialog {
 		jlSkill8.setBorder(new LineBorder(Color.BLACK));
 
 		// 버튼들
-		System.out.println(interest);
-		if(interest.equals("0")) {
+		if (deivo.getInterest().equals("0")) {
 			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/b_heart.png");
 			jlHeart = new JLabel(heart);
-		}else if(interest.equals("1")) {
+		} else if (deivo.getInterest().equals("1")) {
 			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/r_heart.png");
 			jlHeart = new JLabel(heart);
-			flagHeart=true;
+			flagHeart = true;
 		}
 		jbCoInfo = new JButton("회사정보");
 		jbApply = new JButton("지원하기");
@@ -231,27 +224,30 @@ public class EeDetailErView extends JDialog {
 				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/js.png"));
 			}
 			skillGridPanel.add(arrLbSkill[i]);
-		}// end for 
+		} // end for
 
 		wrapPanel.add(skillGridPanel);
 
-		jlHeart.setBounds(65, 572, 32, 32);
-		jbCoInfo.setBounds(105, 575, 100, 25);
-		jbApply.setBounds(210, 575, 100, 25);
 		jbClose.setBounds(315, 575, 60, 25);
-
+		appStatus = null; // 지원하기 테스트용
+		if (appStatus == null) {
+			jlHeart.setBounds(65, 572, 32, 32);
+			jbCoInfo.setBounds(105, 575, 100, 25);
+			jbApply.setBounds(210, 575, 100, 25);
+			wrapPanel.add(jbApply);
+		} else {
+			jbCoInfo.setBounds(210, 575, 100, 25);
+			jlHeart.setBounds(165, 572, 32, 32);
+		}
 		wrapPanel.add(jlHeart);
 		wrapPanel.add(jbCoInfo);
-		if (appStatus != null) {
-			wrapPanel.add(jbApply);
-		}
 		wrapPanel.add(jbClose);
 
 		/* 프레임에 배치 */
 		add(wrapPanel);
 
 		jtfSubject.setText(deivo.getSubject());
-		jlImage.setIcon(new ImageIcon("C:/dev/1949/03.개발/src/img/coImg/" + deivo.getImg1()));
+		jlImage.setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/" + deivo.getImg1()));
 		jtfCoName.setText(deivo.getCoName());
 		jtfName.setText(deivo.getName());
 		jtfTel.setText(deivo.getTel());
@@ -279,11 +275,10 @@ public class EeDetailErView extends JDialog {
 			jtfRank.setText("신입");
 
 		}
-
-		
-		
-		//이벤트
-		EeDetailErController edec = new EeDetailErController(this,erNum,eeId,flagHeart);
+		// EeHiringView ehv, DetailErInfoVO deivo, String erNum, String eeId,String
+		// appStatus
+		// 이벤트
+		EeDetailErController edec = new EeDetailErController(this, erNum, eeId, flagHeart);
 		jlHeart.addMouseListener(edec);
 		jbCoInfo.addActionListener(edec);
 		jbClose.addActionListener(edec);
@@ -299,7 +294,7 @@ public class EeDetailErView extends JDialog {
 //	public static void main(String[] args) {
 //		new EeDetailErView(null, null, null, null, null);
 //	}
-	
+
 	public JLabel getJlHeart() {
 		return jlHeart;
 	}

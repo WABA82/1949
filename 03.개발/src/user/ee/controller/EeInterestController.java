@@ -113,7 +113,7 @@ public class EeInterestController extends WindowAdapter implements ActionListene
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} // end catch
-		new EeDetailErView(null, deivo, erNum, ee_id, null, deivo.getInterest());
+		new EeDetailErView(eiv, deivo, erNum, ee_id, null);
 	}// showDetailErinfo
 
 	////////// 안쓰는 메소드//////////

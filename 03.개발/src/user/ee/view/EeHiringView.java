@@ -1,19 +1,16 @@
 package user.ee.view;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import user.common.vo.EeMainVO;
 import user.ee.controller.EeHiringController;
 import user.ee.vo.EeHiringVO;
 
@@ -85,6 +82,7 @@ public class EeHiringView extends JDialog {
 		add(jbAllView);
 		
 		//이벤트 추가
+		eeId= "gong1";
 		EeHiringController ehc = new EeHiringController(this,eeId);
 		jcbSort.addActionListener(ehc);
 		jbDetailSearch.addActionListener(ehc);
@@ -108,13 +106,11 @@ public class EeHiringView extends JDialog {
 	public JTextField getJtfSearch() {
 		return jtfSearch;
 	}
-
 	
 
 	public JButton getJbAllView() {
 		return jbAllView;
 	}
-
 
 
 	public JTable getJtErInfo() {
@@ -137,13 +133,10 @@ public class EeHiringView extends JDialog {
 		return jcbSort;
 	}
 
-//	public static void main(String[] args) {
-//		EeMainVO em_vo= new EeMainVO("ds", "sdf", "ds", "asd");
-//		EeMainView emv=new EeMainView(em_vo);
-//		List<EeHiringVO> ehvo=new ArrayList<EeHiringVO>();
-//		String eeid= "gong1";
-//		new EeHiringView(emv, ehvo, eeid);
-//	}
+	public static void main(String[] args) {
+		
+		new EeHiringView(null,null,null);
+	}
 	
 	
 }//class

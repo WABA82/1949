@@ -85,11 +85,6 @@ public class EeHiringController extends WindowAdapter implements ActionListener,
 	}
 	
 	public void showDetailErInfo() {
-		ehc_dto.setSort(String.valueOf(ehv.getJcbSort().getSelectedItem()));
-		setDtm();
-	}
-	
-	public void detailSearch() {
 		JTable jt = ehv.getJtErInfo();
 		String erNum= String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
 		DetailErInfoVO deivo=null;
@@ -98,7 +93,12 @@ public class EeHiringController extends WindowAdapter implements ActionListener,
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		new EeDetailErView(ehv, deivo, erNum, eeId , null , deivo.getInterest());
+		new EeDetailErView(ehv, deivo, erNum, eeId , null);
+	}
+	
+	public void detailSearch() {
+		ehc_dto.setSort(String.valueOf(ehv.getJcbSort().getSelectedItem()));
+		setDtm();
 	}
 	
 	public void searchAll() {
@@ -115,7 +115,8 @@ public class EeHiringController extends WindowAdapter implements ActionListener,
 		case 2:
 			if(me.getSource()==ehv.getJtErInfo())
 			{
-				detailSearch();
+				
+				showDetailErInfo();
 			}
 		}
 	}
@@ -132,7 +133,7 @@ public class EeHiringController extends WindowAdapter implements ActionListener,
 		}
 		if(ae.getSource()==ehv.getJcbSort()) {
 			//나열하는 콤보박스
-			showDetailErInfo();
+			detailSearch();
 		}
 		if(ae.getSource()==ehv.getJtfSearch()) {
 			//텍스트필드 엔터를 누르면

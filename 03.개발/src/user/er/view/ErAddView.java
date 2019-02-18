@@ -30,15 +30,14 @@ public class ErAddView extends JDialog {
 	JComboBox<String> jcbRank, jcbEducation, jcbLoc, jcbHireType, jcbPortfolio;
 	JButton jbReg, jbCancel;
 
-	public ErAddView(ErMgMtView emmv, ErMgMtController emmc, ErDefaultVO edfvo) {
+	public ErAddView(ErMgMtView emmv, ErMgMtController emmc, ErDefaultVO edfvo, String erId) {
 		super(emmv, "구인 정보 등록", true);/* 창의 제목 */
 
 		/* 컴포넌트 생성하기 */
 		// 이미지아이콘 : 회사로고
-		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/admin/img/co/no_co_img1.png");
 		
 		// 라벨들
-		JLabel jlImage = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/img/coImg/"+edfvo.getImg1()));
+		JLabel jlImage = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/"+edfvo.getImg1()));
 		JLabel jlName = new JLabel("이름");
 		JLabel jlTel = new JLabel("연락처");
 		JLabel jlEmail = new JLabel("이메일");
@@ -209,7 +208,7 @@ public class ErAddView extends JDialog {
 		add(jbCancel);
 
 		/* 이벤트등록 */
-		ErAddController edc = new ErAddController(this);
+		ErAddController edc = new ErAddController(this,emmc,erId);
 		jbReg.addActionListener(edc);
 		jbCancel.addActionListener(edc);
 		addWindowListener(edc);

@@ -1,17 +1,17 @@
 package user.er.vo;
 
 /**
- * 상세 지원 현황 창의 JTable의 한 행을 채우기 위한 VO입니다.
+ * 지원 현황 - 상세 지원 현황 창의 JTable의 한 행을 채우기 위한 VO입니다.
  * 
  * @author 재현
  *
  */
-public class DetailAppVO {
+public class DetailAppListVO {
 
 	private String app_num, img, name, rank, loc, education, portfolio, gender, app_date, app_status;
 	private int age;
 
-	public DetailAppVO(String app_num, String img, String name, String rank, String loc, String education,
+	public DetailAppListVO(String app_num, String img, String name, String rank, String loc, String education,
 			String portfolio, String gender, String app_date, String app_status, int age) {
 		this.app_num = app_num;
 		this.img = img;

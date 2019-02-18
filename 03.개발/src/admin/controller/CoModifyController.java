@@ -25,11 +25,8 @@ import admin.dao.AdminDAO;
 import admin.util.AdminUtil;
 import admin.view.AdminMgMtView;
 import admin.view.CoModifyView;
-import admin.view.UserModifyView;
 import admin.vo.CoInfoVO;
 import admin.vo.CoModifyVO;
-import admin.vo.UserInfoVO;
-import sun.applet.resources.MsgAppletViewer_zh_CN;
 
 public class CoModifyController extends WindowAdapter implements MouseListener, ActionListener {
 	
