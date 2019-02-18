@@ -45,6 +45,9 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener 
 		JOptionPane.showMessageDialog(ammv, msg);
 	}
 	
+	/**
+	 * DB에서 조회한 유저 정보를 테이블에 등록하는 메소드
+	 */
 	public void setUser() {
 		try {
 			List<UserListVO> list = a_dao.selectAllUser();
@@ -74,6 +77,9 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener 
 		}
 	}
 	
+	/**
+	 * DB에서 조회한 일반 사용자 기본 정보를 테이블에 등록하는 메소드
+	 */
 	public void setEe() {
 		try {
 			List<EeListVO> list = a_dao.selectAllEe();
@@ -115,6 +121,9 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener 
 		}
 	}
 	
+	/**
+	 * DB에서 조회한 기업 사용자 구인 정보를 테이블에 등록하는 메소드
+	 */
 	public void setEr() { 
 		try {
 			List<ErListVO> list = a_dao.selectAllEr();
@@ -166,6 +175,9 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener 
 		}
 	}
 	
+	/**
+	 * DB에서 조회한 기업 정보를 테이블에 등록하는 메소드
+	 */
 	public void setCo() {
 		try {
 			List<CoListVO> list = a_dao.selectAllCo();
@@ -195,21 +207,41 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener 
 		}
 	}
 	
+	/**
+	 * 유저 정보 상세 페이지를 띄우는 메소드
+	 * @param id
+	 * @throws SQLException
+	 */
 	public void showUserModify(String id) throws SQLException {
 		UserInfoVO uivo = a_dao.selectOneUser(id);
 		new UserModifyView(ammv, uivo, this);
 	}
 	
+	/**
+	 * 일반 사용자 기본 정보 상세 페이지를 띄우는 메소드
+	 * @param eeNum
+	 * @throws SQLException
+	 */
 	public void showEeModify(String eeNum) throws SQLException {
 		EeInfoVO eivo = a_dao.selectOneEe(eeNum, "eeNum");
 		new EeModifyView(ammv, eivo, this);
 	}
 	
+	/**
+	 * 기업 사용자 구인 정보 상세 페이지를 띄우는 메소드
+	 * @param erNum
+	 * @throws SQLException
+	 */
 	public void showErModify(String erNum) throws SQLException {
 		ErInfoVO eivo = a_dao.selectOneEr(erNum);
 		new ErModifyView(ammv, eivo, this);
 	}
 	
+	/**
+	 * 기업 사용자 기업 정보 상세 페이지를 띄우는 메소드
+	 * @param coNum
+	 * @throws SQLException
+	 */
 	public void showCoModify(String coNum) throws SQLException {
 		CoInfoVO civo = a_dao.selectOneCo(coNum);
 		new CoModifyView(ammv, civo, this);

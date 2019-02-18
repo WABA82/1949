@@ -115,7 +115,7 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 	}
 	
 	/**
-	 * no_img파일은 삭제를 막기위해 검증하는 메소드
+	 * no_img파일 삭제를 막기위해 검증하는 메소드
 	 * @param fileName
 	 * @return
 	 */
@@ -132,6 +132,10 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 		return flag;
 	}
 
+	/**
+	 * 기업 정보를 변경하는 메소드
+	 * @throws IOException
+	 */
 	public void modify() throws IOException {
 		try {
 			String coNum = civo.getCoNum();
@@ -312,6 +316,11 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 		
 	}//remove 
 	
+	/**
+	 * 기업 이미지를 변경하는 메소드
+	 * @param jl
+	 * @param imgNum
+	 */
 	public void changeImg(JLabel jl, int imgNum) {
 		
 		// 이미지 변경, 이전 이미지명과 새로운 이미지명을 인스턴스에 저장

@@ -37,6 +37,13 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 	private Thread threadLog, threadFileServer;
 	private boolean serverFlag;
 	
+	private Socket client;
+	private DataOutputStream dos;
+	private DataInputStream dis;
+	private ObjectInputStream ois;
+	private ObjectOutputStream oos;
+	private FileOutputStream fos;
+	
 	public AdminMainController(AdminMainView amv) {
 		this.amv = amv;
 	}
@@ -45,6 +52,10 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 		JOptionPane.showMessageDialog(amv, msg);
 	}
 	
+	/**
+	 * 로그를 log파일로 저장하는 메소드
+	 * @throws IOException
+	 */
 	public void saveLog() throws IOException {
 		FileDialog fd = new FileDialog(amv, "로그 저장", FileDialog.SAVE);
 		fd.setVisible(true);
@@ -200,12 +211,6 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 		}
 	}
 	
-	private Socket client;
-	private DataOutputStream dos;
-	private DataInputStream dis;
-	private ObjectInputStream ois;
-	private ObjectOutputStream oos;
-	private FileOutputStream fos;
 	
 	/**
 	 * 파일서버로부터 admin.img.ee에 없는 이미지를 받는 메소드
@@ -326,6 +331,10 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 		}
 	}
 	
+	/**
+	 * 소켓과 스트림을 닫는 메소드
+	 * @throws IOException
+	 */
 	public void closeStreams() throws IOException {
 		if (fos != null) { fos.close(); }
 		if (dis != null) { dis.close(); }
