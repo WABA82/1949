@@ -1,14 +1,13 @@
 package admin.vo;
 
 public class EeInfoVO {
-	String eeNum, img, id, name, rank, loc, education, portfolio, gender, inputDate, extResume;
+	String eeNum, img, name, rank, loc, education, portfolio, gender, inputDate, extResume;
 	int age;
 	
-	public EeInfoVO(String eeNum, String img, String id, String name, String rank, String loc, String education,
+	public EeInfoVO(String eeNum, String img, String name, String rank, String loc, String education,
 			String portfolio, String gender, String inputDate, String extResume, int age) {
 		this.eeNum = eeNum;
 		this.img = img;
-		this.id = id;
 		this.name = name;
 		this.rank = rank;
 		this.loc = loc;
@@ -28,9 +27,6 @@ public class EeInfoVO {
 		return img;
 	}
 
-	public String getId() {
-		return id;
-	}
 
 	public String getName() {
 		return name;
@@ -70,8 +66,10 @@ public class EeInfoVO {
 
 	@Override
 	public String toString() {
-		return "EeInfoVO [eeNum=" + eeNum + ", img=" + img + ", id=" + id + ", name=" + name + ", rank=" + rank
-				+ ", loc=" + loc + ", education=" + education + ", portfolio=" + portfolio + ", gender=" + gender
-				+ ", inputDate=" + inputDate + ", extResume=" + extResume + ", age=" + age + "]";
+		return "EeInfoVO [eeNum=" + eeNum + ", img=" + img + ", name=" + name + ", rank=" + rank + ", loc=" + loc
+				+ ", education=" + education + ", portfolio=" + portfolio + ", gender=" + gender + ", inputDate="
+				+ inputDate + ", extResume=" + extResume + ", age=" + age + "]";
 	}
+	
+	
 }

@@ -8,15 +8,17 @@ package user.ee.vo;
  */
 public class EeRegVO {
 
-	private String name, gender;
+	private String eeId, name, gender;
 	private int age;
 
-	public EeRegVO(String name, String gender, int age) {
+	public EeRegVO( String name, String gender, int age) {
 		this.name = name;
 		this.gender = gender;
 		this.age = age;
 	}// »ý¼ºÀÚ
 
+	
+	
 	public String getName() {
 		return name;
 	}

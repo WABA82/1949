@@ -22,6 +22,7 @@ public class EeMainView extends JFrame {
 	public EeMainView(EeMainVO emvo) {
 		super("1949 - 일반사용자 ["+emvo.getName()+"]");
 		this.emvo=emvo;
+//		String ee_id = emvo.get;
 
 		JLabel jlAct = new JLabel("기본정보 등록여부 : ");
 		jlImg = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/eeImg/"+emvo.getImg()));
@@ -73,8 +74,8 @@ public class EeMainView extends JFrame {
 		setBounds(500, 200, 475, 385);
 		setResizable(false);
 		setVisible(true);
-	}
-
+	}// 생성자
+	
 	public JLabel getJlActivation() {
 		return jlActivation;
 	}

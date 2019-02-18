@@ -16,6 +16,7 @@ import user.common.vo.FindPassVO;
 import user.common.vo.SetPassVO;
 
 public class CommonDAO {
+	
 	private static CommonDAO C_dao;
 
 	private CommonDAO() {
@@ -24,12 +25,10 @@ public class CommonDAO {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-	}
-
 	public static CommonDAO getInstance() {
 		if (C_dao == null) {
 			C_dao = new CommonDAO();
-		}
+		}// end if
 		return C_dao;
 	}
 
@@ -168,7 +167,6 @@ public class CommonDAO {
 		.append("		select ei.ee_id, ut.name, ei.img, ut.activation		") 
 		.append("		from ee_info ei, user_table ut	")
 		.append("		where (ee_id = id) and ei.ee_id = ?	"	);
-		
 		pstmt=con.prepareStatement(selectMyInfo.toString());
 		pstmt.setString(1,eeId );
 		
