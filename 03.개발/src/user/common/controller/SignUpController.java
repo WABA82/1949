@@ -9,13 +9,17 @@ import javax.swing.JOptionPane;
 
 import user.common.view.SearchAddrView;
 import user.common.view.SignUpView;
+import user.common.vo.UserInsertVO;
+import user.dao.CommonDAO;
 
 public class SignUpController extends WindowAdapter implements ActionListener {
      private SignUpView suv;
      private String addrSeq;
+     private CommonDAO c_dao;
     
      public SignUpController(SignUpView suv) {
           this.suv=suv;
+          c_dao=CommonDAO.getInstance();
      }//생성자
 
      @Override
@@ -40,6 +44,7 @@ public class SignUpController extends WindowAdapter implements ActionListener {
                if(id.isEmpty()) {JOptionPane.showMessageDialog(suv, "아이디를 입력해주세요");
                     return;
                };
+               if(id.contains(" ")) {JOptionPane.showMessageDialog(suv, "아이디에 공백을 입력할 수 없습니다."); return;};
                if(id.length()>15) {
                     JOptionPane.showMessageDialog(suv, "아이디는 최대 15자까지 가능합니다." );
                     suv.getJtfId().requestFocus();
@@ -75,6 +80,12 @@ public class SignUpController extends WindowAdapter implements ActionListener {
                if(answer==null||answer.equals("")) {JOptionPane.showMessageDialog(suv, "질문의 답을 입력해주세요");
                     suv.getJtfAnswer().requestFocus(); return;};//질문의 답
                ///////////////////////
+                    
+               if( !(pass1.matches(".*[A-Z].*")) || !(pass1.matches(".*[a-z].*")) || !(pass1.matches(".*\\d.*")) || !(pass1.matches(".*[~!.......].*")) ) {
+            	   JOptionPane.showMessageDialog(suv, "비밀번호에 대문자, 소문자, 특수문자가 들어가야합니다.");
+            	   return;
+               };
+            	   
                if(!pass2.equals(pass1)) {JOptionPane.showMessageDialog(suv, "비밀번호가 일치하지 않습니다");
                /*     System.out.println(pass1+"/"+pass2);
                     System.out.println(!pass2.equals(pass1));
@@ -95,6 +106,11 @@ public class SignUpController extends WindowAdapter implements ActionListener {
 
      public void signUp() {
           System.out.println("검증완료");
+          UserInsertVO uivo = new UserInsertVO(
+        		  
+		  );
+          c_dao.insertUser(uivo);
+          
      }//signUp
 
 	public String getAddrSeq() {
