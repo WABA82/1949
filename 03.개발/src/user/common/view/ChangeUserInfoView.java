@@ -121,6 +121,7 @@ public class ChangeUserInfoView extends JDialog {
 		jbModify.addActionListener(cuic);
 		jbDelete.addActionListener(cuic);
 		jbClose.addActionListener(cuic);
+		jbAddr.addActionListener(cuic);
 		
 		
 		setBounds(0,0,390,600);

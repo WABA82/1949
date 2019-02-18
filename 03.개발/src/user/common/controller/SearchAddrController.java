@@ -68,8 +68,9 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
 			if (suv != null) {
 				suv.getJtfAddr1().setText(addr.toString());
 			} else {
+				cuiv.getJtfZipcode().setText(sav.getJtZip().getValueAt(row, 0).toString());
 				cuiv.getJtfAddr1().setText(addr.toString());
-				// cuic.setAddrSeq(addrSeq); 이렇게 seq를 저장해서 수정 시 사용
+				cuic.setAddrSeq(addr.toString()); //이렇게 seq를 저장해서 수정 시 사용
 			}
 			sav.dispose();
 		}

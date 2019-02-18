@@ -101,4 +101,5 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 	public ChangeUserInfoView getCuiv() {
 		return cuiv;
 	}
+	
 }

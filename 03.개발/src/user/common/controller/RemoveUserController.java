@@ -30,7 +30,7 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 		
 		//if(pass1.equals(pass2)) {
 			try {//유효성검증
-				if(CommonDAO.getInstance().deleteUserInfo("ooo333"))//id입력
+				if(CommonDAO.getInstance().deleteUserInfo(id))//id입력
 				JOptionPane.showMessageDialog(ruv, "정상탈퇴처리되었습니다.");
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -48,7 +48,7 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 		if(ae.getSource()==ruv.getJbDelete()) {
 			//checkPass();넣어주기
 			//removeUser(id);이것으로고치기
-			removeUser("ooo333");
+			removeUser(id);
 		}
 		if(ae.getSource()==ruv.getJbClose()) {
 			ruv.dispose();
