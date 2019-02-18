@@ -310,59 +310,134 @@ public class ErDAO {
 	 * @throws SQLException
 	 */
 	public void insertErAdd(ErAddVO eavo) throws SQLException {
-
+		String erNum = "";
+		boolean updateFlag = false;
 		try {
 			con = getConn();
-			String insertErAdd = "insert into er_info(er_id,subject,education,rank,loc,hire_type, portfolio, er_desc) values(?,?,?,?,?,?,?,?)";
-			pstmt = con.prepareStatement(insertErAdd);
+			con.setAutoCommit(false);
 			
-			pstmt.setString(1, eavo.getErId());
-			pstmt.setString(2, eavo.getSubject());
-			pstmt.setString(3, eavo.getEducation());
-			pstmt.setString(4, eavo.getRank());
-			pstmt.setString(5, eavo.getLoc());
-			pstmt.setString(6, eavo.getHireType());
-			pstmt.setString(7, eavo.getPortfolio());
-			pstmt.setString(8, eavo.getErDesc());
-			
-			pstmt.executeUpdate();
-			
-		} finally {
-			if (pstmt != null) {
-				pstmt.close();
+			try {
+				boolean t1 = irTransaction1(con, eavo);
+				erNum = irTransaction3(con, eavo);
+				boolean t2 = irTransaction2(con, eavo,erNum);
+				
+				if (t1 && t2) {
+					updateFlag = true;
+					con.commit();
+				} else {
+					con.rollback();
+				}
+				
+			} finally {
+				closeAll();
 			}
-			if (con != null) {
-				con.close();
+		} catch (SQLException e) {
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
 			}
+			e.printStackTrace();
 		}
 	}// insertErAdd
-	public void insertErAdd(ErAddVO eavo) throws SQLException {
-		Connection con = null;
-		PreparedStatement pstmt = null;
+	/**
+	 * 구인글 추가 트랜잭션1 구인글(스킬제외) 등록
+	 * @param con
+	 * @param eavo
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean irTransaction1(Connection con,ErAddVO eavo) throws SQLException {
+			boolean insertFlag = false;
+			con = getConn();
+
+			StringBuilder insertSkillAdd =new StringBuilder();
+			
+			insertSkillAdd.append(" insert into er_info(er_num,subject,education,rank,loc,sal,hire_type, portfolio, er_desc,co_num  ) ")
+			.append(" values(er_code, ?,?,?,?,?,?,?,?, ")
+			.append(" (select co_num ")
+			.append(" from company ")
+			.append(" where er_id=?)) ");
+			pstmt1 = con.prepareStatement(insertSkillAdd.toString());
+			pstmt1.setString(1, eavo.getSubject());
+			pstmt1.setString(2, eavo.getEducation());
+			pstmt1.setString(3, eavo.getRank());
+			pstmt1.setString(4, eavo.getLoc());
+			pstmt1.setInt(5, eavo.getSal());
+			pstmt1.setString(6, eavo.getHireType());
+			pstmt1.setString(7, eavo.getPortfolio());
+			pstmt1.setString(8, eavo.getErDesc());
+			pstmt1.setString(9, eavo.getErId());
+			
+			pstmt1.executeUpdate();
+
+			int cnt = pstmt1.executeUpdate();
+			if (cnt == 1) {
+				insertFlag = true;
+			} // end if
+			return insertFlag;
+	}// insertErAdd
+	
+	public String irTransaction3(Connection con, ErAddVO eavo)throws SQLException {
+		String erNum ="";
+		ResultSet rs = null;
+
 		try {
 			con = getConn();
-			String insertErAdd = "insert into er_info(er_id,subject,education,rank,loc,hire_type, portfolio, er_desc) values(?,?,?,?,?,?,?,?)";
-			pstmt = con.prepareStatement(insertErAdd);
+			StringBuilder selectErDetail = new StringBuilder();
+			
+			selectErDetail.append(" select er_num ")
+					.append(" from er_info ei, company c, user_table ut ")
+					.append(" where (ei.co_num=c.co_num and ut.id= c.er_id)and ut.id=? ");
 
-			pstmt.setString(1, eavo.getErId());
-			pstmt.setString(2, eavo.getSubject());
-			pstmt.setString(3, eavo.getEducation());
-			pstmt.setString(4, eavo.getRank());
-			pstmt.setString(5, eavo.getLoc());
-			pstmt.setString(6, eavo.getHireType());
-			pstmt.setString(7, eavo.getPortfolio());
-			pstmt.setString(8, eavo.getErDesc());
-
-			pstmt.executeUpdate();
-
+			pstmt3 = con.prepareStatement(selectErDetail.toString());
+			pstmt3.setString(1, eavo.getErId());
+			rs = pstmt3.executeQuery();
+			// 입력된 코드로 조회된 레코드가 존재할 때 VO를 생성하고 값 추가
+			while (rs.next()) {
+				rs.getInt("er_num");
+			} // end if
 		} finally {
-			if (pstmt != null) {
-				pstmt.close();
+			// 6.
+			if (rs != null) {
+				rs.close();
 			}
-			if (con != null) {
-				con.close();
-			}
+
 		}
+		return erNum;
+
+	}
+	
+	/**
+	 * 구인글 추가 트랜잭션1 구인글 스킬 등록
+	 * @param con
+	 * @param eavo
+	 * @param erNum
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean irTransaction2(Connection con,ErAddVO eavo,String erNum) throws SQLException {
+		boolean insertSkillFlag = false;
+		con = getConn();
+		int cnt=0;
+		
+		StringBuilder insertSkillAdd = new StringBuilder();
+		insertSkillAdd
+		.append("insert into selected_skill(er_num,skill_num)")
+		.append("values(?,?)");
+		
+		for(int i=0; i<eavo.getListSkill().size();i++) {
+			pstmt1 = con.prepareStatement(insertSkillAdd.toString());
+			pstmt1.setString(1,erNum );
+			pstmt1.setString(2, eavo.getListSkill().get(i));
+			cnt += pstmt1.executeUpdate();
+		}
+		
+		if (cnt == eavo.getListSkill().size()) {
+			insertSkillFlag = true;
+		} // end if
+		
+		return insertSkillFlag;
 	}// insertErAdd
 	
 	/**

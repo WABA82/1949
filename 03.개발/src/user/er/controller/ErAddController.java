@@ -22,19 +22,25 @@ public class ErAddController extends WindowAdapter implements ActionListener {
 		this.eav = eav;
 		this.erId = erId;
 		this.emmc = emmc;
-		
 		er_dao= ErDAO.getInstance();
+	}
+	public void register() {
+		//등록수정완료시 eavo에 값 넣어주고 dao 에뿌려주기
+		try {
+			er_dao.insertErAdd(eavo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	public void refreshList() {
+		
 	}
 	
 	
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if(ae.getSource()==eav.getJbReg()) {
-			try {
-				er_dao.insertErAdd(eavo);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			register();
 		}
 		if(ae.getSource()==eav.getJbCancel()) {
 			eav.dispose();
