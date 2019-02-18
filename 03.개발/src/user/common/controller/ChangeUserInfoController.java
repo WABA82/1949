@@ -86,6 +86,9 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 		}
 			
 		if(ae.getSource()==cuiv.getJbDelete()) {
+			//id=회원정보수정페이지의 id얻기
+			JTextField jtfId= cuiv.getJtfId();
+			String id=jtfId.getText().trim();
 			new RemoveUserView(emv, id);/////////////id????
 		}
 		if(ae.getSource()==cuiv.getJbClose()) {
