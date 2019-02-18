@@ -1,5 +1,6 @@
 package user.common.view;
 
+import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.ButtonGroup;
@@ -21,8 +22,9 @@ public class SignUpView extends JDialog {
 	private JButton jbSignUp, jbCancel, jbAddr;
 	private JComboBox<String> jcbQuestion;
 	
-	public SignUpView(LoginView lv) {
-		super(lv, "회원가입", true);
+	//public SignUpView(LoginView lv) {
+		public SignUpView() {
+		//super(lv, "회원가입", true);
 		setTitle("회원 가입"); //다음 작업에 상위 프레임으로 타이틀이랑 모달구현하기(x좌표 y좌표 받아서 화면띄우기)
 		jrbEe = new JRadioButton("일반사용자");
 		jrbEr = new JRadioButton("기업사용자");
@@ -50,6 +52,10 @@ public class SignUpView extends JDialog {
 		jtfTel = new JTextField(); 
 		jtfZip = new JTextField();
 		jtfAddr1 = new JTextField();
+		jtfAddr1 = new JTextField();
+        jtfAddr1.setEditable(false);
+        jtfAddr1.setBackground(Color.white);
+        //jtfAddr1.getBorder(new Border(Color.BLACK));
 		jtfAddr2 = new JTextField();
 		jtfEmail = new JTextField();
 		jtfAnswer = new JTextField();
@@ -171,7 +177,8 @@ public class SignUpView extends JDialog {
 		addWindowListener(suc);
 		
 		
-		setBounds(lv.getX()+420,lv.getY()-100,390,740);
+		//setBounds(lv.getX()+420,lv.getY()-100,390,740);
+		setBounds(420,100,390,740);
 		setVisible(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		
@@ -233,5 +240,7 @@ public class SignUpView extends JDialog {
 	public JComboBox<String> getJcbQuestion() {
 		return jcbQuestion;
 	}
-	
+	public static void main(String[] args) {
+		new SignUpView();
+	}
 }

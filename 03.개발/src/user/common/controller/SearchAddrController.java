@@ -48,7 +48,7 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
 			.append(sav.getJtZip().getValueAt(row, 2)).append(" ")
 			.append(sav.getJtZip().getValueAt(row, 3)).append(" ")
 			.append(sav.getJtZip().getValueAt(row, 4));
-			System.out.println(addr);//addr은 잘 찍히는데...
+			//System.out.println(addr);//addr은 잘 찍히는데...
 			suv.getJtfAddr1().setText(addr.toString());
 			sav.dispose();
 			
