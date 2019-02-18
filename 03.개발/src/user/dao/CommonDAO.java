@@ -88,7 +88,7 @@ public class CommonDAO {
    }// login
 
    /**
-    * 박정미 주소 검색
+    * 박정미 주소 검색 완성
     * @param dong
     * @return
     * @throws SQLException
