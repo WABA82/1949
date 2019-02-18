@@ -11,6 +11,7 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+import user.common.view.ChangeUserInfoView;
 import user.common.view.SearchAddrView;
 import user.common.view.SignUpView;
 import user.common.vo.AddrVO;
@@ -19,17 +20,25 @@ import user.dao.CommonDAO;
 public class SearchAddrController extends WindowAdapter implements ActionListener {
 
 	private SearchAddrView sav;
-	private JDialog jd;
-	private String addrSeq;
 	private SignUpView suv;
+	private ChangeUserInfoView cuiv;
 	
-	public SearchAddrController(SearchAddrView sav, JDialog jd, String addrSeq, SignUpView suv) {
+	public SearchAddrController(SearchAddrView sav, SignUpController suc, ChangeUserInfoController cuic) {
 		this.sav = sav;
-		this.jd = jd;
-		this.addrSeq = addrSeq;
-		this.suv = suv;
+		if (suc != null && cuic == null) {
+			this.suv = suc.getSuv();
+		} else {
+			this.cuiv = cuic.getCuiv();
+		}
 	}//생성자
 	
+	private void msgCenter(String msg) {
+		if (suv != null) {
+			JOptionPane.showMessageDialog(suv, msg);
+		} else {
+			JOptionPane.showMessageDialog(cuiv, msg);
+		}
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent ae) {
@@ -40,7 +49,9 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
 				return;
 			}//end if
 			search(dong); //String ?dong?
-		}else if(ae.getSource()==sav.getJbOk()) {
+		}
+		
+		if(ae.getSource()==sav.getJbOk()) {
 			int row = sav.getJtZip().getSelectedRow();
 			//suv.getJtfAddr1().setText(sav.getJtZip().getValueAt(row, 0).toString());
 			StringBuilder addr = new StringBuilder();
@@ -49,11 +60,16 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
 			.append(sav.getJtZip().getValueAt(row, 3)).append(" ")
 			.append(sav.getJtZip().getValueAt(row, 4));
 			System.out.println(addr);//addr은 잘 찍히는데...
-			suv.getJtfAddr1().setText(addr.toString());
-			sav.dispose();
 			
+			if (suv != null) {
+				suv.getJtfAddr1().setText(addr.toString());
+			} else {
+				cuiv.getJtfAddr1().setText(addr.toString());
+			}
+			sav.dispose();
+		}
 		
-		}else if(ae.getSource()==sav.getJbCancel()) {
+		if(ae.getSource()==sav.getJbCancel()) {
 			sav.dispose();
 		}
 	}//버튼 처리
@@ -92,11 +108,11 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
 				dtm.addRow(rowData);
 			}//end for
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(sav, "DB에서 문제 발생");
+			msgCenter("DB에서 문제 발생");
 			e.printStackTrace();
 		}//end catch
 		if(flag) {
-			JOptionPane.showMessageDialog(sav, "조회된 결과가 없습니다.");
+			msgCenter("조회된 결과가 없습니다.");
 		}
 		
 	}//search
