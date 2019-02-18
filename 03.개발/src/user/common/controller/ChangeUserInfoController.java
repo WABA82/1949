@@ -46,6 +46,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 		String email=jtfEmail.getText().trim();
 		String addrDetail=jtfAddr2.getText().trim();
 		
+		addrSeq=uivo.getSeq();
 		
 		UserModifyVO umvo=new UserModifyVO(id, name, pass, tel, addrSeq, addrDetail, email);////////여기까지
 		
