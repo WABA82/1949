@@ -13,6 +13,7 @@ import user.er.vo.DetailAppEeVO;
 import user.er.vo.DetailAppListVO;
 import user.er.vo.DetailEeInfoVO;
 import user.er.vo.ErAddVO;
+import user.er.vo.ErAppStatusVO;
 import user.er.vo.ErDefaultVO;
 import user.er.vo.ErDetailVO;
 import user.er.vo.ErHiringForInterestVO;
@@ -22,6 +23,7 @@ import user.er.vo.ErListVO;
 import user.er.vo.ErModifyVO;
 
 public class ErDAO {
+
 	private static ErDAO Er_dao;
 
 	public ErDAO() {
@@ -30,7 +32,6 @@ public class ErDAO {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-
 	}// EeDAO
 
 	public static ErDAO getInstance() {
@@ -44,7 +45,7 @@ public class ErDAO {
 
 		Connection con = null;
 
-		String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl";
+		String url = "jdbc:oracle:thin:@localhost:1521:orcl";
 		String id = "kanu";
 		String pass = "share";
 		con = DriverManager.getConnection(url, id, pass);
@@ -586,8 +587,8 @@ public class ErDAO {
 			con = getConn();
 
 			StringBuilder selectDetailAppEe = new StringBuilder();
-			selectDetailAppEe
-					.append(" select img, name, tel, email, rank, loc, education, age, portfolio, gender, ext_resume ");
+			selectDetailAppEe.append(
+					" select img, name, tel, email, rank, loc, education, age, portfolio, gender, ext_resume, upper(app_status) app_status");
 			selectDetailAppEe.append(" from application a, user_table ut, ee_info eei ");
 			selectDetailAppEe.append(" where (a.ee_id = ut.id) and (ut.id = eei.ee_id) and (a.app_num = ?) ");
 			pstmt = con.prepareStatement(selectDetailAppEe.toString());
@@ -598,7 +599,7 @@ public class ErDAO {
 				daevo = new DetailAppEeVO(rs.getString("img"), rs.getString("name"), rs.getString("tel"),
 						rs.getString("email"), rs.getString("rank"), rs.getString("loc"), rs.getString("education"),
 						rs.getString("portfolio"), rs.getString("gender"), rs.getString("ext_resume"),
-						rs.getInt("age"));
+						rs.getString("app_status"), rs.getInt("age"));
 			} // end while
 
 		} finally {
@@ -616,13 +617,57 @@ public class ErDAO {
 		return daevo;
 	}// selectDetailAppEe()
 
-//	public static void main(String[] args) {
-//		try {
+	/**
+	 * DB application 지원상태를 수락으로 변경하는 메서드.
+	 */
+	public boolean updateAppSatus(ErAppStatusVO easvo) throws SQLException {
+
+		boolean flag = false;
+
+		// * DEFAULT 'U'
+		// * 'U' - unread 응답대기
+		// * 'R' - read 열람
+		// * 'A' - approved 지원수락
+		// * 'D' - denied 지원거절
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = getConn();
+
+			String updateAppSatusAccept = new String();
+			updateAppSatusAccept = "update application set app_status=UPPER(?) where app_num=?";
+			pstmt = con.prepareStatement(updateAppSatusAccept.toString());
+
+			pstmt.setString(1, easvo.getApp_status());
+			pstmt.setString(2, easvo.getApp_num());
+
+			if (pstmt.executeUpdate() != 1) {
+				// 1이 아닌 경우 문제가 발생한 것.
+				flag = true;
+			} // end if
+		} finally {
+			if (pstmt != null) {
+				pstmt.close();
+			} // end if
+			if (con != null) {
+				con.close();
+			} // end if
+		} // end finally
+
+		return flag;
+	}// updateAppSatusAccept()
+
+	/* 재현 : 단위 테스트용 main메서드. */
+	public static void main(String[] args) {
+		try {
+			System.out.println(ErDAO.getInstance().updateAppSatus(new ErAppStatusVO("app_000001", "u")));
 //			System.out.println(ErDAO.getInstance().selectDetailAppEe("app_000001"));
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}// main
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}// main
 
 	/***************************** 재현 끝 *****************************/
 

@@ -3,10 +3,11 @@ package user.ee.vo;
 import java.util.List;
 
 public class DetailErInfoVO {
-	private String erNum,subject,name, tel, email, inputDate, img1, coName, edudation,
-		rank, loc, hireType, portfolio, erDesc, interest;
+	private String erNum, subject, name, tel, email, inputDate, img1, coName, edudation, rank, loc, hireType, portfolio,
+			erDesc, interest;
 	private int sal;
 	private List<String> skill;
+
 	public DetailErInfoVO(String erNum, String subject, String name, String tel, String email, String inputDate,
 			String img1, String coName, String edudation, String rank, String loc, String hireType, String portfolio,
 			String erDesc, String interest, int sal, List<String> skill) {
@@ -29,9 +30,11 @@ public class DetailErInfoVO {
 		this.sal = sal;
 		this.skill = skill;
 	}
+
 	public String getErNum() {
 		return erNum;
 	}
+
 	public String getSubject() {
 		return subject;
 	}

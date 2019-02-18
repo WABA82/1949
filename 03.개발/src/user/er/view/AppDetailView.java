@@ -77,7 +77,7 @@ public class AppDetailView extends JDialog {
 		JLabel jlResume = new JLabel("외부이력서");
 		jlResume.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
 
-		setLayout(null);//수동배치 설정
+		setLayout(null);// 수동배치 설정
 
 		// 연락처 이메일,
 		// Label
@@ -107,7 +107,7 @@ public class AppDetailView extends JDialog {
 		jtfName.setEditable(false);
 		add(jtfName);
 		jtfName.setBounds(315, 22, 130, 20);
-		
+
 		jtfTel = new JTextField(10);
 		jtfTel.setEditable(false);
 		add(jtfTel);
@@ -148,10 +148,13 @@ public class AppDetailView extends JDialog {
 		add(jtfGender);
 		jtfGender.setBounds(315, 342, 130, 20);
 
-
 		/* 이벤트 등록 */
 		AppDetailController adc = new AppDetailController(this, app_num);
 		addWindowListener(adc);
+		jbExtRsm.addActionListener(adc); // 외부이력서 다운 버튼 이벤트 등록
+		jbAccept.addActionListener(adc); // 지원 수락 버튼 이벤트 등록
+		jbRefuse.addActionListener(adc); // 지원 거절 버튼 이벤트 등록
+		jbClose.addActionListener(adc); // 닫기 버튼 이벤트 등록
 
 		/* 프레임 크기 설정 및 가시화 */
 		setBounds(100, 100, 490, 520);
