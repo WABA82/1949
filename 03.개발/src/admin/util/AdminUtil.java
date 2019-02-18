@@ -42,7 +42,7 @@ public class AdminUtil {
 	}
 	
 	/**
-	 * 파일서버에 존재하는 파일을 삭제하는 메소드
+	 * 입력받은 파일명에 해당하는 파일을 파일 서버에서 삭제하는 메소드
 	 * @param fileName
 	 * @param flag
 	 * @param client
@@ -77,7 +77,7 @@ public class AdminUtil {
 	}
 	
 	/**
-	 * 파일서버에 새 파일을 추가하는 메소드
+	 * 전달받은 파일명과 파일에 대한 정보로 파일 서버에 파일을 생성하는 메소드
 	 * @param newFileName
 	 * @param newFile
 	 * @param flag

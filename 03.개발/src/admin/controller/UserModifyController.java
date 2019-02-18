@@ -354,11 +354,8 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 	 * 주소 검색하는 창을 띄우는 메서드
 	 * @return
 	 */
-	public String searchAddr() {
-		String addr1 = "";
+	public void searchAddr() {
 		new SearchAddrView(umv, this);
-		
-		return addr1;
 	}
 	
 	
