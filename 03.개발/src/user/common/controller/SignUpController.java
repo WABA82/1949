@@ -86,7 +86,7 @@ public class SignUpController extends WindowAdapter implements ActionListener {
                };//비밀번호 일치확인
                signUp();
           }else if(ae.getSource()==suv.getJbAddr()) {
-               new SearchAddrView(suv, this, null);
+               new SearchAddrView(suv, this, null); //null은 혜원이 부분 changeuser info 부분에 
           }else if(ae.getSource()==suv.getJbCancel()) {
                suv.dispose();
           }//end if

@@ -26,7 +26,7 @@ public class SearchAddrView extends JDialog {
 		super(jd,"주소검색", true);
 		
 		jtfDong = new JTextField(20);
-		String[] columnNames = { "우편번호", "시도", "구군", "동", "번지" };
+		String[] columnNames = { "우편번호", "시도", "구군", "동", "번지", /*"sqe"*/ };
 		dtmZip = new DefaultTableModel(columnNames, 3);
 		jtZip = new JTable(dtmZip);
 		JScrollPane jspZip = new JScrollPane(jtZip);
