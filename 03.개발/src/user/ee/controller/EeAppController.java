@@ -22,6 +22,7 @@ public class EeAppController extends WindowAdapter implements MouseListener {
 	private EeAppView eav;
 	private EeDAO ee_dao;
 	private String ee_id;
+	private EeAppVO eavo;
 	private final int DBL_CLICK = 2;
 
 	public EeAppController(EeAppView eav, String ee_id) {
@@ -40,7 +41,7 @@ public class EeAppController extends WindowAdapter implements MouseListener {
 			List<EeAppVO> list = ee_dao.selectAppList(ee_id);
 
 			// JTable에 조회한 정보를 출력.
-			EeAppVO eavo = null;
+			eavo = null;
 
 			Object[] rowData = null;
 			for (int i = 0; i < list.size(); i++) {
@@ -61,6 +62,7 @@ public class EeAppController extends WindowAdapter implements MouseListener {
 				rowData[9] = new Integer(eavo.getSal());
 				rowData[10] = eavo.getApp_date();
 				rowData[11] = eavo.getApp_status();
+				System.out.println(eavo.getApp_status());
 
 				// DTM에 추가
 				dtm.addRow(rowData);
@@ -108,7 +110,7 @@ public class EeAppController extends WindowAdapter implements MouseListener {
 			e.printStackTrace();
 		} // end catch
 		System.out.println(deivo);
-		new EeDetailErView(null, deivo, erNum, ee_id, null, (deivo.getInterest()));
+		new EeDetailErView(null, deivo, erNum, ee_id, eavo.getApp_status());
 	}// showDetailErinfo
 
 	/////////////////////////////// 안 쓰는 메소드들 ///////////////////////////////
@@ -127,4 +129,5 @@ public class EeAppController extends WindowAdapter implements MouseListener {
 	@Override
 	public void mouseExited(MouseEvent e) {
 	}
+
 }// class

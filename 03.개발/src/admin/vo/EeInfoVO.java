@@ -27,7 +27,7 @@ public class EeInfoVO {
 	public String getImg() {
 		return img;
 	}
-
+	
 	public String getId() {
 		return id;
 	}
@@ -70,8 +70,10 @@ public class EeInfoVO {
 
 	@Override
 	public String toString() {
-		return "EeInfoVO [eeNum=" + eeNum + ", img=" + img + ", id=" + id + ", name=" + name + ", rank=" + rank
-				+ ", loc=" + loc + ", education=" + education + ", portfolio=" + portfolio + ", gender=" + gender
-				+ ", inputDate=" + inputDate + ", extResume=" + extResume + ", age=" + age + "]";
+		return "EeInfoVO [eeNum=" + eeNum + ", img=" + img + ", name=" + name + ", rank=" + rank + ", loc=" + loc
+				+ ", education=" + education + ", portfolio=" + portfolio + ", gender=" + gender + ", inputDate="
+				+ inputDate + ", extResume=" + extResume + ", age=" + age + "]";
 	}
+	
+	
 }

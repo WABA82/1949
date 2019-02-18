@@ -27,7 +27,6 @@ public class EeDetailSearchController extends WindowAdapter implements ActionLis
 	public EeDetailSearchController(EeDetailSearchView esv, EeHiringController ehc) {
 		this.esv = esv;
 		this.ehc = ehc;
-		this.list = list;
 		ehc_dto = EeHiringCdtDTO.getInstance();
 	}
 	

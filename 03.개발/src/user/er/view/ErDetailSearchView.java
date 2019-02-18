@@ -38,9 +38,6 @@ public class ErDetailSearchView extends JDialog {
 				"광주","전남","전북","대구","경북","부산","울산","경남","강원","제주","전국" };
 		jcbLoc = new JComboBox<String>(locItems);
 		
-		String[] htItems = { "==고용형태를 선택해주세요==", "정규직","계약직","프리" };
-		jcbHireType = new JComboBox<String>(htItems);
-		
 		String[] ageItems = { "===나이를 선택해주세요===" ,"10대", "20대", "30대", "40대", "50대", "60대" };
 		jcbAge = new JComboBox<>(ageItems);
 		
@@ -50,16 +47,14 @@ public class ErDetailSearchView extends JDialog {
 		jcbRank.setBounds(50, 70, 200, 30);
 		jcbEducation.setBounds(50, 120, 200, 30);
 		jcbLoc.setBounds(50, 170, 200, 30);
-		jcbHireType.setBounds(50,220,200,30);
-		jcbAge.setBounds(50, 270, 200, 30);
-		jbSearch.setBounds(55, 320, 90, 30);
-		jbCancel.setBounds(155, 320, 90, 30);
+		jcbAge.setBounds(50, 220, 200, 30);
+		jbSearch.setBounds(55, 270, 90, 30);
+		jbCancel.setBounds(155, 270, 90, 30);
 		
 		add(jlTitle);
 		add(jcbRank);
 		add(jcbEducation);
 		add(jcbLoc);
-		add(jcbHireType);
 		add(jcbAge);
 		add(jbSearch);
 		add(jbCancel);
@@ -67,17 +62,18 @@ public class ErDetailSearchView extends JDialog {
 		ErDetailSearchController edsc = new ErDetailSearchController(this, ehc);
 		jbSearch.addActionListener(edsc);
 		jbCancel.addActionListener(edsc);
+		jcbEducation.addActionListener(edsc);
+		jcbLoc.addActionListener(edsc);
+		jcbRank.addActionListener(edsc);
+		jcbAge.addActionListener(edsc);
 		
 		addWindowListener(edsc);
 		
-		setBounds(500, 100, 300, 410);
+		setBounds(500, 100, 300, 380);
 		setResizable(false);
 		setVisible(true);
 	}
 	
-	/*public static void main(String[] args) {
-		new ErDetailSearchView();
-	}*/
 	public JButton getJbSearch() {
 		return jbSearch;
 	}

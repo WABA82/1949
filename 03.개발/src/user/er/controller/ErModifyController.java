@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 
 import user.dao.ErDAO;
 import user.ee.vo.EeInterestAndAppVO;
+import user.er.view.ErMgMtView;
 import user.er.view.ErModifyView;
 import user.er.vo.ErListVO;
 import user.er.vo.ErModifyVO;
@@ -22,13 +23,14 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 	private String erNum,erId;
 	private ErDAO erdao;
 	private ErMgMtController emmc;
+	private int preSkill;
 	
-	
-	
-	public ErModifyController(ErModifyView emv, String erNum,String erId) {
+	public ErModifyController(ErModifyView emv, String erNum,String erId,ErMgMtController emmc, int preSkill) {
 		this.emv = emv;
 		this.erNum = erNum;
 		this.erId = erId;
+		this.emmc= emmc;
+		this.preSkill= preSkill;
 		erdao= ErDAO.getInstance();
 	}
 	public void modifyEr() {
@@ -62,13 +64,13 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 			rank="C";
 		}
 		// rank: 'N' - 신입 'C' - 경력
-		// hiretype 'C' - 정규직'N' - 비정규직'F' - 프리랜서
+		// hiretype 'C' - 정규직'N' - 비정규직'F' - 프리
 		
 		if(hireType.equals("정규직")) {
 			hireType="C";
 		}else if(hireType.equals("계약직")) {
 			hireType="N";
-		}else if(hireType.equals("프리랜서")) {
+		}else if(hireType.equals("프리")) {
 			hireType="F";
 		}
 		
@@ -87,12 +89,14 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 				hireType, 
 				portfolio, 
 				emv.getJtaErDesc().getText(),
-				Integer.parseInt(emv.getJtfSal().getText().trim()), 
+				Integer.parseInt(emv.getJtfSal().getText()), 
 				listSkill);
 		try {
-			updateflag = erdao.updateErModify(emvo);
+			updateflag = erdao.updateErModify(emvo,preSkill);
 			if(updateflag) {
 				JOptionPane.showMessageDialog(emv, "구인 정보가 수정되었습니다.");
+				emv.dispose();
+				emmc.setDtm();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -102,7 +106,6 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 	
 	public void deleteEr() {
 		boolean deleteFlag;
-		List<ErListVO> list = new ArrayList<>();
 		try {
 			deleteFlag = erdao.deleteEr(erNum);
 		} catch (SQLException e) {
@@ -111,12 +114,8 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 			return;
 		}
 		if(deleteFlag) {
-			JOptionPane.showMessageDialog(emv, "구직 정보가 삭제되었습니다. ");
-			try {
-				list = erdao.selectErList(erId);
-			} catch (SQLException e) {
-			}
-			emmc.setDtm(list);
+			JOptionPane.showMessageDialog(emv, "구인 정보가 삭제되었습니다. ");
+			emmc.setDtm();
 		
 		}else {
 			JOptionPane.showMessageDialog(emv, "리스트삭제에 실패했습니다.");

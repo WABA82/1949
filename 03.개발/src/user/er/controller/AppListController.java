@@ -13,9 +13,9 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import user.dao.ErDAO;
+import user.er.view.AppDetailView;
 import user.er.view.AppListView;
-import user.er.vo.DetailAppVO;
-import user.er.vo.ErListVO;
+import user.er.vo.DetailAppListVO;
 
 public class AppListController extends WindowAdapter implements MouseListener {
 
@@ -32,6 +32,11 @@ public class AppListController extends WindowAdapter implements MouseListener {
 		setDTM(er_num);
 	}// 생성자
 
+	/**
+	 * 재현 : 지원현황 창 - 상세 지원 현황 창이 열릴 때 목록을 채우는 메소드.
+	 * 
+	 * @param er_num
+	 */
 	private void setDTM(String er_num) {
 
 		DefaultTableModel dtm = alv.getDtmEeInfo();
@@ -39,32 +44,32 @@ public class AppListController extends WindowAdapter implements MouseListener {
 
 		try {
 			// DB에서 관심회사를 조회.
-			List<DetailAppVO> list = er_dao.selectDetailApplist(er_num);
+			List<DetailAppListVO> list = er_dao.selectDetailApplist(er_num);
 
 			// JTable에 조회한 정보를 출력.
-			DetailAppVO davo = null;
+			DetailAppListVO dalvo = null;
 			String imgPath = "C:/dev/1949/03.개발/가데이터/구직자사진/150x200px/";
 
 			Object[] rowData = null;
 			for (int i = 0; i < list.size(); i++) {
 
 				/* list에 담겨진 VO객체로 EeInterestVO객체 생성하기 */
-				davo = list.get(i);
+				dalvo = list.get(i);
 
 				// DTM에 데이터를 추가하기 위한 일차원배열(Vector)을 생성하고 데이터를 추가
 				rowData = new Object[12];
 				rowData[0] = new Integer(i + 1);
-				rowData[1] = davo.getApp_num();
-				rowData[2] = new ImageIcon(imgPath + davo.getImg());
-				rowData[3] = davo.getName();
-				rowData[4] = davo.getRank();
-				rowData[5] = davo.getLoc();
-				rowData[6] = davo.getEducation();
-				rowData[7] = davo.getAge();
-				rowData[8] = davo.getPortfolio();
-				rowData[9] = davo.getGender();
-				rowData[10] = davo.getApp_date();
-				rowData[11] = davo.getApp_status();
+				rowData[1] = dalvo.getApp_num();
+				rowData[2] = new ImageIcon(imgPath + dalvo.getImg());
+				rowData[3] = dalvo.getName();
+				rowData[4] = dalvo.getRank();
+				rowData[5] = dalvo.getLoc();
+				rowData[6] = dalvo.getEducation();
+				rowData[7] = dalvo.getAge();
+				rowData[8] = dalvo.getPortfolio();
+				rowData[9] = dalvo.getGender();
+				rowData[10] = dalvo.getApp_date();
+				rowData[11] = dalvo.getApp_status();
 
 				// DTM에 추가
 				dtm.addRow(rowData);
@@ -92,7 +97,8 @@ public class AppListController extends WindowAdapter implements MouseListener {
 		case DBL_CLICK:
 			if (me.getSource() == alv.getJtEeInfo()) {
 				JTable jt = alv.getJtEeInfo();
-				String 
+				String app_num = (String) jt.getValueAt(jt.getSelectedRow(), 1);
+				new AppDetailView(alv, app_num);
 			} // end if
 		}// end switch
 	}// mouseClicked

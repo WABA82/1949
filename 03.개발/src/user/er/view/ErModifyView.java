@@ -16,6 +16,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import user.er.controller.ErMgMtController;
 import user.er.controller.ErModifyController;
 import user.er.vo.ErDetailVO;
 
@@ -23,20 +24,21 @@ import user.er.vo.ErDetailVO;
 public class ErModifyView extends JDialog {
 
 	/* 인스턴스 변수 */
-	JTextField jtfSubject, jtfSal;
-	JTextArea jtaErDesc;
-	JCheckBox jchJava, jchJspServlet, jchSpring, jchOracle, jchHTML, jchCSS, jchLinux, jchJS;
-	JComboBox<String> jcbRank, jcbEducation, jcbLoc, jcbHireType, jcbPortfolio;
-	JButton jbReg /* 수정버튼 */, jbDelete, jbCancel;
+	private JTextField jtfSubject, jtfSal;
+	private JTextArea jtaErDesc;
+	private JCheckBox jchJava, jchJspServlet, jchSpring, jchOracle, jchHTML, jchCSS, jchLinux, jchJS;
+	private JComboBox<String> jcbRank, jcbEducation, jcbLoc, jcbHireType, jcbPortfolio;
+	private JButton jbReg /* 수정버튼 */, jbDelete, jbCancel;
+	
 
-	public ErModifyView(ErMgMtView emmv, ErDetailVO edvo, String erNum, String erId) {
+	public ErModifyView(ErMgMtView emmv, ErDetailVO edvo, String erNum, String erId, ErMgMtController emmc) {
 		super(emmv, "구인 정보 수정", true);/* 창의 제목 */
 		
 		/* 컴포넌트 생성하기 */
 		// 이미지아이콘 : 회사로고
 		// 라벨들
 		//C:\dev\1949\03.개발\src\img\coImg\sssdi_logo.png
-		JLabel jlImage = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/img/coImg/"+edvo.getImg1()));
+		JLabel jlImage = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/"+edvo.getImg1()));
 		JLabel jlName = new JLabel("이름");
 		JLabel jlTel = new JLabel("연락처");
 		JLabel jlEmail = new JLabel("이메일");
@@ -92,7 +94,7 @@ public class ErModifyView extends JDialog {
 		String[] eItem = { "고졸", "초대졸", "석사", "박사" };
 		jcbEducation = new JComboBox<>(eItem);
 		for(int i=0; i<eItem.length;i++) {
-			if(edvo.getLoc().equals(eItem[i])) {
+			if(edvo.getEducation().equals(eItem[i])) {
 				jcbEducation.setSelectedIndex(i);
 			}
 		}
@@ -219,22 +221,32 @@ public class ErModifyView extends JDialog {
 		skillGridPanel.add(jchLinux);
 		skillGridPanel.add(jchJS);
 		
+		int preSkill=0;
+		
 		if(edvo.getListSkill().contains("Java")) {
 			jchJava.setSelected(true);
+			preSkill++;
 		}else if(edvo.getListSkill().contains("JspServlet")){
 			jchJspServlet.setSelected(true);
+			preSkill++;
 		}else if(edvo.getListSkill().contains("Spring")){
 			jchSpring.setSelected(true);
+			preSkill++;
 		}else if(edvo.getListSkill().contains("Oracle")){
 			jchOracle.setSelected(true);
+			preSkill++;
 		}else if(edvo.getListSkill().contains("HTML")){
 			jchHTML.setSelected(true);
+			preSkill++;
 		}else if(edvo.getListSkill().contains("CSS")){
 			jchCSS.setSelected(true);
+			preSkill++;
 		}else if(edvo.getListSkill().contains("Linux")){
 			jchLinux.setSelected(true);
+			preSkill++;
 		}else if(edvo.getListSkill().contains("JS")){
 			jchJS.setSelected(true);
+			preSkill++;
 		}
 		
 
@@ -259,14 +271,13 @@ public class ErModifyView extends JDialog {
 		add(jbCancel);
 
 		/* 이벤트등록 */
-		ErModifyController emc = new ErModifyController(this,erNum,erId);
+		ErModifyController emc = new ErModifyController(this,erNum,erId,emmc,preSkill);
 		jbCancel.addActionListener(emc);
 		jbReg.addActionListener(emc);
 		jbDelete.addActionListener(emc);
 		addWindowListener(emc);
 		
 		/* 프레임 크기 설정 및 가시화 */
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 410, 660);
 		setVisible(true);
 	}// 생성자

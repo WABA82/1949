@@ -25,7 +25,7 @@ import user.er.view.ErMainView;
 public class LoginController extends WindowAdapter implements ActionListener, MouseListener {
 	private LoginView lv;
 	private EeMainVO emvo;
-	private ErMainVO emv;
+	private ErMainVO ermvo;
 	private CommonDAO C_dao;
 
 	public LoginController(LoginView lv) {
@@ -62,38 +62,38 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 	}
 
 	public void login() throws SQLException {
-		String id=lv.getJtfId().getText().trim();
-		String pass=new String(lv.getJpfPass().getPassword());
-		
-		if(id==null||id.equals("")) {
-			JOptionPane.showMessageDialog(lv,"아이디를 입력하세요");
-			lv.getJtfId().requestFocus();
-			return;
-		} // end if
-		if (pass == null || pass.equals("")) {
-			JOptionPane.showMessageDialog(lv, "비밀번호를 입력하세요");
-			lv.getJpfPass().requestFocus();
-			return;
-		}
-		
-		String userType="";
-		CommonDAO c_dao = CommonDAO.getInstance();
-		
-		userType=c_dao.login(id, pass);
-		if(userType.equals("E")) {
-			emvo = C_dao.selectEeMain(id);
-			new EeMainView(emvo);
-			lv.dispose();
-		}else{
-			emv = c_dao.selectErMain(id);
-			new ErMainView(emv);
-			lv.dispose();
-		}
-		lv.dispose();
-	}// login
+	      String id=lv.getJtfId().getText().trim();
+	      String pass=new String(lv.getJpfPass().getPassword());
+	      
+	      if(id==null||id.equals("")) {
+	         JOptionPane.showMessageDialog(lv,"아이디를 입력하세요");
+	         lv.getJtfId().requestFocus();
+	         return;
+	      } // end if
+	      if (pass == null || pass.equals("")) {
+	         JOptionPane.showMessageDialog(lv, "비밀번호를 입력하세요");
+	         lv.getJpfPass().requestFocus();
+	         return;
+	      }
+	      
+	      String userType="";
+	      CommonDAO c_dao = CommonDAO.getInstance();
+	      
+	      userType=c_dao.login(id, pass);
+	      if(userType.equals("E")) {
+	         emvo = C_dao.selectEeMain(id);
+	         new EeMainView(emvo);
+	         lv.dispose();
+	      }else{
+	         ermvo = C_dao.selectErMain(id);
+	         new ErMainView(ermvo);
+	         lv.dispose();
+	      }
+	      lv.dispose();
+	   }// login
 
 	public void signUp() {
-		new SignUpView(lv);
+		//new SignUpView(lv); ////////////////////////////////////////////////////////////////////////////////// 연결수정필요
 	}// signUp
 
 	public void findId() {

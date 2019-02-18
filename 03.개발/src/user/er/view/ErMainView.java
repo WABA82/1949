@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.border.TitledBorder;
 
+import user.common.view.LoginView;
 import user.common.vo.ErMainVO;
 import user.ee.controller.EeMainController;
 import user.er.controller.ErMainController;
@@ -15,18 +16,28 @@ public class ErMainView extends JFrame {
 
 	private JButton jbCoMgmt, jbEeInfo, jbErMgmt, jbApp, jbInterestEe;
 	private JLabel jlUserInfo, jlLogOut, jlActivation;
+	private ErMainVO ermvo;
+	
+	//삭제할것
+	private LoginView lv;
+	
 	//////////수정중
-	public ErMainView(ErMainVO emv) {
-//		super("1949 - 기업사용자 ["+emv.getName()+"]");
+	public ErMainView(ErMainVO ermvo) {
+		super("1949 - 기업사용자 ["+ermvo.getName()+"]");
+		this.ermvo=ermvo;
+		this.lv=lv;
 		
 		JLabel jlAct = new JLabel("회사정보 등록여부 : ");
-		JLabel jlImg = new JLabel(new ImageIcon("C:/Users/owner/youngRepositories/1949/03.개발/src/user/img/eeImg/temp_no_image.png"));
+		JLabel jlImg = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/"+ermvo.getImg1()));
 		jlImg.setBorder(new TitledBorder("회사 이미지"));
 		
-		jlActivation = new JLabel("O"/*emv.getActivation()*/);
-		jlUserInfo = new JLabel("회원정보관리");
-		jlLogOut = new JLabel("로그아웃");
-		
+		jlActivation = new JLabel(ermvo.getActivation());
+		jlUserInfo = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/회원정보관리아이콘.png"));
+		JLabel jlUserMsg=new JLabel("회원정보관리");
+		add(jlUserMsg);
+		jlLogOut = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/로그아웃이미지.png"));
+		JLabel jlLogOutMsg=new JLabel("로그아웃");
+		add(jlLogOutMsg);
 		jbCoMgmt = new JButton("회사정보 관리");
 		jbEeInfo = new JButton("구직정보 보기");
 		jbErMgmt = new JButton("구인정보 관리");
@@ -39,8 +50,9 @@ public class ErMainView extends JFrame {
 		jlActivation.setBounds(145,20,30,30);
 		jlImg.setBounds(15, 70, 210, 180);
 		jlUserInfo.setBounds(260, 15, 100, 30); // 회원정보관리(이미지로 수정 예정)
-		jlLogOut.setBounds(380, 15, 100, 30); // 로그아웃(이미지로 수정 예정)
-		
+		jlUserMsg.setBounds(268, 40, 100, 30);
+		jlLogOut.setBounds(358, 15, 100, 30); // 로그아웃(이미지로 수정 예정)
+		jlLogOutMsg.setBounds(380, 40, 100, 30);
 		jbCoMgmt.setBounds(250, 70, 200, 50);
 		jbEeInfo.setBounds(250, 140, 200, 50);
 		jbErMgmt.setBounds(250, 210, 200, 50);
@@ -59,7 +71,7 @@ public class ErMainView extends JFrame {
 		add(jbApp);
 		add(jbInterestEe);
 		
-		ErMainController emc = new ErMainController(this, emv.getErId());
+		ErMainController emc = new ErMainController(this ,ermvo);
 		jbCoMgmt.addActionListener(emc);
 		jbEeInfo.addActionListener(emc);
 		jbErMgmt.addActionListener(emc);
@@ -73,9 +85,10 @@ public class ErMainView extends JFrame {
 		setBounds(500, 200, 475, 450);
 		setResizable(false);
 		setVisible(true);
-	}
+	}//생성자
 	
-
+	
+	
 	
 	public JButton getJbCoMgmt() {
 		return jbCoMgmt;
@@ -102,5 +115,8 @@ public class ErMainView extends JFrame {
 		return jlActivation;
 	}
 	
+//	public static void main(String[] args) {
+//		new ErMainView(null);
+//	}
 	
 }
