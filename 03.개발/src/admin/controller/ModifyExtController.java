@@ -26,7 +26,7 @@ public class ModifyExtController extends WindowAdapter implements ActionListener
 	}//생성자
 	
 	/**
-	 * 파일을 선택해서 changeExt 호출하는 메소드
+	 * 파일을 선택 후 changeExt() 메서드를 호출하는 메서드
 	 */
 	private void chooseFile() {
 		FileDialog fd=new FileDialog(mev, "파일을 선택해주세요", FileDialog.LOAD);
@@ -43,7 +43,7 @@ public class ModifyExtController extends WindowAdapter implements ActionListener
 	}//chooseFile
 	
 	/**
-	 * 파일을 선택하면 emc의 이력서 변경 flag를 바꾸고 파일을 저장하는 메소드 
+	 * 파일을 선택하면 emc의 이력서 변경 flag를 바꾸고 파일을 저장하는 메서드
 	 * @param file
 	 */
 	private void changeExt(File file) {

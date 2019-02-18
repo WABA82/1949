@@ -12,6 +12,10 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class AdminUtil {
+	/**
+	 * 로그서버에 메시지를 보내는 메소드
+	 * @param msg
+	 */
 	public void sendLog(String msg) {
 		Socket client = null;
 		DataOutputStream dos = null;
@@ -37,6 +41,16 @@ public class AdminUtil {
 		}
 	}
 	
+	/**
+	 * 파일서버에 존재하는 파일을 삭제하는 메소드
+	 * @param fileName
+	 * @param flag
+	 * @param client
+	 * @param dos
+	 * @param dis
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 */
 	public void deleteFile(String fileName, String flag, Socket client, 
 			DataOutputStream dos, DataInputStream dis) 
 					throws UnknownHostException, IOException {
@@ -62,6 +76,17 @@ public class AdminUtil {
 		closeStreams(client, dos, dis, null, null, null, null);
 	}
 	
+	/**
+	 * 파일서버에 새 파일을 추가하는 메소드
+	 * @param newFileName
+	 * @param newFile
+	 * @param flag
+	 * @param client
+	 * @param dos
+	 * @param dis
+	 * @param fis
+	 * @throws IOException
+	 */
 	public void addNewFile(String newFileName, File newFile,String flag, Socket client, 
 			DataOutputStream dos, DataInputStream dis, 
 			FileInputStream fis) 
@@ -111,6 +136,16 @@ public class AdminUtil {
 		
 	}
 	
+	/**
+	 * 파일 서버로 요청한 파일을 전송하는 메소드
+	 * @param newFileName
+	 * @param flag
+	 * @param client
+	 * @param dos
+	 * @param dis
+	 * @param fos
+	 * @throws IOException
+	 */
 	public void reqFile(String newFileName,String flag, Socket client, 
 			DataOutputStream dos, DataInputStream dis, 
 			FileOutputStream fos) 

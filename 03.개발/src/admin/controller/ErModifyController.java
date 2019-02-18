@@ -38,8 +38,10 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 		JOptionPane.showMessageDialog(emv, msg);
 	}
 	
+	/**
+	 * 구인 정보를 변경하는 메소드
+	 */
 	public void modifyEr() {
-		
 		// 입력값 검증
 		if(emv.getJtfSubject().getText().trim().equals("")) {
 			msgCenter("제목을 입력해주세요.");
@@ -134,8 +136,10 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 		}
 	}
 	
+	/**
+	 * 구인 정보를 삭제하는 메소드 
+	 */
 	public void removeEr() {
-		
 		switch(JOptionPane.showConfirmDialog(emv, "해당 구인 정보를 정말 삭제하시겠습니까?")) {
 		case JOptionPane.OK_OPTION:
 			
