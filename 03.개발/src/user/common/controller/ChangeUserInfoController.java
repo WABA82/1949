@@ -39,7 +39,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 		
 		String id=jtfId.getText().trim();
 		String name=jtfName.getText().trim();
-		String pass=jtfPass.getText().trim();//아이디와 비밀번호먼저 검증하기
+		String originPass=jtfPass.getText().trim();//아이디와 비밀번호먼저 검증하기
 		String newPass1=jtfNewPass1.getText().trim();
 		String newPass2=jtfNewPass2.getText().trim();//비밀번호 검증하기		
 		String tel=jtfTel.getText().trim();
@@ -48,7 +48,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 		
 		addrSeq=uivo.getSeq();
 		
-		UserModifyVO umvo=new UserModifyVO(id, name, pass, tel, addrSeq, addrDetail, email);////////여기까지
+		UserModifyVO umvo=new UserModifyVO(id, name, newPass1, tel, addrSeq, addrDetail, email);////////여기까지
 		
 		try {
 			if (CommonDAO.getInstance().updateUserInfo(umvo)) {
