@@ -2,6 +2,7 @@ package user.er.view;
 
 import java.awt.Color;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -36,10 +37,12 @@ public class CoInfoRegView extends JDialog {
 		jbReg = new JButton("등록");
 		 jbClose = new JButton("닫기");
 		
-		jlImg1 = new JLabel("j");
-		jlImg2 = new JLabel("j");
-		jlImg3 = new JLabel("j");
-		jlImg4 = new JLabel("j");
+//		 ImageIcon ii1=new ImageIcon(location)
+		 
+		jlImg1 = new JLabel( new ImageIcon("C:\\dev/1949/03.개발/src/img/coImg/no_co_img1.png"));
+		jlImg2 = new JLabel(new ImageIcon("C:\\dev/1949/03.개발/src/img/coImg/no_co_img2.png"));
+		jlImg3 = new JLabel(new ImageIcon("C:\\dev/1949/03.개발/src/img/coImg/no_co_img3.png"));
+		jlImg4 = new JLabel(new ImageIcon("C:\\dev/1949/03.개발/src/img/coImg/no_co_img4.png"));
 		
 		//배치
 		setLayout(null);
@@ -68,10 +71,16 @@ public class CoInfoRegView extends JDialog {
 		jbReg.setBounds(233, 446, 92, 24);
 		jbClose.setBounds(342, 446, 92, 24);
 		
-		CoInfoRegController crc= new CoInfoRegController(this);
+		//이벤트 등록 
+		CoInfoRegController crc= new CoInfoRegController(this, erId);
 		addWindowListener(crc);
 		jbClose.addActionListener(crc);
 		jbReg.addActionListener(crc);
+		jlImg1.addMouseListener(crc);
+		jlImg2.addMouseListener(crc);
+		jlImg3.addMouseListener(crc);
+		jlImg4.addMouseListener(crc);
+		
 		
 		add(jlCoName);
 		add(jlEstDate);
