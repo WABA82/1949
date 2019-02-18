@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 
 import user.dao.ErDAO;
 import user.er.dto.ErHiringCdtDTO;
+import user.er.view.ErDetailEeView;
 //import user.er.view.ErDetailEeView;
 import user.er.view.ErDetailSearchView;
 import user.er.view.ErHiringView;
@@ -79,8 +80,7 @@ public class ErHiringController extends WindowAdapter implements ActionListener,
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println(erId);
-//		new ErDetailEeView(ehv,devo, eeNum,erId,devo.getInterest());
+		new ErDetailEeView(ehv,devo, eeNum,erId,devo.getInterest());
 	}
 	
 	public void detailSearch() {
