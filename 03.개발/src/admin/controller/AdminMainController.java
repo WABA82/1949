@@ -10,10 +10,12 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
+import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -32,7 +34,15 @@ import admin.view.AdminMgMtView;
 public class AdminMainController extends WindowAdapter implements ActionListener, Runnable {
 
 	private AdminMainView amv;
-	private Thread threadLog, threadServer;
+	private Thread threadLog, threadFileServer;
+	private boolean serverFlag;
+	
+	private Socket client;
+	private DataOutputStream dos;
+	private DataInputStream dis;
+	private ObjectInputStream ois;
+	private ObjectOutputStream oos;
+	private FileOutputStream fos;
 	
 	public AdminMainController(AdminMainView amv) {
 		this.amv = amv;
@@ -42,36 +52,42 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 		JOptionPane.showMessageDialog(amv, msg);
 	}
 	
+	/**
+	 * 로그를 log파일로 저장하는 메소드
+	 * @throws IOException
+	 */
 	public void saveLog() throws IOException {
 		FileDialog fd = new FileDialog(amv, "로그 저장", FileDialog.SAVE);
 		fd.setVisible(true);
 		
-		String logFilePath = fd.getDirectory()+fd.getFile()+".log";
-
-		DefaultListModel<String> dlm = amv.getDlmLog();
-		StringBuilder logData = new StringBuilder();
-		
-		for(int i=0; i<dlm.size(); i++) {
-			logData.append(dlm.get(i)).append("\n");
-		}
-		
-		FileOutputStream fos = null;
-		OutputStreamWriter osw = null;
-		BufferedWriter bw = null;
-		try {
-			fos = new FileOutputStream(logFilePath);
-			osw = new OutputStreamWriter(fos);
-			bw = new BufferedWriter(osw);
+		if (fd.getFile() != null && fd.getDirectory() != null) {
+			String logFilePath = fd.getDirectory()+fd.getFile()+".log";
 			
-			bw.write(logData.toString());
-			bw.flush();
+			DefaultListModel<String> dlm = amv.getDlmLog();
+			StringBuilder logData = new StringBuilder();
 			
-			msgCenter("로그내용을 log파일로 저장했습니다.");
+			for(int i=0; i<dlm.size(); i++) {
+				logData.append(dlm.get(i)).append("\n");
+			}
 			
-		} finally {
-			if (bw != null) { bw.close(); }
-			if (osw != null) { osw.close(); }
-			if (fos != null) { fos.close(); }
+			FileOutputStream fos = null;
+			OutputStreamWriter osw = null;
+			BufferedWriter bw = null;
+			try {
+				fos = new FileOutputStream(logFilePath);
+				osw = new OutputStreamWriter(fos);
+				bw = new BufferedWriter(osw);
+				
+				bw.write(logData.toString());
+				bw.flush();
+				
+				msgCenter("로그내용을 저장했습니다.");
+				
+			} finally {
+				if (bw != null) { bw.close(); }
+				if (osw != null) { osw.close(); }
+				if (fos != null) { fos.close(); }
+			}
 		}
 	}
 	
@@ -86,7 +102,7 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 	}
 	
 	@Override
-	public void run() { // user가 보내온 요청log를 계속 기록하는 thread
+	public void run() { // 로그서버 기능
 
 		try {
 			// 요청메시지는 7001포트로 전달받음
@@ -116,7 +132,8 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 					
 					msg = new StringBuilder();
 					
-					msg.append(sdf.format(date)).append(" ").append(id).append("(")
+					msg.append("[").append(sdf.format(date)).append("]")
+					.append(" ").append(id).append("(")
 					.append(ipAddr).append(") - ").append(request);
 					
 					// 유저로부터 받은 msg를 로그창에 찍음
@@ -126,7 +143,6 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 				if (clientLog != null) { clientLog.close(); }
 				if (serverLog != null) { serverLog.close(); }
 			}
-			
 		} catch (IOException e) {
 			msgCenter("서버 구동에 실패했습니다.");
 			e.printStackTrace();
@@ -140,21 +156,38 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 		}
 		
 		if (e.getSource() == amv.getJbServerOn()) {
-			amv.getDlmLog().addElement("서버를 구동합니다..");
-			threadLog = new Thread(this);    // 로그를 기록하는 스레드
-			threadServer = new FileServer(); // 파일서버 스레드
-			threadLog.start();
-			threadServer.start();
-			
-			try {
-				// 파일서버를 실행시키며 파일서버에 존재하지 않은 이미지를 서버로 받는 메소드호출
-				getImgFiles(); 
-			} catch (UnknownHostException e1) {
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			} catch (ClassNotFoundException e1) {
-				e1.printStackTrace();
+			if (!serverFlag) {
+				try {
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					Date date = new Date();
+					
+					StringBuilder startLog = new StringBuilder();
+					startLog.append("[").append(sdf.format(date)).append("] ADMIN(")
+					.append(Inet4Address.getLocalHost().getHostAddress()).append(") - ").append("서버 구동");
+					
+					amv.getDlmLog().addElement(startLog.toString());
+					serverFlag = true;
+					
+					// 로그서버(스레드) 시작
+					threadLog = new Thread(this);   
+					threadLog.start();
+					
+					// 파일서버(스레드) 시작
+					threadFileServer = new FileServer(); 
+					threadFileServer.start();
+				
+					getCoImgs();
+					getEeImgs();
+				} catch (UnknownHostException e1) {
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			} else {
+				msgCenter("이미 서버가 실행중입니다.");
+				return;
 			}
 		}
 		
@@ -178,26 +211,87 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 		}
 	}
 	
-	public void getImgFiles() throws UnknownHostException, IOException, ClassNotFoundException { 
-		// 파일서버에 접속해서 없는 이미지를 내려받는 메소드
-		
-		Socket client = null;
-		DataOutputStream dos = null;
-		DataInputStream dis = null;
-		ObjectInputStream ois = null;
-		ObjectOutputStream oos = null;
-		FileOutputStream fos = null;
-		
+	
+	/**
+	 * 파일서버로부터 admin.img.ee에 없는 이미지를 받는 메소드
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	public void getEeImgs() throws UnknownHostException, IOException, ClassNotFoundException { 
+		// 파일서버에 접속해서 없는 ee이미지를 내려받는 메소드
 		try {
 			client = new Socket("localhost", 7002);
+			
 			dos = new DataOutputStream(client.getOutputStream());
 			dis = new DataInputStream(client.getInputStream());
-			dos.writeUTF("coImgs_list_req"); // co 파일목록 요청
+			
+			dos.writeUTF("eeImgs_list_req"); // flag - co전체 파일목록 요청
 			dos.flush();
 
 			ois = new ObjectInputStream(client.getInputStream());
 
-			// 파일서버로부터 파일명을 전달받음
+			// 파일서버로부터 파일명리스트를 전달받음
+			List<String> listImg = (List<String>)ois.readObject();
+			
+			File dir = new File("C:/dev/1949/03.개발/src/admin/img/ee");
+			for(File f : dir.listFiles()) {
+				listImg.remove(f.getName()); // 존재하는 파일은 제외
+			}
+			
+			oos = new ObjectOutputStream(client.getOutputStream());
+			
+			// Admin에 없는 파일들, 파일서버에 전송
+			oos.writeObject(listImg);
+			oos.flush();
+			
+			byte[] readData = new byte[512];
+			int arrCnt = 0;
+			int len = 0;
+			String fileName = "";
+			for(int i=0; i<listImg.size(); i++) {
+				fileName = dis.readUTF(); // 파일명 받기
+				
+				arrCnt = dis.readInt(); // 파일 크기 받기
+				
+				fos = new FileOutputStream(dir.getAbsolutePath()+"/"+fileName);
+				
+				
+				for(int j=0; j<arrCnt; j++) {
+					len = dis.read(readData);
+					fos.write(readData, 0, len);
+					fos.flush();
+				}
+				fos.close();
+				dos.writeUTF("downDone");
+				dos.flush();
+			}
+		} finally {
+			closeStreams();
+		}
+	}
+	
+	/**
+	 * 파일서버로부터 admin.img.co에 없는 이미지를 받는 메소드
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	public void getCoImgs() throws UnknownHostException, IOException, ClassNotFoundException { 
+		// 파일서버에 접속해서 없는 co이미지를 내려받는 메소드
+		
+		try {
+			client = new Socket("localhost", 7002);
+			
+			dos = new DataOutputStream(client.getOutputStream());
+			dis = new DataInputStream(client.getInputStream());
+			
+			dos.writeUTF("coImgs_list_req"); // flag - co전체 파일목록 요청
+			dos.flush();
+			
+			ois = new ObjectInputStream(client.getInputStream());
+			
+			// 파일서버로부터 파일명리스트를 전달받음
 			List<String> listImg = (List<String>)ois.readObject();
 			
 			File dir = new File("C:/dev/1949/03.개발/src/admin/img/co");
@@ -205,45 +299,48 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 				listImg.remove(f.getName()); // 존재하는 파일은 제외
 			}
 			
-			// listImg에 담긴 파일명들이 서버에 없는 파일들, 파일서버에 전송요청
 			oos = new ObjectOutputStream(client.getOutputStream());
 			
+			// Admin에 없는 파일들, 파일서버에 전송
 			oos.writeObject(listImg);
 			oos.flush();
 			
-			int arrCnt = 0;
-			
 			byte[] readData = new byte[512];
+			int arrCnt = 0;
 			int len = 0;
 			String fileName = "";
-			
-			int fileNum = dis.readInt(); // 전송받을 파일의 수 받기
-			
-			for(int i=0; i<fileNum; i++) {
+			for(int i=0; i<listImg.size(); i++) {
 				fileName = dis.readUTF(); // 파일명 받기
-				System.out.println("--파일명 : "+fileName);
 				
 				arrCnt = dis.readInt(); // 파일 크기 받기
 				
 				fos = new FileOutputStream(dir.getAbsolutePath()+"/"+fileName);
 				
+				
 				for(int j=0; j<arrCnt; j++) {
 					len = dis.read(readData);
 					fos.write(readData, 0, len);
+					fos.flush();
 				}
-				fos.flush();
-				System.out.println("파일 다운완료");
-				
+				fos.close();
+				dos.writeUTF("downDone");
+				dos.flush();
 			}
-			msgCenter("파일받기 완료");
-			
 		} finally {
-			if (fos != null) { fos.close(); }
-			if (dis != null) { dis.close(); }
-			if (oos != null) { oos.close(); }
-			if (ois != null) { ois.close(); }
-			if (dos != null) { dos.close(); }
-			if (client != null) { client.close(); }
+			closeStreams();
 		}
+	}
+	
+	/**
+	 * 소켓과 스트림을 닫는 메소드
+	 * @throws IOException
+	 */
+	public void closeStreams() throws IOException {
+		if (fos != null) { fos.close(); }
+		if (dis != null) { dis.close(); }
+		if (oos != null) { oos.close(); }
+		if (ois != null) { ois.close(); }
+		if (dos != null) { dos.close(); }
+		if (client != null) { client.close(); }
 	}
 }

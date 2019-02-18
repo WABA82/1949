@@ -12,19 +12,29 @@ import admin.vo.AddrVO;
 import admin.vo.CoInfoVO;
 import admin.vo.CoListVO;
 import admin.vo.CoModifyVO;
+import admin.vo.EeDeleteVO;
 import admin.vo.EeInfoVO;
 import admin.vo.EeListVO;
+import admin.vo.EeModifyVO;
 import admin.vo.ErInfoVO;
 import admin.vo.ErListVO;
 import admin.vo.ErModifyVO;
 import admin.vo.UserInfoVO;
 import admin.vo.UserListVO;
 import admin.vo.UserModifyVO;
-import user.ee.vo.EeModifyVO;
 
+/**
+ * @author owner
+ *
+ */
 public class AdminDAO {
 	
 	private static AdminDAO a_dao;
+
+	private PreparedStatement pstmt1;
+	private PreparedStatement pstmt2;
+	private PreparedStatement pstmt3;
+	private Connection con;
 	
 	private AdminDAO() {
 		try {
@@ -46,8 +56,8 @@ public class AdminDAO {
 	public Connection getConn() throws SQLException {
 		Connection con = null;
 		
-		String url = "jdbc:oracle:thin:@localhost:1521:orcl"; // 집 개발용
-//		String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl"; // 학원 개발용
+//		String url = "jdbc:oracle:thin:@localhost:1521:orcl"; // 집 개발용
+		String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl"; // 학원 개발용
 		String user = "kanu";
 		String password = "share";
 		
@@ -57,6 +67,11 @@ public class AdminDAO {
 		return con;
 	}
 	
+	/**
+	 * 모든 유저 정보를 조회하는 메소드 
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<UserListVO> selectAllUser() throws SQLException {
 		List<UserListVO> list = new ArrayList<UserListVO>();
 		
@@ -95,6 +110,11 @@ public class AdminDAO {
 		return list;
 	}
 	
+	/**
+	 * 모든 구직자 기본정보를 조회하는 메소드 
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<EeListVO> selectAllEe() throws SQLException {
 		List<EeListVO> list = new ArrayList<EeListVO>();
 		
@@ -134,6 +154,11 @@ public class AdminDAO {
 		return list;
 	}
 	
+	/**
+	 * 기업 사용자의 모든 구인글 정보를 조회하는 메소드
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<ErListVO> selectAllEr() throws SQLException {
 		List<ErListVO> list = new ArrayList<ErListVO>();
 		
@@ -174,6 +199,11 @@ public class AdminDAO {
 	}
 	
 	
+	/**
+	 * 모든 기업 정보를 조회하는 메소드
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<CoListVO> selectAllCo() throws SQLException {
 		List<CoListVO> list = new ArrayList<CoListVO>();
 		
@@ -210,6 +240,13 @@ public class AdminDAO {
 		return list;
 	}
 	
+	
+	/**
+	 * 한 유저의 정보를 가져오는 메소드
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
 	public UserInfoVO selectOneUser(String id) throws SQLException {
 		UserInfoVO uivo = null;
 		
@@ -254,6 +291,12 @@ public class AdminDAO {
 		return uivo;
 	}
 	
+	/**
+	 * 한 유저의 정보를 업데이트하는 메소드
+	 * @param umvo
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean updateUser(UserModifyVO umvo) throws SQLException {
 		boolean flag = false;
 		
@@ -320,10 +363,145 @@ public class AdminDAO {
 			if (con != null) { con.close(); }
 		}
 		
+		return flag;
+	}
+	
+	/**
+	 * 한 유저의 이력서파일명을 조회하는 메소드
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
+	public String selectEeExt(String id) throws SQLException {
+		String extResume = "";
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = getConn();
+			
+			String selectEeExt = "select NVL(ext_resume, ' ') ext_resume from ee_info where ee_id=? ";
+			
+			pstmt = con.prepareStatement(selectEeExt);
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				extResume = rs.getString("ext_resume");
+			}
+			
+		} finally {
+			if (rs != null) { rs.close(); }
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		return extResume;
+	}
+	
+	/**
+	 * 입력받은 유저 아이디와 유저타입에 등록된 이미지명을 반환하는 메소드
+	 * @param id
+	 * @param userType
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<String> selectUserImgs(String id, String userType) throws SQLException {
+		List<String> list = new ArrayList<String>();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = getConn();
+			
+			StringBuilder selectUserImgs = new StringBuilder();
+			
+			if (userType.equals("일반")) {
+				selectUserImgs.append(" select img from ee_info where ee_id=? ");
+			} else if (userType.equals("기업")) {
+				selectUserImgs
+				.append(" select img1, img2, img3, img4 ")
+				.append(" from company ")
+				.append(" where er_id=? ");
+			}
+			
+			pstmt = con.prepareStatement(selectUserImgs.toString());
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			
+			String img1 = "";
+			String img2 = "";
+			String img3 = "";
+			String img4 = "";
+			while(rs.next()) {
+				if (userType.equals("일반")) {
+					img1 = rs.getString("img");
+					
+					if (!checkDefaultImg(img1)) { // no_img인지 체크
+						list.add(img1);
+					}
+				} else if (userType.equals("기업")) {
+					img1 = rs.getString("img1");
+					img2 = rs.getString("img2");
+					img3 = rs.getString("img3");
+					img4 = rs.getString("img4");
+					
+					if (!checkDefaultImg(img1)) {
+						list.add(img1);
+					}
+					if (!checkDefaultImg(img2)) {
+						list.add(img2);
+					}
+					if (!checkDefaultImg(img3)) {
+						list.add(img3);
+					}
+					if (!checkDefaultImg(img4)) {
+						list.add(img4);
+					}
+				}
+			}
+			
+		} finally {
+			if (rs != null) { rs.close(); }
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		return list;
+	}
+	
+	/**
+	 * no_img인지 체크하는 메소드
+	 * @param imgName
+	 * @return
+	 */
+	public boolean checkDefaultImg(String imgName) {
+		boolean flag = false;
+
+		String[] defaultImgName = { "no_co_img1.png", "no_co_img2.png",
+				"no_co_img3.png", "no_co_img4.png", "no_ee_img.png" };
+		
+		for(String name : defaultImgName) {
+			if(imgName.equals(name)) { // 입력된 이미지명이 no_img명이면 true반환
+				flag = true;
+			}
+		}
 		
 		return flag;
 	}
 	
+	/**
+	 * 주소를 조회하는 메소드
+	 * @param dong
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<AddrVO> selectAddr(String dong) throws SQLException {
 		List<AddrVO> list = new ArrayList<AddrVO>();
 		
@@ -361,6 +539,12 @@ public class AdminDAO {
 		return list;
 	}
 	
+	/**
+	 * 한 구인글 정보를 가져오는 메소드
+	 * @param erNum
+	 * @return
+	 * @throws SQLException
+	 */
 	public ErInfoVO selectOneEr(String erNum) throws SQLException {
 		ErInfoVO eivo = null;
 		
@@ -421,15 +605,58 @@ public class AdminDAO {
 		return eivo;
 	}
 
-	// updateEr 트랜잭션 용 
-	private PreparedStatement pstmt1;
-	private PreparedStatement pstmt2;
-	private PreparedStatement pstmt3;
-	private Connection con;
 	
+	/**
+	 * 구인글 정보를 수정하는 메소드
+	 * Transaction처리를 수행
+	 * @param emvo
+	 * @param preSkillNum
+	 * @return
+	 */
+	public boolean updateEr(ErModifyVO emvo, int preSkillNum) {
+		boolean flag = false;
+
+		try {
+			con = getConn();
+			con.setAutoCommit(false);
+			
+			try {
+				boolean t1 = ueTransaction1(con, emvo); // 새로운 정보로 er_info update
+				boolean t2 = ueTransaction2(con, emvo, preSkillNum); // 기존 selected_skill 삭제
+				ueTransaction3(con, emvo); // 새롭게 선택된 Skill들 insert
+				
+				if (t1 && t2) {
+					flag = true;
+					con.commit();
+				} else {
+					con.rollback();
+				}
+				
+			} finally {
+				closeAll();
+			}
+		} catch (SQLException e) {
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+		
+		return flag;
+	}
+	
+	/**
+	 * updateEr 트랜잭션 - 1
+	 * - er_info 테이블 정보를 업데이트
+	 * @param con
+	 * @param emvo
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean ueTransaction1(Connection con, ErModifyVO emvo) throws SQLException {
 		boolean flag = false;
-		System.out.println("t1시작");
 		
 		StringBuilder updateEr = new StringBuilder();
 		updateEr
@@ -443,7 +670,6 @@ public class AdminDAO {
 		pstmt1.setString(3, emvo.getRank());
 		pstmt1.setString(4, emvo.getLoc());
 		pstmt1.setString(5, emvo.getHireType());
-		System.out.println("--ht"+emvo.getHireType());
 		pstmt1.setString(6, emvo.getPortfolio());
 		pstmt1.setString(7, emvo.getErDesc());
 		pstmt1.setInt(8, emvo.getSal());
@@ -454,29 +680,25 @@ public class AdminDAO {
 		if(cnt1 == 1) {
 			flag = true;
 		}
-		System.out.println("t1반환");
 		return flag;
 	}
 	
+	/**
+	 * updateEr 트랜잭션 - 2
+	 * - selected_skill 테이블에서 기존 정보를 삭제
+	 * @param con
+	 * @param emvo
+	 * @param preSkillNum
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean ueTransaction2(Connection con, ErModifyVO emvo, int preSkillNum) throws SQLException {
 		boolean flag = false;
-		System.out.println("t2시작");
 		
 		StringBuilder deleteSkill = new StringBuilder();
 		deleteSkill
 		.append(" delete from selected_skill ")
 		.append(" where er_num = ? ");
-		
-//		pstmt1 = con.prepareStatement(updateEr.toString());
-//		pstmt1.setString(1, emvo.getSubject());
-//		pstmt1.setString(2, emvo.getEducation());
-//		pstmt1.setString(3, emvo.getRank());
-//		pstmt1.setString(4, emvo.getLoc());
-//		pstmt1.setString(5, emvo.getHireType());
-//		pstmt1.setString(6, emvo.getPortfolio());
-//		pstmt1.setString(7, emvo.getErDesc());
-//		pstmt1.setInt(8, emvo.getSal());
-//		pstmt1.setString(9, emvo.getErNum());
 		
 		pstmt2 = con.prepareStatement(deleteSkill.toString());
 		pstmt2.setString(1, emvo.getErNum());
@@ -487,12 +709,17 @@ public class AdminDAO {
 			flag = true;
 		}
 		
-		System.out.println("t2반환");
 		return flag;
 	}
 	
+	/**
+	 * updateEr 트랜잭션 - 3
+	 * selected_skill 테이블에 새로운 스킬 정보를 추가
+	 * @param con
+	 * @param emvo
+	 * @throws SQLException
+	 */
 	public void ueTransaction3(Connection con, ErModifyVO emvo) throws SQLException {
-		System.out.println("t3시작");
 		
 		StringBuilder insertSkill = new StringBuilder();
 		insertSkill
@@ -508,138 +735,53 @@ public class AdminDAO {
 			
 			pstmt3.executeUpdate();
 		}
-		
-		System.out.println("t3반환");
 	}
 	
-	public boolean updateEr(ErModifyVO emvo, int preSkillNum) {
-		boolean flag = false;
 
+	/**
+	 * 구인글 정보를 삭제하는 메소드
+	 * @param erNum
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean deleteEr(String erNum) throws SQLException  { 
+		boolean flag = false;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
 		try {
 			con = getConn();
-			con.setAutoCommit(false);
+
+			StringBuilder deleteEr = new StringBuilder();
+			deleteEr
+			.append(" delete from er_info ")
+			.append(" where er_num=? ");
 			
-			try {
-				boolean t1 = ueTransaction1(con, emvo); // 새로운 정보로 er_info update
-				System.out.println("t1끝");
-				boolean t2 = ueTransaction2(con, emvo, preSkillNum); // 기존 selected_skill 삭제
-				System.out.println("t2끝");
-				ueTransaction3(con, emvo); // 새롭게 선택된 Skill들 insert
-				System.out.println("t3끝");
-				
-				if (t1 && t2) {
-					flag = true;
-					con.commit();
-				} else {
-					con.rollback();
-				}
-				
-			} finally {
-				closeUpdateEr();
-			}
-		} catch (SQLException e) {
-			try {
-				con.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-			e.printStackTrace();
-		}
-		
-		return flag;
-	}
-	
-	public void closeUpdateEr() throws SQLException {
-		if (pstmt3 != null) { pstmt3.close(); }
-		if (pstmt2 != null) { pstmt2.close(); }
-		if (pstmt1 != null) { pstmt1.close(); }
-		if (con != null) { con.close(); }
-	}
-	
-	public boolean dErTransaction1(String erNum) throws SQLException {
-		boolean flag = false;
-		
-		StringBuilder deleteEr = new StringBuilder();
-		deleteEr
-		.append(" delete from er_info ")
-		.append(" where er_num=? ");
-		
-		pstmt1 = con.prepareStatement(deleteEr.toString());
-		pstmt1.setString(1, erNum);
-		
-		int cnt = pstmt1.executeUpdate();
-		
-		if(cnt == 1) {
-			flag = true;
-		}
-		
-		return flag;
-	}
-	
-	public boolean dErTransaction2(String id) throws SQLException {
-		boolean flag = false;
-		
-		StringBuilder updateEe = new StringBuilder();
-		updateEe
-		.append(" update user_table ")
-		.append(" set activation = 'N' ")
-		.append(" where id=? ");
-		
-		pstmt2 = con.prepareStatement(updateEe.toString());
-		pstmt2.setString(1, id);
-		
-		int cnt = pstmt2.executeUpdate();
-		
-		if(cnt == 1) {
-			flag = true;
-		}
-		
-		return flag;
-	}
-	
-	public boolean deleteEr(ErInfoVO eivo)  { 
-		boolean flag = false;
-		
-		con = null;
-		
-		try {
-			try {
-				con = getConn();
-				con.setAutoCommit(false);
-				
-				if(dErTransaction1(eivo.getErNum()) && dErTransaction2(eivo.getErId())){
-					con.commit();
-					flag = true;
-				} else {
-					con.rollback();
-				}
-				
-			} catch (SQLException e) {
-				try {
-					con.rollback();
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
-				e.printStackTrace();
+			pstmt = con.prepareStatement(deleteEr.toString());
+			pstmt.setString(1, erNum);
+			
+			int cnt = pstmt.executeUpdate();
+			
+			if(cnt == 1) {
+				flag = true;
 			}
 			
 		} finally {
-			try {
-				closeDeleteEr();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
 		}
 		
 		return flag;
 	}
 	
-	public void closeDeleteEr() throws SQLException {
-		if (pstmt2 != null) { pstmt2.close(); }
-		if (pstmt1 != null) { pstmt1.close(); }
-		if (con != null) { con.close(); }
-	}
 	
+	/**
+	 * 한 기업정보를 조회하는 메소드
+	 * @param coNum
+	 * @return
+	 * @throws SQLException
+	 */
 	public CoInfoVO selectOneCo(String coNum) throws SQLException {
 		CoInfoVO civo = null;
 		
@@ -676,6 +818,13 @@ public class AdminDAO {
 		return civo;
 	}
 	
+
+	/**
+	 * 기업 정보를 업데이트하는 메소드
+	 * @param cmvo
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean updateCo(CoModifyVO cmvo) throws SQLException {
 		boolean flag = false;
 		
@@ -715,7 +864,115 @@ public class AdminDAO {
 		return flag;
 	}
 	
-	public EeInfoVO selectOneEe(String eeNum) throws SQLException {
+	
+	/**
+	 * 기업 정보 삭제하는 메소드
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean deleteCo(String id) throws SQLException { 
+		// co정보만 지워도 er정보, selected_skill정보도 cascade로 삭제됨
+		// co 정보를 지우면 co를 등록한 유저 activation정보를 N으로 변경
+		
+		boolean flag = false;
+
+		try {
+			try {
+				con = getConn();
+				con.setAutoCommit(false);
+
+				if (dCoTransaction1(id) && dCoTransaction2(id)) {
+					con.commit();
+					flag = true;
+				} else {
+					con.rollback();
+				}
+
+			} catch (SQLException e) {
+				try {
+					con.rollback();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				e.printStackTrace();
+			}
+		} finally {
+			try {
+				closeAll();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return flag;
+	}
+	
+	/**
+	 * deleteCo의 트랜잭션 - 1
+	 * 기업 정보를 삭제
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean dCoTransaction1(String id) throws SQLException{
+		boolean flag = false;
+		
+		StringBuilder deleteCo = new StringBuilder();
+		
+		deleteCo
+		.append(" delete from company ")
+		.append(" where er_id = ? ");
+	
+		pstmt1 = con.prepareStatement(deleteCo.toString());
+		pstmt1.setString(1, id);
+		
+		int cnt = pstmt1.executeUpdate();
+		
+		if (cnt == 1) {
+			flag = true;
+		}
+		
+		return flag;
+	}
+	
+	
+	/**
+	 * deleteCo의 트랜잭션 - 2
+	 * 유저 activation 정보를 Y->N으로 변경
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean dCoTransaction2(String id) throws SQLException {
+		boolean flag = false;
+		
+		StringBuilder updateEe = new StringBuilder();
+		updateEe
+		.append(" update user_table ")
+		.append(" set activation = 'N' ")
+		.append(" where id=? ");
+		
+		pstmt2 = con.prepareStatement(updateEe.toString());
+		pstmt2.setString(1, id);
+		
+		int cnt = pstmt2.executeUpdate();
+		
+		if(cnt == 1) {
+			flag = true;
+		}
+		
+		return flag;
+	}
+	
+	/**
+	 * 한 일반 회원 기본정보를 조회하는 메소드
+	 * @param input
+	 * @param flag
+	 * @return
+	 * @throws SQLException
+	 */
+	public EeInfoVO selectOneEe(String input, String flag) throws SQLException {
 		EeInfoVO eivo = null;
 		
 		Connection con = null;
@@ -729,10 +986,17 @@ public class AdminDAO {
 			.append(" select ee_num, img, id, ut.name, rank, loc, ")
 			.append(" education, portfolio, gender, to_char(ei.input_date, 'yyyy-MM-dd') input_date, ")
 			.append(" ext_resume, ut.age ")
-			.append(" from ee_info ei, user_table ut ")
-			.append(" where ei.ee_id = ut.id and ei.ee_num=? ");
+			.append(" from ee_info ei, user_table ut ");
+			
+			// 동적쿼리, eeNum으로 조회, 또는 id로 조회
+			if (flag.equals("eeNum")) {
+				selectOneEe.append(" where ei.ee_id = ut.id and ei.ee_num=? ");
+			} else if (flag.equals("id")) {
+				selectOneEe.append(" where ut.id=? and ei.ee_id = ut.id ");
+			}
+			
 			pstmt = con.prepareStatement(selectOneEe.toString());
-			pstmt.setString(1, eeNum);
+			pstmt.setString(1, input);
 			
 			rs = pstmt.executeQuery();
 			
@@ -753,6 +1017,12 @@ public class AdminDAO {
 		return eivo;
 	}
 	
+	/**
+	 * 일반 사용자 기본 정보를 업데이트하는 메소드 
+	 * @param emvo
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean updateEe(EeModifyVO emvo) throws SQLException {
 		boolean flag = false;
 		
@@ -789,10 +1059,98 @@ public class AdminDAO {
 			if (con != null) { con.close(); }
 		}
 		
-		System.out.println("--updateEe flag : " +flag);
 		return flag;
 	}
 	
+
+	
+	/**
+	 * 기본 정보 삭제를 위해 EeDeleteVO정보를 조회하는 메소드 
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
+	public EeDeleteVO selectEDVO(String id) throws SQLException {
+		EeDeleteVO edvo = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = getConn();
+			StringBuilder selectEDVO = new StringBuilder();
+			selectEDVO
+			.append(" select ee_num, ee_id from ee_info ei, user_table ut   ")
+			.append("where ee_id = ut.id and ut.id = ? ");
+			
+			pstmt = con.prepareStatement(selectEDVO.toString());
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				edvo = new EeDeleteVO(rs.getString("ee_num"), rs.getString("ee_id"));
+			}
+			
+		} finally {
+			if (rs != null) { rs.close(); }
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		return edvo;
+	}
+	
+	/**
+	 * 일반 사용자 기본정보를 삭제하는 메소드
+	 * @param edvo
+	 * @return
+	 */
+	public boolean deleteEe(EeDeleteVO edvo){
+		boolean flag = false;
+		
+		con = null;
+		
+		try {
+			
+			try {
+				con = getConn();
+				con.setAutoCommit(false);
+				
+				if (dEeTransaction1(edvo.getEeNum()) && dEeTransaction2(edvo.getEe_id())) {
+					con.commit();
+					flag = true;
+				} else {
+					con.rollback();
+				}
+			
+			} catch (SQLException e) {
+				try {
+					con.rollback();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				e.printStackTrace();
+			}
+		} finally {
+			try {
+				closeAll();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return flag;
+	}
+	
+	/**
+	 * deleteEe 트랜잭션 - 1
+	 * ee_info에서 데이터 삭제
+	 * @param eeNum
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean dEeTransaction1(String eeNum) throws SQLException {
 		boolean flag = false;
 		
@@ -813,6 +1171,13 @@ public class AdminDAO {
 		return flag;
 	}
 	
+	/**
+	 * deleteEe 트랜잭션 - 2
+	 * 유저 activation 정보를 Y->N으로 변경
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean dEeTransaction2(String id) throws SQLException {
 		boolean flag = false;
 		
@@ -834,46 +1199,15 @@ public class AdminDAO {
 		return flag;
 	}
 	
-	public boolean deleteEe(EeInfoVO eivo){
-		boolean flag = false;
-		
-		con = null;
-		
-		try {
-			
-			try {
-				con = getConn();
-				con.setAutoCommit(false);
-				
-				if (dEeTransaction1(eivo.getEeNum()) && dEeTransaction2(eivo.getId())) {
-					con.commit();
-					flag = true;
-				} else {
-					con.rollback();
-				}
-			
-			} catch (SQLException e) {
-				try {
-					con.rollback();
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
-				e.printStackTrace();
-			}
-		} finally {
-			try {
-				closeDeleteEe();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return flag;
-	}
-	
-	public void closeDeleteEe() throws SQLException {
+	/**
+	 * Connection과 PreparedStatment를 close처리하는 메소드 
+	 * @throws SQLException
+	 */
+	public void closeAll() throws SQLException {
+		if (pstmt3 != null) { pstmt3.close(); }
 		if (pstmt2 != null) { pstmt2.close(); }
 		if (pstmt1 != null) { pstmt1.close(); }
 		if (con != null) { con.close(); }
 	}
+	
 }
