@@ -11,13 +11,16 @@ public class EeRegVO {
 	private String eeId, name, gender;
 	private int age;
 
-	public EeRegVO( String name, String gender, int age) {
+	public EeRegVO(String eeId, String name, String gender, int age) {
+		this.eeId=eeId;
 		this.name = name;
 		this.gender = gender;
 		this.age = age;
 	}// »ý¼ºÀÚ
 
-	
+	public String getEeId() {
+		return eeId;
+	}
 	
 	public String getName() {
 		return name;
@@ -33,7 +36,9 @@ public class EeRegVO {
 
 	@Override
 	public String toString() {
-		return "EeRegVO [name=" + name + ", gender=" + gender + ", age=" + age + "]";
+		return "EeRegVO [eeId=" + eeId + ", name=" + name + ", gender=" + gender + ", age=" + age + "]";
 	}
 
+
+	
 }//class

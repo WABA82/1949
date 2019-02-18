@@ -30,7 +30,7 @@ public class ErAddView extends JDialog {
 	JComboBox<String> jcbRank, jcbEducation, jcbLoc, jcbHireType, jcbPortfolio;
 	JButton jbReg, jbCancel;
 
-	public ErAddView(ErMgMtView emmv, ErMgMtController emmc, ErDefaultVO edfvo) {
+	public ErAddView(ErMgMtView emmv, ErMgMtController emmc, ErDefaultVO edfvo, String erId) {
 		super(emmv, "구인 정보 등록", true);/* 창의 제목 */
 
 		/* 컴포넌트 생성하기 */
@@ -208,7 +208,7 @@ public class ErAddView extends JDialog {
 		add(jbCancel);
 
 		/* 이벤트등록 */
-		ErAddController edc = new ErAddController(this);
+		ErAddController edc = new ErAddController(this,emmc,erId);
 		jbReg.addActionListener(edc);
 		jbCancel.addActionListener(edc);
 		addWindowListener(edc);

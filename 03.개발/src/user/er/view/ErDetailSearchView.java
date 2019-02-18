@@ -74,9 +74,6 @@ public class ErDetailSearchView extends JDialog {
 		setVisible(true);
 	}
 	
-	public static void main(String[] args) {
-		new ErDetailSearchView(null, null);
-	}
 	public JButton getJbSearch() {
 		return jbSearch;
 	}

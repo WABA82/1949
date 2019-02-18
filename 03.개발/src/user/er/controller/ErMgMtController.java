@@ -7,6 +7,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -26,20 +27,19 @@ import user.er.vo.ErListVO;
 
 public class ErMgMtController extends WindowAdapter implements MouseListener, ActionListener {
 	private ErMgMtView emmv;
-	private List<ErListVO> list;
 	private String erId;
 	private ErDAO er_dao;
 	private ErDefaultVO edfvo;
 	
-	public ErMgMtController(ErMgMtView emmv, List<ErListVO> list, String erId) {
+	public ErMgMtController(ErMgMtView emmv,String erId) {
 		this.emmv = emmv;
-		this.list = list;
 		this.erId = erId;
 		er_dao= ErDAO.getInstance();
-		setDtm(list);
+		setDtm();
 	}
 	
-	public void setDtm(List<ErListVO> list) {
+	public void setDtm() {
+		List<ErListVO> list = new ArrayList<ErListVO>();
 		DefaultTableModel dtmErList = emmv.getDtmEr();
 		dtmErList.setRowCount(0);
 		
@@ -61,9 +61,9 @@ public class ErMgMtController extends WindowAdapter implements MouseListener, Ac
 				rowData[7] = ervo.getInputDate();
 				dtmErList.addRow(rowData);
 			}
-			if(list.isEmpty()) {
-				JOptionPane.showMessageDialog(emmv, "조건에 맞는 결과가 없습니다.");
-			}
+/*			if(list.isEmpty()) {
+				JOptionPane.showMessageDialog(emmv, "등록된 구인글이 없습니다.");
+			}*/
 			
 		}catch(SQLException e){
 			JOptionPane.showMessageDialog(emmv, "DB에러");
@@ -79,18 +79,18 @@ public class ErMgMtController extends WindowAdapter implements MouseListener, Ac
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		new ErModifyView(emmv, edvo, erNum,erId);
+		new ErModifyView(emmv, edvo, erNum,erId,this);
 		
 	}
 	
 	
 	public void addEr() {
-//		try {
-//			edfvo = er_dao.selectErDefault(erId);
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		new ErAddView(emmv, this, edfvo);
+		try {
+			edfvo = er_dao.selectErDefault(erId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		new ErAddView(emmv, this, edfvo, erId);
 	}
 	
 	@Override
