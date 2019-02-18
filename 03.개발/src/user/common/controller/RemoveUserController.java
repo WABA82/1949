@@ -47,7 +47,7 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 	public void actionPerformed(ActionEvent ae) {
 		if(ae.getSource()==ruv.getJbDelete()) {
 			//checkPass();넣어주기
-			//removeUser(id);고치기
+			//removeUser(id);이것으로고치기
 			removeUser("ooo333");
 		}
 		if(ae.getSource()==ruv.getJbClose()) {
