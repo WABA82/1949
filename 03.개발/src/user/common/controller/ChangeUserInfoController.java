@@ -15,18 +15,23 @@ import user.common.view.SearchAddrView;
 import user.common.vo.UserInfoVO;
 import user.common.vo.UserModifyVO;
 import user.dao.CommonDAO;
+import user.er.view.ErMainView;
 
 public class ChangeUserInfoController extends WindowAdapter implements ActionListener {
 
 	private ChangeUserInfoView cuiv;
 	private UserInfoVO uivo;
 	private String addrSeq;
+	private ErMainView emv;
+	private String id;//////////id¾îµð¼­?
 	
 	public ChangeUserInfoController(ChangeUserInfoView cuiv, UserInfoVO uivo) {
 		this.cuiv=cuiv;
 		this.uivo=uivo;
+		this.addrSeq=uivo.getSeq();
 	}
 	
+
 	public void modifyUser() {
 		JTextField jtfId= cuiv.getJtfId();
 		JTextField jtfName= cuiv.getJtfName();
@@ -46,7 +51,6 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 		String email=jtfEmail.getText().trim();
 		String addrDetail=jtfAddr2.getText().trim();
 		
-		addrSeq=uivo.getSeq();
 		System.out.println(addrSeq);
 		
 		
@@ -82,7 +86,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 		}
 			
 		if(ae.getSource()==cuiv.getJbDelete()) {
-			new RemoveUserView("ooo333");
+			new RemoveUserView(emv, id);/////////////id????
 		}
 		if(ae.getSource()==cuiv.getJbClose()) {
 			cuiv.dispose();

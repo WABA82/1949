@@ -274,16 +274,17 @@ public class CommonDAO {
             StringBuilder selectUserInfo=new StringBuilder();
             selectUserInfo.append("select u.id, u.name, u.tel, z.seq, z.zipcode,")
             .append("z.sido||' '||z.gugun||' '||z.dong||' '||z.bunji addr1 ,")
-            .append("u.addr_detail addr2, u.email")
-            .append("from user_table u, zipcode z ")
-            .append("where u.addr_seq=z.seq ")
-            .append("and u.id in ? ");
+            .append("	u.addr_detail addr2, u.email")
+            .append("		from user_table u, zipcode z ")
+            .append("		where u.addr_seq=z.seq and u.id in ? ");
+            //.append("		and u.id in ? ");
             
             pstmt=con.prepareStatement(selectUserInfo.toString());
             
             pstmt.setString(1, id);
             
             rs=pstmt.executeQuery();
+            
             if(rs.next()) {
                 uivo=new UserInfoVO(rs.getString("id"), rs.getString("name"), rs.getString("tel")
                                             ,rs.getString("seq"), rs.getString("zipcode"), rs.getString("addr1")
