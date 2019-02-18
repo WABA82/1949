@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 
 import user.common.view.ChangeUserInfoView;
 import user.common.view.RemoveUserView;
+import user.common.view.SearchAddrView;
 import user.common.vo.UserInfoVO;
 import user.common.vo.UserModifyVO;
 import user.dao.CommonDAO;
@@ -72,6 +73,10 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 		if(ae.getSource()==cuiv.getJbModify()) {
 			modifyUser();
 		}
+		
+		if (ae.getSource() == cuiv.getJbAddr()) {
+			new SearchAddrView(cuiv,null, this);
+		}
 			
 		if(ae.getSource()==cuiv.getJbDelete()) {
 			new RemoveUserView("ooo333");
@@ -85,4 +90,15 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 		cuiv.dispose();
 	}
 
+	public String getAddrSeq() {
+		return addrSeq;
+	}
+
+	public void setAddrSeq(String addrSeq) {
+		this.addrSeq = addrSeq;
+	}
+
+	public ChangeUserInfoView getCuiv() {
+		return cuiv;
+	}
 }

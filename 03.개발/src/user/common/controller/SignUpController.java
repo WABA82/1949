@@ -86,7 +86,7 @@ public class SignUpController extends WindowAdapter implements ActionListener {
                };//비밀번호 일치확인
                signUp();
           }else if(ae.getSource()==suv.getJbAddr()) {
-               new SearchAddrView(suv, addrSeq, suv);
+               new SearchAddrView(suv, this, null);
           }else if(ae.getSource()==suv.getJbCancel()) {
                suv.dispose();
           }//end if
@@ -96,5 +96,16 @@ public class SignUpController extends WindowAdapter implements ActionListener {
      public void signUp() {
           System.out.println("검증완료");
      }//signUp
-    
+
+	public String getAddrSeq() {
+		return addrSeq;
+	}
+
+	public void setAddrSeq(String addrSeq) {
+		this.addrSeq = addrSeq;
+	}
+
+	public SignUpView getSuv() {
+		return suv;
+	}
 }//class
