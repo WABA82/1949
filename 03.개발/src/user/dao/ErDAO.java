@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import user.er.dto.ErHiringCdtDTO;
+import user.er.vo.CoInfoVO;
+import user.er.vo.CoInsertVO;
 import user.er.vo.DetailAppEeVO;
 import user.er.vo.DetailAppListVO;
 import user.er.vo.DetailEeInfoVO;
@@ -841,4 +843,156 @@ public void urTransaction3(Connection con, ErModifyVO emvo) throws SQLException 
 
 	/***************************** 재현 끝 *****************************/
 
+//////////////////////////////////////////김건하 시작 //////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+/**
+* 회사 값을 등록하는 method
+* @param civo
+* @return
+* @throws SQLException
+*/
+public boolean insertCoInfo( CoInsertVO civo)  throws SQLException{
+boolean flag=false;
+Connection con=null;
+PreparedStatement pstmt=null;
+
+try {
+con=getConn();
+
+//private String erId, img1, img2, img3, img4, coName, estDate, coDesc;
+//private int memberNum;
+//er_id, img1, img2, img3, img4, co_name, est_Date,co_desc
+StringBuilder insertCo =new StringBuilder();
+insertCo
+.append(" 	insert into company(er_id, img1, img2, img3, img4, co_name, est_date, co_desc, member_num	")
+.append(" 	values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 	");
+
+pstmt=con.prepareStatement(insertCo.toString());
+
+pstmt.setString(1, civo.getErId() );
+pstmt.setString(2, civo.getImg1() );
+pstmt.setString(3, civo.getImg2() );
+pstmt.setString(4, civo.getImg3() );
+pstmt.setString(5, civo.getImg4() );
+pstmt.setString(6, civo.getCoName() );
+pstmt.setString(7, civo.getEstDate() );
+pstmt.setString(8, civo.getCoDesc() );
+pstmt.setInt(9, civo.getMemberNum() );
+
+int cnt=0;
+cnt=pstmt.executeUpdate();
+if(cnt !=1 ) {
+flag=true;
+}//end if
+
+}finally {
+if( pstmt != null ) { pstmt.close();}
+if( con != null ) { con.close();}
+}//end finally
+
+return flag;
+}//insertCoInfo
+
+//회사 추가 단위 테스트
+//public static void main(String[] args) {
+//CoInsertVO civo=new CoInsertVO("song9912", "1", "2", "3,", "4", "김건화회사", "19-01-01", "좋은회사", 10);
+//System.out.println(civo);
+//}//main
+
+/**
+* 19.02.17 회사의 정보를 가져오는 method
+* @param erId
+* @return
+* @throws SQLException
+*/
+public CoInfoVO selectCoInfo(String erId) throws SQLException {
+CoInfoVO civo=null;
+
+Connection con=null;
+PreparedStatement pstmt=null;
+ResultSet rs=null;
+
+//select co_num, co_name, img1, img2, img3,img4, est_date, co_desc, member_num
+try {
+con=getConn();
+StringBuilder selectInfo=new StringBuilder();
+selectInfo
+.append(" 	select co_num, co_name, img1, img2, img3, img4, est_date, co_desc, member_num	 ")
+.append(" 	from company 	")
+.append(" 	where er_id = ? 	");
+pstmt=con.prepareStatement(selectInfo.toString() );
+
+pstmt.setString(1, erId);
+
+rs=pstmt.executeQuery();
+
+if(rs.next()) {
+civo=new CoInfoVO(rs.getString("co_num"), rs.getString("co_name"), rs.getString("img1"), rs.getString("img2"), 
+rs.getString("img3"), rs.getString("img4"),rs.getString("est_date"), rs.getString("co_desc"),rs.getInt("member_num"));
+}//end if
+
+}finally {
+if( rs !=null ) { rs.close(); }
+if( pstmt !=null ) { pstmt.close(); }
+if( con !=null ) { con.close(); }
+}//end finally
+
+return civo;
+}//selectCoInfo
+
+//단위 테스트 성공
+//public static void main(String[] args)  throws SQLException{
+//System.out.println(ErDAO.getInstance().selectCoInfo("song9912"));
+//}
+
+public boolean updateCoInfo(CoInfoVO cvo) throws SQLException{
+boolean flag=false;
+
+Connection con=null;
+PreparedStatement pstmt =null;
+
+try {
+con=getConn();
+//co_num, co_name, img1, img2, img3,img4, est_date, co_desc, member_num
+StringBuilder updateInfo=new StringBuilder();
+updateInfo
+.append(" 	update company 	")
+.append(" 	co_num =?, co_name =?, img1=? ,img2= ? ,img3= ?, img4= ? ")
+.append("   est_date=?, co_desc =?, member_num=? 	")
+.append(" 	where er_id= ?  ");
+
+pstmt=con.prepareStatement(updateInfo.toString());
+
+pstmt.setString(1, cvo.getCoNum());
+pstmt.setString(2, cvo.getCoName() );
+pstmt.setString(3, cvo.getImg1());
+pstmt.setString(4, cvo.getImg2());
+pstmt.setString(5, cvo.getImg3());
+pstmt.setString(6, cvo.getImg4());
+pstmt.setString(7, cvo.getEstDate());
+pstmt.setString(8, cvo.getCoDesc());
+pstmt.setInt(9, cvo.getMemberNum());
+
+int cnt=pstmt.executeUpdate();
+
+if(cnt !=0) {
+flag=true;
+}//end if
+
+}finally {
+if( pstmt != null ) { pstmt.close(); }
+if( con != null ) { con.close(); }
+}//end finally
+
+return flag;
+}//updateCoInfo
+
+
+//////////////////////////////////////////김건하 끝 ///////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+	
+	
+	
+	
 }// class

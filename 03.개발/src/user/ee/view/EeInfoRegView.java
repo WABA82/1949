@@ -26,13 +26,16 @@ public class EeInfoRegView extends JDialog {
 	private JComboBox<String>jcbRank, jcbLoc, jcbEducation, jcbPortfolio;
 	private JTextField jtfExtResume;
 	private JLabel jlImage;
-	
+	private String eeId;
 	private JTextField jtfName, jtfAge, jtfGender, jtfId;
+	private  EeRegVO ervo;
 	
-	public EeInfoRegView(EeMainView emv, String ee_id) {
+	
+	public EeInfoRegView(EeMainView emv, EeRegVO ervo) {
 		super(emv, "기본 정보 관리",true);
+		this.ervo=ervo;
 		//image
-		ImageIcon ii=new ImageIcon("C:/dev/homework/1949/1949/03.개발/no_img_files/no_ee_img.png");
+		ImageIcon ii=new ImageIcon("C:/dev/1949/03.개발/no_img_files/no_ee_img.png");
 		jlImage=new JLabel(ii);
 		jlImage.setBorder(new TitledBorder("구직자 이미지"));
 		jlImage.setBounds(38, 20, 160, 225);
@@ -111,17 +114,17 @@ public class EeInfoRegView extends JDialog {
 		jlResume.setBounds(235, 295, 100, 30);
 		
 		//JText
-		jtfName=new JTextField();
+		jtfName=new JTextField(ervo.getName());
 		add(jtfName);
 		jtfName.setBounds(325, 22, 130, 20);
 		jtfName.setEditable(false);
 		
-		jtfAge=new JTextField();
+		jtfAge=new JTextField(String.valueOf(ervo.getAge()));
 		add(jtfAge);
 		jtfAge.setBounds(325, 182, 130, 20);
 		jtfAge.setEditable(false);
 		
-		jtfGender=new JTextField();
+		jtfGender=new JTextField(ervo.getGender());
 		add(jtfGender);
 		jtfGender.setBounds(325, 262, 130, 20);
 		jtfGender.setEditable(false);
@@ -146,12 +149,12 @@ public class EeInfoRegView extends JDialog {
 		jcbPortfolio.setBounds(325,222,130,20);
 		
 		//이벤트 등록
-		EeInfoRegController eirc=new EeInfoRegController(this, EeMainView.EE_ID );
+		EeInfoRegController eirc=new EeInfoRegController(this, ervo.getEeId());
 		jbRegisterExt.addActionListener(eirc);
 		jbClose.addActionListener(eirc);
 		jbRegisterImg.addActionListener(eirc);
 		jbRegister.addActionListener(eirc);
-		
+//		
 		setLayout(null);
 		setBounds( emv.getX()+450, emv.getY(), 490, 465);
 		
@@ -219,9 +222,9 @@ public class EeInfoRegView extends JDialog {
 	}
 	
 	
-	public static void main(String[] args) {
-		new EeInfoRegView(null, "gong1");
-	}//main
+//	public static void main(String[] args) {
+//		new EeInfoRegView(null);
+//	}//main
 	
 	
 	

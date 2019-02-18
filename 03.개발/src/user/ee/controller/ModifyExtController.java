@@ -15,17 +15,16 @@ import user.ee.view.ModifyExtView;
 
 public class ModifyExtController extends WindowAdapter implements ActionListener {
 
+	private ModifyExtView emev;
+	private EeInfoRegView eirv;
 	
-	private ModifyExtView mev;
-	private EeInfoRegView erv;
-	
-	public ModifyExtController( ModifyExtView mev, EeInfoRegView erv) {
-		this.mev=mev;
-		this.erv=erv;
+	public ModifyExtController( ModifyExtView emev, EeInfoRegView eirv, EeInfoRegController eirc) {
+		this.emev=emev;
+		this.eirv=eirv;
 	}//생성자
 	
 	private void chooseFile() {
-		FileDialog fd=new FileDialog(mev, "파일을 선택해주세요", FileDialog.LOAD);
+		FileDialog fd=new FileDialog(emev, "파일을 선택해주세요", FileDialog.LOAD);
 		fd.setVisible(true);
 		fd.setResizable(false);
 		String fileDir=fd.getDirectory();
@@ -40,12 +39,12 @@ public class ModifyExtController extends WindowAdapter implements ActionListener
 		String extResume="";
 		extResume=file.getName();
 		if( !extResume.endsWith(".txt") && !extResume.endsWith(".pdf")) {
-				JOptionPane.showMessageDialog(mev, "외부이력서는 doc, pdf만 가능합니다.");
+				JOptionPane.showMessageDialog(emev, "외부이력서는 doc, pdf만 가능합니다.");
 				return;
 			}else {
-				mev.getJtfPath().setText(extResume);
-				mev.getJtfPath().setEditable(false);
-				JTextField jtf=erv.getJtfExtResume();
+				emev.getJtfPath().setText(extResume);
+				emev.getJtfPath().setEditable(false);
+				JTextField jtf=eirv.getJtfExtResume();
 				jtf.setText(extResume);
 			}//end else
 			
@@ -56,22 +55,22 @@ public class ModifyExtController extends WindowAdapter implements ActionListener
 	
 	@Override
 		public void windowClosing(WindowEvent we) {
-			mev.dispose();
+			emev.dispose();
 		}//windowClosing
 	
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		if( ae.getSource() == mev.getJbCancel()) {
-			erv.getJtfExtResume().setText("");
-			mev.dispose();
+		if( ae.getSource() == emev.getJbCancel()) {
+			eirv.getJtfExtResume().setText("");
+			emev.dispose();
 		}//end if
 		
-		if(ae.getSource() == mev.getJbChoose()) {
+		if(ae.getSource() == emev.getJbChoose()) {
 			chooseFile();
 		}//end if
 		
-		if(ae.getSource() == mev.getJbChange()) {
-			mev.dispose();
+		if(ae.getSource() == emev.getJbChange()) {
+			emev.dispose();
 		}
 	}//actionPerformed
 }
