@@ -22,13 +22,17 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
 	private SearchAddrView sav;
 	private SignUpView suv;
 	private ChangeUserInfoView cuiv;
+	private SignUpController suc;
+	private ChangeUserInfoController cuic;
 	
 	public SearchAddrController(SearchAddrView sav, SignUpController suc, ChangeUserInfoController cuic) {
 		this.sav = sav;
 		if (suc != null && cuic == null) {
 			this.suv = suc.getSuv();
+			this.suc = suc;
 		} else {
 			this.cuiv = cuic.getCuiv();
+			this.cuic = cuic;
 		}
 	}//생성자
 	
@@ -65,6 +69,7 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
 				suv.getJtfAddr1().setText(addr.toString());
 			} else {
 				cuiv.getJtfAddr1().setText(addr.toString());
+				// cuic.setAddrSeq(addrSeq); 이렇게 seq를 저장해서 수정 시 사용
 			}
 			sav.dispose();
 		}
