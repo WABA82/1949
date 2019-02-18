@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JDialog;
@@ -24,6 +25,7 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
 	private ChangeUserInfoView cuiv;
 	private SignUpController suc;
 	private ChangeUserInfoController cuic;
+	private List<String> listSeq;
 	
 	public SearchAddrController(SearchAddrView sav, SignUpController suc, ChangeUserInfoController cuic) {
 		this.sav = sav;
@@ -34,6 +36,8 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
 			this.cuiv = cuic.getCuiv();
 			this.cuic = cuic;
 		}
+		
+		listSeq=new ArrayList<String>();
 	}//생성자
 	
 	private void msgCenter(String msg) {
@@ -59,18 +63,25 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
 			int row = sav.getJtZip().getSelectedRow();
 			//suv.getJtfAddr1().setText(sav.getJtZip().getValueAt(row, 0).toString());
 			StringBuilder addr = new StringBuilder();
-			addr.append(sav.getJtZip().getValueAt(row, 1)).append("시(도) ")
+			addr.append(sav.getJtZip().getValueAt(row, 1)).append(" ")
 			.append(sav.getJtZip().getValueAt(row, 2)).append(" ")
 			.append(sav.getJtZip().getValueAt(row, 3)).append(" ")
 			.append(sav.getJtZip().getValueAt(row, 4));
-			System.out.println(addr);//addr은 잘 찍히는데...
+			String zip ="";
+			zip= sav.getJtZip().getValueAt(row, 0).toString();
+			//System.out.println(zip);//테스트하느라 - 필요없음
+			String addrSeq= listSeq.get(row);
 			
 			if (suv != null) {
 				suv.getJtfAddr1().setText(addr.toString());
+				suv.getJtfZip().setText(zip);
+				suc.setAddrSeq(addrSeq);// seq
+				//System.out.println("선택된 행의 seq : "+addrSeq);
 			} else {
-				cuiv.getJtfAddr1().setText(addr.toString());
-				// cuic.setAddrSeq(addrSeq); 이렇게 seq를 저장해서 수정 시 사용
-			}
+	            cuiv.getJtfZipcode().setText(sav.getJtZip().getValueAt(row, 0).toString());
+	            cuiv.getJtfAddr1().setText(addr.toString());
+	            cuic.setAddrSeq(addrSeq); //이렇게 seq를 저장해서 수정 시 사용
+	         }
 			sav.dispose();
 		}
 		
@@ -96,19 +107,21 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
 			if(list.isEmpty()) {
 				flag =true;
 			}
-		
+			//addrSeq = "";
 			Object[] rowData =null;
 			AddrVO av =null;
 		
 			for(int i=0; i<list.size(); i++) {
 				av=list.get(i);
 				//우편번호, 시도, 구군, 동, 번지
-				rowData = new Object[5];
+				rowData = new Object[6];
 				rowData[0] = av.getZipcode();
 				rowData[1] = av.getSido();
 				rowData[2] = av.getGugun();
 				rowData[3] = av.getDong();
 				rowData[4] = av.getBunji();
+				listSeq.add(av.getSeq());
+				//System.out.println("조회되는 seq 번호 :"+av.getSeq()); test 용
 				
 				dtm.addRow(rowData);
 			}//end for

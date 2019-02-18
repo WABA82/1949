@@ -51,6 +51,8 @@ public class SignUpView extends JDialog {
 		jpfSsn2 = new JPasswordField();
 		jtfTel = new JTextField(); 
 		jtfZip = new JTextField();
+		jtfZip.setEditable(false);
+		jtfZip.setBackground(Color.white);
 		jtfAddr1 = new JTextField();
 		jtfAddr1 = new JTextField();
         jtfAddr1.setEditable(false);
