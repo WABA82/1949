@@ -57,8 +57,12 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		JOptionPane.showMessageDialog(umv, msg);
 	}
 	
+	/**
+	 * 유저 정보를 삭제하는 메서드 
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 */
 	public void remove() throws UnknownHostException, IOException {
-		
 		String id = umv.getJtfId().getText().trim();
 		
 		String userType = (String)umv.getJcbUser().getSelectedItem();
@@ -107,6 +111,11 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		}
 	}
 	
+	/**
+	 * 입력 비밀번호 검증 메소드
+	 * @param pass
+	 * @return
+	 */
 	public boolean checkPass(String pass) { // 비밀번호 검증, 최대 12자리, 대문자 소문자 특수문자 조합
 		boolean resultFlag = false;
 		
@@ -153,6 +162,11 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		return resultFlag;
 	}
 	
+	/**
+	 * 입력 ssn 검증 메서드
+	 * @param input
+	 * @return
+	 */
 	public boolean checkSsn(String input) {
 		boolean flag = false;
 		
@@ -195,6 +209,11 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		return flag;
 	}
 	
+	/**
+	 * 연락처 검증 메서드
+	 * @param input
+	 * @return
+	 */
 	public boolean checkTel(String input) {
 		boolean flag = false;
 		
@@ -215,6 +234,11 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		return flag;
 	}
 	
+	/**
+	 * 이메일 검증 메소드
+	 * @param email
+	 * @return
+	 */
 	public boolean checkEmail(String email) { 
 		boolean flag = false;
 		
@@ -230,6 +254,11 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		return flag;
 	}
 	
+	/**
+	 * 유저 정보를 수정하는 메소드
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 */
 	public void modify() throws UnknownHostException, IOException {
 		UserModifyVO umvo = null;
 		
@@ -321,6 +350,10 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		}
 	}
 	
+	/**
+	 * 주소 검색하는 창을 띄우는 메서드
+	 * @return
+	 */
 	public String searchAddr() {
 		String addr1 = "";
 		new SearchAddrView(umv, this);

@@ -12,6 +12,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * FileServer와 연결되는 소켓들의 요청을 처리해주는 헬퍼 클래스
+ * @author owner
+ */
 public class FileServerHelper {
 	
 	private DataOutputStream dos;
@@ -28,7 +32,7 @@ public class FileServerHelper {
 	private Socket client;
 	
 	/**
-	 * 요청을 처리하는 Helper클래스
+	 * 요청에 따라 분기 처리
 	 * @param listHelper
 	 * @param client
 	 * @param dis
@@ -82,7 +86,7 @@ public class FileServerHelper {
 			break;
 		}
 		
-		closeStreams();
+		closeAll();
 		listHelper.remove(this);
 	}
 	
@@ -300,7 +304,11 @@ public class FileServerHelper {
 		dis.readUTF(); // 응답대기
 	}
 
-	public void closeStreams() throws IOException {
+	/**
+	 * 소켓과 스트림을 끊는 메소드 
+	 * @throws IOException
+	 */
+	public void closeAll() throws IOException {
 		if (fis != null) { fis.close(); }
 		if (fos != null) { fos.close(); }
 		if (oos != null) { oos.close(); }

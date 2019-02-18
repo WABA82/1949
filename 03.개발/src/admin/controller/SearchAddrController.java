@@ -31,6 +31,11 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
 		System.out.println("원래 add "+umc.getAddrSeq());
 	}
 	
+	/**
+	 * 동을 입력받아 주소정보를 테이블에 보여주는 메소드
+	 * @param dong
+	 * @throws SQLException
+	 */
 	public void search(String dong) throws SQLException {
 		list = AdminDAO.getInstance().selectAddr(dong);
 		

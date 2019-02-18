@@ -23,6 +23,10 @@ import admin.vo.UserInfoVO;
 import admin.vo.UserListVO;
 import admin.vo.UserModifyVO;
 
+/**
+ * @author owner
+ *
+ */
 public class AdminDAO {
 	
 	private static AdminDAO a_dao;
@@ -63,6 +67,11 @@ public class AdminDAO {
 		return con;
 	}
 	
+	/**
+	 * 모든 유저 정보를 조회하는 메소드 
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<UserListVO> selectAllUser() throws SQLException {
 		List<UserListVO> list = new ArrayList<UserListVO>();
 		
@@ -101,6 +110,11 @@ public class AdminDAO {
 		return list;
 	}
 	
+	/**
+	 * 모든 구직자 기본정보를 조회하는 메소드 
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<EeListVO> selectAllEe() throws SQLException {
 		List<EeListVO> list = new ArrayList<EeListVO>();
 		
@@ -140,6 +154,11 @@ public class AdminDAO {
 		return list;
 	}
 	
+	/**
+	 * 기업 사용자의 모든 구인글 정보를 조회하는 메소드
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<ErListVO> selectAllEr() throws SQLException {
 		List<ErListVO> list = new ArrayList<ErListVO>();
 		
@@ -180,6 +199,11 @@ public class AdminDAO {
 	}
 	
 	
+	/**
+	 * 모든 기업 정보를 조회하는 메소드
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<CoListVO> selectAllCo() throws SQLException {
 		List<CoListVO> list = new ArrayList<CoListVO>();
 		
@@ -216,6 +240,13 @@ public class AdminDAO {
 		return list;
 	}
 	
+	
+	/**
+	 * 한 유저의 정보를 가져오는 메소드
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
 	public UserInfoVO selectOneUser(String id) throws SQLException {
 		UserInfoVO uivo = null;
 		
@@ -260,6 +291,12 @@ public class AdminDAO {
 		return uivo;
 	}
 	
+	/**
+	 * 한 유저의 정보를 업데이트하는 메소드
+	 * @param umvo
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean updateUser(UserModifyVO umvo) throws SQLException {
 		boolean flag = false;
 		
@@ -329,6 +366,12 @@ public class AdminDAO {
 		return flag;
 	}
 	
+	/**
+	 * 한 유저의 이력서파일명을 조회하는 메소드
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
 	public String selectEeExt(String id) throws SQLException {
 		String extResume = "";
 		
@@ -359,6 +402,13 @@ public class AdminDAO {
 		return extResume;
 	}
 	
+	/**
+	 * 입력받은 유저 아이디와 유저타입에 등록된 이미지명을 반환하는 메소드
+	 * @param id
+	 * @param userType
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<String> selectUserImgs(String id, String userType) throws SQLException {
 		List<String> list = new ArrayList<String>();
 		
@@ -446,6 +496,12 @@ public class AdminDAO {
 		return flag;
 	}
 	
+	/**
+	 * 주소를 조회하는 메소드
+	 * @param dong
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<AddrVO> selectAddr(String dong) throws SQLException {
 		List<AddrVO> list = new ArrayList<AddrVO>();
 		
@@ -483,6 +539,12 @@ public class AdminDAO {
 		return list;
 	}
 	
+	/**
+	 * 한 구인글 정보를 가져오는 메소드
+	 * @param erNum
+	 * @return
+	 * @throws SQLException
+	 */
 	public ErInfoVO selectOneEr(String erNum) throws SQLException {
 		ErInfoVO eivo = null;
 		
@@ -544,6 +606,55 @@ public class AdminDAO {
 	}
 
 	
+	/**
+	 * 구인글 정보를 수정하는 메소드
+	 * Transaction처리를 수행
+	 * @param emvo
+	 * @param preSkillNum
+	 * @return
+	 */
+	public boolean updateEr(ErModifyVO emvo, int preSkillNum) {
+		boolean flag = false;
+
+		try {
+			con = getConn();
+			con.setAutoCommit(false);
+			
+			try {
+				boolean t1 = ueTransaction1(con, emvo); // 새로운 정보로 er_info update
+				boolean t2 = ueTransaction2(con, emvo, preSkillNum); // 기존 selected_skill 삭제
+				ueTransaction3(con, emvo); // 새롭게 선택된 Skill들 insert
+				
+				if (t1 && t2) {
+					flag = true;
+					con.commit();
+				} else {
+					con.rollback();
+				}
+				
+			} finally {
+				closeAll();
+			}
+		} catch (SQLException e) {
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+		
+		return flag;
+	}
+	
+	/**
+	 * updateEr 트랜잭션 - 1
+	 * - er_info 테이블 정보를 업데이트
+	 * @param con
+	 * @param emvo
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean ueTransaction1(Connection con, ErModifyVO emvo) throws SQLException {
 		boolean flag = false;
 		
@@ -572,6 +683,15 @@ public class AdminDAO {
 		return flag;
 	}
 	
+	/**
+	 * updateEr 트랜잭션 - 2
+	 * - selected_skill 테이블에서 기존 정보를 삭제
+	 * @param con
+	 * @param emvo
+	 * @param preSkillNum
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean ueTransaction2(Connection con, ErModifyVO emvo, int preSkillNum) throws SQLException {
 		boolean flag = false;
 		
@@ -579,17 +699,6 @@ public class AdminDAO {
 		deleteSkill
 		.append(" delete from selected_skill ")
 		.append(" where er_num = ? ");
-		
-//		pstmt1 = con.prepareStatement(updateEr.toString());
-//		pstmt1.setString(1, emvo.getSubject());
-//		pstmt1.setString(2, emvo.getEducation());
-//		pstmt1.setString(3, emvo.getRank());
-//		pstmt1.setString(4, emvo.getLoc());
-//		pstmt1.setString(5, emvo.getHireType());
-//		pstmt1.setString(6, emvo.getPortfolio());
-//		pstmt1.setString(7, emvo.getErDesc());
-//		pstmt1.setInt(8, emvo.getSal());
-//		pstmt1.setString(9, emvo.getErNum());
 		
 		pstmt2 = con.prepareStatement(deleteSkill.toString());
 		pstmt2.setString(1, emvo.getErNum());
@@ -603,6 +712,13 @@ public class AdminDAO {
 		return flag;
 	}
 	
+	/**
+	 * updateEr 트랜잭션 - 3
+	 * selected_skill 테이블에 새로운 스킬 정보를 추가
+	 * @param con
+	 * @param emvo
+	 * @throws SQLException
+	 */
 	public void ueTransaction3(Connection con, ErModifyVO emvo) throws SQLException {
 		
 		StringBuilder insertSkill = new StringBuilder();
@@ -621,49 +737,13 @@ public class AdminDAO {
 		}
 	}
 	
-	public boolean updateEr(ErModifyVO emvo, int preSkillNum) {
-		boolean flag = false;
 
-		try {
-			con = getConn();
-			con.setAutoCommit(false);
-			
-			try {
-				boolean t1 = ueTransaction1(con, emvo); // 새로운 정보로 er_info update
-				boolean t2 = ueTransaction2(con, emvo, preSkillNum); // 기존 selected_skill 삭제
-				ueTransaction3(con, emvo); // 새롭게 선택된 Skill들 insert
-				
-				if (t1 && t2) {
-					flag = true;
-					con.commit();
-				} else {
-					con.rollback();
-				}
-				
-			} finally {
-				closePstmt3();
-			}
-		} catch (SQLException e) {
-			try {
-				con.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-			e.printStackTrace();
-		}
-		
-		return flag;
-	}
-	
-	public void closePstmt3() throws SQLException {
-		if (pstmt3 != null) { pstmt3.close(); }
-		if (pstmt2 != null) { pstmt2.close(); }
-		if (pstmt1 != null) { pstmt1.close(); }
-		if (con != null) { con.close(); }
-	}
-	
-
-	
+	/**
+	 * 구인글 정보를 삭제하는 메소드
+	 * @param erNum
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean deleteEr(String erNum) throws SQLException  { 
 		boolean flag = false;
 		
@@ -696,6 +776,12 @@ public class AdminDAO {
 	}
 	
 	
+	/**
+	 * 한 기업정보를 조회하는 메소드
+	 * @param coNum
+	 * @return
+	 * @throws SQLException
+	 */
 	public CoInfoVO selectOneCo(String coNum) throws SQLException {
 		CoInfoVO civo = null;
 		
@@ -733,6 +819,12 @@ public class AdminDAO {
 	}
 	
 
+	/**
+	 * 기업 정보를 업데이트하는 메소드
+	 * @param cmvo
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean updateCo(CoModifyVO cmvo) throws SQLException {
 		boolean flag = false;
 		
@@ -772,49 +864,13 @@ public class AdminDAO {
 		return flag;
 	}
 	
-	public boolean dCoTransaction1(String id) throws SQLException{
-		boolean flag = false;
-		
-		StringBuilder deleteCo = new StringBuilder();
-		
-		deleteCo
-		.append(" delete from company ")
-		.append(" where er_id = ? ");
 	
-		pstmt1 = con.prepareStatement(deleteCo.toString());
-		pstmt1.setString(1, id);
-		
-		int cnt = pstmt1.executeUpdate();
-		
-		if (cnt == 1) {
-			flag = true;
-		}
-		
-		return flag;
-	}
-	
-	
-	public boolean dCoTransaction2(String id) throws SQLException {
-		boolean flag = false;
-		
-		StringBuilder updateEe = new StringBuilder();
-		updateEe
-		.append(" update user_table ")
-		.append(" set activation = 'N' ")
-		.append(" where id=? ");
-		
-		pstmt2 = con.prepareStatement(updateEe.toString());
-		pstmt2.setString(1, id);
-		
-		int cnt = pstmt2.executeUpdate();
-		
-		if(cnt == 1) {
-			flag = true;
-		}
-		
-		return flag;
-	}
-	
+	/**
+	 * 기업 정보 삭제하는 메소드
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean deleteCo(String id) throws SQLException { 
 		// co정보만 지워도 er정보, selected_skill정보도 cascade로 삭제됨
 		// co 정보를 지우면 co를 등록한 유저 activation정보를 N으로 변경
@@ -843,7 +899,7 @@ public class AdminDAO {
 			}
 		} finally {
 			try {
-				closePstmt2();
+				closeAll();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -852,52 +908,70 @@ public class AdminDAO {
 		return flag;
 	}
 	
-	
-/*	public boolean deleteCo(String input, String inputFlag) throws SQLException { //////////////////////////////////// 수정필요 ///////////////
-		// 회사 정보를 삭제하면 해당 유저의 activation 상태를 N으로 바꿔야 함
-		// 3개의 쿼리를 한 트랜잭션 처리
-		// selectedSkill에서 해당 co와 연결된 er데이터 삭제, 
-		// er_info에서 해당 co와 연결된 게시글 삭제
-		// 그다음 company에서 레코드 삭제
-		
+	/**
+	 * deleteCo의 트랜잭션 - 1
+	 * 기업 정보를 삭제
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean dCoTransaction1(String id) throws SQLException{
 		boolean flag = false;
 		
-		Connection con = null;
-		PreparedStatement pstmt = null;
+		StringBuilder deleteCo = new StringBuilder();
 		
-		try {
-			con = getConn();
-			
-			StringBuilder deleteCo = new StringBuilder();
-			
-			if (inputFlag.equals("coNum")) {
-				deleteCo
-				.append(" delete from company ")
-				.append(" where co_num = ? ");
-			} else if (inputFlag.equals("id")) {
-				deleteCo
-				.append(" delete from company ")
-				.append(" where er_id = ? ");
-			}
-			
-			pstmt = con.prepareStatement(deleteCo.toString());
-			pstmt.setString(1, input);
-			
-			int cnt = pstmt.executeUpdate();
-			
-			if (cnt == 1) {
-				flag = true;
-			}
-			
-		} finally {
-			if (pstmt != null) { pstmt.close(); }
-			if (con != null) { con.close(); }
+		deleteCo
+		.append(" delete from company ")
+		.append(" where er_id = ? ");
+	
+		pstmt1 = con.prepareStatement(deleteCo.toString());
+		pstmt1.setString(1, id);
+		
+		int cnt = pstmt1.executeUpdate();
+		
+		if (cnt == 1) {
+			flag = true;
 		}
 		
 		return flag;
 	}
-*/	
 	
+	
+	/**
+	 * deleteCo의 트랜잭션 - 2
+	 * 유저 activation 정보를 Y->N으로 변경
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean dCoTransaction2(String id) throws SQLException {
+		boolean flag = false;
+		
+		StringBuilder updateEe = new StringBuilder();
+		updateEe
+		.append(" update user_table ")
+		.append(" set activation = 'N' ")
+		.append(" where id=? ");
+		
+		pstmt2 = con.prepareStatement(updateEe.toString());
+		pstmt2.setString(1, id);
+		
+		int cnt = pstmt2.executeUpdate();
+		
+		if(cnt == 1) {
+			flag = true;
+		}
+		
+		return flag;
+	}
+	
+	/**
+	 * 한 일반 회원 기본정보를 조회하는 메소드
+	 * @param input
+	 * @param flag
+	 * @return
+	 * @throws SQLException
+	 */
 	public EeInfoVO selectOneEe(String input, String flag) throws SQLException {
 		EeInfoVO eivo = null;
 		
@@ -943,6 +1017,12 @@ public class AdminDAO {
 		return eivo;
 	}
 	
+	/**
+	 * 일반 사용자 기본 정보를 업데이트하는 메소드 
+	 * @param emvo
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean updateEe(EeModifyVO emvo) throws SQLException {
 		boolean flag = false;
 		
@@ -982,47 +1062,14 @@ public class AdminDAO {
 		return flag;
 	}
 	
-	public boolean dEeTransaction1(String eeNum) throws SQLException {
-		boolean flag = false;
-		
-		StringBuilder deleteEe = new StringBuilder();
-		deleteEe
-		.append(" delete from ee_info ")
-		.append(" where ee_num=? ");
-		
-		pstmt1 = con.prepareStatement(deleteEe.toString());
-		pstmt1.setString(1, eeNum);
-		
-		int cnt = pstmt1.executeUpdate();
-		
-		if(cnt == 1) {
-			flag = true;
-		}
-		
-		return flag;
-	}
+
 	
-	public boolean dEeTransaction2(String id) throws SQLException {
-		boolean flag = false;
-		
-		StringBuilder updateEe = new StringBuilder();
-		updateEe
-		.append(" update user_table ")
-		.append(" set activation = 'N' ")
-		.append(" where id=? ");
-		
-		pstmt1 = con.prepareStatement(updateEe.toString());
-		pstmt1.setString(1, id);
-		
-		int cnt = pstmt1.executeUpdate();
-		
-		if(cnt == 1) {
-			flag = true;
-		}
-		
-		return flag;
-	}
-	
+	/**
+	 * 기본 정보 삭제를 위해 EeDeleteVO정보를 조회하는 메소드 
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
 	public EeDeleteVO selectEDVO(String id) throws SQLException {
 		EeDeleteVO edvo = null;
 		
@@ -1055,6 +1102,11 @@ public class AdminDAO {
 		return edvo;
 	}
 	
+	/**
+	 * 일반 사용자 기본정보를 삭제하는 메소드
+	 * @param edvo
+	 * @return
+	 */
 	public boolean deleteEe(EeDeleteVO edvo){
 		boolean flag = false;
 		
@@ -1083,7 +1135,7 @@ public class AdminDAO {
 			}
 		} finally {
 			try {
-				closePstmt2();
+				closeAll();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -1092,9 +1144,70 @@ public class AdminDAO {
 		return flag;
 	}
 	
-	public void closePstmt2() throws SQLException {
+	/**
+	 * deleteEe 트랜잭션 - 1
+	 * ee_info에서 데이터 삭제
+	 * @param eeNum
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean dEeTransaction1(String eeNum) throws SQLException {
+		boolean flag = false;
+		
+		StringBuilder deleteEe = new StringBuilder();
+		deleteEe
+		.append(" delete from ee_info ")
+		.append(" where ee_num=? ");
+		
+		pstmt1 = con.prepareStatement(deleteEe.toString());
+		pstmt1.setString(1, eeNum);
+		
+		int cnt = pstmt1.executeUpdate();
+		
+		if(cnt == 1) {
+			flag = true;
+		}
+		
+		return flag;
+	}
+	
+	/**
+	 * deleteEe 트랜잭션 - 2
+	 * 유저 activation 정보를 Y->N으로 변경
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean dEeTransaction2(String id) throws SQLException {
+		boolean flag = false;
+		
+		StringBuilder updateEe = new StringBuilder();
+		updateEe
+		.append(" update user_table ")
+		.append(" set activation = 'N' ")
+		.append(" where id=? ");
+		
+		pstmt1 = con.prepareStatement(updateEe.toString());
+		pstmt1.setString(1, id);
+		
+		int cnt = pstmt1.executeUpdate();
+		
+		if(cnt == 1) {
+			flag = true;
+		}
+		
+		return flag;
+	}
+	
+	/**
+	 * Connection과 PreparedStatment를 close처리하는 메소드 
+	 * @throws SQLException
+	 */
+	public void closeAll() throws SQLException {
+		if (pstmt3 != null) { pstmt3.close(); }
 		if (pstmt2 != null) { pstmt2.close(); }
 		if (pstmt1 != null) { pstmt1.close(); }
 		if (con != null) { con.close(); }
 	}
+	
 }
