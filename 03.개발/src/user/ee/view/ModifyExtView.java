@@ -52,10 +52,10 @@ public class ModifyExtView extends JDialog {
 		jbCancel.setBounds(190,95,100,25);
 		
 		//이벤트 등록
-		ModifyExtController mec=new ModifyExtController(null,null, null);
-		jbCancel.addActionListener(mec);
-		jbChange.addActionListener(mec);
-		jbChoose.addActionListener(mec);
+//		ModifyExtController mec=new ModifyExtController(null,null, null);
+//		jbCancel.addActionListener(mec);
+//		jbChange.addActionListener(mec);
+//		jbChoose.addActionListener(mec);
 		
 		
 		setLayout(null);

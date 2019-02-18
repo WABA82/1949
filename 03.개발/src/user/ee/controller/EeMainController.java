@@ -44,8 +44,8 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 	}
 
 	public void mngUser() {
-		EeRegVO ervo= new EeRegVO("kun90", "M", 25);
-			new EeInfoRegView(emv, ervo);
+//		EeRegVO ervo= new EeRegVO("kun90", "M", 25);
+//			new EeInfoRegView(emv, ervo);
 	}
 
 	public void mngEe() {

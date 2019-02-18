@@ -8,12 +8,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import admin.vo.EeInfoVO;
 import user.ee.dto.EeHiringCdtDTO;
 import user.ee.vo.CoDetailVO;
 import user.ee.vo.DetailErInfoVO;
 import user.ee.vo.EeAppVO;
 import user.ee.vo.EeHiringVO;
+import user.ee.vo.EeInfoVO;
 import user.ee.vo.EeInsertVO;
 import user.ee.vo.EeInterestAndAppVO;
 import user.ee.vo.EeInterestVO;
@@ -441,8 +441,7 @@ public class EeDAO {
 		
 		if(rs.next()) {
 			eivo=new EeInfoVO(rs.getString("EE_NUM"), rs.getString("IMG"),rs.getString("NAME"), rs.getString("RANK"),rs.getString("LOC"),
-						rs.getString("EDUCATION"), rs.getString("PORTFOLIO"), rs.getString("GENDER"),
-						rs.getString("INPUT_DATE"), rs.getString("EXT_RESUME"), rs.getInt("AGE"));
+						rs.getString("EDUCATION"), rs.getString("PORTFOLIO"), rs.getString("GENDER"), rs.getString("EXT_RESUME"), rs.getInt("AGE"));
 		}
 			
 		}finally {

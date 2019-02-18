@@ -1,9 +1,18 @@
 package user.er.controller;
 
+import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
@@ -129,7 +138,17 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 		} // end if
 
 		if (e.getSource() == adv.getJbExtRsm()) { // 외부이력서 버튼 이벤트 처리
-			extResumeDown();
+
+			try {
+				extResumeDown();
+			} catch (UnknownHostException e1) {
+				JOptionPane.showMessageDialog(adv, "서버를 알 수 없습니다.");
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				JOptionPane.showMessageDialog(adv, "연결 실패");
+				e1.printStackTrace();
+			} // end catch
+
 		} // end if
 
 		if (e.getSource() == adv.getJbClose()) { // 닫기 버튼 이벤트 처리
@@ -169,16 +188,88 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 
 	/**
 	 * 서버로 부터 지원자가 등록한 외부이력서를 다운받는 메서드.
+	 * 
+	 * @throws IOException
 	 */
-	public void extResumeDown() {
+	public void extResumeDown() throws UnknownHostException, IOException {
 		if (daevo.getExt_resume() == null) {
 			JOptionPane.showMessageDialog(adv, "이 지원자가 등록한 외부이력서가 없습니다.");
 			return;
 		} // end if
 
 		if (daevo.getExt_resume() != null) {
-			// 자바의 정석 2편의 882p읽어 보기.
+			String fileName = daevo.getExt_resume();
+			Socket client = null;
+			DataOutputStream dos = null;
+			DataInputStream dis = null;
+			try {
+
+				client = new Socket("211.63.89.144", 7002);
+
+				dis = new DataInputStream(client.getInputStream()); // 서버로 부터 요청받기.
+				dos = new DataOutputStream(client.getOutputStream()); // 서버로 요청 보내기.
+				
+				// 서버로 파일 전송 요청.
+				dos.writeUTF("ee_ext_request"); 
+				dos.flush();
+
+				// 서버로 파일명 전송.
+				dos.writeUTF(fileName);
+				dos.flush();
+				
+				
+				
+			} finally {
+				if(client != null) {
+					client.close();
+				}// end if
+			} // end finally
+
 		} // end if
+
+		///////////////////// 파일 저장 다이얼 로그 띄우기. /////////////////////
+
+//		FileDialog fd = new FileDialog(adv, "이력서 저장", FileDialog.SAVE);
+//		fd.setVisible(true);
+//
+//		if (fd.getFile() != null && fd.getDirectory() != null) {
+//			String ext_resumePath = fd.getDirectory() + fd.getFile() + ".doc";
+//
+//			// 서버로 부터 파일 읽어가져오기.
+////			DefaultListModel<String> dlm = amv.getDlmLog();
+////			StringBuilder logData = new StringBuilder();
+////			for (int i = 0; i < dlm.size(); i++) {
+////				logData.append(dlm.get(i)).append("\n");
+////			}
+//
+//			FileOutputStream fos = null;
+//			OutputStreamWriter osw = null;
+//			BufferedWriter bw = null;
+//			try {
+//				fos = new FileOutputStream(ext_resumePath);
+//				osw = new OutputStreamWriter(fos);
+//				bw = new BufferedWriter(osw);
+//
+//				// 이력서 파일 스트림에 저장.
+//				bw.write("");
+//				// 이력서 파일 내보내기.
+//				bw.flush();
+//
+//				JOptionPane.showMessageDialog(adv, "이력서 파일이 저장되었습니다.");
+//			} finally { // 연결 끊기.
+//				if (bw != null) {
+//					bw.close();
+//				} // end if
+//				if (osw != null) {
+//					osw.close();
+//				} // end if
+//				if (fos != null) {
+//					fos.close();
+//				} // end if
+//			} // end finally
+//
+//		} // end if
+
 	}// changeStatusAccept()
 
 }// class

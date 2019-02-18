@@ -25,6 +25,8 @@ public class CommonDAO {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+	
 	public static CommonDAO getInstance() {
 		if (C_dao == null) {
 			C_dao = new CommonDAO();
@@ -84,7 +86,7 @@ public class CommonDAO {
 		try {
 			con = getConn();
 			String selectAddr = "select seq,zipcode,sido,gugun,dong,nvl(bunji,' ') bunji from zipcode where dong like '%'||?||'%'  ";
-			pstmt.getConnection().prepareStatement(selectAddr);
+			pstmt = con.prepareStatement(selectAddr);
 			pstmt.setString(1, dong);
 			rs = pstmt.executeQuery();
 			AddrVO av = null;
@@ -189,10 +191,9 @@ public class CommonDAO {
 		try {
 			System.out.println(CommonDAO.getInstance().selectEeMain("gong1"));
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}// main
 	
 
 	public boolean selectFindPass(FindPassVO fpvo) throws SQLException {
