@@ -44,8 +44,9 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		
+	public void actionPerformed(ActionEvent ae) {
+	
+
 	}//actionPerformed
 
 	@Override
