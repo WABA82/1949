@@ -57,7 +57,6 @@ public class SignUpView extends JDialog {
 		jtfAddr1 = new JTextField();
         jtfAddr1.setEditable(false);
         jtfAddr1.setBackground(Color.white);
-        //jtfAddr1.getBorder(new Border(Color.BLACK));
 		jtfAddr2 = new JTextField();
 		jtfEmail = new JTextField();
 		jtfAnswer = new JTextField();
@@ -185,9 +184,6 @@ public class SignUpView extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		
 	}
-	/*public static void main(String[] args) {
-		new SignUpView();
-	}*/
 	public JRadioButton getJrbEe() {
 		return jrbEe;
 	}
