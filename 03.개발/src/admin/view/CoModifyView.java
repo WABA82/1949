@@ -1,6 +1,7 @@
 package admin.view;
 
 import java.awt.Color;
+import java.awt.Font;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -12,6 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import admin.controller.AdminMgMtController;
 import admin.controller.CoModifyController;
 import admin.vo.CoInfoVO;
 
@@ -23,7 +25,7 @@ public class CoModifyView extends JDialog {
 	private JButton jbModify, jbRemove, jbClose;
 	private JLabel jlImg1, jlImg2, jlImg3, jlImg4;
 
-	public CoModifyView(AdminMgMtView ammv, CoInfoVO civo) {
+	public CoModifyView(AdminMgMtView ammv, CoInfoVO civo, AdminMgMtController ammc) {
 		super(ammv, "회사상세정보", true); // 모달 true
 
 		JTextField jtfCoId = new JTextField(civo.getErId());
@@ -36,6 +38,10 @@ public class CoModifyView extends JDialog {
 		JLabel jlCoName = new JLabel("회사 이름");
 		JLabel jlEstDate = new JLabel("설립년도");
 		JLabel jlmemberNum = new JLabel("사원수");
+		
+		JLabel jlImgDesc = new JLabel("이미지는 더블클릭해서 변경가능합니다.");
+		jlImgDesc.setFont(new Font(Font.DIALOG, Font.BOLD, 11));
+		jlImgDesc.setForeground(Color.red);
 
 		jtaCoDesc = new JTextArea(civo.getCoDesc());
 		JScrollPane jspTaDesc = new JScrollPane(jtaCoDesc);
@@ -44,10 +50,10 @@ public class CoModifyView extends JDialog {
 		jbRemove = new JButton("삭제");
 		jbClose = new JButton("닫기");
 
-		jlImg1 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/"+civo.getImg1()));
-		jlImg2 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/"+civo.getImg2()));
-		jlImg3 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/"+civo.getImg3()));
-		jlImg4 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/"+civo.getImg4()));
+		jlImg1 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg1()));
+		jlImg2 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg2()));
+		jlImg3 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg3()));
+		jlImg4 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/admin/img/co/"+civo.getImg4()));
 
 		// 배치
 		setLayout(null);
@@ -64,6 +70,9 @@ public class CoModifyView extends JDialog {
 
 		jlImg1.setBounds(38, 25, 170, 170);
 		jlImg1.setBorder(new TitledBorder("회사 이미지"));
+		
+		jlImgDesc.setBounds(38, 260, 250, 30);
+		add(jlImgDesc);
 
 		jlImg2.setBounds(38, 208, 50, 50);
 		jlImg3.setBounds(98, 208, 50, 50);
@@ -100,7 +109,7 @@ public class CoModifyView extends JDialog {
 		add(jbRemove);
 		add(jbClose);
 		
-		CoModifyController cmc = new CoModifyController(this, ammv, civo);
+		CoModifyController cmc = new CoModifyController(this, ammv, civo, ammc);
 		addWindowListener(cmc);
 		
 		jlImg1.addMouseListener(cmc);

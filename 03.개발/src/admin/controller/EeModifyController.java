@@ -5,23 +5,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 import admin.dao.AdminDAO;
+import admin.util.AdminUtil;
 import admin.view.AdminMgMtView;
 import admin.view.EeModifyView;
 import admin.view.ModifyExtView;
+import admin.vo.EeDeleteVO;
 import admin.vo.EeInfoVO;
-import user.ee.vo.EeModifyVO;
+import admin.vo.EeModifyVO;
 
 public class EeModifyController extends WindowAdapter implements ActionListener {
 
@@ -29,17 +33,25 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 	private AdminMgMtView ammv;
 	private AdminMgMtController ammc;
 	private EeInfoVO eivo;
+	private AdminUtil au;
 	
 	private File changeImgFile; 
 	private File changeExtFile;
 	private boolean changeImgFlag;
 	private boolean changeExtFlag;
+
+	private Socket client;
+	private DataOutputStream dos;
+	private DataInputStream dis;
+	private FileInputStream fis;
+	private FileOutputStream fos;
 	
 	public EeModifyController(EeModifyView emv, AdminMgMtView ammv, AdminMgMtController ammc, EeInfoVO eivo) {
 		this.emv = emv;
 		this.ammv = ammv;
 		this.ammc = ammc;
 		this.eivo = eivo;
+		au = new AdminUtil();
 	}
 	
 	@Override
@@ -60,7 +72,15 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 		if (e.getSource() == emv.getJbRemove()) {
 			switch(JOptionPane.showConfirmDialog(emv, "기본정보를 정말 삭제하시겠습니까?")) {
 			case JOptionPane.OK_OPTION:
-				removeEe();
+				try {
+					removeEe();
+				} catch (UnknownHostException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
 				break;
 			}
 		}
@@ -74,12 +94,13 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 		}
  	}
 	
+	
+	/**
+	 * 회원 정보 수정 메소드
+	 * @throws IOException
+	 */
 	public void modifyEe() throws IOException {
 		// 이미지, 이력서파일 변경되었는지 확인 - flag변수
-		// 이미지가 변경되었다면 img패키지에 파일 전송(파일서버 완성 후 변경예정)
-		// 이력서가 변경되었다면 기존 이력서파일 삭제 후 새로운 이력서파일 전송
-		// 그 전에 변경 정보로 DB에서 update메소드처리
-		
 		String name = emv.getJtfName().getText().trim();
 		
 		if (name.equals("")) {
@@ -95,80 +116,46 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 		
 		String img = eivo.getImg();
 		if (changeImgFlag) { 
-			img = changeImgFile.getName();
+			img = System.currentTimeMillis()+changeImgFile.getName(); // 이름을 유니크하게 변경
 		}
 		
 		String extResume = eivo.getExtResume();
 		if (changeExtFlag) {
-			extResume = emv.getJtfExtRsm().getText().trim();
+			extResume = System.currentTimeMillis()+emv.getJtfExtRsm().getText().trim(); // 이름을 유니크하게 변경
 		}
 		
 		EeModifyVO emvo = new EeModifyVO(eivo.getEeNum(), img, rank, loc, education, portfolio, extResume);
 		
 		try {
-			if(AdminDAO.getInstance().updateEe(emvo)) {
+			if(AdminDAO.getInstance().updateEe(emvo)) { // 데이터 수정완료
+				
+				if (changeImgFlag) {
+					// ee는 no_img일리가 없으므로 삭제할 이미지가 no_img인지 체크 안해도 됨
+					File originImg = new File("C:/dev/1949/03.개발/src/admin/img/ee/"+eivo.getImg());
+					originImg.delete();
+					au.deleteFile(eivo.getImg(), "ee", client, dos, dis); // 기존 이미지를 FS에서 삭제
+					au.addNewFile(img, changeImgFile, "ee", client, dos, dis, fis); // 새로운 이미지를 전송
+					au.reqFile(img, "ee", client, dos, dis, fos); // 새로운 이미지를 FS에게 요청, 저장
+				}
+				
+				if (changeExtFlag) { // 이력서는 Admin Server에 저장할 필요 없음
+					// 기존 이력서를 FS에서 삭제
+					System.out.println("---"+eivo.getExtResume());
+					if (eivo.getExtResume() != null) {
+						au.deleteFile(eivo.getExtResume(), "ext", client, dos, dis);
+					}
+					// 변경된 이력서만 FS에 추가 
+					au.addNewFile(extResume, changeExtFile, "ext", client, dos, dis, fis);
+				}
 				
 				msgCenter("기본정보를 수정했습니다.");
+				au.sendLog(eivo.getEeNum()+" 기본 정보 수정");
+				emv.dispose();
 				
-				// DB 업데이트 후 이미지, 이력서 삭제 및 저장
-				if (changeImgFlag) { // 이미지가 변경되었다면 기존 이미지 삭제, 새 이미지 업로드
-					
-					FileInputStream fis = null;
-					FileOutputStream fos = null;
-					try {
-						
-						// 기존 파일 삭제 oh99로 테스트 완료
-						File originFile = new File("C:/dev/1949/03.개발/src/file/eeImg/"+eivo.getImg());
-						originFile.delete();
-						
-						// 변경 파일 추가 // 파일서버 완성 후 변경 예정 ///////////////////////////////////////
-						fis = new FileInputStream(changeImgFile);
-						fos = new FileOutputStream("C:/dev/1949/03.개발/src/file/eeImg/"+changeImgFile.getName());
-						
-						byte[] readData = new byte[512];
-						int len = 0;
-						while((len = fis.read(readData)) != -1) { 
-							fos.write(readData,0,len);
-							fos.flush();
-						}
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					} finally {
-						if (fos != null) { fos.close(); }
-						if (fis != null) { fis.close(); }
-					}
-				}
+				EeInfoVO newEivo = AdminDAO.getInstance().selectOneEe(eivo.getEeNum(), "eeNum");
 				
-				if (changeExtFlag) { // 이력서가 변경되었다면 기존 이력서 지우고 새 이력서 저장
-					FileInputStream fis = null;
-					FileOutputStream fos = null;
-					try {
-						
-						// 기존 파일 삭제 
-						File originFile = new File("C:/dev/1949/03.개발/src/file/resume/"+eivo.getExtResume());
-						originFile.delete();
-						
-						// 변경 파일 추가 
-						fis = new FileInputStream(changeExtFile);
-						fos = new FileOutputStream("C:/dev/1949/03.개발/src/file/resume/"+changeExtFile.getName());
-						
-						byte[] readData = new byte[512];
-						int len = 0;
-						while((len = fis.read(readData)) != -1) { 
-							fos.write(readData,0,len);
-							fos.flush();
-						}
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					} finally {
-						if (fos != null) { fos.close(); }
-						if (fis != null) { fis.close(); }
-					}
-				}
+				ammc.setEe();
+				new EeModifyView(ammv, newEivo, ammc);
 			}
 		} catch (SQLException e) {
 			msgCenter("DB에 문제 발생");
@@ -180,34 +167,55 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 		JOptionPane.showMessageDialog(emv, msg);
 	}
 	
-	public void removeEe() {
-////////////파일서버 완성 후 파일 삭제요청처리해야 함 //////////////////////////////////////////////////
-		if(AdminDAO.getInstance().deleteEe(eivo)) {
-			msgCenter("기본정보가 삭제되었습니다.");
+	/**
+	 * 회원 정보 삭제 메소드
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 * @throws SQLException 
+	 */
+	public void removeEe() throws UnknownHostException, IOException, SQLException {
+		EeDeleteVO edvo = AdminDAO.getInstance().selectEDVO(eivo.getId());
+		if(AdminDAO.getInstance().deleteEe(edvo)) {
+			
+			File originImg = new File("C:/dev/1949/03.개발/src/admin/img/ee/"+eivo.getImg());
+			originImg.delete(); 
+			au.deleteFile(eivo.getExtResume(), "ext", client, dos, dis);
+			au.deleteFile(eivo.getImg(), "ee", client, dos, dis);
+			
+			msgCenter(eivo.getEeNum()+"기본정보가 삭제되었습니다.");
+			au.sendLog(eivo.getEeNum()+" 기본 정보 삭제");
 			emv.dispose();
 			ammc.setEe();
-		} else {
-			msgCenter("기본정보 삭제에 실패했습니다.");
 		}
 	}
 	
+	/**
+	 * 이미지를 변경하는 메소드
+	 * 변경 후 changeImgFlag를 true로 변경, changeImgFile을 생성
+	 */
 	public void changeImg() {
 		// 이름의 경로를 저장, modifyEe가 수행될 때 이미지를 저장
 		FileDialog fd = new FileDialog(emv, "이미지 변경", FileDialog.LOAD);
 		fd.setVisible(true);
-
-		if (fd.getFile().toLowerCase().endsWith(".png") || 
-				fd.getFile().toLowerCase().endsWith(".jpg") || 
-				fd.getFile().toLowerCase().endsWith(".jpeg")) {
-			changeImgFile = new File(fd.getDirectory()+fd.getFile());
-			changeImgFlag = true;
-			
-			emv.getJlImg().setIcon(new ImageIcon(changeImgFile.getAbsolutePath()));
-		} else {
-			msgCenter("확장자가 png, jpg, jpeg인 파일만 등록가능합니다.");
+		
+		if (fd.getDirectory() != null && fd.getName() != null) {
+			if (fd.getFile().toLowerCase().endsWith(".png") || 
+					fd.getFile().toLowerCase().endsWith(".jpg") || 
+					fd.getFile().toLowerCase().endsWith(".jpeg") ||
+					fd.getFile().toLowerCase().endsWith(".gif")) {
+				changeImgFile = new File(fd.getDirectory()+fd.getFile());
+				changeImgFlag = true;
+				
+				emv.getJlImg().setIcon(new ImageIcon(changeImgFile.getAbsolutePath()));
+			} else {
+				msgCenter("확장자가 png, jpg, jpeg, gif인 파일만 등록가능합니다.");
+			}
 		}
 	}
 	
+	/**
+	 * 이력서를 변경하는 메소드
+	 */
 	public void changeExt() {
 		new ModifyExtView(emv, this);
 	}

@@ -40,7 +40,7 @@ public class UserModifyView extends JDialog {
 		jpfPass = new JPasswordField(uivo.getPass());
 		jtfName = new JTextField(uivo.getName());
 		jtfSsn1 = new JTextField(uivo.getSsn().substring(0, 6));
-		jtfSsn2 = new JTextField(uivo.getSsn().substring(7, 13));
+		jtfSsn2 = new JTextField(uivo.getSsn().substring(7, 14));
 		jtfTel = new JTextField(uivo.getTel()); 
 		jtfZip = new JTextField(uivo.getZipcode());
 		jtfZip.setEditable(false);
@@ -164,11 +164,13 @@ public class UserModifyView extends JDialog {
 		jbClose.setBounds(235, 576, 70, 30);
 		add(jbClose);
 		
-		UserModifyController umc = new UserModifyController(this, ammv, uivo.getAddrSeq(), ammc);
+		UserModifyController umc = new UserModifyController(this, ammv, uivo, ammc);
 		jbModify.addActionListener(umc);
 		jbRemove.addActionListener(umc);
 		jbSearchAddr.addActionListener(umc);
 		jbClose.addActionListener(umc);
+		
+		jcbUser.addActionListener(umc);
 		addWindowListener(umc);
 		
 		setBounds(ammv.getX()+500,ammv.getY()+50,390,680);
