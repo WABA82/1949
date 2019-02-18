@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import admin.controller.SearchAddrController;
+import admin.controller.UserModifyController;
 
 public class SearchAddrView extends JDialog {
 	
@@ -20,13 +21,12 @@ public class SearchAddrView extends JDialog {
 	private JTable jtZip;
 	private JButton jbSearch, jbOk, jbCancel;
 
-	public SearchAddrView(UserModifyView umv, String addrSeq) {
+	public SearchAddrView(UserModifyView umv, UserModifyController umc) {
 		super(umv,"주소검색", true);
-//	public SearchAddrView() {
 		
 		jtfDong = new JTextField(20);
 		String[] columnNames = { "우편번호", "시도", "구군", "동", "번지" };
-		dtmZip = new DefaultTableModel(columnNames, 3);
+		dtmZip = new DefaultTableModel(columnNames, 0);
 		jtZip = new JTable(dtmZip);
 		JScrollPane jspZip = new JScrollPane(jtZip);
 		
@@ -47,20 +47,19 @@ public class SearchAddrView extends JDialog {
 		add(BorderLayout.CENTER, jspZip);
 		add(BorderLayout.SOUTH, bottomPanel);
 		
-		SearchAddrController sac = new SearchAddrController(this, umv, addrSeq);
+		SearchAddrController sac = new SearchAddrController(this, umv, umc);
+		jtfDong.addActionListener(sac);
 		jbSearch.addActionListener(sac);
 		jbOk.addActionListener(sac);
 		jbCancel.addActionListener(sac);
 		
 		addWindowListener(sac);
 		
-		setBounds(400, 200, 500, 300);
+		setBounds(umv.getX()+100, umv.getY()+100, 500, 300);
+		setResizable(false);
 		setVisible(true);
 	}
 	
-	/*public static void main(String[] args) {
-		new SearchAddrView();
-	}*/
 	public JTextField getJtfDong() {
 		return jtfDong;
 	}
