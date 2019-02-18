@@ -47,70 +47,83 @@ public class CommonDAO {
         return con;
     }
 
+    /**
+     * 박정미 로그인 기능 
+     * @param id
+     * @param pass
+     * @return
+     * @throws SQLException
+     */
     public String login(String id, String pass) throws SQLException {
-        String userType = "";
+       String userType = "";
 
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            con = getConn();
+       Connection con = null;
+       PreparedStatement pstmt = null;
+       ResultSet rs = null;
+       try {
+          con = getConn();
 
-            String match = "SELECT USER_TYPE FROM USER_TABLE WHERE ID=? AND PASS=?";
-            pstmt = con.prepareStatement(match);
-            pstmt.setString(1, id);
-            pstmt.setString(2, pass);
+          String match = "SELECT USER_TYPE FROM USER_TABLE WHERE ID=? AND PASS=?";
+          pstmt = con.prepareStatement(match);
+          pstmt.setString(1, id);
+          pstmt.setString(2, pass);
 
-            rs = pstmt.executeQuery();
+          rs = pstmt.executeQuery();
 
-            if (rs.next()) {
-                userType = rs.getString("USER_TYPE");
-            } // end if
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            if (pstmt != null) {
-                pstmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-        }
-        return userType;
+          if (rs.next()) {
+             userType = rs.getString("USER_TYPE");
+          } // end if
+       } finally {
+          if (rs != null) {
+             rs.close();
+          }
+          if (pstmt != null) {
+             pstmt.close();
+          }
+          if (con != null) {
+             con.close();
+          }
+       }
+       return userType;
     }// login
 
+    /**
+     * 박정미 주소 검색 완성
+     * @param dong
+     * @return
+     * @throws SQLException
+     */
     public List<AddrVO> selectAddr(String dong) throws SQLException {
-        List<AddrVO> list = new ArrayList<AddrVO>();
+       List<AddrVO> list = new ArrayList<AddrVO>();
 
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            con = getConn();
-            String selectAddr = "select seq,zipcode,sido,gugun,dong,nvl(bunji,' ') bunji from zipcode where dong like '%'||?||'%'  ";
-            pstmt.getConnection().prepareStatement(selectAddr);
-            pstmt.setString(1, dong);
-            rs = pstmt.executeQuery();
-            AddrVO av = null;
-            if (rs.next()) {
-                av = new AddrVO(rs.getString("seq"), rs.getString("zipcode"), rs.getString("sido"),
-                        rs.getString("gugun"), rs.getString("dong"), rs.getString("bunji"));
-                list.add(av);
-            } // end if
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            if (pstmt != null) {
-                pstmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-        } // end finally
-        return list;
-    }
+       Connection con = null;
+       PreparedStatement pstmt = null;
+       ResultSet rs = null;
+       try {
+          con = getConn();
+          String selectAddr = " select seq, zipcode, sido, gugun, dong, nvl(bunji,' ') bunji from zipcode where dong like '%'||?||'%'   ";
+          pstmt= con.prepareStatement(selectAddr);
+          pstmt.setString(1, dong);
+          rs = pstmt.executeQuery();
+          AddrVO av = null;
+          while (rs.next()) {
+             av = new AddrVO(rs.getString("seq"), rs.getString("zipcode"), rs.getString("sido"),
+                   rs.getString("gugun"), rs.getString("dong"), rs.getString("bunji"));
+             list.add(av);
+          } // end if
+       } finally {
+          if (rs != null) {
+             rs.close();
+          }
+          if (pstmt != null) {
+             pstmt.close();
+          }
+          if (con != null) {
+             con.close();
+          }
+       } // end finally
+       return list;
+    }//주소 검색 완성 여기까지 
 
 
     /**
