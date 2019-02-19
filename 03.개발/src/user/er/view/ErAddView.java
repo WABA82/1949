@@ -213,7 +213,6 @@ public class ErAddView extends JDialog {
 		jbCancel.addActionListener(edc);
 		addWindowListener(edc);
 		/* 프레임 크기 설정 및 가시화 */
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 410, 660);
 		setVisible(true);
 

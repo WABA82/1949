@@ -389,7 +389,7 @@ public class CommonDAO {
        Connection con=null;
        PreparedStatement pstmt=null;
        ResultSet rs=null;
-       
+       System.out.println("---------");
        //드라이버 로딩
        try {
           con=getConn();

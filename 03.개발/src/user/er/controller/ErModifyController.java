@@ -39,23 +39,30 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 		String hireType = String.valueOf(emv.getJcbHireType().getSelectedItem());
 		String portfolio = String.valueOf(emv.getJcbPortfolio().getSelectedItem());
 		List<String> listSkill = new ArrayList<String>();
-		
+	
+		if(emv.getJchCSS().isSelected()) {
+			listSkill.add("s_06");
+		}
+		if(emv.getJchHTML().isSelected()) {
+			listSkill.add("s_05");
+		}
 		if(emv.getJchJava().isSelected()) {
-			listSkill.add("Java");
-		}else if(emv.getJchJspServlet().isSelected()) {
-			listSkill.add("JspServlet");
-		}else if(emv.getJchSpring().isSelected()) {
-			listSkill.add("Spring");
-		}else if(emv.getJchOracle().isSelected()) {
-			listSkill.add("Oracle");
-		}else if(emv.getJchHTML().isSelected()) {
-			listSkill.add("HTML");
-		}else if(emv.getJchCSS().isSelected()) {
-			listSkill.add("CSS");
-		}else if(emv.getJchLinux().isSelected()) {
-			listSkill.add("Linux");
-		}else if(emv.getJchJS().isSelected()) {
-			listSkill.add("JS");
+			listSkill.add("s_01");
+		}
+		if(emv.getJchJS().isSelected()) {
+			listSkill.add("s_08");
+		}
+		if(emv.getJchJspServlet().isSelected()) {
+			listSkill.add("s_02");
+		}
+		if(emv.getJchLinux().isSelected()) {
+			listSkill.add("s_07");
+		}
+		if(emv.getJchOracle().isSelected()) {
+			listSkill.add("s_04");
+		}
+		if(emv.getJchSpring().isSelected()) {
+			listSkill.add("s_03");
 		}
 		
 		if(rank.equals("신입")) {
@@ -116,6 +123,7 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 		if(deleteFlag) {
 			JOptionPane.showMessageDialog(emv, "구인 정보가 삭제되었습니다. ");
 			emmc.setDtm();
+			emv.dispose();
 		
 		}else {
 			JOptionPane.showMessageDialog(emv, "리스트삭제에 실패했습니다.");

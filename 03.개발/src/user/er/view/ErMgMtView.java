@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import user.er.controller.ErMgMtController;
 import user.er.vo.ErListVO;
 
+
 @SuppressWarnings("serial")
 public class ErMgMtView extends JDialog {
 

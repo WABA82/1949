@@ -21,10 +21,8 @@ public class ErHiringView extends JDialog {
 	private JTable jtEeInfo;
 	private DefaultTableModel dtmEeInfo;
 	
-	
 	public ErHiringView(ErMainView rmv, List<ErHiringVO> list, String erId) {
 		super(rmv,"구직자 정보 보기",true);
-		erId="lucky012";		
 		String[] erColumns= {"번호","기본정보번호","이미지","이름","직급","근무지역","학력","나이","포트폴리오 유무","성별","등록일"};
 		dtmEeInfo=new DefaultTableModel(erColumns, 40) {
 			public boolean isCellEditable(int row, int column) {
@@ -52,6 +50,7 @@ public class ErHiringView extends JDialog {
 		add(jbDetailSearch);
 		add(jbSelectAll);
 		/////이벤트//////
+		System.out.println(erId);
 		ErHiringController ehc = new ErHiringController(this,erId);
 		jbDetailSearch.addActionListener(ehc);
 		jcbSort.addActionListener(ehc);
