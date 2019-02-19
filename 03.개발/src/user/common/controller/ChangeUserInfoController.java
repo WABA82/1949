@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import user.common.view.ChangeUserInfoView;
+import user.common.view.LoginView;
 import user.common.view.RemoveUserView;
 import user.common.view.SearchAddrView;
 import user.common.vo.UserInfoVO;
@@ -24,6 +25,9 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 	private String addrSeq;
 	private ErMainView emv;
 	private String id;//////////id어디서?
+	private LoginView lv;
+	private SearchAddrController sac;
+	private SearchAddrView sav;
 	
 	public ChangeUserInfoController(ChangeUserInfoView cuiv, UserInfoVO uivo) {
 		this.cuiv=cuiv;
@@ -33,41 +37,46 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 	
 
 	public void modifyUser() {
-		JTextField jtfId= cuiv.getJtfId();
-		JTextField jtfName= cuiv.getJtfName();
-		JTextField jtfPass= cuiv.getJpfOriginalPass();
-		JTextField jtfNewPass1= cuiv.getJpfNewPass1();
-		JTextField jtfNewPass2= cuiv.getJpfNewPass2();
-		JTextField jtfTel= cuiv.getJtfTel();
-		JTextField jtfEmail= cuiv.getJtfEmail();
-		JTextField jtfAddr2= cuiv.getJtfAddr2();
+		String originPass="";
 		
-		String id=jtfId.getText().trim();
-		String name=jtfName.getText().trim();
-		String originPass=jtfPass.getText().trim();//아이디와 비밀번호먼저 검증하기
-		String newPass1=jtfNewPass1.getText().trim();
-		String newPass2=jtfNewPass2.getText().trim();//비밀번호 검증하기		
-		String tel=jtfTel.getText().trim();
-		String email=jtfEmail.getText().trim();
-		String addrDetail=jtfAddr2.getText().trim();
+		String id=cuiv.getJtfId().getText().trim();
+		String name= cuiv.getJtfName().getText().trim();
+		String INPUToriginPass=new String(cuiv.getJpfOriginalPass().getPassword()).trim();		
+		String newPass1=new String(cuiv.getJpfNewPass1().getPassword()).trim();
+		String newPass2=new String(cuiv.getJpfNewPass2().getPassword()).trim();
+		String tel=cuiv.getJtfTel().getText().trim();
+		String email=cuiv.getJtfEmail().getText().trim();
+		String addrDetail=cuiv.getJtfAddr2().getText().trim();
+		
+		
+		
 		
 		System.out.println(addrSeq);
 		
 		
-		UserModifyVO umvo=new UserModifyVO(id, name, newPass1, tel, addrSeq, addrDetail, email);////////여기까지
+		UserModifyVO umvo=new UserModifyVO(id, name, newPass1, tel, addrSeq, addrDetail, email);////////여기까지0218
+		
+
 		
 		try {
+			originPass=CommonDAO.getInstance().selectFindPass(id);//아이디를 받아 DB에서 비밀번호 가져오기
 			if (CommonDAO.getInstance().updateUserInfo(umvo)) {
-				
-				JOptionPane.showMessageDialog(cuiv, "회원정보가 수정되었습니다.");
-				return;
+				if(!INPUToriginPass.equals(originPass)) {//비밀번호 비교
+					JOptionPane.showMessageDialog(cuiv, "비밀번호가 올바르지 않습니다.");
+				}else {
+					if(!newPass1.equals(newPass2)) {
+						JOptionPane.showMessageDialog(cuiv, "비밀번호확인과 비밀번호가 일치하지 않습니다.");
+					}else {
+						JOptionPane.showMessageDialog(cuiv, "회원정보가 수정되었습니다.");
+						return;					
+				}
 			}
+		}
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(cuiv, "DB에서 문제가 발생했습니다.");
 			e.printStackTrace();
-	
-	}
-	}	
+		}
+	}//modifyUser	
 	public void removeUser() {
 		
 	}
