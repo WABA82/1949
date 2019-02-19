@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -73,18 +75,18 @@ public class SignUpController extends WindowAdapter implements ActionListener {
                     suv.getJtfTel().requestFocus(); return;};//연락처 받기
                if(email==null||email.equals("")) {JOptionPane.showMessageDialog(suv, "이메일을 입력해주세요");
                     suv.getJtfEmail().requestFocus(); return;};//이메일 받기
-// 테스트위해 임시로 막아둠               //if(addr==null||addr.equals("")) {JOptionPane.showMessageDialog(suv, "주소를 입력해주세요");
-//추후 풀어주기                    //suv.getJtfAddr1().requestFocus(); return;};//주소 받기
+    /*test    */     if(addr==null||addr.equals("")) {JOptionPane.showMessageDialog(suv, "주소를 입력해주세요");
+    /* test        */     suv.getJtfAddr1().requestFocus(); return;};//주소 받기
                if(detailAddr==null||detailAddr.equals("")) {JOptionPane.showMessageDialog(suv, "상세주소를 입력해주세요");
                     suv.getJtfAddr2().requestFocus(); return;};//상세주소 받기
                if(answer==null||answer.equals("")) {JOptionPane.showMessageDialog(suv, "질문의 답을 입력해주세요");
                     suv.getJtfAnswer().requestFocus(); return;};//질문의 답
                ///////////////////////
                     
-               if( !(pass1.matches(".*[A-Z].*")) || !(pass1.matches(".*[a-z].*")) || !(pass1.matches(".*\\d.*")) || !(pass1.matches(".*[~!.......].*")) ) {
+               /*if( !(pass1.matches(".*[A-Z].*")) || !(pass1.matches(".*[a-z].*")) || !(pass1.matches(".*\\d.*")) || !(pass1.matches(".*[~!.......].*")) ) {
             	   JOptionPane.showMessageDialog(suv, "비밀번호에 대문자, 소문자, 특수문자가 들어가야합니다.");
             	   return;
-               };
+               };*/
             	   
                if(!pass2.equals(pass1)) {JOptionPane.showMessageDialog(suv, "비밀번호가 일치하지 않습니다");
                /*     System.out.println(pass1+"/"+pass2);
@@ -95,6 +97,105 @@ public class SignUpController extends WindowAdapter implements ActionListener {
                     suv.getJpfPass1().requestFocus();
                     return;
                };//비밀번호 일치확인
+               
+               /////비밀번호 특수문자/ 대문자 / 소문자 조합////////////////약간 남아있음
+               char[] lowerCase = { 
+       				'a','b','c','d','e','f','g',
+       				'h','i','j','k','l','m','n','o','p','q','r',
+       				's','t','u','v','w','x','y','z'};
+       		
+       		char[] upperCase = {
+       				'A','B','C','D','E','F','G',
+       				'H','I','J','K','L','M','N','O','P','Q','R',
+       				'S','T','U','V','W','X','Y','Z'};
+       		
+       		char[] spSymbol = {'!','@','#','$','%','^','&','*','(',')','-','_','+','='};
+             
+       		boolean lowerFlag = false;
+       		boolean upperFlag =false;
+       		boolean spcFlag = false;
+       		
+       		if( (pass1.length()>13)) {
+       			JOptionPane.showMessageDialog(suv, "비밀번호는 최대 12자리 까지 가능합니다.");
+       			suv.getJpfPass1().setText("");
+                suv.getJpfPass2().setText("");
+                suv.getJpfPass1().requestFocus();
+                return;
+       		}else{
+       			for(int i=0; i<pass1.length(); i++) {
+    				for(int j=0; j<lowerCase.length; j++) {
+    					if(pass1.charAt(i) == lowerCase[j]) {
+    						lowerFlag = true;
+    					}
+    				}
+    				for(int j=0; j<upperCase.length; j++) {
+    					if(pass1.charAt(i) == upperCase[j]) {
+    						upperFlag = true;
+    					}
+    				}
+    				for(int j=0; j<spSymbol.length; j++) {
+    					if(pass1.charAt(i) == spSymbol[j]) {
+    						spcFlag = true;
+    					}
+    				}
+    			}//end for
+       			
+       			if(lowerFlag && upperFlag && spcFlag) {
+       				System.out.println("올바른 비밀번호!!");
+       			}else {
+       				JOptionPane.showMessageDialog(suv, "비밀번호엔 소문자,대문자,특수문자가 포함되어야합니다.");
+       				suv.getJpfPass1().setText("");
+       				suv.getJpfPass2().setText("");
+       				suv.getJpfPass1().requestFocus();
+       				return;
+       			}
+    			
+       		}//end else
+       		
+               /////////////////////////////////////////////주민번호 검증 완료 
+               String ssn = ssn1+ssn2;
+               int[] flagNum= {2,3,4,5,6,7,8,9,2,3,4,5};
+               int sum = 0;
+               
+              for(int i=0; i<flagNum.length; i++) {
+            	  
+            	  sum += ((int)ssn.charAt(i)-48)*((flagNum[i]));
+            	  //System.out.println("ssn.charat :"+ssn.charAt(i));
+            	 // System.out.println("flag num :"+flagNum[i]);
+            	  //System.out.println("sum :"+sum);
+            	  ///문제 생김 - 왜 sum 이 제대로 안나오지 데이터형 때문에 그런가?
+            	  }//end for
+              sum = (11-(sum%11))%10;
+               if(!(sum == ssn.charAt(12)-48 )) {
+            	   JOptionPane.showMessageDialog(suv, "올바른 주민번호가 아닙니다.");
+            	   return;
+               }//end if       //////////주민번호 검증 완료
+               
+               String chkTel = tel.replaceAll("-", "");
+               
+               try {
+               Integer.parseInt(chkTel);
+               }catch (NumberFormatException npe) {
+            	   JOptionPane.showMessageDialog(suv, "연락처는 숫자만 입력 가능합니다.\n 형식)000-0000-0000");
+            	   return;
+               }
+               
+               if(chkTel.length()!=11) {
+            	   JOptionPane.showMessageDialog(suv, "전화번호 형식이 잘못되었습니다.\n"+" 형식)000-0000-0000");
+            	   return;
+               }
+               //////////////////////////연락처 양식 검증////////////여기까지
+               ///////////아래부터 이메일 검증//////////
+               if(email.length() < 13) {
+            	  JOptionPane.showMessageDialog(suv, "이메일은 최소 12자 이상이어야합니다.");
+            	  	return;
+               }else {
+            	   if(email.indexOf("@")==-1 || email.indexOf(".")==-1) {
+            		   JOptionPane.showMessageDialog(suv, "이메일 형식이 잘못되었습니다.");
+            		   return;
+            	   }//end if
+               }//end else
+               ////////////////////////이메일 검증 끝 ////////////////
                signUp();
           }else if(ae.getSource()==suv.getJbAddr()) {
                new SearchAddrView(suv, this, null); //null은 혜원이 부분 changeuser info 부분에 
@@ -109,7 +210,14 @@ public class SignUpController extends WindowAdapter implements ActionListener {
           UserInsertVO uivo = new UserInsertVO(
         		  
 		  );
-          c_dao.insertUser(uivo);
+          try {
+			c_dao.insertUser(uivo);
+			JOptionPane.showMessageDialog(suv, "회원가입이 완료되었습니다.");
+			suv.dispose();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("DB연동관련 insert 오류");
+		}
           
      }//signUp
 

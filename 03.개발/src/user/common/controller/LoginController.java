@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 import user.common.view.FindIdView;
 import user.common.view.FindPassView;
@@ -84,16 +85,19 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 	         emvo = C_dao.selectEeMain(id);
 	         new EeMainView(emvo);
 	         lv.dispose();
-	      }else{
+	      }else if(userType.equals("R")){
 	         ermvo = C_dao.selectErMain(id);
 	         new ErMainView(ermvo);
 	         lv.dispose();
+	      }else{
+	    	 JOptionPane.showMessageDialog(lv, "아이디와 비밀번호를 확인해주세요");
+	    	 lv.getJtfId().setText("");
+	    	 lv.getJpfPass().setText("");
 	      }
-	      lv.dispose();
 	   }// login
 
 	public void signUp() {
-		//new SignUpView(lv); ////////////////////////////////////////////////////////////////////////////////// 연결수정필요
+		new SignUpView(lv); ////////////////////////////////////////////////////////////////////////////////// 연결수정필요
 	}// signUp
 
 	public void findId() {
