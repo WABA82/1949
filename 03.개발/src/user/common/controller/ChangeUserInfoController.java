@@ -24,7 +24,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 	private UserInfoVO uivo;
 	private String addrSeq;
 	private ErMainView emv;
-	private String id;//////////id¾îµð¼­?
+	private String id;
 	private LoginView lv;
 	private SearchAddrController sac;
 	private SearchAddrView sav;
