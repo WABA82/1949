@@ -61,8 +61,8 @@ public class EeInfoModifyController extends WindowAdapter implements ActionListe
 		
 		switch(JOptionPane.showConfirmDialog(eimv, updateMsg)) {
 		case JOptionPane.OK_OPTION :
-		EeModifyVO emvo= new EeModifyVO(eeNum, file.getName()
-				,rank,loc,education, portfolio, extResume);
+		EeModifyVO emvo= new EeModifyVO(eeNum, file.getName(),
+				rank,loc,education, portfolio, extResume);
 				System.out.println(emvo);
 		try {
 			eedao.updateEeInfo(emvo); //DB테이블에서 update수행
@@ -123,7 +123,6 @@ public class EeInfoModifyController extends WindowAdapter implements ActionListe
 				jtf.setText(extResume);
 			}//end else
 			
-		// jtfsume 이벤트 등록 실패..
 		
 	}//changeExt
 

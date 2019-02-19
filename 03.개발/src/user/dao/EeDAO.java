@@ -706,25 +706,26 @@ public class EeDAO {
 			
 			StringBuilder updateEeInfo=new StringBuilder();
 			updateEeInfo
-			.append("	update ee_info	")
-			.append("	set lmg = ?	")
-			.append("	rank = ?, loc = ?	")
-			.append("	education = ?, portfolio = ?	")
-			.append("	ext_resume = ?	")
-			.append("	where ee_num = ?	");
+			.append("	 	update ee_info 	")
+			.append(" 	set ee_num=?, lmg = ?,	")
+			.append("	 	rank = ?, loc = ?,	")
+			.append("	 	education = ?, portfolio = ?, 		")
+			.append("	 	ext_resume = ? 		")
+			.append("	 	where ee_num = ? 	");
 			
 			
 			pstmt=con.prepareStatement(updateEeInfo.toString());
 			
-			pstmt.setString(1, emvo.getImg());
-			pstmt.setString(2, emvo.getRank());
-			pstmt.setString(3, emvo.getLoc());
-			pstmt.setString(4, emvo.getEducation());
-			pstmt.setString(5, emvo.getPortfolio());
-			pstmt.setString(6, emvo.getExtResume());
+			pstmt.setString(1, emvo.getEeNum());
+			pstmt.setString(2, emvo.getImg());
+			pstmt.setString(3, emvo.getRank());
+			pstmt.setString(4, emvo.getLoc());
+			pstmt.setString(5, emvo.getEducation());
+			pstmt.setString(6, emvo.getPortfolio());
+			pstmt.setString(7, emvo.getExtResume());
 			
 			int cnt=pstmt.executeUpdate();
-			if(cnt==1) {
+			if(cnt == 1) {
 				flag=true;
 			}//end if
 			
@@ -735,8 +736,6 @@ public class EeDAO {
 		
 		return flag;
 	}
-	
-	
 	
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////////////김건하 VO정리 끝///////////////////////////////////////////////////////////////////////////////////////////////

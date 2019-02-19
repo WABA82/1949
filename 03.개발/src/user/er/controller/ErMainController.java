@@ -26,7 +26,8 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 	private CoInsertVO civo;
 	private CoInfoVO cvo;
 	private ErDAO erdao;
-	public ErMainController(ErMainView emv, ErMainVO ermvo) {
+	//activation을 못받아서 String 대신 VO로 받음
+	public ErMainController(ErMainView emv, ErMainVO ermvo ) {
 		this.emv = emv;
 //		this.erId=erId;
 		this.ermvo=ermvo;
@@ -34,8 +35,9 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 	}
 	
 	public void mngUser() throws SQLException {
-		if(ermvo.getActivation().equals("S")) {
+		if(ermvo.getActivation().equals("N")) {
 			new CoInfoRegView(emv, ermvo.getErId());
+			System.out.println(ermvo);
 		}else {
 				cvo=erdao.selectCoInfo(ermvo.getErId());
 				new CoInfoModifyView(emv, cvo);

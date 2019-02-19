@@ -108,14 +108,17 @@ public class EeInfoModifyView extends JDialog {
 		// JText
 		JTextField jtfName = new JTextField(eivo.getName());
 		add(jtfName);
+		jtfName.setEditable(false);
 		jtfName.setBounds(325, 22, 130, 20);
 
 		JTextField jtfAge = new JTextField(String.valueOf(eivo.getAge()));
 		add(jtfAge);
+		jtfAge.setEditable(false);
 		jtfAge.setBounds(325, 182, 130, 20);
 
 		JTextField jtfGender = new JTextField(eivo.getGender());
 		add(jtfGender);
+		jtfGender.setEditable(false);
 		jtfGender.setBounds(325, 262, 130, 20);
 
 		jtfExtResume = new JTextField(eivo.getExtResume());

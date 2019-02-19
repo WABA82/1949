@@ -456,4 +456,13 @@ public class CommonDAO {
           return emv;
        }//selectErMain
 
+    public static void main(String[] args) {
+		CommonDAO c_dao = CommonDAO.getInstance();
+		try {
+			System.out.println(c_dao.selectErMain("song9912"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}// main
+    
     }

@@ -309,33 +309,33 @@ public class ErDAO {
 	 * @param eavo
 	 * @throws SQLException
 	 */
-	public void insertErAdd(ErAddVO eavo) throws SQLException {
-
-		try {
-			con = getConn();
-			String insertErAdd = "insert into er_info(er_id,subject,education,rank,loc,hire_type, portfolio, er_desc) values(?,?,?,?,?,?,?,?)";
-			pstmt = con.prepareStatement(insertErAdd);
-			
-			pstmt.setString(1, eavo.getErId());
-			pstmt.setString(2, eavo.getSubject());
-			pstmt.setString(3, eavo.getEducation());
-			pstmt.setString(4, eavo.getRank());
-			pstmt.setString(5, eavo.getLoc());
-			pstmt.setString(6, eavo.getHireType());
-			pstmt.setString(7, eavo.getPortfolio());
-			pstmt.setString(8, eavo.getErDesc());
-			
-			pstmt.executeUpdate();
-			
-		} finally {
-			if (pstmt != null) {
-				pstmt.close();
-			}
-			if (con != null) {
-				con.close();
-			}
-		}
-	}// insertErAdd
+//	public void insertErAdd(ErAddVO eavo) throws SQLException {
+//
+//		try {
+//			con = getConn();
+//			String insertErAdd = "insert into er_info(er_id,subject,education,rank,loc,hire_type, portfolio, er_desc) values(?,?,?,?,?,?,?,?)";
+//			pstmt = con.prepareStatement(insertErAdd);
+//			
+//			pstmt.setString(1, eavo.getErId());
+//			pstmt.setString(2, eavo.getSubject());
+//			pstmt.setString(3, eavo.getEducation());
+//			pstmt.setString(4, eavo.getRank());
+//			pstmt.setString(5, eavo.getLoc());
+//			pstmt.setString(6, eavo.getHireType());
+//			pstmt.setString(7, eavo.getPortfolio());
+//			pstmt.setString(8, eavo.getErDesc());
+//			
+//			pstmt.executeUpdate();
+//			
+//		} finally {
+//			if (pstmt != null) {
+//				pstmt.close();
+//			}
+//			if (con != null) {
+//				con.close();
+//			}
+//		}
+//	}// insertErAdd
 	public void insertErAdd(ErAddVO eavo) throws SQLException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -957,15 +957,14 @@ con=getConn();
 //co_num, co_name, img1, img2, img3,img4, est_date, co_desc, member_num
 StringBuilder updateInfo=new StringBuilder();
 updateInfo
-.append(" 	update company 	")
-.append(" 	co_num =?, co_name =?, img1=? ,img2= ? ,img3= ?, img4= ? ")
-.append("   est_date=?, co_desc =?, member_num=? 	")
-.append(" 	where er_id= ?  ");
+.append(" update company ")
+.append(" set co_num = ?, co_name = ?, img1 = ?, img2 = ?, img3 = ?, img4 = ?, est_date = to_char(?, 'yyyy-mm-dd'), co_desc = ?, member_num = ? ")
+.append(" where co_num = ? ");
 
 pstmt=con.prepareStatement(updateInfo.toString());
 
 pstmt.setString(1, cvo.getCoNum());
-pstmt.setString(2, cvo.getCoName() );
+pstmt.setString(2, cvo.getCoName());
 pstmt.setString(3, cvo.getImg1());
 pstmt.setString(4, cvo.getImg2());
 pstmt.setString(5, cvo.getImg3());
@@ -973,8 +972,9 @@ pstmt.setString(6, cvo.getImg4());
 pstmt.setString(7, cvo.getEstDate());
 pstmt.setString(8, cvo.getCoDesc());
 pstmt.setInt(9, cvo.getMemberNum());
+pstmt.setString(10, cvo.getCoNum());
 
-int cnt=pstmt.executeUpdate();
+int cnt = pstmt.executeUpdate();
 
 if(cnt !=0) {
 flag=true;
