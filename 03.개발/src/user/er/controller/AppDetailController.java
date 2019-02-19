@@ -189,6 +189,8 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 	/**
 	 * 서버로 부터 지원자가 등록한 외부이력서를 다운받는 메서드.
 	 * 
+	 * @throws UnknownHostException
+	 * 
 	 * @throws IOException
 	 */
 	public void extResumeDown() throws UnknownHostException, IOException {
@@ -198,77 +200,57 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 		} // end if
 
 		if (daevo.getExt_resume() != null) {
-			String fileName = daevo.getExt_resume();
-			Socket client = null;
+
+			Socket socket = null;
 			DataOutputStream dos = null;
 			DataInputStream dis = null;
+			FileOutputStream fos = null;
+
 			try {
+				socket = new Socket("211.63.89.144", 7002);
+				dos = new DataOutputStream(socket.getOutputStream());
 
-				client = new Socket("211.63.89.144", 7002);
-
-				dis = new DataInputStream(client.getInputStream()); // 서버로 부터 요청받기.
-				dos = new DataOutputStream(client.getOutputStream()); // 서버로 요청 보내기.
-				
-				// 서버로 파일 전송 요청.
-				dos.writeUTF("ee_ext_request"); 
+				// 서버에게 이력서파일 전송 요청 보내기.
+				dos.writeUTF("ee_ext_request");
 				dos.flush();
 
-				// 서버로 파일명 전송.
-				dos.writeUTF(fileName);
+				// 서버에게 요청할 파일명 보내기.
+				dos.writeUTF(daevo.getExt_resume());
 				dos.flush();
+
+				dis = new DataInputStream(socket.getInputStream());
+				// System.out.println("클라이언트 "+ fileCnt+"개 받음");
+
+				int fileCnt = 0; // 서버에서 보내오는 파일 조각의 갯수.
+				int data = 0; // 서버에서 보내오는 데이터
+
+				// 전달받을 파일 조각의 갯수
+				fileCnt = dis.readInt();
+
+				fos = new FileOutputStream("C:/dev/" + daevo.getExt_resume());
+
+				byte[] readData = new byte[512];
+				while (fileCnt > 0) {
+					data = dis.read(readData); // 서버에서 전송한 파일조각을 읽어들여
+					fos.write(readData, 0, data);// 생성한 파일로 기록
+					fos.flush();
+					fileCnt--;
+				} // end while
 				
-				
+				dos.writeUTF("종료되었습니다.");
 				
 			} finally {
-				if(client != null) {
-					client.close();
+				if(fos != null) {
+					fos.close();
 				}// end if
+				if (dos != null) {
+					dos.close();
+				} // end if
+				if (socket != null) {
+					socket.close();
+				} // end if
 			} // end finally
-
 		} // end if
-
-		///////////////////// 파일 저장 다이얼 로그 띄우기. /////////////////////
-
-//		FileDialog fd = new FileDialog(adv, "이력서 저장", FileDialog.SAVE);
-//		fd.setVisible(true);
-//
-//		if (fd.getFile() != null && fd.getDirectory() != null) {
-//			String ext_resumePath = fd.getDirectory() + fd.getFile() + ".doc";
-//
-//			// 서버로 부터 파일 읽어가져오기.
-////			DefaultListModel<String> dlm = amv.getDlmLog();
-////			StringBuilder logData = new StringBuilder();
-////			for (int i = 0; i < dlm.size(); i++) {
-////				logData.append(dlm.get(i)).append("\n");
-////			}
-//
-//			FileOutputStream fos = null;
-//			OutputStreamWriter osw = null;
-//			BufferedWriter bw = null;
-//			try {
-//				fos = new FileOutputStream(ext_resumePath);
-//				osw = new OutputStreamWriter(fos);
-//				bw = new BufferedWriter(osw);
-//
-//				// 이력서 파일 스트림에 저장.
-//				bw.write("");
-//				// 이력서 파일 내보내기.
-//				bw.flush();
-//
-//				JOptionPane.showMessageDialog(adv, "이력서 파일이 저장되었습니다.");
-//			} finally { // 연결 끊기.
-//				if (bw != null) {
-//					bw.close();
-//				} // end if
-//				if (osw != null) {
-//					osw.close();
-//				} // end if
-//				if (fos != null) {
-//					fos.close();
-//				} // end if
-//			} // end finally
-//
-//		} // end if
 
 	}// changeStatusAccept()
 
