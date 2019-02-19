@@ -43,6 +43,7 @@ public class EeDetailCoView extends JDialog {
 		img4 = new JLabel(new ImageIcon(imgPath + cdvo.getImg4()));
 
 		JTextArea jtaCoDesc = new JTextArea(cdvo.getCo_desc()); // 상세정보.
+		jtaCoDesc.setEditable(false);
 		JScrollPane jspTaDesc = new JScrollPane(jtaCoDesc);
 
 		jbClose = new JButton("닫기");
@@ -125,9 +126,8 @@ public class EeDetailCoView extends JDialog {
 	public static void main(String[] args) {
 		EeDAO ee_dao = EeDAO.getInstance();
 		CoDetailVO cdvo;
-
 		try {
-			cdvo = ee_dao.selectCompany("er_000028");
+			cdvo = ee_dao.selectCompany("er_000033");
 			new EeDetailCoView(null, cdvo);
 		} catch (SQLException e) {
 			e.printStackTrace();

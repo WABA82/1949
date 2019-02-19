@@ -66,10 +66,22 @@ public class AppListController extends WindowAdapter implements MouseListener {
 				rowData[5] = dalvo.getLoc();
 				rowData[6] = dalvo.getEducation();
 				rowData[7] = dalvo.getAge();
-				rowData[8] = dalvo.getPortfolio();
-				rowData[9] = dalvo.getGender();
+				rowData[8] = (dalvo.getPortfolio().equals(""));
+				rowData[9] = (dalvo.getGender() == "M" ? "남자" : "여자");
 				rowData[10] = dalvo.getApp_date();
-				rowData[11] = dalvo.getApp_status();
+				switch (dalvo.getApp_status()) {
+				case "U":
+					rowData[11] = "응답대기";
+					break;
+				case "R":
+					rowData[11] = "열람";
+					break;
+				case "A":
+					rowData[11] = "지원수락";
+					break;
+				case "D":
+					rowData[11] = "지원거절";
+				}// end switch
 
 				// DTM에 추가
 				dtm.addRow(rowData);

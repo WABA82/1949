@@ -355,8 +355,7 @@ public class EeDAO {
 ////			e.printStackTrace();
 ////		}
 ////	}
-	
-	
+
 	//////////// 재현코드 ////////////
 
 	/**
@@ -378,10 +377,8 @@ public class EeDAO {
 			con = getConn(); // 커넥션 얻기.
 
 			StringBuilder slcInterestErInfo = new StringBuilder(); // 관심구인정보조회 하기
-			slcInterestErInfo
-					.append(" select ei.ER_NUM, ei.SUBJECT, c.CO_NAME, ei.RANK, ei.LOC, ei.EDUCATION, ei.SAL,");
 			slcInterestErInfo.append(
-					" ei.HIRE_TYPE, ei.PORTFOLIO, ei.ER_DESC,  to_char(ei.INPUT_DATE, 'yyyy-dd-mm') INPUT_DATE");
+					" select ei.ER_NUM, ei.SUBJECT, c.CO_NAME, ei.RANK, ei.LOC, ei.EDUCATION, ei.SAL, ei.HIRE_TYPE, ei.PORTFOLIO, ei.ER_DESC,  to_char(ei.INPUT_DATE, 'yyyy-dd-mm') INPUT_DATE");
 			slcInterestErInfo.append(" from interest_er ie, er_info ei, company c");
 			slcInterestErInfo.append(" where (ie.er_num = ei.er_num) and (c.co_num=ei.co_num) and ie.ee_id = ?");
 			pstmt = con.prepareStatement(slcInterestErInfo.toString());
@@ -529,11 +526,12 @@ public class EeDAO {
 	}// main
 
 	////////////////////////// 재현 끝 //////////////////////////
-	
-	
-	////////////////////////////////////////////////////////////////////////////////////////////////////////김건하 VO정리 시작///////////////////////////////////////////////////////////////////////////////////////////////
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////// 김건하
+	//////////////////////////////////////////////////////////////////////////////////////////////////////// VO정리
+	//////////////////////////////////////////////////////////////////////////////////////////////////////// 시작///////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	/**
 	 * 19.02.10김건하 회원정보 입력
 	 * 
@@ -550,8 +548,8 @@ public class EeDAO {
 			con = getConn();
 
 			StringBuilder insertInfo = new StringBuilder();
-			insertInfo
-					.append("		insert into ee_info(ee_num, ee_id, img, rank, loc, education, portfolio, ext_resume)	")
+			insertInfo.append(
+					"		insert into ee_info(ee_num, ee_id, img, rank, loc, education, portfolio, ext_resume)	")
 					.append("		values( ee_code, ?, ?, ?, ?, ?, ?, ? )	");
 			pstmt = con.prepareStatement(insertInfo.toString());
 
@@ -563,8 +561,8 @@ public class EeDAO {
 			pstmt.setString(6, eivo.getPortfolio());
 			pstmt.setString(7, eivo.getExtResume());
 
-			int cnt=pstmt.executeUpdate();
-			if ( cnt != 1) {
+			int cnt = pstmt.executeUpdate();
+			if (cnt != 1) {
 				// pstmt에서 쿼리문이 정상적으로 실행이 되명 1(insert)을 반환. - false
 				// 아니라면 1이 반환이 안된다. true
 				flag = true;
@@ -595,7 +593,7 @@ public class EeDAO {
 //			e.printStackTrace();
 //		}
 //	}// main
-	
+
 	/**
 	 * 19.02.11 김건하 EeRegVO
 	 * 
@@ -644,21 +642,19 @@ public class EeDAO {
 		return ervo;
 
 	}//
-	
-	
+
 	/**
 	 * activation을 n에서 y로 변경하는 메서드.
 	 * 
 	 * @param eeid
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
-	
+
 	public void updateActivation(String eeid) throws SQLException {
 //		EeMainVO emvo=null;
 //			emvo=CommonDAO.getInstance().selectEeMain(eeid);
 //			emvo.getActivation(); 
 	}// updateActivation()
-
 
 //	public static void main(String[] args) {
 //		try {
@@ -667,7 +663,7 @@ public class EeDAO {
 //			e.printStackTrace();
 //		}
 //	}
-	
+
 	/**
 	 * 19.02.16 모든 정보가져오는 VO
 	 * 
@@ -684,11 +680,9 @@ public class EeDAO {
 		try {
 			con = getConn();
 			StringBuilder selectInfo = new StringBuilder();
-			selectInfo
-				.append(" 	select ei.ee_num, ei.img, ut.name, ei.rank, ei.loc, ei.education, ")
-				.append("	ei.portfolio, ut.gender, ei.ext_resume, ut.age	")
-				.append("	from ee_info ei, user_table ut		")
-				.append("	where (ee_id= id) and ei.ee_id= ? ");
+			selectInfo.append(" 	select ei.ee_num, ei.img, ut.name, ei.rank, ei.loc, ei.education, ")
+					.append("	ei.portfolio, ut.gender, ei.ext_resume, ut.age	")
+					.append("	from ee_info ei, user_table ut		").append("	where (ee_id= id) and ei.ee_id= ? ");
 
 //			private String eeNum, img, name, rank, loc, education, portfolio, gender, extResume;
 //			private int age;
@@ -702,8 +696,8 @@ public class EeDAO {
 						rs.getString("RANK"), rs.getString("LOC"), rs.getString("EDUCATION"), rs.getString("PORTFOLIO"),
 						rs.getString("GENDER"), rs.getString("EXT_RESUME"), rs.getInt("AGE"));
 
-			}//end if
-			
+			} // end if
+
 		} finally {
 			if (rs != null) {
 				rs.close();
@@ -720,7 +714,7 @@ public class EeDAO {
 
 	}// selectEeInfo
 
-	//단위 테스트 성공
+	// 단위 테스트 성공
 //	public static void main(String[] args) {
 //		try {
 //			System.out.println(EeDAO.getInstance().selectEeInfo("kun90"));
@@ -728,54 +722,51 @@ public class EeDAO {
 //			e.printStackTrace();
 //		}
 //	}//main
-	
+
 //	String eeNum, img, rank, loc, education, portfolio, extResume;
-	public boolean updateEeInfo(EeModifyVO emvo)  throws SQLException{
-		boolean flag=false;
-		
-		Connection con=null;
-		PreparedStatement pstmt=null;
-		
+	public boolean updateEeInfo(EeModifyVO emvo) throws SQLException {
+		boolean flag = false;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
 		try {
-			con=getConn();
-			
-			StringBuilder updateEeInfo=new StringBuilder();
-			updateEeInfo
-			.append("	update ee_info	")
-			.append("	set lmg = ?	")
-			.append("	rank = ?, loc = ?	")
-			.append("	education = ?, portfolio = ?	")
-			.append("	ext_resume = ?	")
-			.append("	where ee_num = ?	");
-			
-			
-			pstmt=con.prepareStatement(updateEeInfo.toString());
-			
+			con = getConn();
+
+			StringBuilder updateEeInfo = new StringBuilder();
+			updateEeInfo.append("	update ee_info	").append("	set lmg = ?	").append("	rank = ?, loc = ?	")
+					.append("	education = ?, portfolio = ?	").append("	ext_resume = ?	")
+					.append("	where ee_num = ?	");
+
+			pstmt = con.prepareStatement(updateEeInfo.toString());
+
 			pstmt.setString(1, emvo.getImg());
 			pstmt.setString(2, emvo.getRank());
 			pstmt.setString(3, emvo.getLoc());
 			pstmt.setString(4, emvo.getEducation());
 			pstmt.setString(5, emvo.getPortfolio());
 			pstmt.setString(6, emvo.getExtResume());
-			
-			int cnt=pstmt.executeUpdate();
-			if(cnt==1) {
-				flag=true;
-			}//end if
-			
-		}finally {
-			if( pstmt != null) { pstmt.close(); }
-			if( con != null) { con.close(); }
+
+			int cnt = pstmt.executeUpdate();
+			if (cnt == 1) {
+				flag = true;
+			} // end if
+
+		} finally {
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (con != null) {
+				con.close();
+			}
 		}
-		
+
 		return flag;
 	}
-	
-	
-	
-	
-	////////////////////////////////////////////////////////////////////////////////////////////////////////김건하 VO정리 끝///////////////////////////////////////////////////////////////////////////////////////////////
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////// 김건하
+	//////////////////////////////////////////////////////////////////////////////////////////////////////// VO정리
+	//////////////////////////////////////////////////////////////////////////////////////////////////////// 끝///////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
 
 }// class

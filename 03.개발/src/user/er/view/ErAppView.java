@@ -57,7 +57,7 @@ public class ErAppView extends JDialog {
 	}
 
 	public static void main(String[] args) {
-		new ErAppView(null, "lucky012");
+		new ErAppView(null, "meteo77");
 	}// main
 
 }// class

@@ -3,6 +3,7 @@ package user.er.controller;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -31,6 +32,11 @@ public class ErInterestController extends WindowAdapter implements MouseListener
 		setDTM(er_id);
 	}// 생성자
 
+	@Override
+	public void windowClosing(WindowEvent e) {
+		eriv.dispose(); //종료처리
+	}// windowClosing(WindowEvent e)
+	
 	/**
 	 * 로그인 되어있는 기업사용자의 id를 사용해 DB에서 관심구직자 목록을 가져와 화면에 목록으로 출력하는 일.
 	 * 
@@ -60,12 +66,12 @@ public class ErInterestController extends WindowAdapter implements MouseListener
 				rowData[1] = erhForInterest.getEe_num();
 				rowData[2] = new ImageIcon(imgPath + erhForInterest.getImg());
 				rowData[3] = erhForInterest.getName();
-				rowData[4] = erhForInterest.getRank();
+				rowData[4] = (erhForInterest.getRank() == "N" ? "경력" : "신입");
 				rowData[5] = erhForInterest.getLoc();
 				rowData[6] = erhForInterest.getEducation();
 				rowData[7] = new Integer(erhForInterest.getAge());
-				rowData[8] = erhForInterest.getPortfolio();
-				rowData[9] = erhForInterest.getGender();
+				rowData[8] = (erhForInterest.getPortfolio() == "Y" ? "있음" : "없음");
+				rowData[9] = (erhForInterest.getGender() == "M" ? "남자" : "여자");
 				rowData[10] = erhForInterest.getInput_date();
 
 				// DTM에 추가
