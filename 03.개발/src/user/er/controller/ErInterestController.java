@@ -34,9 +34,9 @@ public class ErInterestController extends WindowAdapter implements MouseListener
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		eriv.dispose(); //종료처리
+		eriv.dispose(); // 종료처리
 	}// windowClosing(WindowEvent e)
-	
+
 	/**
 	 * 로그인 되어있는 기업사용자의 id를 사용해 DB에서 관심구직자 목록을 가져와 화면에 목록으로 출력하는 일.
 	 * 
@@ -66,12 +66,12 @@ public class ErInterestController extends WindowAdapter implements MouseListener
 				rowData[1] = erhForInterest.getEe_num();
 				rowData[2] = new ImageIcon(imgPath + erhForInterest.getImg());
 				rowData[3] = erhForInterest.getName();
-				rowData[4] = (erhForInterest.getRank() == "N" ? "경력" : "신입");
+				rowData[4] = (erhForInterest.getRank().equals("N") ? "경력" : "신입");
 				rowData[5] = erhForInterest.getLoc();
 				rowData[6] = erhForInterest.getEducation();
 				rowData[7] = new Integer(erhForInterest.getAge());
-				rowData[8] = (erhForInterest.getPortfolio() == "Y" ? "있음" : "없음");
-				rowData[9] = (erhForInterest.getGender() == "M" ? "남자" : "여자");
+				rowData[8] = (erhForInterest.getPortfolio().equals("Y") ? "있음" : "없음");
+				rowData[9] = (erhForInterest.getGender().equals("M") ? "남자" : "여자");
 				rowData[10] = erhForInterest.getInput_date();
 
 				// DTM에 추가
@@ -109,7 +109,13 @@ public class ErInterestController extends WindowAdapter implements MouseListener
 		try {
 			devo = er_dao.selectDeatilEe(eeNum, er_id);
 			String ee_num = ((String) jt.getValueAt(jt.getSelectedRow(), 1));
-			new ErDetailEeView(eriv, devo, ee_num, er_id, "1");
+			ErDetailEeView erdev = new ErDetailEeView(eriv, devo, ee_num, er_id, "1");
+
+			// ErDetailEeView 객체가 동작을 멈추면 true발생
+			if (erdev.isActive()) {
+				setDTM(er_id);
+			} // end if
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} // end catch

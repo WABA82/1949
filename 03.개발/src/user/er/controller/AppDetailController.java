@@ -1,16 +1,13 @@
 package user.er.controller;
 
-import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
@@ -70,13 +67,14 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 				adv.getJtfName().setText(daevo.getName());
 				adv.getJtfTel().setText(daevo.getTel());
 				adv.getJtfEmail().setText(daevo.getEmail());
-				adv.getJtfRank().setText(daevo.getRank());
+				adv.getJtfRank().setText((daevo.getRank().equals("N") ? "신입" : "경력"));
 				adv.getJtfLoc().setText(daevo.getLoc());
 				adv.getJtfEdu().setText(daevo.getEducation());
 				adv.getJtfAge().setText(String.valueOf(daevo.getAge()));
-				adv.getJtfPort().setText(daevo.getPortfolio());
-				adv.getJtfGender().setText(daevo.getGender());
+				adv.getJtfPort().setText((daevo.getPortfolio().equals("Y") ? "있음" : "없음"));
+				adv.getJtfGender().setText((daevo.getGender().equals("M") ? "남자" : "여자"));
 
+				// 받아온 지원자 상세 정보에서 App_status를 바꿔준다.
 				switch (daevo.getApp_status()) {
 				case "U": // 지원상태를 R로 바꿔준다.
 					er_dao.updateAppSatus(new ErAppStatusVO(app_num, "R"));
@@ -236,13 +234,13 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 					fos.flush();
 					fileCnt--;
 				} // end while
-				
+
 				dos.writeUTF("종료되었습니다.");
-				
+
 			} finally {
-				if(fos != null) {
+				if (fos != null) {
 					fos.close();
-				}// end if
+				} // end if
 				if (dos != null) {
 					dos.close();
 				} // end if

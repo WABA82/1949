@@ -55,7 +55,7 @@ public class EeAppController extends WindowAdapter implements MouseListener {
 				rowData[2] = eavo.getApp_num();
 				rowData[3] = eavo.getSubject();
 				rowData[4] = eavo.getCo_name();
-				rowData[5] = (eavo.getRank() == "N" ? "신입" : "경력"); // 'N'신입, 'R'경력.
+				rowData[5] = (eavo.getRank().equals("N") ? "신입" : "경력"); // 'N'신입, 'R'경력.
 				rowData[6] = eavo.getLoc();
 				rowData[7] = eavo.getEducation();
 				switch (eavo.getHire_type()) {
@@ -67,7 +67,6 @@ public class EeAppController extends WindowAdapter implements MouseListener {
 					break;
 				case "F":
 					rowData[8] = "프리랜서";
-					break;
 				}// end switch
 				rowData[9] = new Integer(eavo.getSal());
 				rowData[10] = eavo.getApp_date();
@@ -128,7 +127,13 @@ public class EeAppController extends WindowAdapter implements MouseListener {
 		DetailErInfoVO deivo = null;
 		try {
 			deivo = ee_dao.selectDetail(erNum, ee_id);
-			new EeDetailErView(eav, deivo, erNum, ee_id, eavo.getApp_status());
+			EeDetailErView edev = new EeDetailErView(eav, deivo, erNum, ee_id, eavo.getApp_status());
+
+			// edev.isActive() - EeDetailErView의 창이 닫혀지면 true발생.
+			if (edev.isActive()) {
+				setDTM(ee_id);
+			} // end if
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} // end catch

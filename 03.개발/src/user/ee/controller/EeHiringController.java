@@ -44,6 +44,7 @@ public class EeHiringController extends WindowAdapter implements ActionListener,
 		setDtm();
 		
 	}
+	
 	public void setDtm() {
 		DefaultTableModel dtmHiring = ehv.getDtmErInfo();
 		dtmHiring.setRowCount(0);

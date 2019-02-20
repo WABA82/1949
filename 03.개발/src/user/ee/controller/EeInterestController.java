@@ -79,10 +79,19 @@ public class EeInterestController extends WindowAdapter implements ActionListene
 				rowData[1] = eivo.getErNum();
 				rowData[2] = eivo.getSubject();
 				rowData[3] = eivo.getCoName();
-				rowData[4] = eivo.getRank();
+				rowData[4] = (eivo.getRank().equals("N") ? "신입" : "경력");
 				rowData[5] = eivo.getLoc();
 				rowData[6] = eivo.getEducation();
-				rowData[7] = eivo.getHireType();
+				switch (eivo.getHireType()) {
+				case "C":
+					rowData[7] = "정규직";
+					break;
+				case "N":
+					rowData[7] = "비정규직";
+					break;
+				case "F":
+					rowData[7] = "프리랜서";
+				}// end switch
 				rowData[8] = new Integer(eivo.getSal());
 				rowData[9] = eivo.getInputDate();
 
@@ -113,7 +122,14 @@ public class EeInterestController extends WindowAdapter implements ActionListene
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} // end catch
-		new EeDetailErView(eiv, deivo, erNum, ee_id, null);
+
+		EeDetailErView edev = new EeDetailErView(eiv, deivo, erNum, ee_id, null);
+
+		// edev.isActive() - EeDetailErView의 창이 닫혀 지면 true발생
+		if (edev.isActive()) {
+			setDTM(ee_id);
+		} // end if
+
 	}// showDetailErinfo
 
 	////////// 안쓰는 메소드//////////
