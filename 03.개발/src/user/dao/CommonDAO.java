@@ -56,7 +56,7 @@ public class CommonDAO {
      */
     public String login(String id, String pass) throws SQLException {
        String userType = "";
-
+       
        Connection con = null;
        PreparedStatement pstmt = null;
        ResultSet rs = null;
@@ -167,47 +167,6 @@ public class CommonDAO {
         return searchId;
 
     }
-    
-    /**
-     * 최혜원 비밀번호 찾기
-     * @param fivo
-     * @return
-     * @throws SQLException
-     */
-    public String selectFindPass(String id)throws SQLException {
-        String searchpass="";
-        
-        Connection con=null;
-        PreparedStatement pstmt=null;
-        ResultSet rs=null;
-        
-        try {
-            con = getConn();
-            String selectId ="select pass from user_table where id=?";
-
-            pstmt = con.prepareStatement(selectId);
-
-            pstmt.setString(1, id);
-
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-            	searchpass = rs.getString("pass");
-            }
-
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            if (pstmt != null) {
-                pstmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-        }
-        return searchpass;
-    }
-   
     
     /**
      * 최혜원 비밀번호 변경전 회원정보받아 검증

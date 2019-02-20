@@ -71,7 +71,7 @@ public class ErMainView extends JFrame {
 		add(jbApp);
 		add(jbInterestEe);
 		
-		ErMainController emc = new ErMainController(this ,ermvo.getErId());
+		ErMainController emc = new ErMainController(this ,ermvo);
 		jbCoMgmt.addActionListener(emc);
 		jbEeInfo.addActionListener(emc);
 		jbErMgmt.addActionListener(emc);

@@ -54,7 +54,7 @@ public class RemoveUserView extends JDialog {
 		add(jbDelete);
 		add(jbClose);
 		
-		RemoveUserController ruc = new RemoveUserController(this, id);//id로바꾸기
+		RemoveUserController ruc = new RemoveUserController(this, id);
 		jbDelete.addActionListener(ruc);
 		jbClose.addActionListener(ruc);
 		

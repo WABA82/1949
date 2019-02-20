@@ -32,9 +32,9 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 	private CommonDAO C_dao;
 	
 	
-	public ErMainController(ErMainView emv, String erId) {
+	public ErMainController(ErMainView emv, ErMainVO ermvo/*String erId*/) {
 		this.emv = emv;
-		this.erId=erId;
+		this.ermvo=ermvo;
 		erdao=ErDAO.getInstance();
 		C_dao=CommonDAO.getInstance();
 	}
@@ -70,7 +70,7 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 		//혜원 기업회원관리
 			try {
 				if(me.getSource() == emv.getJlUserInfo()) {
-				UserInfoVO uivo=C_dao.selectUserInfo(erId);
+				UserInfoVO uivo=C_dao.selectUserInfo(ermvo.getErId());
 				new ChangeUserInfoView(emv, uivo);
 				}
 			} catch (SQLException e) {
