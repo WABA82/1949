@@ -107,7 +107,7 @@ public class ErInterestController extends WindowAdapter implements MouseListener
 		String eeNum = String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
 		DetailEeInfoVO devo = null;
 		try {
-			devo = er_dao.selectDeatilEe(eeNum, er_id);
+			devo = er_dao.selectDetailEe(eeNum, er_id);
 			String ee_num = ((String) jt.getValueAt(jt.getSelectedRow(), 1));
 			ErDetailEeView erdev = new ErDetailEeView(eriv, devo, ee_num, er_id, "1");
 
