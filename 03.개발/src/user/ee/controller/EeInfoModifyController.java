@@ -48,7 +48,7 @@ public class EeInfoModifyController extends WindowAdapter implements ActionListe
 		StringBuilder updateMsg= new StringBuilder();
 		
 		updateMsg
-			.append("수정정보 \n")
+			.append("개인정보 변경 사항 \n")
 			.append("이름 : "+eivo.getName()+"\n")
 			.append("직급 : "+tempRank+"\n")
 			.append("근무지역 : "+loc+"\n")
@@ -81,22 +81,26 @@ public class EeInfoModifyController extends WindowAdapter implements ActionListe
 	 * 이미지를 바꾸는 method
 	 */
 	private void ChangeImg() {
+		boolean flag= false;
+		
 		FileDialog fd = new FileDialog(eimv, "파일열기", FileDialog.LOAD);
 		fd.setVisible(true);
 		
 		String path = fd.getDirectory();
 		String name = fd.getFile();
 		
-
 		if(path != null) {
-			if (!name.endsWith(".jpg") && !name.endsWith(".jpeg") && !name.endsWith(".png") && !name.endsWith(".bmp")
-					&& !name.endsWith(".gif")) {
-				JOptionPane.showMessageDialog(eimv, name + "은 사용할수 없습니다.");
-			} else {
+			if(name.endsWith(".jpg") || name.endsWith(".jpeg") || name.endsWith(".png") || 
+					name.endsWith(".bmp") || name.endsWith(".gif")) {
+				flag=true;
+			}//end if
+		 	if(flag) {
 				uploadImg = path + name;
 				eimv.getJlImag().setIcon(new ImageIcon(uploadImg));
-			}
-		}
+			} else {
+				JOptionPane.showMessageDialog(eimv, name + "은 사용할수 없습니다.");
+			}//else if
+		}//end if
 	}// changeImg
 
 	private void changeExt() {
@@ -110,20 +114,25 @@ public class EeInfoModifyController extends WindowAdapter implements ActionListe
 	}//changeExt
 	
 	private void changeExt(File file) {
+		boolean flag=false;
 		String extResume="";
 		extResume=file.getName();
-		
-		if( !extResume.endsWith(".txt") && !extResume.endsWith(".pdf")) {
-				JOptionPane.showMessageDialog(eimv, "외부이력서는 doc, pdf만 가능합니다.");
-				return;
-			}else {
+	
+		if(file.exists()) {
+			if( extResume.endsWith(".txt") || extResume.endsWith(".pdf")) {
+				flag=true;
+			}//end if
+			
+			if(flag) {
 				eimv.getJtfExtResume().setText(extResume);
 				eimv.getJtfExtResume().setEditable(false);
 				JTextField jtf=eimv.getJtfExtResume();
 				jtf.setText(extResume);
+			}else {
+				JOptionPane.showMessageDialog(eimv, "외부이력서는 doc, pdf만 가능합니다.");
+				return;
 			}//end else
-			
-		
+		}//end if
 	}//changeExt
 
 	@Override
@@ -134,9 +143,9 @@ public class EeInfoModifyController extends WindowAdapter implements ActionListe
 //			switch (temp) {
 //			case JOptionPane.OK_OPTION:
 				modifyEe();
-			}// end switch
+//			}// end switch
 
-//		} // end if
+		} // end if
 
 		if (ae.getSource() == eimv.getJbModifyImg()) {
 			ChangeImg();

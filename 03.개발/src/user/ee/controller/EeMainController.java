@@ -50,7 +50,7 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 
 	public void checkActivation() throws SQLException {
 		//쓰레드 돌림
-		if (emvo.getActivation().equals("S")) {
+		if (emvo.getActivation().equals("2")) {
 			JOptionPane.showMessageDialog(emv, "등록된 기본정보가 없습니다.");
 			mngUser();
 		} else if(emvo.getActivation().equals("N")){

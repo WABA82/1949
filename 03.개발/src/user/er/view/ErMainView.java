@@ -1,5 +1,7 @@
 package user.er.view;
 
+import java.sql.SQLException;
+
 import javax.sql.rowset.serial.SerialRef;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -9,6 +11,7 @@ import javax.swing.border.TitledBorder;
 
 import user.common.view.LoginView;
 import user.common.vo.ErMainVO;
+import user.dao.CommonDAO;
 import user.ee.controller.EeMainController;
 import user.er.controller.ErMainController;
 
@@ -116,8 +119,15 @@ public class ErMainView extends JFrame {
 		return jlActivation;
 	}
 	
+	/*********단위 테스트용 ******************/
 //	public static void main(String[] args) {
-//		new ErMainView(null);
-//	}
+//		ErMainVO ermvo;
+//		try {
+//			ermvo = CommonDAO.getInstance().selectErMain("sheep1212");
+//			new ErMainView(ermvo);
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}// main
 	
 }

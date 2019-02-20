@@ -1,5 +1,7 @@
 package user.ee.view;
 
+import java.sql.SQLException;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -8,7 +10,10 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import user.common.vo.EeMainVO;
+import user.common.vo.ErMainVO;
+import user.dao.CommonDAO;
 import user.ee.controller.EeMainController;
+import user.er.view.ErMainView;
 
 public class EeMainView extends JFrame {
 
@@ -117,10 +122,18 @@ public class EeMainView extends JFrame {
 		return jlImg;
 	}
 	
-	//단위 테스트 나중에 지우기.
+	
+	
+	/*****단위 테스트용 ******************/
 	public static void main(String[] args) {
-		EeMainVO emvo  = new EeMainVO("gong1", "공의선", "ee5.jpg", "N");
-		new EeMainView(emvo);
+		EeMainVO emvo;
+		try {
+			emvo = CommonDAO.getInstance().selectEeMain("jaehyun18");
+			new EeMainView(emvo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}// main
+	
 	
 }// class

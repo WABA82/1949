@@ -304,18 +304,16 @@ public class ErDAO {
 		return edfvo;
 	}// selectErDefault
 	
-	/**
-	 * 구인글 추가 트랜잭션 메인메소드
-	 * @param eavo
-	 * @throws SQLException
-	 */
-//	public void insertErAdd(ErAddVO eavo) throws SQLException {
-//
+
+
+//		public void insertErAdd(ErAddVO eavo) throws SQLException {
+//		Connection con = null;
+//		PreparedStatement pstmt = null;
 //		try {
 //			con = getConn();
 //			String insertErAdd = "insert into er_info(er_id,subject,education,rank,loc,hire_type, portfolio, er_desc) values(?,?,?,?,?,?,?,?)";
 //			pstmt = con.prepareStatement(insertErAdd);
-//			
+//
 //			pstmt.setString(1, eavo.getErId());
 //			pstmt.setString(2, eavo.getSubject());
 //			pstmt.setString(3, eavo.getEducation());
@@ -324,9 +322,9 @@ public class ErDAO {
 //			pstmt.setString(6, eavo.getHireType());
 //			pstmt.setString(7, eavo.getPortfolio());
 //			pstmt.setString(8, eavo.getErDesc());
-//			
+//
 //			pstmt.executeUpdate();
-//			
+//
 //		} finally {
 //			if (pstmt != null) {
 //				pstmt.close();
@@ -336,34 +334,6 @@ public class ErDAO {
 //			}
 //		}
 //	}// insertErAdd
-	public void insertErAdd(ErAddVO eavo) throws SQLException {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		try {
-			con = getConn();
-			String insertErAdd = "insert into er_info(er_id,subject,education,rank,loc,hire_type, portfolio, er_desc) values(?,?,?,?,?,?,?,?)";
-			pstmt = con.prepareStatement(insertErAdd);
-
-			pstmt.setString(1, eavo.getErId());
-			pstmt.setString(2, eavo.getSubject());
-			pstmt.setString(3, eavo.getEducation());
-			pstmt.setString(4, eavo.getRank());
-			pstmt.setString(5, eavo.getLoc());
-			pstmt.setString(6, eavo.getHireType());
-			pstmt.setString(7, eavo.getPortfolio());
-			pstmt.setString(8, eavo.getErDesc());
-
-			pstmt.executeUpdate();
-
-		} finally {
-			if (pstmt != null) {
-				pstmt.close();
-			}
-			if (con != null) {
-				con.close();
-			}
-		}
-	}// insertErAdd
 	
 	/**
 	 * 구인글 정보를 수정하는 트랜잭션 메인메소드

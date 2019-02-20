@@ -23,12 +23,12 @@ public class EeInfoModifyView extends JDialog {
 	private JLabel jlImag;
 
 	private EeMainView emv;
-	
+
 	public EeInfoModifyView(EeMainView emv, EeInfoVO eivo) {
-		super(emv,"기본 정보 관리 수정",true);
-		this.emv=emv;
+		super(emv, "기본 정보 관리 수정", true);
+		this.emv = emv;
 		// image
-		ImageIcon ii = new ImageIcon("C:/dev/1949/03.개발/src/file/eeImg/"+eivo.getImg());
+		ImageIcon ii = new ImageIcon("C:/dev/1949/03.개발/src/file/eeImg/" + eivo.getImg());
 		jlImag = new JLabel(ii);
 		jlImag.setBorder(new TitledBorder("구직자 이미지"));
 		jlImag.setBounds(38, 20, 160, 225);
@@ -78,15 +78,47 @@ public class EeInfoModifyView extends JDialog {
 		// Combobox jcbRank, jcbLoc, jcbEducation, jcbPortfolio;
 		String[] rank = { "신입", "경력" };
 		jcbRank = new JComboBox<>(rank);
-	
+		
+		switch (eivo.getRank()) {
+		case "N":
+			jcbRank.setSelectedIndex(0);
+			break;
+		case "C":
+			jcbRank.setSelectedIndex(1);
+			break;
+		}// end switch
+
 		String[] loc = { "서울", "경기", "인천", "대전", "세종", "충남", "충북", "광주", "전남", "전북", "대구", "경북", "부산", "울산", "경남", "강원",
 				"제주", "전국" };
 		jcbLoc = new JComboBox<>(loc);
+	
+		String vo_loc = eivo.getLoc().trim();
+		for (int i = 0; i < loc.length; i++) {
+			if (loc[i].equals(vo_loc)) {
+				jcbLoc.setSelectedIndex(i);
+			} // end if
+		}// end for
+
 		String[] edu = { "고졸", "초대졸", "대졸", "석사", "박사" };
 		jcbEducation = new JComboBox<>(edu);
+		
+		String co_edu=eivo.getEducation().trim();
+		for( int i=0; i<edu.length; i++) {
+			if(edu[i].equals(co_edu)) {
+				jcbEducation.setSelectedIndex(i);
+			}//end if
+		}//end for
+		
 		String[] port = { "YES", "NO" };
 		jcbPortfolio = new JComboBox<>(port);
 
+	switch (eivo.getPortfolio()) {
+	case "Y":
+		jcbPortfolio.setSelectedIndex(0);
+	case "N":
+		jcbPortfolio.setSelectedIndex(1);
+	}//end switch
+		
 		// Label
 		add(jlName);
 		jlName.setBounds(265, 20, 50, 20);
@@ -135,16 +167,13 @@ public class EeInfoModifyView extends JDialog {
 		add(jcbPortfolio);
 		jcbPortfolio.setBounds(325, 222, 130, 20);
 
-		//이벤트 처리
-		EeInfoModifyController eimc=new EeInfoModifyController(this, eivo.getEeNum(), eivo );
+		// 이벤트 처리
+		EeInfoModifyController eimc = new EeInfoModifyController(this, eivo.getEeNum(), eivo);
 		jbModify.addActionListener(eimc);
 		jbModifyImg.addActionListener(eimc);
 		jbModifyExt.addActionListener(eimc);
 		jbClose.addActionListener(eimc);
-		
-		
-		
-		
+
 		setLayout(null);
 		setBounds(100, 100, 490, 460);
 
@@ -198,7 +227,4 @@ public class EeInfoModifyView extends JDialog {
 		return emv;
 	}
 
-	
-	
-	
 }// class

@@ -37,7 +37,8 @@ public class ModifyExtView extends JDialog {
 		add(jlTemp);
 		jlTemp.setBounds(80, 60, 250, 30);
 		
-		jtfPath=new JTextField();
+		jtfPath=new JTextField("");
+		jtfPath.setEditable(false);
 		add(jtfPath);
 		jtfPath.setBounds(120, 37, 140, 20);
 		

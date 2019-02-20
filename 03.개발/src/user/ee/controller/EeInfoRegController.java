@@ -33,6 +33,7 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 	private String eeId;// 내 아이디.
 	private EeRegVO ervo;
 	private EeMainVO emvo;
+
 	// 생성자.
 	public EeInfoRegController(EeInfoRegView eirv, String eeId) {
 		this.eirv = eirv;
@@ -52,9 +53,8 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 
 		String tempRank = eirv.getJcbRank().getSelectedItem().toString();
 		String rank = tempRank.replace("신입", "C").replaceAll("경력", "N");
-
 		String loc = eirv.getJcbLoc().getSelectedItem().toString();
-		String education = (String) eirv.getJcbEducation().getSelectedItem();
+		String education = eirv.getJcbEducation().getSelectedItem().toString();
 		String tempPortfolio = eirv.getJcbPortfolio().getSelectedItem().toString();
 		String portfolio = tempPortfolio.replaceAll("YES", "Y").replaceAll("NO", "N");
 		String extResume = eirv.getJtfExtResume().getText();
@@ -68,9 +68,9 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 
 			if (!eedao.insertEeinfo(eivo)) { // 기본정보를 등록하는 쿼리문이 정상 동작했을 때 - false가 반환됩니다..
 				System.out.println(eivo);
-				
+
 //				eedao.updateActivation(eeid); // 구현해야할 부분.
-				
+
 				JOptionPane.showMessageDialog(eirv, "기본 정보가 등록되었습니다\n이제부터 구인 정보를 조회 가능합니다.");
 				eirv.dispose();
 			} // end if
@@ -86,6 +86,7 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 //	}
 
 	public void changeImg() {
+		boolean flag = false;
 		FileDialog fd = new FileDialog(eirv, "이미지 선택", FileDialog.LOAD);
 		fd.setVisible(true);
 
@@ -93,14 +94,20 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 		String name = fd.getFile();
 
 		if (path != null) {
-			if (!name.endsWith(".jpg") && !name.endsWith(".jpeg") && !name.endsWith(".png") && !name.endsWith(".bmp")
-					&& !name.endsWith(".gif")) {
-				JOptionPane.showMessageDialog(eirv, name + "은 사용할수 없습니다.");
-			} else {
+			if (name.endsWith(".jpg") || name.endsWith(".jpeg") || name.endsWith(".png") || name.endsWith(".bmp")
+					|| name.endsWith(".gif")) {
+				flag = true;
+			} // end if
+
+			if (flag) {
 				uploadImg = path + name;
 				eirv.getJlImage().setIcon(new ImageIcon(uploadImg));
-			}
-		}
+			} else {
+				JOptionPane.showMessageDialog(eirv, name + "은 사용할수 없습니다.");
+				return;
+			} // end else
+		} // end if
+
 	}// changeImg
 
 	/**
@@ -141,8 +148,19 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 
 		// 외부 이력서 등록 버튼 눌렀을 때.
 		if (ae.getSource() == eirv.getJbRegisterExt()) {
-			new ModifyExtView(eirv, eirc);
-		} // end if
+			
+			ModifyExtView mev = new ModifyExtView(eirv, eirc);
+//			String extResumeName = mev.getJtfPath().getText();
+//			
+//			// ModifyExtView창이 꺼지면 true
+//			// System.out.println(mev.isActive());
+//			if (mev.isActive()) {
+////				if() {
+//					eirv.getJtfExtResume().setText(extResumeName);
+//				}// end if
+			}// end if
+			
+//		} // end if
 
 		// 등록 버튼 눌렀을 때.
 		if (ae.getSource() == eirv.getJbRegister()) {

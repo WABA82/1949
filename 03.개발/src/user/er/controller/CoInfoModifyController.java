@@ -25,14 +25,19 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 	private CoInfoModifyView cimv;
 	private String coNum;
 	private String uploadImg1, uploadImg2, uploadImg3, uploadImg4, path, name;
+	private String img1, img2, img3, img4;
 	private ErDAO erdao;
 	
 	public CoInfoModifyController(CoInfoModifyView cimv ,String coNum) {
 		this.cimv= cimv;
-//		uploadImg1="";
-//		uploadImg2="";
-//		uploadImg3="";
-//		uploadImg4="";
+		uploadImg1="";
+		uploadImg2="";
+		uploadImg3="";
+		uploadImg4="";
+//		this.img1=img1;
+		img2="";
+		img3="";
+		img4="";
 		this.coNum=coNum;
 		erdao=ErDAO.getInstance();
 	}//생성자
@@ -50,20 +55,25 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 				modify();
 			} catch (SQLException e) {
 				e.printStackTrace();
-			}
+			}//end catch
+			
 		}else if(ae.getSource()==cimv.getJbClose()) {
 			cimv.dispose();
-		}
-	}//버튼
+		}//else if
+		
+	}//actionPerformed
 	
 	public void modify() throws SQLException {
-		boolean flag = false;
 		
 		try {
-			String img1, img2, img3, img4 ="";
 			String coName = cimv.getJtfCoName().getText().trim();
 			String estDate = cimv.getJtfEstDate().getText().trim();
 			int memberNum = Integer.parseInt(cimv.getMemberNum().getText().trim());
+			
+			if (uploadImg1.isEmpty()) {
+				JOptionPane.showMessageDialog(cimv, "메인사진은 넣어 주셔야합니다");
+				return;
+			}//end if
 			
 			if(coName.equals("")) {
 				JOptionPane.showMessageDialog(cimv, "회사명을 입력해주세요.");
@@ -111,10 +121,6 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 				img4=uploadImg4;
 			}
 			
-			if (uploadImg1.isEmpty()) {
-				JOptionPane.showMessageDialog(cimv, "메인사진은 넣어 주셔야합니다");
-				return;
-			}//end if
 			
 			File file1=new File(uploadImg1);
 			File file2=new File(uploadImg2);
@@ -130,7 +136,7 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 			.append("설립 년도 : ").append(cimv.getJtfEstDate().getText()).append("\n")
 			.append("사원 수  : ").append(cimv.getMemberNum().getText()).append("\n")
 			.append("기업 설명  : ").append(cimv.getJtaCoDesc().getText()).append("\n")
-			.append("위의 정보로 도시락의 정보가 변경됩니다. 변경하시겠습니까?");
+			.append("위의 정보로 회사의 정보가 변경됩니다. 변경하시겠습니까?");
 			
 			switch(JOptionPane.showConfirmDialog(cimv, updateMsg.toString())) {
 			case JOptionPane.OK_OPTION :
@@ -145,22 +151,20 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 //			System.out.println("변경");
 //			System.out.println(cvo);
 			
-			flag = ErDAO.getInstance().updateCoInfo(cvo);
-			
-			if (flag) {
+			erdao.updateCoInfo(cvo);
 				JOptionPane.showMessageDialog(cimv, "회사 정보가 수정 되었습니다");
-			} // end if
 //			System.out.println(cirv);
 			}//end switch
 			}catch(NumberFormatException nfe) {
 				JOptionPane.showMessageDialog(cimv, "사원수는 숫자만 입력가능합니다.");
 				return;
-			}
+			}//end catch
 	
 		System.out.println("수정");
 //		JOptionPane.showMessageDialog(cimv, "회사 정보가 수정되었습니다.");
 	}//modify
 
+	
 	
 	public void changeImg(JLabel jl, int imgNumber) {
 		boolean flag=false;

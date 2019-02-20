@@ -28,19 +28,19 @@ public class ErAddController extends WindowAdapter implements ActionListener {
 	
 	
 	@Override
-	public void actionPerformed(ActionEvent ae) {
-		if(ae.getSource()==eav.getJbReg()) {
-			try {
-				er_dao.insertErAdd(eavo);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		if(ae.getSource()==eav.getJbCancel()) {
-			eav.dispose();
-		}
-		
-	}
+//	public void actionPerformed(ActionEvent ae) {
+//		if(ae.getSource()==eav.getJbReg()) {
+//			try {
+//				er_dao.insertErAdd(eavo);
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		if(ae.getSource()==eav.getJbCancel()) {
+//			eav.dispose();
+//		}
+//		
+//	}
 	
 	@Override
 	public void windowClosing(WindowEvent e) {
