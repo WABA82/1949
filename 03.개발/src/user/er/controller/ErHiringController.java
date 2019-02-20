@@ -76,7 +76,7 @@ public class ErHiringController extends WindowAdapter implements ActionListener,
 		String eeNum= String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
 		DetailEeInfoVO devo = null;
 		try {
-			devo = erdao.selectDeatilEe(eeNum, erId);
+			devo = erdao.selectDetailEe(eeNum, erId);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -62,7 +62,7 @@ public class ErDAO {
 
 	////////////////////////////// 선의시작 //////////////////////////////////////////
 	/**
-	 * 자신이 올린 기업구인글을 조회
+	 *  선의 자신이 올린 기업구인글을 조회
 	 * @param erId
 	 * @return
 	 * @throws SQLException
@@ -106,7 +106,7 @@ public class ErDAO {
 	}// selectErList
 
 	/**
-	 * 관심 구직글 추가
+	 * 선의 관심 구직글 추가
 	 * @param eivo
 	 * @throws SQLException
 	 */
@@ -134,7 +134,7 @@ public class ErDAO {
 	}// insertInterestEr
 
 	/**
-	 * 관심 구직글 삭제
+	 * 선의 관심 구직글 삭제
 	 * @param eivo
 	 * @return
 	 * @throws SQLException
@@ -173,7 +173,7 @@ public class ErDAO {
 	}
 
 	/**
-	 * 기업사용자가 올린 구인글 자세히 보기위한 정보 조회
+	 * 선의 기업사용자가 올린 구인글 자세히 보기위한 정보 조회
 	 * @param erNum
 	 * @return
 	 * @throws SQLException
@@ -220,13 +220,13 @@ public class ErDAO {
 	}// selectErDetail
 
 	/**
-	 * 일반사용자 구직 상세 정보를 보기 위한 조회
+	 * 선의 일반사용자 구직 상세 정보를 보기 위한 조회
 	 * @param eeNum
 	 * @param erId
 	 * @return
 	 * @throws SQLException
 	 */
-	public DetailEeInfoVO selectDeatilEe(String eeNum, String erId) throws SQLException {
+	public DetailEeInfoVO selectDetailEe(String eeNum, String erId) throws SQLException {
 		DetailEeInfoVO devo = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -309,9 +309,9 @@ public class ErDAO {
 		return edfvo;
 	}// selectErDefault
 	
-	//==============================수정중=========================================//
+	//==============================수정중 시작=========================================//
 	/**
-	 * 구인글 추가 트랜잭션 메인메소드
+	 * 선의 구인글 추가 트랜잭션 메인메소드
 	 * @param eavo
 	 * @throws SQLException
 	 */
@@ -358,8 +358,8 @@ public class ErDAO {
 		}
 		return insertFlag;
 	}// insertErAdd
-	
-*/	/**
+	*/	
+	/**
 	 * 구인글 추가 트랜잭션1 구인글(스킬제외) 등록
 	 * @param con
 	 * @param eavo
@@ -393,148 +393,7 @@ public class ErDAO {
 	
 			return insertFlag;
 	}// insertErAdd
-*/	
-	
-	public boolean insertErAdd(ErAddVO eavo) throws SQLException {
-		String erNum = "";
-		int cnt=0;
-		boolean insertFlag = false;
-		
-		insertErAddInfo(eavo);
-		erNum = selectAddErNum(eavo);
-		for(int i=0; i<eavo.getListSkill().size();i++) {
-			insertErSkill(eavo, erNum, eavo.getListSkill().get(i));
-			cnt++;
-		}
-		if(cnt==eavo.getListSkill().size()) {
-			insertFlag=true;
-		}
-		
-		return insertFlag;
-	}// insertErAdd
-	
-	/**
-	 * 스킬빼고 다 DB추가
-	 * @param eavo
-	 * @throws SQLException
-	 */
-	public void insertErAddInfo(ErAddVO eavo)throws SQLException{
-		
-		Connection con=null;
-		PreparedStatement pstmt = null;
-		StringBuilder insertSkillAdd =new StringBuilder();
-		
-		try {
-				con = getConn();
-				//3.
-				insertSkillAdd.append(" insert into er_info(er_num,subject,education,rank,loc,sal,hire_type, portfolio, er_desc,co_num  ) ")
-				.append(" values(er_code, ?,?,?,?,?,?,?,?, ")
-				.append(" (select co_num ")
-				.append(" from company ")
-				.append(" where er_id=?)) ");
-				
-				pstmt = con.prepareStatement(insertSkillAdd.toString());
-				pstmt.setString(1, eavo.getSubject());
-				pstmt.setString(2, eavo.getEducation());
-				pstmt.setString(3, eavo.getRank());
-				pstmt.setString(4, eavo.getLoc());
-				pstmt.setInt(5, eavo.getSal());
-				pstmt.setString(6, eavo.getHireType());
-				pstmt.setString(7, eavo.getPortfolio());
-				pstmt.setString(8, eavo.getErDesc());
-				pstmt.setString(9, eavo.getErId());
-				
-				pstmt.executeQuery();
-				
-			
-		}finally {
-			if(pstmt!=null) {pstmt.close();}
-			if(con!=null) {con.close();}
-		}
-	}
-	
-	/**
-	 * erNum조회
-	 * @param eavo
-	 * @return
-	 * @throws SQLException
-	 */
-	public String selectAddErNum(ErAddVO eavo)throws SQLException {
-		String erNum ="";
-		Connection con=null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		try {
-			con = getConn();
-			StringBuilder selectErDetail = new StringBuilder();
-			
-			selectErDetail.append(" select er_num ")
-					.append(" from ( ")
-					.append(" select rownum r,er_num ")
-					.append(" from er_info ei, company c, user_table ut ")
-					.append(" where (ei.co_num=c.co_num and ut.id= c.er_id)and ut.id=? ")
-					.append(" order by ut.input_date desc ) ")
-					.append(" where r=1 ");
-			
-			pstmt3 = con.prepareStatement(selectErDetail.toString());
-			pstmt3.setString(1, eavo.getErId());
-			rs = pstmt3.executeQuery();
-			// 입력된 코드로 조회된 레코드가 존재할 때 VO를 생성하고 값 추가
-			if(rs.next()) {
-				erNum = rs.getString("er_num");
-				System.out.println(rs.getString("er_num"));
-			} // end if
-		} finally {
-			// 6.
-			if (con != null) {
-				con.close();
-			}
-			if (pstmt != null) {
-				pstmt.close();
-			}
-			if (rs != null) {
-				rs.close();
-			}
-		}
-		return erNum;
-	}
-	
-	/**
-	 * 스킬추가
-	 * @param con
-	 * @param eavo
-	 * @param erNum
-	 * @param skill
-	 * @return
-	 * @throws SQLException
-	 */
-	public void insertErSkill(ErAddVO eavo,String erNum, String skill) throws SQLException {
-		Connection con=null;
-		PreparedStatement pstmt = null;
-		StringBuilder insertSkillAdd =new StringBuilder();
-		
-		try {
-			con=getConn();
-			insertSkillAdd
-			.append(" insert into selected_skill(er_num,skill_num) ")
-			.append(" values(?,?) ");
-			
-			pstmt1 = con.prepareStatement(insertSkillAdd.toString());
-			pstmt1.setString(1,erNum );
-			pstmt1.setString(2, skill);
-			insertSkillcnt += pstmt1.executeUpdate();
-			
-		}finally {
-			if(pstmt!=null) {pstmt.close();}
-			if(con!=null) {con.close();}
-		}
-		
-	}// insertErAdd
-	
-
-	
-	/**
+/**
 	 * 추가된 erNum을 조회
 	 * @param con
 	 * @param eavo
@@ -602,10 +461,155 @@ public class ErDAO {
 		
 		return insertSkillFlag;
 	}// insertErAdd
-*/	//==============================수정중=========================================//
+*/	//==============================수정중 끝=========================================//
+
 	
 	/**
-	 * 구인글 정보를 수정하는 트랜잭션 메인메소드
+	 * 선의 구인글 등록 메인
+	 * @param eavo
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean insertErAdd(ErAddVO eavo) throws SQLException {
+		String erNum = "";
+		int cnt=0;
+		boolean insertFlag = false;
+		
+		insertErAddInfo(eavo);
+		erNum = selectAddErNum(eavo);
+		for(int i=0; i<eavo.getListSkill().size();i++) {
+			insertErSkill(eavo, erNum, eavo.getListSkill().get(i));
+			cnt++;
+		}
+		if(cnt==eavo.getListSkill().size()) {
+			insertFlag=true;
+		}
+		
+		return insertFlag;
+	}// insertErAdd
+	
+	/**
+	 * 선의 구인글 스킬빼고 다 DB추가
+	 * @param eavo
+	 * @throws SQLException
+	 */
+	public void insertErAddInfo(ErAddVO eavo)throws SQLException{
+		
+		Connection con=null;
+		PreparedStatement pstmt = null;
+		StringBuilder insertSkillAdd =new StringBuilder();
+		
+		try {
+				con = getConn();
+				//3.
+				insertSkillAdd.append(" insert into er_info(er_num,subject,education,rank,loc,sal,hire_type, portfolio, er_desc,co_num  ) ")
+				.append(" values(er_code, ?,?,?,?,?,?,?,?, ")
+				.append(" (select co_num ")
+				.append(" from company ")
+				.append(" where er_id=?)) ");
+				
+				pstmt = con.prepareStatement(insertSkillAdd.toString());
+				pstmt.setString(1, eavo.getSubject());
+				pstmt.setString(2, eavo.getEducation());
+				pstmt.setString(3, eavo.getRank());
+				pstmt.setString(4, eavo.getLoc());
+				pstmt.setInt(5, eavo.getSal());
+				pstmt.setString(6, eavo.getHireType());
+				pstmt.setString(7, eavo.getPortfolio());
+				pstmt.setString(8, eavo.getErDesc());
+				pstmt.setString(9, eavo.getErId());
+				
+				pstmt.executeQuery();
+				
+			
+		}finally {
+			if(pstmt!=null) {pstmt.close();}
+			if(con!=null) {con.close();}
+		}
+	}
+	
+	/**
+	 * 선의 추가된 등록글의 erNum조회
+	 * @param eavo
+	 * @return
+	 * @throws SQLException
+	 */
+	public String selectAddErNum(ErAddVO eavo)throws SQLException {
+		String erNum ="";
+		Connection con=null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = getConn();
+			StringBuilder selectErDetail = new StringBuilder();
+			
+			selectErDetail.append(" select er_num ")
+					.append(" from ( ")
+					.append(" select rownum r,er_num ")
+					.append(" from( ")
+					.append(" select ei.er_num, ei.input_date input_date ")
+					.append(" from er_info ei, company c, user_table ut ")
+					.append(" where (ei.co_num=c.co_num and ut.id= c.er_id)and ut.id=? ")
+					.append(" order by input_date desc)) ")
+					.append(" where r=1 ");
+
+			pstmt3 = con.prepareStatement(selectErDetail.toString());
+			pstmt3.setString(1, eavo.getErId());
+			rs = pstmt3.executeQuery();
+			// 입력된 코드로 조회된 레코드가 존재할 때 VO를 생성하고 값 추가
+			if(rs.next()) {
+				erNum = rs.getString("er_num");
+			} // end if
+		} finally {
+			// 6.
+			if (con != null) {
+				con.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (rs != null) {
+				rs.close();
+			}
+		}
+		return erNum;
+	}
+	
+	/**
+	 * 선의 구인글 스킬추가
+	 * @param con
+	 * @param eavo
+	 * @param erNum
+	 * @param skill
+	 * @return
+	 * @throws SQLException
+	 */
+	public void insertErSkill(ErAddVO eavo,String erNum, String skill) throws SQLException {
+		Connection con=null;
+		PreparedStatement pstmt = null;
+		StringBuilder insertSkillAdd =new StringBuilder();
+		
+		try {
+			con=getConn();
+			insertSkillAdd
+			.append(" insert into selected_skill(er_num,skill_num) ")
+			.append(" values(?,?) ");
+			
+			pstmt1 = con.prepareStatement(insertSkillAdd.toString());
+			pstmt1.setString(1,erNum );
+			pstmt1.setString(2, skill);
+			insertSkillcnt += pstmt1.executeUpdate();
+			
+		}finally {
+			if(pstmt!=null) {pstmt.close();}
+			if(con!=null) {con.close();}
+		}
+		
+	}// insertErAdd
+	
+	/**
+	 * 선의 구인글 정보를 수정하는 트랜잭션 메인메소드
 	 * @param emvo
 	 * @param preSkill
 	 * @return
@@ -648,7 +652,7 @@ public class ErDAO {
 	
 
 	/**
-	 * 구인글 수정 트랜잭션1 .선택된 옵션으로 구직글 수정
+	 * 선의 구인글 수정 트랜잭션1 .선택된 옵션으로 구직글 수정
 	 * @param emvo
 	 * @return
 	 * @throws SQLException
@@ -683,7 +687,7 @@ public class ErDAO {
 	
 	
 	/**
-	 * 구인글 수정 트랜잭션2 구인넘버에 대한 스킬을 모두 삭제
+	 * 선의 구인글 수정 트랜잭션2 구인넘버에 대한 스킬을 모두 삭제
 	 * @param con
 	 * @param emvo
 	 * @param erNum
@@ -710,7 +714,7 @@ public class ErDAO {
 	}
 	
 /**
- * 구인글 트랜잭션3 선택된스킬 다시 추가
+ * 선의 구인글 트랜잭션3 선택된스킬 다시 추가
  * @param con
  * @param emvo
  * @throws SQLException
@@ -736,7 +740,7 @@ public void urTransaction3(Connection con, ErModifyVO emvo) throws SQLException 
 	
 
 	/**
-	 * 구인글을 삭제
+	 * 선의 구인글을 삭제
 	 * @param erNum
 	 * @return
 	 * @throws SQLException
@@ -769,6 +773,12 @@ public void urTransaction3(Connection con, ErModifyVO emvo) throws SQLException 
 		return deleteFlag;
 	}// deleteEr
 
+	/**
+	 * 선의 스킬조회
+	 * @param erNum
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<String> selectSkill(String erNum) throws SQLException {
 		List<String> listSkill = new ArrayList<String>();
 		Connection con = null;
@@ -805,7 +815,7 @@ public void urTransaction3(Connection con, ErModifyVO emvo) throws SQLException 
 	}// selectSkill
 	
 	/**
-	 * 트랜잭션의 close처리
+	 * 선의 구인글 수정 트랜잭션의 close처리
 	 * @throws SQLException
 	 */
 	public void closeAll() throws SQLException {
@@ -815,6 +825,12 @@ public void urTransaction3(Connection con, ErModifyVO emvo) throws SQLException 
 		if (con != null) { con.close(); }
 	}
 
+	/**
+	 * 선의 구직글 조회
+	 * @param erhcdto
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<ErHiringVO> selectErHiring(ErHiringCdtDTO erhcdto) throws SQLException {
 		List<ErHiringVO> list = new ArrayList<ErHiringVO>();
 		Connection con = null;

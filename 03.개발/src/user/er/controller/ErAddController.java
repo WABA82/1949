@@ -14,6 +14,7 @@ import user.dao.ErDAO;
 import user.er.view.ErAddView;
 import user.er.view.ErModifyView;
 import user.er.vo.ErAddVO;
+import user.util.UserLog;
 
 public class ErAddController extends WindowAdapter implements ActionListener {
 	private ErAddView eav;
@@ -21,18 +22,17 @@ public class ErAddController extends WindowAdapter implements ActionListener {
 	private ErMgMtController emmc;
 	private String erId;
 	private ErDAO er_dao;
+	private UserLog ul;
 		
 	public ErAddController(ErAddView eav, ErMgMtController emmc, String erId) {
 		this.eav = eav;
 		this.erId = erId;
 		this.emmc = emmc;
 		er_dao= ErDAO.getInstance();
+		ul= new UserLog();
 	}
-	public void register() {
+	public void register() throws NullPointerException {
 		List<String> listSkill = new ArrayList<String>();
-		//등록수정완료시 eavo에 값 넣어주고 dao 에뿌려주기
-		//String erId, String subject, String education, String rank, String loc, String hireType,
-		//String portfolio, String erDesc, int sal, List<String> listSkill
 		
 		String rank = String.valueOf(eav.getJcbRank().getSelectedItem());
 		String hireType = String.valueOf(eav.getJcbHireType().getSelectedItem());
@@ -69,6 +69,7 @@ public class ErAddController extends WindowAdapter implements ActionListener {
 		}else if(rank.equals("경력")) {
 			rank="C";
 		}
+		
 		if(hireType.equals("정규직")) {
 			hireType="C";
 		}else if(hireType.equals("계약직")) {
@@ -82,7 +83,7 @@ public class ErAddController extends WindowAdapter implements ActionListener {
 		}else if(portfolio.equals("NO")) {
 			portfolio="N";
 		}
-		System.out.println(listSkill);
+		
 		eavo = new ErAddVO(erId, eav.getJtfSubject().getText().trim(), String.valueOf(eav.getJcbEducation().getSelectedItem()), 
 				rank, String.valueOf(eav.getJcbLoc().getSelectedItem()), 
 				hireType, portfolio, 
@@ -91,9 +92,9 @@ public class ErAddController extends WindowAdapter implements ActionListener {
 		try {
 			
 			addFlag = er_dao.insertErAdd(eavo);
-			System.out.println(addFlag);
 			if(addFlag) {
-				JOptionPane.showMessageDialog(eav, "등록이 완료되었습니다!");
+				JOptionPane.showMessageDialog(eav, "구인 정보가 등록되었습니다.");
+				ul.sendLog(erId, "구인 정보를 등록하였습니다.");
 				refreshList();
 				eav.dispose();
 			}
@@ -110,7 +111,24 @@ public class ErAddController extends WindowAdapter implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if(ae.getSource()==eav.getJbReg()) {
-			register();
+			if(eav.getJtfSubject().getText().trim()==null||eav.getJtfSubject().getText().trim().equals("")){
+				JOptionPane.showMessageDialog(eav, "제목은 필수 입력입니다.");
+				return;
+			}
+			if(eav.getJtfSal().getText().trim()==null||eav.getJtfSal().getText().trim().equals("")){
+				JOptionPane.showMessageDialog(eav, "급여는 필수 입력입니다.");
+				return;
+			}
+			if(eav.getJtaErDesc().getText().trim()==null||eav.getJtaErDesc().getText().trim().equals("")){
+				JOptionPane.showMessageDialog(eav, "상세설명은 필수 입력입니다.");
+				return;
+			}
+			try {
+				register();
+			}catch(NumberFormatException nfe) {
+				JOptionPane.showMessageDialog(eav, "급여는 숫자형식으로 입력해야합니다.");
+				nfe.printStackTrace();
+			}
 		}
 		if(ae.getSource()==eav.getJbCancel()) {
 			eav.dispose();

@@ -276,7 +276,7 @@ public class ErModifyView extends JDialog {
 		add(jbReg);
 		add(jbDelete);
 		add(jbCancel);
-
+		
 		/* 이벤트등록 */
 		ErModifyController emc = new ErModifyController(this,erNum,erId,emmc,preSkill);
 		jbCancel.addActionListener(emc);

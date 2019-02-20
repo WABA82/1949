@@ -41,9 +41,6 @@ public class ErMgMtView extends JDialog {
 		add(jspEeInfo);
 		add(jbRegEr);
 		
-		////////// 가데이터
-		erId = "moonlight";
-		/////////
 		ErMgMtController emmc = new ErMgMtController(this,erId);
 		jbRegEr.addActionListener(emmc);
 		jtEr.addMouseListener(emmc);
@@ -69,7 +66,7 @@ public class ErMgMtView extends JDialog {
 
 
 	public static void main(String[] args) {
-		new ErMgMtView(null, null, null);
+		new ErMgMtView(null, null, "moonlight");
 	}
 	
 }
