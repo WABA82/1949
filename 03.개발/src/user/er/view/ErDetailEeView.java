@@ -28,7 +28,7 @@ public class ErDetailEeView extends JDialog {
 	public ErDetailEeView(JDialog SDialog, DetailEeInfoVO devo, String eeNum, String erId, String interest) {
 		super(SDialog, "구직자 상세 정보", true);
 		setLayout(null);
-		ImageIcon ii = new ImageIcon("C:/dev/1949/03.개발/가데이터/구직자사진/150x200px/" + devo.getImg());
+		ImageIcon ii = new ImageIcon("C:/dev/1949/03.개발/src/file/eeImg/" + devo.getImg());
 		JLabel jlImage = new JLabel(ii);
 		jlImage.setBorder(new TitledBorder("구직자 이미지"));
 		jlImage.setBounds(38, 20, 160, 225);
@@ -122,12 +122,16 @@ public class ErDetailEeView extends JDialog {
 		add(jtfEmail);
 		jtfEmail.setBounds(315, 102, 130, 20);
 		jtfEmail.setEditable(false);
-
-		JTextField jtfRank = new JTextField(devo.getRank());
+		
+		JTextField jtfRank = new JTextField("");
+		if(devo.getRank().equals("N")) {
+			jtfRank.setText("신입");
+		}else if(devo.getRank().equals("C")) {
+			jtfRank.setText("경력");
+		}
 		add(jtfRank);
 		jtfRank.setBounds(315, 142, 130, 20);
 		jtfRank.setEditable(false);
-
 		JTextField jtfLoc = new JTextField(devo.getLoc());
 		add(jtfLoc);
 		jtfLoc.setBounds(315, 182, 130, 20);
@@ -142,13 +146,23 @@ public class ErDetailEeView extends JDialog {
 		add(jtfAge);
 		jtfAge.setBounds(315, 262, 130, 20);
 		jtfAge.setEditable(false);
-
-		JTextField jtfPort = new JTextField(devo.getPortfolio());
+		
+		JTextField jtfPort = new JTextField("");
+		if(devo.getPortfolio().equals("Y")) {
+			jtfPort.setText("있음");
+		}else if(devo.getPortfolio().equals("N")) {
+			jtfPort.setText("없음");
+		}
 		add(jtfPort);
 		jtfPort.setBounds(315, 302, 130, 20);
 		jtfPort.setEditable(false);
 
 		JTextField jtfGender = new JTextField(devo.getGender());
+		if(devo.getGender().equals("M")) {
+			jtfGender.setText("남자");
+		}else if(devo.getGender().equals("F")) {
+			jtfGender.setText("여자");
+		}
 		add(jtfGender);
 		jtfGender.setBounds(315, 342, 130, 20);
 		jtfGender.setEditable(false);
