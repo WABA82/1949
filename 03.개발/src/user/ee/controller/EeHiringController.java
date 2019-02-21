@@ -25,11 +25,7 @@ import user.ee.vo.EeInterestAndAppVO;
 public class EeHiringController extends WindowAdapter implements ActionListener, MouseListener {
 	private EeHiringView ehv;
 	private List<EeHiringVO> list;
-
-	
-	//테스트용 변경해야함/////////////////////////////////
 	private String eeId;
-	////////////////////////////////////////////////
 	public EeHiringCdtDTO ehc_dto;
 	private EeDAO ee_dao;
 	
@@ -61,10 +57,20 @@ public class EeHiringController extends WindowAdapter implements ActionListener,
 				rowData[1]= e_vo.getErNum();
 				rowData[2]= e_vo.getSubject();
 				rowData[3]= e_vo.getCoName();
-				rowData[4]= e_vo.getRank();
+				if(e_vo.getRank().equals("N")) {
+					rowData[4]= "신입";
+				}else if(e_vo.getRank().equals("C")) {
+					rowData[4]="경력";
+				}
 				rowData[5]= e_vo.getLoc();
 				rowData[6]= e_vo.getEducation();
-				rowData[7]= e_vo.getHireType();
+				if(e_vo.getHireType().equals("C")) {
+					rowData[7]= "정규직";
+				}else if(e_vo.getHireType().equals("N")) {
+					rowData[7]= "비정규직";
+				}else if(e_vo.getHireType().equals("F")) {
+					rowData[7]= "프리랜서";
+				}
 				rowData[8]= e_vo.getSal();
 				rowData[9]= e_vo.getInputDate();
 				
@@ -88,13 +94,21 @@ public class EeHiringController extends WindowAdapter implements ActionListener,
 	public void showDetailErInfo() {
 		JTable jt = ehv.getJtErInfo();
 		String erNum= String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
+		String appStatus="";
 		DetailErInfoVO deivo=null;
 		try {
 			deivo = ee_dao.selectDetail(erNum,eeId);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		new EeDetailErView(ehv, deivo, erNum, eeId , null);
+		try {
+			appStatus =ee_dao.selectApplication(eeId, erNum);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println(appStatus);
+		new EeDetailErView(ehv, deivo, erNum, eeId , appStatus);
 	}
 	
 	public void detailSearch() {
@@ -116,7 +130,6 @@ public class EeHiringController extends WindowAdapter implements ActionListener,
 		case 2:
 			if(me.getSource()==ehv.getJtErInfo())
 			{
-				
 				showDetailErInfo();
 			}
 		}

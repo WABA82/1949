@@ -15,6 +15,7 @@ import user.dao.ErDAO;
 import user.ee.vo.EeInterestAndAppVO;
 import user.er.view.ErMgMtView;
 import user.er.view.ErModifyView;
+import user.er.vo.ErDetailVO;
 import user.er.vo.ErListVO;
 import user.er.vo.ErModifyVO;
 import user.util.UserLog;
@@ -26,13 +27,15 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 	private ErMgMtController emmc;
 	private int preSkill;
 	private UserLog ul;
+	private ErMgMtView emmv;
 	
-	public ErModifyController(ErModifyView emv, String erNum,String erId,ErMgMtController emmc, int preSkill) {
+	public ErModifyController(ErMgMtView emmv, ErModifyView emv, String erNum,String erId,ErMgMtController emmc, int preSkill) {
 		this.emv = emv;
 		this.erNum = erNum;
 		this.erId = erId;
 		this.emmc= emmc;
 		this.preSkill= preSkill;
+		this.emmv = emmv;
 		ul = new UserLog();
 		erdao= ErDAO.getInstance();
 	}
@@ -76,11 +79,12 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 		
 		if(hireType.equals("정규직")) {
 			hireType="C";
-		}else if(hireType.equals("계약직")) {
+		}else if(hireType.equals("비정규직")) {
 			hireType="N";
 		}else if(hireType.equals("프리")) {
 			hireType="F";
 		}
+		System.out.println("고용형태"+hireType);
 		
 		if(portfolio.equals("YES")) {
 			portfolio="Y";
@@ -105,7 +109,10 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 				JOptionPane.showMessageDialog(emv, "구인 정보가 수정되었습니다.");
 				ul.sendLog(erId, "구인 정보를 수정했습니다.");
 				emv.dispose();
+				//ErMgMtView emmv, ErDetailVO edvo, String erNum, String erId, ErMgMtController emmc
+				ErDetailVO edvo = erdao.selectErDetail(erNum);
 				emmc.setDtm();
+				new ErModifyView(emmv, edvo, erNum, erId, emmc);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

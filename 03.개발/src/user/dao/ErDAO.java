@@ -77,8 +77,13 @@ public class ErDAO {
 
 			StringBuilder selectErList = new StringBuilder();
 			selectErList.append(
-					" select ei.er_num,ei.subject,ei.rank,ei.loc,ei.education,ei.hire_type,to_char(ei.input_date,'yyyy-mm-dd') input_date ")
-					.append(" from er_info ei, company c ").append(" where (ei.co_num = c.co_num)and(c.er_id=?) ");
+//					" select ei.er_num,ei.subject,ei.rank,ei.loc,ei.education,ei.hire_type,to_char(ei.input_date,'yyyy-mm-dd') input_date ")
+//					.append(" from er_info ei, company c ").append(" where (ei.co_num = c.co_num)and(c.er_id=?) ");
+///////////////////////////////////////////////////					
+					
+//					" select ei.er_num,ei.subject,ei.rank,ei.loc,ei.education,ei.hire_type,to_char(ei.input_date,'yyyy-mm-dd-hh-mi') input_date ")
+//					.append(" from er_info ei, company c ").append(" where (ei.co_num = c.co_num)and(c.er_id=?) ")
+//					.append(" order by input_date desc ");
 
 			pstmt = con.prepareStatement(selectErList.toString());
 			pstmt.setString(1, erId);
@@ -850,12 +855,12 @@ public void urTransaction3(Connection con, ErModifyVO emvo) throws SQLException 
 
 			if (!(erhcdto.getSort().trim() == null || erhcdto.getSort().trim().equals(""))) {
 				if (erhcdto.getSort().equals("등록일순")) {
-					selectEeHiring.append("	order by ei.input_date	");
+					selectEeHiring.append("	order by ei.input_date desc ");
 				} else if (erhcdto.getSort().equals("직급순")) {
-					selectEeHiring.append("	order by ei.rank	 ");
+					selectEeHiring.append("	order by ei.rank desc, input_date desc");
 				}
 			} else {
-				selectEeHiring.append("	order by ei.input_date	");
+				selectEeHiring.append("	order by ei.input_date desc, input_date desc");
 			}
 
 			pstmt = con.prepareStatement(selectEeHiring.toString());
@@ -882,6 +887,43 @@ public void urTransaction3(Connection con, ErModifyVO emvo) throws SQLException 
 
 		return list;
 	}
+	
+	/**
+	 * 이력서 확장자를 찾는 메소드
+	 * @param erId
+	 * @param eeNum
+	 * @return
+	 */
+/*	public String selectExtension(String eeNum) throws SQLException{
+		String extension="";
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = getConn();
+			String selectExt = "";
+			selectExt= "select ext_resume from ee_info where ee_num=?";
+			
+			pstmt = con.prepareStatement(selectExt);
+			pstmt.setString(1, eeNum);
+			
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				extension = rs.getString("ext_resume");
+			}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+		}
+		return extension;
+	}*/
 
 	////////////////////////////////////////// 선의끝///////////////////////////////////////////////
 

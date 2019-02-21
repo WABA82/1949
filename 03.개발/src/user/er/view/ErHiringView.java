@@ -29,20 +29,39 @@ public class ErHiringView extends JDialog {
 				return false;
 			}
 		};
+		jtEeInfo = new JTable(dtmEeInfo) {
+			@Override
+			public Class getColumnClass(int column) {
+				return getValueAt(0, column).getClass();
+			}
+		};
+		//1000
+		jtEeInfo.getColumnModel().getColumn(0).setPreferredWidth(40);
+		jtEeInfo.getColumnModel().getColumn(1).setPreferredWidth(130);//80
+		jtEeInfo.getColumnModel().getColumn(2).setPreferredWidth(150);//230
+		jtEeInfo.getColumnModel().getColumn(3).setPreferredWidth(80);//290
+		jtEeInfo.getColumnModel().getColumn(4).setPreferredWidth(60);//350
+		jtEeInfo.getColumnModel().getColumn(5).setPreferredWidth(70);//410
+		jtEeInfo.getColumnModel().getColumn(6).setPreferredWidth(70);//470
+		jtEeInfo.getColumnModel().getColumn(7).setPreferredWidth(50);//510
+		jtEeInfo.getColumnModel().getColumn(8).setPreferredWidth(110);//570
+		jtEeInfo.getColumnModel().getColumn(9).setPreferredWidth(60);//630
+		jtEeInfo.getColumnModel().getColumn(10).setPreferredWidth(180);//800
+		
+		jtEeInfo.setRowHeight(200);
 		String sort[]= {"등록일순","직급순"};
 		jcbSort=new JComboBox<String>(sort);
 		
-		jtEeInfo=new JTable(dtmEeInfo);
 		JScrollPane jspEe=new JScrollPane(jtEeInfo);
 		
 		jbDetailSearch=new JButton("조건검색");
-		jbSelectAll = new JButton("전체목록");
+		jbSelectAll = new JButton("초기화");
 		
 		setLayout(null);
 		
 		jcbSort.setBounds(10, 10, 100, 30);
 		jbDetailSearch.setBounds(880, 10, 100, 30);
-		jbSelectAll.setBounds(775, 10, 100, 30);
+		jbSelectAll.setBounds(115, 10, 100, 30);
 		jspEe.setBounds(0, 50, 995, 450);
 		
 		add(jcbSort);

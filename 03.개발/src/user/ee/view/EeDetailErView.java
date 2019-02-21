@@ -30,6 +30,7 @@ public class EeDetailErView extends JDialog {
 
 	public EeDetailErView(JDialog SDialog, DetailErInfoVO deivo, String erNum, String eeId, String appStatus) {
 		super(SDialog, "상세구인정보", true);/* 창의 제목 */
+		System.out.println(appStatus);
 		/* 컴포넌트 생성 */
 		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/no_co_img1.png");
 		// 라벨들
@@ -229,8 +230,7 @@ public class EeDetailErView extends JDialog {
 		wrapPanel.add(skillGridPanel);
 
 		jbClose.setBounds(315, 575, 60, 25);
-		appStatus = null; // 지원하기 테스트용
-		if (appStatus == null) {
+		if (appStatus.trim() == null||appStatus.trim().equals("")) {
 			jlHeart.setBounds(65, 572, 32, 32);
 			jbCoInfo.setBounds(105, 575, 100, 25);
 			jbApply.setBounds(210, 575, 100, 25);
@@ -255,7 +255,6 @@ public class EeDetailErView extends JDialog {
 		jtfEducation.setText(deivo.getEdudation());
 		jtfLoc.setText(deivo.getLoc());
 		jtfSal.setText(String.valueOf(deivo.getSal()));
-		jtfPortfolio.setText(deivo.getPortfolio());
 		jtaErDesc.setText(deivo.getErDesc());
 		jtaErDesc.setEditable(false);
 
@@ -274,6 +273,12 @@ public class EeDetailErView extends JDialog {
 		} else if (deivo.getRank().equals("N")) {
 			jtfRank.setText("신입");
 		}// end if
+		
+		if(deivo.getPortfolio().equals("Y")) {
+			jtfPortfolio.setText("있음");
+		}else if(deivo.getPortfolio().equals("N")) {
+			jtfPortfolio.setText("없음");
+		}
 		
 		// 이벤트 등록 //
 		EeDetailErController edec = new EeDetailErController(this, erNum, eeId, flagHeart);

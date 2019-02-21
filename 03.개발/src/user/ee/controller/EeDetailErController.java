@@ -98,7 +98,7 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 
 	public void apply() {
 		// 관심구인정보에 전달(eeAppVO)
-		boolean flag = false;
+		boolean appFlag = false;
 		List<EeAppVO> list = new ArrayList<EeAppVO>();
 		eiaavo = new EeInterestAndAppVO(erNum, eeId);
 		try {
@@ -108,21 +108,24 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 		}
 		try {
 			if (list.size() == 0) {
-				flag = true;
+				appFlag = true;
 			} else {
 				for (int i = 0; i < list.size(); i++) {
 					if (!(list.get(i).getEr_num().equals(erNum))) {
-						flag = true;
+						appFlag = true;
 					} else {
 						JOptionPane.showMessageDialog(edev, "이미 지원한 공고입니다.");
 						return;
 					}
 				}
 			}
-			if (flag) {
+			if (appFlag) {
 				ee_dao.insertApplication(eiaavo);
 				JOptionPane.showMessageDialog(edev, "지원이 완료되었습니다!");
 				ul.sendLog(eeId, "지원을 완료하였습니다.");
+				DetailErInfoVO deivo = ee_dao.selectDetail(erNum,eeId);
+				edev.dispose();
+				new EeDetailErView(edev, deivo, erNum, eeId, "ok");
 			} else {
 				JOptionPane.showMessageDialog(edev, "이미 지원한 공고입니다.");
 			}
