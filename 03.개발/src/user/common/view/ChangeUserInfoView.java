@@ -7,7 +7,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import user.common.controller.ChangeUserInfoController;
-import user.common.vo.ErMainVO;
 import user.common.vo.UserInfoVO;
 import user.er.view.ErMainView;
 
@@ -18,6 +17,7 @@ public class ChangeUserInfoView extends JDialog {
 	private JButton jbModify, jbDelete, jbClose, jbAddr;
 
 	public ChangeUserInfoView(ErMainView emv, UserInfoVO uivo) {
+		
 		setTitle("회원 정보 수정");
 		JLabel jlId = new JLabel("아이디");
 		JLabel jlPw1 = new JLabel("비밀번호");
@@ -129,10 +129,10 @@ public class ChangeUserInfoView extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	}
 	
-	public static void main(String[] args) {
-		UserInfoVO uivo=new UserInfoVO("ooo333",	"박아영",	"010-8888-8888",	"11121",	"606-818",	"부산 영도구 청학2동 61∼64", 	"어ㅇㄹㄴ",	"sdfsd");
+	/*public static void main(String[] args) {
+		UserInfoVO uivo=new UserInfoVO(id, name, tel, seq, zipcode, addr1, addr2, email);
 		new ChangeUserInfoView(null, uivo);
-	}
+	}*/
 
 	
 

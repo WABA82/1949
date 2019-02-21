@@ -8,8 +8,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
+import user.common.view.ChangeUserInfoView;
 import user.common.view.LoginView;
 import user.common.vo.ErMainVO;
+import user.common.vo.UserInfoVO;
+import user.dao.CommonDAO;
 import user.dao.ErDAO;
 import user.er.view.CoInfoModifyView;
 import user.er.view.CoInfoRegView;
@@ -26,11 +29,14 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 	private CoInsertVO civo;
 	private CoInfoVO cvo;
 	private ErDAO erdao;
-	public ErMainController(ErMainView emv, ErMainVO ermvo) {
+	private CommonDAO C_dao;
+	
+	
+	public ErMainController(ErMainView emv, ErMainVO ermvo/*String erId*/) {
 		this.emv = emv;
-//		this.erId=erId;
 		this.ermvo=ermvo;
 		erdao=ErDAO.getInstance();
+		C_dao=CommonDAO.getInstance();
 	}
 	
 	public void mngUser() throws SQLException {
@@ -61,6 +67,18 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 
 	@Override
 	public void mouseClicked(MouseEvent me) {
+		//혜원 기업회원관리
+			try {
+				if(me.getSource() == emv.getJlUserInfo()) {
+				UserInfoVO uivo=C_dao.selectUserInfo(ermvo.getErId());
+				new ChangeUserInfoView(emv, uivo);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			
+			
+		}//end if
+		
 		if(me.getSource() == emv.getJlLogOut()) {
 			new LoginView();
 			emv.dispose();

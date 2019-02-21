@@ -135,7 +135,7 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		
 		char[] spSymbol = {'!','@','#','$','%','^','&','*','(',')','-','_','+','='};
 		
-		if(!(pass.equals("") || pass.length() > 13)) {
+		if(!(pass.equals("") || pass.length() > 12)) {
 
 			for(int i=0; i<pass.length(); i++) {
 				for(int j=0; j<lowerCase.length; j++) {
@@ -285,7 +285,13 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 			msgCenter("올바른 연락처가 아닙니다.\n예)010-0000-0000\n다시 입력해주세요.");
 			return;
 		}
+		
 		String addrDetail = umv.getJtfAddr2().getText().trim();
+		
+		if (addrDetail.trim().length() == 0) {
+			msgCenter("상세주소는 필수입력사항입니다.");
+			return;
+		}
 		
 		// email - @ . 필수, 14자리 이상(@.포함)
 		String email = umv.getJtfEmail().getText().trim();
@@ -354,11 +360,8 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 	 * 주소 검색하는 창을 띄우는 메서드
 	 * @return
 	 */
-	public String searchAddr() {
-		String addr1 = "";
+	public void searchAddr() {
 		new SearchAddrView(umv, this);
-		
-		return addr1;
 	}
 	
 	
