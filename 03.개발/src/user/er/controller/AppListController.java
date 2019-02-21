@@ -46,6 +46,11 @@ public class AppListController extends WindowAdapter implements MouseListener {
 			// DB에서 관심회사를 조회.
 			List<DetailAppListVO> list = er_dao.selectDetailApplist(er_num);
 
+			StringBuffer appCnt = new StringBuffer("총 지원자 수 : ");
+			appCnt.append(String.valueOf(list.size())).append(" 명");
+			alv.getJlEeInfo().setText(appCnt.toString());
+			
+			
 			// JTable에 조회한 정보를 출력.
 			DetailAppListVO dalvo = null;
 			String imgPath = "C:/dev/1949/03.개발/가데이터/구직자사진/150x200px/";

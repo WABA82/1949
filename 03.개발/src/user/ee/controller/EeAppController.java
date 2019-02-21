@@ -51,37 +51,37 @@ public class EeAppController extends WindowAdapter implements MouseListener {
 				// DTM에 데이터를 추가하기 위한 일차원배열(Vector)을 생성하고 데이터를 추가
 				rowData = new Object[12];
 				rowData[0] = new Integer(i + 1);
-				rowData[1] = eavo.getEr_num();
-				rowData[2] = eavo.getApp_num();
-				rowData[3] = eavo.getSubject();
-				rowData[4] = eavo.getCo_name();
-				rowData[5] = (eavo.getRank().equals("N") ? "신입" : "경력"); // 'N'신입, 'R'경력.
-				rowData[6] = eavo.getLoc();
-				rowData[7] = eavo.getEducation();
+				/*rowData[1] = eavo.getEr_num();*/
+				rowData[1] = eavo.getApp_num();
+				rowData[2] = eavo.getSubject();
+				rowData[3] = eavo.getCo_name();
+				rowData[4] = (eavo.getRank().equals("N") ? "신입" : "경력"); // 'N'신입, 'R'경력.
+				rowData[5] = eavo.getLoc();
+				rowData[6] = eavo.getEducation();
 				switch (eavo.getHire_type()) {
 				case "C":
-					rowData[8] = "정규직";
+					rowData[7] = "정규직";
 					break;
 				case "N":
-					rowData[8] = "비정규직";
+					rowData[7] = "비정규직";
 					break;
 				case "F":
-					rowData[8] = "프리랜서";
+					rowData[7] = "프리랜서";
 				}// end switch
-				rowData[9] = new Integer(eavo.getSal());
-				rowData[10] = eavo.getApp_date();
+				rowData[8] = new Integer(eavo.getSal());
+				rowData[9] = eavo.getApp_date();
 				switch (eavo.getApp_status()) {
 				case "U":
-					rowData[11] = "응답대기";
+					rowData[10] = "응답대기";
 					break;
 				case "R":
-					rowData[11] = "열람";
+					rowData[10] = "열람";
 					break;
 				case "A":
-					rowData[11] = "지원수락";
+					rowData[10] = "지원수락";
 					break;
 				case "D":
-					rowData[11] = "지원거절";
+					rowData[10] = "지원거절";
 				}// end switch
 
 				/* DTM에 추가 */
@@ -123,12 +123,15 @@ public class EeAppController extends WindowAdapter implements MouseListener {
 	 */
 	private void showDetailErinfo() {
 		JTable jt = eav.getJtEr();
-		String erNum = String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
+		String app_num = String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
 		DetailErInfoVO deivo = null;
+		
 		try {
+			String erNum = ee_dao.selectErNumFromAppTb(app_num);
 			deivo = ee_dao.selectDetail(erNum, ee_id);
-			EeDetailErView edev = new EeDetailErView(eav, deivo, erNum, ee_id, eavo.getApp_status());
 
+			EeDetailErView edev = new EeDetailErView(eav, deivo, erNum, ee_id, eavo.getApp_status());
+			
 			// edev.isActive() - EeDetailErView의 창이 닫혀지면 true발생.
 			if (edev.isActive()) {
 				setDTM(ee_id);
