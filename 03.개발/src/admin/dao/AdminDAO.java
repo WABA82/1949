@@ -483,6 +483,10 @@ public class AdminDAO {
 	 */
 	public boolean checkDefaultImg(String imgName) {
 		boolean flag = false;
+		
+		if (imgName == null) {
+			return flag;
+		}
 
 		String[] defaultImgName = { "no_co_img1.png", "no_co_img2.png",
 				"no_co_img3.png", "no_co_img4.png", "no_ee_img.png" };
@@ -622,7 +626,7 @@ public class AdminDAO {
 			
 			try {
 				boolean t1 = ueTransaction1(con, emvo); // 새로운 정보로 er_info update
-				boolean t2 = ueTransaction2(con, emvo, preSkillNum); // 기존 selected_skill 삭제
+				boolean t2 = ueTransaction2(con, emvo.getErNum(), preSkillNum); // 기존 selected_skill 삭제
 				ueTransaction3(con, emvo); // 새롭게 선택된 Skill들 insert
 				
 				if (t1 && t2) {
@@ -692,7 +696,7 @@ public class AdminDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean ueTransaction2(Connection con, ErModifyVO emvo, int preSkillNum) throws SQLException {
+	public boolean ueTransaction2(Connection con, String erNum, int preSkillNum) throws SQLException {
 		boolean flag = false;
 		
 		StringBuilder deleteSkill = new StringBuilder();
@@ -701,7 +705,7 @@ public class AdminDAO {
 		.append(" where er_num = ? ");
 		
 		pstmt2 = con.prepareStatement(deleteSkill.toString());
-		pstmt2.setString(1, emvo.getErNum());
+		pstmt2.setString(1, erNum);
 		
 		int deleteCnt = pstmt2.executeUpdate();
 		
