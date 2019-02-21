@@ -72,6 +72,9 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
          //System.out.println(zip);//테스트하느라 - 필요없음
          String addrSeq= listSeq.get(row);
          
+         //혜원추가(주소검색 시 상세주소초기화)
+         cuiv.getJtfAddr2().setText("");
+         
          if (suv != null) {
             suv.getJtfAddr1().setText(addr.toString());
             suv.getJtfZip().setText(zip);

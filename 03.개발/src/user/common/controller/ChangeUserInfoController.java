@@ -1,5 +1,7 @@
 package user.common.controller;
 
+import static javax.swing.JOptionPane.showMessageDialog;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -7,14 +9,13 @@ import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 import user.common.view.ChangeUserInfoView;
-import user.common.view.LoginView;
 import user.common.view.RemoveUserView;
 import user.common.view.SearchAddrView;
 import user.common.vo.UserInfoVO;
 import user.common.vo.UserModifyVO;
+import user.common.vo.UserModifyWithoutPassVO;
 import user.dao.CommonDAO;
 import user.er.view.ErMainView;
 
@@ -24,7 +25,6 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 	private UserInfoVO uivo;
 	private String addrSeq;
 	private ErMainView emv;
-	private SearchAddrView sav;
 	
 	public ChangeUserInfoController(ChangeUserInfoView cuiv, UserInfoVO uivo) {
 		this.cuiv=cuiv;
@@ -48,48 +48,120 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 		String email=cuiv.getJtfEmail().getText().trim();
 		String addrDetail=cuiv.getJtfAddr2().getText().trim();
 		
+		
+		//수정시 비밀번호 필수입력
 		if(InputOriginPass==null||InputOriginPass.equals("")) {
 			JOptionPane.showMessageDialog(cuiv, "비밀번호를 입력해주세요.");
 			cuiv.getJpfOriginalPass().requestFocus();
 			return;
-		}
+		}//end if
+		
+		
+		//전화번호 검증 -빼면 11자리(010-0000-0000)
+		String tel2=tel.replaceAll("-", "");
+		
+		
+		if(tel2.length()!=11) {
+			try {
+				Integer.parseInt(tel2);
+			} catch (NumberFormatException nfe) {
+				showMessageDialog(cuiv, "전화번호에 문자열이 들어있습니다.");
+				return;
+			} // end catch	
+			JOptionPane.showMessageDialog(cuiv, "올바른 전화번호 형식이 아닙니다2.\n예)010-0000-0000");
+			return;
+		}else {//11자리라면  :-있는지 확인하고, - - 사이 번호 자릿수 검증
+			//-필수입력
+			if(!(tel.contains("-"))) {
+				JOptionPane.showMessageDialog(cuiv, "올바른 전화번호 형식이 아닙니다1.\n 010-0000-0000");
+				return;
+			}
+			//010-0000-0000
+			//첫-전까지자릿수3자리 , --사이 4자리, 나머지4자리(첫번째검증으로..)
+			if(!(tel.substring(0, tel.indexOf("-")).length()==3)
+				||!(tel.substring(tel.indexOf("-")+1, tel.lastIndexOf("-")).length()==4)) {
+					 
+					JOptionPane.showMessageDialog(cuiv, "올바른 전화번호 형식이 아닙니다3.\n 010-0000-0000");
+					return;
+					
+					
+			}//end if
+			
+		}//end else
+	
+		//이메일 검증
+		if(email.length() <14) {//@. 포함 최소 14자리 이상
+			JOptionPane.showMessageDialog(cuiv, "이메일은 14자리 이상이어야합니다.");
+		}else {//14자리이상이라면
+	
+		if(!(email.contains("@")&& email.contains("."))) {
+			JOptionPane.showMessageDialog(cuiv, "올바른 이메일 형식이 아닙니다. \n예)won111@naver.com");
+			return;
+		
+		}//end if
+		}//end else
 
-		//비밀번호를 꼭 수정할필요는없는데.......
-		// 수정vo 수정비밀번호null.... 
-		UserModifyVO umvo=new UserModifyVO(id, name, newPass1, tel, addrSeq, addrDetail, email);
-		//0220 주소수정하면 상세주소초기화하기!!
-		//ercontroller vogetter써서아이디가져오기!!	
+		
+		
+		
+		//빈문자열 체크
+		if(addrDetail==null||addrDetail.equals("")) {
+			JOptionPane.showMessageDialog(cuiv, "상세주소를 입력해주세요.");
+			cuiv.getJtfAddr2().requestFocus();
+			return;
+		}//end if
+		
+		//비밀번호 검증
+		if(newPass1.equals("")) {
+			UserModifyWithoutPassVO umvo2=new UserModifyWithoutPassVO(id, name, tel, addrSeq, addrDetail, email);
+			try {
+				
+				if(!newPass1.equals(newPass2)) {
+					JOptionPane.showMessageDialog(cuiv, "비밀번호확인과 비밀번호가 일치하지 않습니다.");
+				}else {//같다면
+					if(!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("R")) {//null이면
+						JOptionPane.showMessageDialog(cuiv, "비밀번호가 올바르지 않습니다.");
+					}else {//R이라면(아이디와 비밀번호가 맞다면) 수정됨
+						if (CommonDAO.getInstance().updateUserInfoWithoutPass(umvo2)) {
+							JOptionPane.showMessageDialog(cuiv, "회원정보가 수정되었습니다.");
+							cuiv.dispose();
+						}//end if
+					}//end else
+				}//end else
+				
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(cuiv, "DB에서 문제가 발생했습니다.");
+				e.printStackTrace();
+			}
+		}else {
+		
+			UserModifyVO umvo=new UserModifyVO(id, name, newPass1, tel, addrSeq, addrDetail, email);
 
 		try {//비밀번호 검증
+			
 			if(!newPass1.equals(newPass2)) {
 				JOptionPane.showMessageDialog(cuiv, "비밀번호확인과 비밀번호가 일치하지 않습니다.");
-			}else {
-				if(!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("R")) {
+			}else {//같다면
+				if(!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("R")) {//null이면
 					JOptionPane.showMessageDialog(cuiv, "비밀번호가 올바르지 않습니다.");
-				}else {//R이라면 수정됨
+				}else {//R이라면(아이디와 비밀번호가 맞다면) 수정됨
 					if (CommonDAO.getInstance().updateUserInfo(umvo)) {
 						JOptionPane.showMessageDialog(cuiv, "회원정보가 수정되었습니다.");
 					}//end if
+					}
 				}//end else
-			}//end else
+			
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(cuiv, "DB에서 문제가 발생했습니다.");
 			e.printStackTrace();
-		}
+			}//end catch
+		}//end else
 	}//modifyUser	
-	
-	
-	
-	
-	
-	
+
 	public void removeUser() {
 		new RemoveUserView(emv, uivo.getId());
 	}
 
-	
-	
-	
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if(ae.getSource()==cuiv.getJbModify()) {

@@ -1,10 +1,12 @@
 package user.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +17,9 @@ import user.common.vo.FindIdVO;
 import user.common.vo.FindPassVO;
 import user.common.vo.SetPassVO;
 import user.common.vo.UserInfoVO;
+import user.common.vo.UserInsertVO;
 import user.common.vo.UserModifyVO;
+import user.common.vo.UserModifyWithoutPassVO;
 import user.ee.view.EeMainView;
 import user.er.view.ErMainView;
 
@@ -56,7 +60,7 @@ public class CommonDAO {
      */
     public String login(String id, String pass) throws SQLException {
        String userType = "";
-       
+
        Connection con = null;
        PreparedStatement pstmt = null;
        ResultSet rs = null;
@@ -125,6 +129,50 @@ public class CommonDAO {
        return list;
     }//주소 검색 완성 여기까지 
 
+    /**
+     * 박정미 유저 정보 등록  ////구현중
+     * @param uivo
+     * @throws SQLException
+     */
+    public String insertUser(UserInsertVO uivo)throws SQLException{
+       String resultMsg="";
+       
+       Connection con = null;
+       CallableStatement cstmt = null;
+       try {
+       con = getConn();
+       
+       //3. 프로시저 실행 객체 얻기
+       cstmt = con.prepareCall("{ call insert_sign_up_proc(?,?,?,?,?,?,?,?,?,?,?,?) }");
+/*i_id IN VARCHAR2, i_pass IN VARCHAR2, i_name IN VARCHAR2,
+       i_ssn IN CHAR, i_tel IN VARCHAR2, i_email IN VARCHAR2,
+       i_seq IN NUMBER, i_addr_detail IN VARCHAR2, i_q_type IN CHAR,
+       i_answer IN VARCHAR2, i_user_type IN CHAR,
+       msg OUT VARCHAR2*/
+       cstmt.setString(1,uivo.getId());
+       cstmt.setString(2,uivo.getPass());
+       cstmt.setString(3,uivo.getName());
+       cstmt.setString(4, uivo.getSsn());
+       cstmt.setString(5,uivo.getTel());
+       cstmt.setString(6,uivo.getEmail());
+       cstmt.setInt(7,Integer.parseInt(uivo.getAddrSeq().trim()));
+       cstmt.setString(8,uivo.getAddrDetail());
+       cstmt.setString(9,uivo.getQuestionType());
+       cstmt.setString(10,uivo.getAnswer());
+       cstmt.setString(11,uivo.getUserType());
+       
+       cstmt.registerOutParameter(12, Types.VARCHAR);
+       
+       cstmt.execute();
+       resultMsg = cstmt.getString(12);
+       System.out.println(resultMsg);
+       }finally {
+          if(cstmt!=null) {cstmt.close();}
+          if(con!=null) {con.close();}
+       }//end finally
+       return resultMsg;
+
+    }//insertUser
 
     /**
      * 최혜원 아이디 찾기
@@ -339,6 +387,48 @@ public class CommonDAO {
     
         return flag;
         
+    }
+    /**
+     * 최혜원 사용자 정보 수정2(비밀번호 수정하지 않을 때)
+     * @param umvo
+     * @return
+     * @throws SQLException
+     */
+    public boolean updateUserInfoWithoutPass(UserModifyWithoutPassVO umvo2) throws SQLException {
+    	boolean flag=false;
+    	
+    	Connection con=null;
+    	PreparedStatement pstmt=null;
+    	
+    	try {
+    		con=getConn();
+    		
+    		StringBuilder updateUserInfo=new StringBuilder();
+    		
+    		updateUserInfo.append("update user_table    ")
+    		.append("        set  name=?, tel=?, addr_seq=?, addr_detail=?, email=? ")
+    		.append("        where id=? ");
+    		
+    		pstmt=con.prepareStatement(updateUserInfo.toString());
+    		
+    		pstmt.setString(1, umvo2.getName());
+    		pstmt.setString(2, umvo2.getTel());
+    		pstmt.setString(3, umvo2.getSeq());
+    		pstmt.setString(4, umvo2.getAddrDetail());
+    		pstmt.setString(5, umvo2.getEmail());
+    		pstmt.setString(6, umvo2.getId());
+    		
+    		int cnt=pstmt.executeUpdate();
+    		if(cnt==1) {
+    			flag=true;
+    		}
+    	}finally {
+    		if(pstmt!=null) {pstmt.close();}
+    		if(con!=null) {con.close();}
+    	}
+    	
+    	return flag;
+    	
     }
     
     /**
