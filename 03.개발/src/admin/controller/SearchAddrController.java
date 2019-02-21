@@ -28,7 +28,6 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
 		this.sav = sav;
 		this.umv = umv;
 		this.umc = umc;
-		System.out.println("원래 add "+umc.getAddrSeq());
 	}
 	
 	/**
@@ -52,7 +51,6 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
 		AddrVO avo = null;
 		for(int i=0; i<list.size(); i++) {
 			avo = list.get(i);
-			System.out.println(avo);
 			
 			rowData[0] = avo.getZipcode();
 			rowData[1] = avo.getSido();
@@ -106,8 +104,7 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
 			JTable jt = sav.getJtZip();
 			
 			int selectedRow = jt.getSelectedRow();
-			System.out.println(selectedRow);
-			
+
 			// 선택된 레코드의 seq를 어떻게 알아내지?
 			// -list를 전역으로 올렸음.
 			// -데이터는 순차적으로 들어감 검색되는것 부터 끝까지
@@ -115,7 +112,6 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
 			
 			// 주소 시퀀스 저장
 			umc.setAddrSeq(list.get(selectedRow).getSeq());
-			System.out.println("새 시퀀스 : "+umc.getAddrSeq());
 			
 			// zipcode, addr1에 선택 내용 반영
 			String zipcode = (String)jt.getValueAt(selectedRow, 0);
@@ -127,6 +123,7 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
 			
 			umv.getJtfZip().setText(zipcode);
 			umv.getJtfAddr1().setText(addr1.toString());
+			umv.getJtfAddr2().setText("");
 			
 			sav.dispose();
 		}
