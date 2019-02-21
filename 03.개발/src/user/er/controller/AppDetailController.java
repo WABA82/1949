@@ -4,6 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
@@ -61,13 +67,14 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 				adv.getJtfName().setText(daevo.getName());
 				adv.getJtfTel().setText(daevo.getTel());
 				adv.getJtfEmail().setText(daevo.getEmail());
-				adv.getJtfRank().setText(daevo.getRank());
+				adv.getJtfRank().setText((daevo.getRank().equals("N") ? "신입" : "경력"));
 				adv.getJtfLoc().setText(daevo.getLoc());
 				adv.getJtfEdu().setText(daevo.getEducation());
 				adv.getJtfAge().setText(String.valueOf(daevo.getAge()));
-				adv.getJtfPort().setText(daevo.getPortfolio());
-				adv.getJtfGender().setText(daevo.getGender());
+				adv.getJtfPort().setText((daevo.getPortfolio().equals("Y") ? "있음" : "없음"));
+				adv.getJtfGender().setText((daevo.getGender().equals("M") ? "남자" : "여자"));
 
+				// 받아온 지원자 상세 정보에서 App_status를 바꿔준다.
 				switch (daevo.getApp_status()) {
 				case "U": // 지원상태를 R로 바꿔준다.
 					er_dao.updateAppSatus(new ErAppStatusVO(app_num, "R"));
@@ -129,7 +136,17 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 		} // end if
 
 		if (e.getSource() == adv.getJbExtRsm()) { // 외부이력서 버튼 이벤트 처리
-			extResumeDown();
+
+			try {
+				extResumeDown();
+			} catch (UnknownHostException e1) {
+				JOptionPane.showMessageDialog(adv, "서버를 알 수 없습니다.");
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				JOptionPane.showMessageDialog(adv, "연결 실패");
+				e1.printStackTrace();
+			} // end catch
+
 		} // end if
 
 		if (e.getSource() == adv.getJbClose()) { // 닫기 버튼 이벤트 처리
@@ -169,16 +186,70 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 
 	/**
 	 * 서버로 부터 지원자가 등록한 외부이력서를 다운받는 메서드.
+	 * 
+	 * @throws UnknownHostException
+	 * 
+	 * @throws IOException
 	 */
-	public void extResumeDown() {
+	public void extResumeDown() throws UnknownHostException, IOException {
 		if (daevo.getExt_resume() == null) {
 			JOptionPane.showMessageDialog(adv, "이 지원자가 등록한 외부이력서가 없습니다.");
 			return;
 		} // end if
 
 		if (daevo.getExt_resume() != null) {
-			// 자바의 정석 2편의 882p읽어 보기.
+
+			Socket socket = null;
+			DataOutputStream dos = null;
+			DataInputStream dis = null;
+			FileOutputStream fos = null;
+
+			try {
+				socket = new Socket("211.63.89.144", 7002);
+				dos = new DataOutputStream(socket.getOutputStream());
+
+				// 서버에게 이력서파일 전송 요청 보내기.
+				dos.writeUTF("ee_ext_request");
+				dos.flush();
+
+				// 서버에게 요청할 파일명 보내기.
+				dos.writeUTF(daevo.getExt_resume());
+				dos.flush();
+
+				dis = new DataInputStream(socket.getInputStream());
+				// System.out.println("클라이언트 "+ fileCnt+"개 받음");
+
+				int fileCnt = 0; // 서버에서 보내오는 파일 조각의 갯수.
+				int data = 0; // 서버에서 보내오는 데이터
+
+				// 전달받을 파일 조각의 갯수
+				fileCnt = dis.readInt();
+
+				fos = new FileOutputStream("C:/dev/" + daevo.getExt_resume());
+
+				byte[] readData = new byte[512];
+				while (fileCnt > 0) {
+					data = dis.read(readData); // 서버에서 전송한 파일조각을 읽어들여
+					fos.write(readData, 0, data);// 생성한 파일로 기록
+					fos.flush();
+					fileCnt--;
+				} // end while
+
+				dos.writeUTF("종료되었습니다.");
+
+			} finally {
+				if (fos != null) {
+					fos.close();
+				} // end if
+				if (dos != null) {
+					dos.close();
+				} // end if
+				if (socket != null) {
+					socket.close();
+				} // end if
+			} // end finally
 		} // end if
+
 	}// changeStatusAccept()
 
 }// class

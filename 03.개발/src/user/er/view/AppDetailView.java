@@ -224,7 +224,7 @@ public class AppDetailView extends JDialog {
 	/****** getter 메서드 끝 ******/
 
 	public static void main(String[] args) {
-		new AppDetailView(null, "app_000001");
+		new AppDetailView(null, "app_000061");
 	}// main
 
 }// class

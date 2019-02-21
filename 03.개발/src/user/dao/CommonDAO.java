@@ -16,11 +16,8 @@ import user.common.vo.FindPassVO;
 import user.common.vo.SetPassVO;
 import user.common.vo.UserInfoVO;
 import user.common.vo.UserModifyVO;
-import user.ee.view.EeMainView;
-import user.er.view.ErMainView;
 
 public class CommonDAO {
-
     private static CommonDAO C_dao;
     
     private CommonDAO() {
@@ -57,7 +54,7 @@ public class CommonDAO {
      */
     public String login(String id, String pass) throws SQLException {
        String userType = "";
-
+       
        Connection con = null;
        PreparedStatement pstmt = null;
        ResultSet rs = null;
@@ -169,8 +166,6 @@ public class CommonDAO {
 
     }
     
-
-    
     /**
      * 최혜원 비밀번호 변경전 회원정보받아 검증
      * @param fpvo
@@ -275,16 +270,17 @@ public class CommonDAO {
             StringBuilder selectUserInfo=new StringBuilder();
             selectUserInfo.append("select u.id, u.name, u.tel, z.seq, z.zipcode,")
             .append("z.sido||' '||z.gugun||' '||z.dong||' '||z.bunji addr1 ,")
-            .append("u.addr_detail addr2, u.email")
-            .append("from user_table u, zipcode z ")
-            .append("where u.addr_seq=z.seq ")
-            .append("and u.id in ? ");
+            .append("   u.addr_detail addr2, u.email")
+            .append("      from user_table u, zipcode z ")
+            .append("      where u.addr_seq=z.seq and u.id in ? ");
+            //.append("      and u.id in ? ");
             
             pstmt=con.prepareStatement(selectUserInfo.toString());
             
             pstmt.setString(1, id);
             
             rs=pstmt.executeQuery();
+            
             if(rs.next()) {
                 uivo=new UserInfoVO(rs.getString("id"), rs.getString("name"), rs.getString("tel")
                                             ,rs.getString("seq"), rs.getString("zipcode"), rs.getString("addr1")
@@ -455,14 +451,4 @@ public class CommonDAO {
           }//end finally
           return emv;
        }//selectErMain
-
-    public static void main(String[] args) {
-		CommonDAO c_dao = CommonDAO.getInstance();
-		try {
-			System.out.println(c_dao.selectErMain("song9912"));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}// main
-    
     }

@@ -50,6 +50,7 @@ public class ErAddVO {
 	public List<String> getListSkill() {
 		return listSkill;
 	}
+
 	
 	
 }

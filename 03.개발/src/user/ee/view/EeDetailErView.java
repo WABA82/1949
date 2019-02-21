@@ -273,11 +273,9 @@ public class EeDetailErView extends JDialog {
 			jtfRank.setText("경력");
 		} else if (deivo.getRank().equals("N")) {
 			jtfRank.setText("신입");
-
-		}
-		// EeHiringView ehv, DetailErInfoVO deivo, String erNum, String eeId,String
-		// appStatus
-		// 이벤트
+		}// end if
+		
+		// 이벤트 등록 //
 		EeDetailErController edec = new EeDetailErController(this, erNum, eeId, flagHeart);
 		jlHeart.addMouseListener(edec);
 		jbCoInfo.addActionListener(edec);

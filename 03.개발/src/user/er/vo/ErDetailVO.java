@@ -72,6 +72,13 @@ public class ErDetailVO {
 	public List<String> getListSkill() {
 		return listSkill;
 	}
+	@Override
+	public String toString() {
+		return "ErDetailVO [erNum=" + erNum + ", img1=" + img1 + ", name=" + name + ", tel=" + tel + ", email=" + email
+				+ ", subject=" + subject + ", coName=" + coName + ", education=" + education + ", rank=" + rank
+				+ ", loc=" + loc + ", hireType=" + hireType + ", portfolio=" + portfolio + ", erDesc=" + erDesc
+				+ ", sal=" + sal + ", listSkill=" + listSkill + "]";
+	}
 	
 	
 	

@@ -65,7 +65,7 @@ public class ErInterestView extends JDialog {
 	}
 
 	public static void main(String[] args) {
-		new ErInterestView(null, "gang123");
+		new ErInterestView(null, "moonlight");
 	}
 
 }// class

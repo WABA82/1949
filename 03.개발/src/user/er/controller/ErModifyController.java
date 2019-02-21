@@ -17,6 +17,7 @@ import user.er.view.ErMgMtView;
 import user.er.view.ErModifyView;
 import user.er.vo.ErListVO;
 import user.er.vo.ErModifyVO;
+import user.util.UserLog;
 
 public class ErModifyController extends WindowAdapter implements ActionListener {
 	private ErModifyView emv;
@@ -24,6 +25,7 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 	private ErDAO erdao;
 	private ErMgMtController emmc;
 	private int preSkill;
+	private UserLog ul;
 	
 	public ErModifyController(ErModifyView emv, String erNum,String erId,ErMgMtController emmc, int preSkill) {
 		this.emv = emv;
@@ -31,6 +33,7 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 		this.erId = erId;
 		this.emmc= emmc;
 		this.preSkill= preSkill;
+		ul = new UserLog();
 		erdao= ErDAO.getInstance();
 	}
 	public void modifyEr() {
@@ -39,23 +42,30 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 		String hireType = String.valueOf(emv.getJcbHireType().getSelectedItem());
 		String portfolio = String.valueOf(emv.getJcbPortfolio().getSelectedItem());
 		List<String> listSkill = new ArrayList<String>();
-		
+	
+		if(emv.getJchCSS().isSelected()) {
+			listSkill.add("s_06");
+		}
+		if(emv.getJchHTML().isSelected()) {
+			listSkill.add("s_05");
+		}
 		if(emv.getJchJava().isSelected()) {
-			listSkill.add("Java");
-		}else if(emv.getJchJspServlet().isSelected()) {
-			listSkill.add("JspServlet");
-		}else if(emv.getJchSpring().isSelected()) {
-			listSkill.add("Spring");
-		}else if(emv.getJchOracle().isSelected()) {
-			listSkill.add("Oracle");
-		}else if(emv.getJchHTML().isSelected()) {
-			listSkill.add("HTML");
-		}else if(emv.getJchCSS().isSelected()) {
-			listSkill.add("CSS");
-		}else if(emv.getJchLinux().isSelected()) {
-			listSkill.add("Linux");
-		}else if(emv.getJchJS().isSelected()) {
-			listSkill.add("JS");
+			listSkill.add("s_01");
+		}
+		if(emv.getJchJS().isSelected()) {
+			listSkill.add("s_08");
+		}
+		if(emv.getJchJspServlet().isSelected()) {
+			listSkill.add("s_02");
+		}
+		if(emv.getJchLinux().isSelected()) {
+			listSkill.add("s_07");
+		}
+		if(emv.getJchOracle().isSelected()) {
+			listSkill.add("s_04");
+		}
+		if(emv.getJchSpring().isSelected()) {
+			listSkill.add("s_03");
 		}
 		
 		if(rank.equals("신입")) {
@@ -63,8 +73,6 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 		}else if(rank.equals("경력")) {
 			rank="C";
 		}
-		// rank: 'N' - 신입 'C' - 경력
-		// hiretype 'C' - 정규직'N' - 비정규직'F' - 프리
 		
 		if(hireType.equals("정규직")) {
 			hireType="C";
@@ -95,6 +103,7 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 			updateflag = erdao.updateErModify(emvo,preSkill);
 			if(updateflag) {
 				JOptionPane.showMessageDialog(emv, "구인 정보가 수정되었습니다.");
+				ul.sendLog(erId, "구인 정보를 수정했습니다.");
 				emv.dispose();
 				emmc.setDtm();
 			}
@@ -115,10 +124,11 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 		}
 		if(deleteFlag) {
 			JOptionPane.showMessageDialog(emv, "구인 정보가 삭제되었습니다. ");
+			ul.sendLog(erId, "구인 정보를 삭제했습니다.");
 			emmc.setDtm();
-		
+			emv.dispose();
 		}else {
-			JOptionPane.showMessageDialog(emv, "리스트삭제에 실패했습니다.");
+			JOptionPane.showMessageDialog(emv, "구인정보 삭제에 실패했습니다. \n 다시 한번 실행해주세요!");
 		}
 	}
 	
@@ -138,7 +148,6 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 		if(ae.getSource()==emv.getJbCancel()) {
 			emv.dispose();
 		}
-		
 	}
 	@Override
 	public void windowClosing(WindowEvent e) {

@@ -77,7 +77,7 @@ public class ErModifyView extends JDialog {
 		jchSpring = new JCheckBox("Spring");
 		jchOracle = new JCheckBox("Oracle");
 		jchHTML = new JCheckBox("HTML");
-		jchCSS = new JCheckBox("HTML");
+		jchCSS = new JCheckBox("CSS");
 		jchLinux = new JCheckBox("Linux");
 		jchJS = new JCheckBox("JavaScript");
 
@@ -222,29 +222,36 @@ public class ErModifyView extends JDialog {
 		skillGridPanel.add(jchJS);
 		
 		int preSkill=0;
-		
+		System.out.println(edvo.getListSkill());
 		if(edvo.getListSkill().contains("Java")) {
 			jchJava.setSelected(true);
 			preSkill++;
-		}else if(edvo.getListSkill().contains("JspServlet")){
+		}
+		if(edvo.getListSkill().contains("JSP/Servlet")){
 			jchJspServlet.setSelected(true);
 			preSkill++;
-		}else if(edvo.getListSkill().contains("Spring")){
+		}
+		if(edvo.getListSkill().contains("Spring")){
 			jchSpring.setSelected(true);
 			preSkill++;
-		}else if(edvo.getListSkill().contains("Oracle")){
+		}
+		if(edvo.getListSkill().contains("Oracle")){
 			jchOracle.setSelected(true);
 			preSkill++;
-		}else if(edvo.getListSkill().contains("HTML")){
+		}
+		if(edvo.getListSkill().contains("HTML")){
 			jchHTML.setSelected(true);
 			preSkill++;
-		}else if(edvo.getListSkill().contains("CSS")){
+		}
+		if(edvo.getListSkill().contains("CSS")){
 			jchCSS.setSelected(true);
 			preSkill++;
-		}else if(edvo.getListSkill().contains("Linux")){
+		}
+		if(edvo.getListSkill().contains("Linux")){
 			jchLinux.setSelected(true);
 			preSkill++;
-		}else if(edvo.getListSkill().contains("JS")){
+		}
+		if(edvo.getListSkill().contains("JS")){
 			jchJS.setSelected(true);
 			preSkill++;
 		}
@@ -269,7 +276,7 @@ public class ErModifyView extends JDialog {
 		add(jbReg);
 		add(jbDelete);
 		add(jbCancel);
-
+		
 		/* 이벤트등록 */
 		ErModifyController emc = new ErModifyController(this,erNum,erId,emmc,preSkill);
 		jbCancel.addActionListener(emc);

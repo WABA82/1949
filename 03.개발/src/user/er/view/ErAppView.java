@@ -21,7 +21,7 @@ public class ErAppView extends JDialog {
 		dtmEr = new DefaultTableModel(erInfoColumns, 40) {
 			public boolean isCellEditable(int row, int column) {
 				return false;
-			}
+			}// isCellEditable
 		};
 		jtEr = new JTable(dtmEr);
 		JScrollPane jspEeInfo = new JScrollPane(jtEr);
@@ -57,7 +57,7 @@ public class ErAppView extends JDialog {
 	}
 
 	public static void main(String[] args) {
-		new ErAppView(null, "lucky012");
+		new ErAppView(null, "meteo77");
 	}// main
 
 }// class
