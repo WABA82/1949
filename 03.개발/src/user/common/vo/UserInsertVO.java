@@ -2,7 +2,7 @@ package user.common.vo;
 
 public class UserInsertVO {
 
-	private String id, pass, name, ssn, tel, email, addrSeq, addrDetail, questionType, answer;
+	private String id, pass, name, ssn, tel, email, addrSeq, addrDetail, questionType, answer, userType;
 	
 	
 	public UserInsertVO() {
@@ -10,7 +10,7 @@ public class UserInsertVO {
 	}
 
 	public UserInsertVO(String id, String pass, String name, String ssn, String tel, String email, String addrSeq,
-			String addrDetail, String questionType, String answer) {
+			String addrDetail, String questionType, String answer, String userType) {
 		super();
 		this.id = id;
 		this.pass = pass;
@@ -22,6 +22,7 @@ public class UserInsertVO {
 		this.addrDetail = addrDetail;
 		this.questionType = questionType;
 		this.answer = answer;
+		this.userType = userType;
 	}
 
 	public String getId() {
@@ -64,15 +65,18 @@ public class UserInsertVO {
 		return answer;
 	}
 
+	public String getUserType() {
+		return userType;
+	}
+
 	@Override
 	public String toString() {
 		return "UserInsertVO [id=" + id + ", pass=" + pass + ", name=" + name + ", ssn=" + ssn + ", tel=" + tel
 				+ ", email=" + email + ", addrSeq=" + addrSeq + ", addrDetail=" + addrDetail + ", questionType="
-				+ questionType + ", answer=" + answer + "]";
+				+ questionType + ", answer=" + answer + ", userType=" + userType + "]";
 	}
-	
-	
-	
-	
+
+
+
 	
 }
