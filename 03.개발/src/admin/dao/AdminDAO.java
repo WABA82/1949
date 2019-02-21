@@ -483,6 +483,10 @@ public class AdminDAO {
 	 */
 	public boolean checkDefaultImg(String imgName) {
 		boolean flag = false;
+		
+		if (imgName == null) {
+			return flag;
+		}
 
 		String[] defaultImgName = { "no_co_img1.png", "no_co_img2.png",
 				"no_co_img3.png", "no_co_img4.png", "no_ee_img.png" };
