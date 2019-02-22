@@ -1,10 +1,16 @@
 package user.common.view;
 
+import java.awt.Color;
+
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import user.common.controller.ChangeUserInfoController;
+import user.common.vo.UserInfoVO;
+import user.er.view.ErMainView;
 
 @SuppressWarnings("serial")
 public class ChangeUserInfoView extends JDialog {
@@ -12,7 +18,8 @@ public class ChangeUserInfoView extends JDialog {
 	private JPasswordField jpfOriginalPass, jpfNewPass1, jpfNewPass2;
 	private JButton jbModify, jbDelete, jbClose, jbAddr;
 
-	public ChangeUserInfoView() {
+	public ChangeUserInfoView(ErMainView emv, UserInfoVO uivo) {
+		
 		setTitle("회원 정보 수정");
 		JLabel jlId = new JLabel("아이디");
 		JLabel jlPw1 = new JLabel("비밀번호");
@@ -24,16 +31,22 @@ public class ChangeUserInfoView extends JDialog {
 		JLabel jlAddr2 = new JLabel("상세주소");
 		JLabel jlEmail = new JLabel("이메일");
 
-		jtfId = new JTextField();
+		jtfId = new JTextField(uivo.getId());
+		jtfId.setEditable(false);//id 변경 막기
+		jtfId.setBackground(Color.WHITE);
 		jpfOriginalPass = new JPasswordField();
 		jpfNewPass1 = new JPasswordField();
 		jpfNewPass2 = new JPasswordField();
-		jtfName = new JTextField();
-		jtfTel = new JTextField();
-		jtfZipcode = new JTextField();
-		jtfAddr1 = new JTextField();
-		jtfAddr2 = new JTextField();
-		jtfEmail = new JTextField();
+		jtfName = new JTextField(uivo.getName());
+		jtfTel = new JTextField(uivo.getTel());
+		jtfZipcode = new JTextField(uivo.getZipcode());
+		jtfZipcode.setEditable(false);//우편번호 수정 막기
+		jtfZipcode.setBackground(Color.WHITE);
+		jtfAddr1 = new JTextField(uivo.getAddr1());
+		jtfAddr1.setEditable(false);//주소 수정 막기
+		jtfAddr1.setBackground(Color.WHITE);
+		jtfAddr2 = new JTextField(uivo.getAddr2());
+		jtfEmail = new JTextField(uivo.getEmail());
 
 		jbModify = new JButton("수정");
 		jbDelete = new JButton("탈퇴");
@@ -111,13 +124,30 @@ public class ChangeUserInfoView extends JDialog {
 		jbClose.setBounds(233, 455, 92, 30);
 		add(jbClose);
 		
+		ChangeUserInfoController cuic=new ChangeUserInfoController(this, uivo);
+		addWindowListener(cuic);
+		jbModify.addActionListener(cuic);
+		jbDelete.addActionListener(cuic);
+		jbClose.addActionListener(cuic);
+		jbAddr.addActionListener(cuic);
+		
+	
+		
 		setBounds(0,0,390,600);
 		setVisible(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+	
+		setBounds(emv.getX()+50,emv.getY()+50,390,680);
+		setVisible(true);
+	
 	}
+	
 	/*public static void main(String[] args) {
-		new ChangeUserInfoView();
+		UserInfoVO uivo=new UserInfoVO(id, name, tel, seq, zipcode, addr1, addr2, email);
+		new ChangeUserInfoView(null, uivo);
 	}*/
+
+	
 
 	public JTextField getJtfId() {
 		return jtfId;

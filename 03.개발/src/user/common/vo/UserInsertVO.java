@@ -2,18 +2,18 @@ package user.common.vo;
 
 public class UserInsertVO {
 
-	private String id, pasas, name, ssn, tel, email, addrSeq, addrDetail, questionType, answer;
+	private String id, pass, name, ssn, tel, email, addrSeq, addrDetail, questionType, answer, userType;
 	
 	
 	public UserInsertVO() {
 		super();
 	}
 
-	public UserInsertVO(String id, String pasas, String name, String ssn, String tel, String email, String addrSeq,
-			String addrDetail, String questionType, String answer) {
+	public UserInsertVO(String id, String pass, String name, String ssn, String tel, String email, String addrSeq,
+			String addrDetail, String questionType, String answer, String userType) {
 		super();
 		this.id = id;
-		this.pasas = pasas;
+		this.pass = pass;
 		this.name = name;
 		this.ssn = ssn;
 		this.tel = tel;
@@ -22,14 +22,15 @@ public class UserInsertVO {
 		this.addrDetail = addrDetail;
 		this.questionType = questionType;
 		this.answer = answer;
+		this.userType = userType;
 	}
 
 	public String getId() {
 		return id;
 	}
 
-	public String getPasas() {
-		return pasas;
+	public String getPass() {
+		return pass;
 	}
 
 	public String getName() {
@@ -64,15 +65,18 @@ public class UserInsertVO {
 		return answer;
 	}
 
+	public String getUserType() {
+		return userType;
+	}
+
 	@Override
 	public String toString() {
-		return "UserInsertVO [id=" + id + ", pasas=" + pasas + ", name=" + name + ", ssn=" + ssn + ", tel=" + tel
+		return "UserInsertVO [id=" + id + ", pass=" + pass + ", name=" + name + ", ssn=" + ssn + ", tel=" + tel
 				+ ", email=" + email + ", addrSeq=" + addrSeq + ", addrDetail=" + addrDetail + ", questionType="
-				+ questionType + ", answer=" + answer + "]";
+				+ questionType + ", answer=" + answer + ", userType=" + userType + "]";
 	}
-	
-	
-	
-	
+
+
+
 	
 }

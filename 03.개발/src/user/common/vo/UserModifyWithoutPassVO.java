@@ -1,13 +1,13 @@
 package user.common.vo;
 
-public class UserModifyVO {
-	private String id, name, pass, tel, seq, addrDetail, email;
+public class UserModifyWithoutPassVO {
 
-	public UserModifyVO(String id, String name, String pass, String tel, String seq, String addrDetail, String email) {
+	private String id, name, tel, seq, addrDetail, email;
+
+	public UserModifyWithoutPassVO(String id, String name, String tel, String seq, String addrDetail, String email) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.pass = pass;
 		this.tel = tel;
 		this.seq = seq;
 		this.addrDetail = addrDetail;
@@ -20,10 +20,6 @@ public class UserModifyVO {
 
 	public String getName() {
 		return name;
-	}
-
-	public String getPass() {
-		return pass;
 	}
 
 	public String getTel() {
@@ -44,8 +40,8 @@ public class UserModifyVO {
 
 	@Override
 	public String toString() {
-		return "UserModifyVO [id=" + id + ", name=" + name + ", pass=" + pass + ", tel=" + tel + ", seq=" + seq
-				+ ", addrDetail=" + addrDetail + ", email=" + email + "]";
+		return "UserModifyVO2 [id=" + id + ", name=" + name + ", tel=" + tel + ", seq=" + seq + ", addrDetail="
+				+ addrDetail + ", email=" + email + "]";
 	}
 	
 	

@@ -1,5 +1,7 @@
 package user.common.controller;
 
+import static javax.swing.JOptionPane.showMessageDialog;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -38,6 +40,45 @@ public class FindIdController extends WindowAdapter implements ActionListener {
 			jtfTel.requestFocus();
 			return;
 		}
+		
+		//전화번호 검증 -빼면 11자리(010-0000-0000)
+		try {
+			String tel2=tel.replaceAll("-", "");
+		
+		if(tel2.length()!=11) {
+			JOptionPane.showMessageDialog(fiv, "올바른 전화번호 형식이 아닙니다\n예) 010-0000-0000");
+			return;
+			
+		}else {//11자리라면  :-있는지 확인하고, - - 사이 번호 자릿수 검증
+			//-필수입력
+			if(!(tel.contains("-"))) {
+				JOptionPane.showMessageDialog(fiv, "올바른 전화번호 형식이 아닙니다\n예) 010-0000-0000");
+				return;
+			}//end if
+			
+			//010외에는 되지 않도록
+			if(!(tel.substring(0, tel.indexOf("-")).equals("010"))) {
+				JOptionPane.showMessageDialog(fiv, "올바른 전화번호 형식이 아닙니다\n예) 010-0000-0000");
+				return;
+			}//end if
+			
+			
+			//010-0000-0000
+			//첫-전까지자릿수3자리 , --사이 4자리, 나머지4자리(첫번째검증으로..)
+			if(!(tel.substring(0, tel.indexOf("-")).length()==3)
+				||!(tel.substring(tel.indexOf("-")+1, tel.lastIndexOf("-")).length()==4)) {
+					 
+					JOptionPane.showMessageDialog(fiv, "올바른 전화번호 형식이 아닙니다\n예) 010-0000-0000");
+					return;
+			}//end if
+			
+				Integer.parseInt(tel2);
+			}//end else
+		} catch (NumberFormatException nfe) {
+			showMessageDialog(fiv, "전화번호에 문자열이 들어있습니다.");
+			return;
+		} //end catch	
+
 		FindIdVO fivo = new FindIdVO(name, tel);
 		String searchId="";
 		
@@ -52,6 +93,7 @@ public class FindIdController extends WindowAdapter implements ActionListener {
 			}else {
 				JOptionPane.showMessageDialog(fiv, "입력하신 정보가 일치합니다.");
 				JOptionPane.showMessageDialog(fiv, "회원님의 아이디는 "+searchId+" 입니다.");
+				fiv.dispose();
 			}
 			
 		} catch (SQLException e) {

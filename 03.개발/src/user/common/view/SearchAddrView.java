@@ -11,7 +11,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import user.common.controller.ChangeUserInfoController;
 import user.common.controller.SearchAddrController;
+import user.common.controller.SignUpController;
 
 public class SearchAddrView extends JDialog {
 	
@@ -20,12 +22,11 @@ public class SearchAddrView extends JDialog {
 	private JTable jtZip;
 	private JButton jbSearch, jbOk, jbCancel;
 
-	public SearchAddrView(JDialog jd, String addrSeq) {
+	public SearchAddrView(JDialog jd, SignUpController suc, ChangeUserInfoController cuic) {
 		super(jd,"주소검색", true);
-//	public SearchAddrView() {
 		
 		jtfDong = new JTextField(20);
-		String[] columnNames = { "우편번호", "시도", "구군", "동", "번지" };
+		String[] columnNames = { "우편번호", "시도", "구군", "동", "번지", /*"sqe"*/ };
 		dtmZip = new DefaultTableModel(columnNames, 3);
 		jtZip = new JTable(dtmZip);
 		JScrollPane jspZip = new JScrollPane(jtZip);
@@ -47,7 +48,7 @@ public class SearchAddrView extends JDialog {
 		add(BorderLayout.CENTER, jspZip);
 		add(BorderLayout.SOUTH, bottomPanel);
 		
-		SearchAddrController sac = new SearchAddrController(this, jd, addrSeq);
+		SearchAddrController sac = new SearchAddrController(this, suc, cuic);
 		jbSearch.addActionListener(sac);
 		jbOk.addActionListener(sac);
 		jbCancel.addActionListener(sac);
