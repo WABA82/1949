@@ -54,10 +54,20 @@ public class ErMgMtController extends WindowAdapter implements MouseListener, Ac
 				rowData[0] = new Integer(i+1);
 				rowData[1] = ervo.getErNum();
 				rowData[2] = ervo.getSubject();
-				rowData[3] = ervo.getRank();
+				if(ervo.getRank().equals("N")) {
+					rowData[3]= "신입";
+				}else if(ervo.getRank().equals("C")) {
+					rowData[3]="경력";
+				}
 				rowData[4] = ervo.getLoc();
 				rowData[5] = ervo.getEducation();
-				rowData[6] = ervo.getHireType();
+				if(ervo.getHireType().equals("C")) {
+					rowData[6] = "정규직";
+				}else if(ervo.getHireType().equals("N")) {
+					rowData[6] = "비정규직";
+				}else if(ervo.getHireType().equals("F")) {
+					rowData[6] = "프리";
+				}
 				rowData[7] = ervo.getInputDate();
 				dtmErList.addRow(rowData);
 			}

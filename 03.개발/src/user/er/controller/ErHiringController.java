@@ -8,6 +8,7 @@ import java.awt.event.WindowAdapter;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -49,14 +50,26 @@ public class ErHiringController extends WindowAdapter implements ActionListener,
 				rowData = new Object[11];
 				rowData[0]= new Integer(i+1);
 				rowData[1]= erhvo.getEeNum();
-				rowData[2]= erhvo.getImg();
+				rowData[2]= new ImageIcon("C:/dev/1949/03.개발/src/file/eeImg/"+erhvo.getImg());
 				rowData[3]= erhvo.getName();
-				rowData[4]= erhvo.getRank();
+				if(erhvo.getRank().equals("N")) {
+					rowData[4]= "신입";
+				}else if(erhvo.getRank().equals("C")) {
+					rowData[4]="경력";
+				}
 				rowData[5]= erhvo.getLoc();
 				rowData[6]= erhvo.getEducation();
 				rowData[7]= erhvo.getAge();
-				rowData[8]= erhvo.getPortfolio();
-				rowData[9]= erhvo.getGender();
+				if(erhvo.getPortfolio().equals("Y")) {
+					rowData[8]= "있음";
+				}else if(erhvo.getPortfolio().equals("N")) {
+					rowData[8]= "없음";
+				}
+				if(erhvo.getGender().equals("M")) {
+					rowData[9]= "남자";
+				}else if(erhvo.getGender().equals("F")){
+					rowData[9]= "여자";
+				}
 				rowData[10]= erhvo.getInputDate();
 				
 				dtmHiring.addRow(rowData);
@@ -76,7 +89,7 @@ public class ErHiringController extends WindowAdapter implements ActionListener,
 		String eeNum= String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
 		DetailEeInfoVO devo = null;
 		try {
-			devo = erdao.selectDeatilEe(eeNum, erId);
+			devo = erdao.selectDetailEe(eeNum, erId);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

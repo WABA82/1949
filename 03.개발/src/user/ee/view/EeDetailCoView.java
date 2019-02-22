@@ -36,13 +36,14 @@ public class EeDetailCoView extends JDialog {
 		jtfEstDate.setEditable(false);
 		memberNum.setEditable(false);
 
-		String imgPath = "C:/dev/1949/03.개발/no_img_files/";
+		String imgPath = "C:/dev/1949/03.개발/src/file/coImg/";
 		img1 = new JLabel(new ImageIcon(imgPath + cdvo.getImg1()));
 		img2 = new JLabel(new ImageIcon(imgPath + cdvo.getImg2()));
 		img3 = new JLabel(new ImageIcon(imgPath + cdvo.getImg3()));
 		img4 = new JLabel(new ImageIcon(imgPath + cdvo.getImg4()));
 
 		JTextArea jtaCoDesc = new JTextArea(cdvo.getCo_desc()); // 상세정보.
+		jtaCoDesc.setEditable(false);
 		JScrollPane jspTaDesc = new JScrollPane(jtaCoDesc);
 
 		jbClose = new JButton("닫기");
@@ -97,6 +98,7 @@ public class EeDetailCoView extends JDialog {
 		/* 프레임 크기 설정 및 가시화 */
 		jbClose.setBounds(338, 562, 92, 24);
 		setBounds(100, 100, 480, 650);
+		setResizable(false);
 		setVisible(true);
 
 	}// 생성자
@@ -125,9 +127,8 @@ public class EeDetailCoView extends JDialog {
 	public static void main(String[] args) {
 		EeDAO ee_dao = EeDAO.getInstance();
 		CoDetailVO cdvo;
-
 		try {
-			cdvo = ee_dao.selectCompany("er_000028");
+			cdvo = ee_dao.selectCompany("er_000033");
 			new EeDetailCoView(null, cdvo);
 		} catch (SQLException e) {
 			e.printStackTrace();

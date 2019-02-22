@@ -28,150 +28,150 @@ import user.ee.vo.EeRegVO;
 
 public class EeMainController extends WindowAdapter implements ActionListener, MouseListener {
 
-   private EeMainView emv;
-   private EeMainVO emvo;
-//   private LoginView lv;
+	private EeMainView emv;
+	private EeMainVO emvo;
+//	private LoginView lv;
 
-   private EeDAO eedao;
-   private CommonDAO C_dao;
-   private EeHiringView ehv;
-   private EeRegVO ervo;
-   private EeInfoRegView eirv;
-   private EeInfoVO eivo;
-   
-   public EeMainController(EeMainView emv, EeMainVO emvo) {
-//      this.eirv=eirv;
-      this.emvo = emvo;
-      this.emv = emv;
-      eedao = EeDAO.getInstance();
-//      C_dao=CommonDAO.getInstance();
-//      setInfo("kun90");
-   }// ª˝º∫¿⁄
+	private EeDAO eedao;
+	private CommonDAO C_dao;
+	private EeHiringView ehv;
+	private EeRegVO ervo;
+	private EeInfoRegView eirv;
+	private EeInfoVO eivo;
+	
+	public EeMainController(EeMainView emv, EeMainVO emvo) {
+//		this.eirv=eirv;
+		this.emvo = emvo;
+		this.emv = emv;
+		eedao = EeDAO.getInstance();
+//		C_dao=CommonDAO.getInstance();
+//		setInfo("kun90");
+	}// ÏÉùÏÑ±Ïûê
 
-   public void checkActivation() throws SQLException {
-      //æ≤∑πµÂ µπ∏≤
-      if (emvo.getActivation().equals("N")) {
-         
-//         String eeid=emvo.getEeId();
-//         String act=CommonDAO.getInstance().selectActivation(emvo.getEeId());
-         
-         
-         ervo = eedao.selectEeReg(emvo.getEeId());
-//         System.out.println(emvo.getName()+ "   /   "+emvo.getActivation());
-      
-         System.out.println(ervo);
-         new EeInfoRegView(emv, ervo);
-         //mngUser();
-         
-      } else if(emvo.getActivation().equals("Y")){
-//         ¡∂»∏ ∏∏µÈæÓæﬂ «‘
-          eivo = eedao.selectEeInfo(emvo.getEeId());
-         new EeInfoModifyView(emv, eivo);
-      } // end if
-   }// checkActivation()
+	public void checkActivation() throws SQLException {
+		//Ïì∞Î†àÎìú ÎèåÎ¶º
+		if (emvo.getActivation().equals("0")) {
+			
+//			String eeid=emvo.getEeId();
+//			String act=CommonDAO.getInstance().selectActivation(emvo.getEeId());
+			
+			
+			ervo = eedao.selectEeReg(emvo.getEeId());
+//			System.out.println(emvo.getName()+ "   /   "+emvo.getActivation());
+		
+			System.out.println(ervo);
+			new EeInfoRegView(emv, ervo);
+			//mngUser();
+			
+		} else if(emvo.getActivation().equals("N")){
+//			Ï°∞Ìöå ÎßåÎì§Ïñ¥Ïïº Ìï®
+			 eivo = eedao.selectEeInfo(emvo.getEeId());
+			new EeInfoModifyView(emv, eivo);
+		} // end if
+	}// checkActivation()
 
-   public void mngUser() throws SQLException {
-      ervo = eedao.selectEeReg(emvo.getEeId());
-      new EeInfoRegView(emv, ervo);
-   }
+	public void mngUser() throws SQLException {
+		ervo = eedao.selectEeReg(emvo.getEeId());
+		new EeInfoRegView(emv, ervo);
+	}
 
-   public void mngEe() {
+	public void mngEe() {
 
-   }
+	}
 
-   public void showHiring() {
-//      EeMainView emv = new EeMainView(emvo);
-      List<EeHiringVO> ehvo = new ArrayList<EeHiringVO>();
-      String eeid = "testId";
-      new EeHiringView(emv, ehvo, eeid);
-   }
+	public void showHiring() {
+//		EeMainView emv = new EeMainView(emvo);
+		List<EeHiringVO> ehvo = new ArrayList<EeHiringVO>();
+		String eeid = "testId";
+		new EeHiringView(emv, ehvo, eeid);
+	}
 
-   /**
-    * ∞¸Ω… ±∏¿Œ ∏Ò∑œ√¢ ∂ÁøÏ±‚
-    */
-   public void showInterestEr() {
-      String eeid = "gong1";
-      new EeInterestView(emv, eeid);
-   }// showInterestEr
+	/**
+	 * Í¥ÄÏã¨ Íµ¨Ïù∏ Î™©Î°ùÏ∞Ω ÎùÑÏö∞Í∏∞
+	 */
+	public void showInterestEr() {
+		String eeid = "gong1";
+		new EeInterestView(emv, eeid);
+	}// showInterestEr
 
-   public void showApp() {
-//      new EeAppView();
-   }
+	public void showApp() {
+//		new EeAppView();
+	}
 
-   /**
-    * private EeMainView emv; ∏∂øÏΩ∫ ≈¨∏ØΩ√ ¡æ∑· jlLogOut
-    */
-   @Override
-   public void mouseClicked(MouseEvent me) {
-      if (me.getSource() == emv.getJlLogOut()) {
-         new LoginView();
-         emv.dispose();
+	/**
+	 * private EeMainView emv; ÎßàÏö∞Ïä§ ÌÅ¥Î¶≠Ïãú Ï¢ÖÎ£å jlLogOut
+	 */
+	@Override
+	public void mouseClicked(MouseEvent me) {
+		if (me.getSource() == emv.getJlLogOut()) {
+			new LoginView();
+			emv.dispose();
 
-      } // end if
+		} // end if
 
-   }// mouseClicked
+	}// mouseClicked
 
-//   public void setInfo(String eeid) {
-//      JLabel activation = emv.getJlActivation();
-//      JLabel img = emv.getJlImg();
-//      EeMainVO emvo = null;
+//	public void setInfo(String eeid) {
+//		JLabel activation = emv.getJlActivation();
+//		JLabel img = emv.getJlImg();
+//		EeMainVO emvo = null;
 //
-//      try {
-//         emvo = C_dao.selectEeMain(eeid);
-//         activation.setText(emvo.getActivation());
-//         img.setText(emvo.getImg());
+//		try {
+//			emvo = C_dao.selectEeMain(eeid);
+//			activation.setText(emvo.getActivation());
+//			img.setText(emvo.getImg());
 //
-//      } catch (SQLException e) {
-//         e.printStackTrace();
-//      }
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
 //
-//   }
+//	}
 
-   @Override
-   public void actionPerformed(ActionEvent ae) {
+	@Override
+	public void actionPerformed(ActionEvent ae) {
 
-      if (ae.getSource() == emv.getJbEeInfo()) {
-//         try {
-//            mngUser();
-//         } catch (SQLException e) {
-//            e.printStackTrace();
-//         }
-         
-         try {
-            checkActivation();
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
-      } // end if
+		if (ae.getSource() == emv.getJbEeInfo()) {
+//			try {
+//				mngUser();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+			
+			try {
+				checkActivation();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} // end if
 
-      if (ae.getSource() == emv.getJbErInfo()) {
-         showHiring();
-      } // end if
+		if (ae.getSource() == emv.getJbErInfo()) {
+			showHiring();
+		} // end if
 
-      if (ae.getSource() == emv.getJbInterestEr()) {
-         showInterestEr();
-      } // end if
+		if (ae.getSource() == emv.getJbInterestEr()) {
+			showInterestEr();
+		} // end if
 
-   }// actionPerformed
+	}// actionPerformed
 
-   @Override
-   public void windowClosing(WindowEvent e) {
-      emv.dispose();
-   }
+	@Override
+	public void windowClosing(WindowEvent e) {
+		emv.dispose();
+	}
 
-   @Override
-   public void mousePressed(MouseEvent e) {
-   }
+	@Override
+	public void mousePressed(MouseEvent e) {
+	}
 
-   @Override
-   public void mouseReleased(MouseEvent e) {
-   }
+	@Override
+	public void mouseReleased(MouseEvent e) {
+	}
 
-   @Override
-   public void mouseEntered(MouseEvent e) {
-   }
+	@Override
+	public void mouseEntered(MouseEvent e) {
+	}
 
-   @Override
-   public void mouseExited(MouseEvent e) {
-   }
+	@Override
+	public void mouseExited(MouseEvent e) {
+	}
 }

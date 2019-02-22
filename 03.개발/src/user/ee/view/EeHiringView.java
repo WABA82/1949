@@ -32,22 +32,20 @@ public class EeHiringView extends JDialog {
 				return false;
 			}
 		};
-		jtErInfo = new JTable(dtmErInfo) {
-			@Override
-			public Class<?> getColumnClass(int column) {
-				return getValueAt(0, column).getClass();
-			}
-		};
+		jtErInfo = new JTable(dtmErInfo) ;
+				
 		jtErInfo.getColumnModel().getColumn(0).setPreferredWidth(40);
 		jtErInfo.getColumnModel().getColumn(1).setPreferredWidth(100);
 		jtErInfo.getColumnModel().getColumn(2).setPreferredWidth(250);
 		jtErInfo.getColumnModel().getColumn(3).setPreferredWidth(150);
-		jtErInfo.getColumnModel().getColumn(4).setPreferredWidth(30);
-		jtErInfo.getColumnModel().getColumn(5).setPreferredWidth(50);
+		jtErInfo.getColumnModel().getColumn(4).setPreferredWidth(60);
+		jtErInfo.getColumnModel().getColumn(5).setPreferredWidth(60);
 		jtErInfo.getColumnModel().getColumn(6).setPreferredWidth(60);
-		jtErInfo.getColumnModel().getColumn(7).setPreferredWidth(30);
+		jtErInfo.getColumnModel().getColumn(7).setPreferredWidth(60);
 		jtErInfo.getColumnModel().getColumn(8).setPreferredWidth(70);
-		jtErInfo.getColumnModel().getColumn(9).setPreferredWidth(200);
+		jtErInfo.getColumnModel().getColumn(9).setPreferredWidth(130);
+		
+		jtErInfo.setRowHeight(30);
 		
 		String sort[]= {"등록일순","직급순","급여순"};
 		jcbSort=new JComboBox<String>(sort);
@@ -55,7 +53,7 @@ public class EeHiringView extends JDialog {
 		JScrollPane jspEe=new JScrollPane(jtErInfo);
 		
 		jbDetailSearch=new JButton("조건검색");
-		jbAllView = new JButton("전체보기");
+		jbAllView = new JButton("초기화");
 		
 		JLabel jlSearch=new JLabel("기업명 검색");
 		jtfSearch = new JTextField();
@@ -82,7 +80,6 @@ public class EeHiringView extends JDialog {
 		add(jbAllView);
 		
 		//이벤트 추가
-		eeId= "gong1";
 		EeHiringController ehc = new EeHiringController(this,eeId);
 		jcbSort.addActionListener(ehc);
 		jbDetailSearch.addActionListener(ehc);
@@ -100,7 +97,6 @@ public class EeHiringView extends JDialog {
 		jtfSearch.requestFocus();
 		
 	}//ErHiringView
-
 	
 
 	public JTextField getJtfSearch() {
@@ -135,7 +131,7 @@ public class EeHiringView extends JDialog {
 
 	public static void main(String[] args) {
 		
-		new EeHiringView(null,null,null);
+		new EeHiringView(null,null,"gong1");
 	}
 	
 	

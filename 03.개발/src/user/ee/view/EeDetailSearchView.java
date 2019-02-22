@@ -38,7 +38,7 @@ public class EeDetailSearchView extends JDialog {
 				"광주","전남","전북","대구","경북","부산","울산","경남","강원","제주","전국" };
 		jcbLoc = new JComboBox<String>(locItems);
 		
-		String[] htItems = { "==고용형태를 선택해주세요==", "정규직","계약직","프리" };
+		String[] htItems = { "==고용형태를 선택해주세요==", "정규직","비정규직","프리" };
 		jcbHireType = new JComboBox<String>(htItems);
 		
 		setLayout(null);

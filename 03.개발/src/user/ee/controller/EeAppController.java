@@ -40,6 +40,11 @@ public class EeAppController extends WindowAdapter implements MouseListener {
 			// DB에서 관심회사를 조회.
 			List<EeAppVO> list = ee_dao.selectAppList(ee_id);
 
+			// 지원 현황 갯수 화면에 보여주기.
+			StringBuilder cnt = new StringBuilder();
+			cnt.append("내 지원 현황 수 : ").append(String.valueOf(list.size())).append(" 개");
+			eav.getJlEeAppCnt().setText(cnt.toString());
+
 			// JTable에 조회한 정보를 출력.
 			eavo = null;
 
@@ -51,21 +56,41 @@ public class EeAppController extends WindowAdapter implements MouseListener {
 				// DTM에 데이터를 추가하기 위한 일차원배열(Vector)을 생성하고 데이터를 추가
 				rowData = new Object[12];
 				rowData[0] = new Integer(i + 1);
-				rowData[1] = eavo.getEr_num(); /* 값이 안들어 옴. */
-				rowData[2] = eavo.getApp_num();
-				rowData[3] = eavo.getSubject();
-				rowData[4] = eavo.getCo_name();
-				rowData[5] = eavo.getRank();
-				rowData[6] = eavo.getLoc();
-				rowData[7] = eavo.getEducation();
-				rowData[8] = eavo.getHire_type();
-				rowData[9] = new Integer(eavo.getSal());
-				rowData[10] = eavo.getApp_date();
-				rowData[11] = eavo.getApp_status();
-				System.out.println(eavo.getApp_status());
+				rowData[1] = eavo.getApp_num();
+				rowData[2] = eavo.getSubject();
+				rowData[3] = eavo.getCo_name();
+				rowData[4] = (eavo.getRank().equals("N") ? "신입" : "경력"); // 'N'신입, 'R'경력.
+				rowData[5] = eavo.getLoc();
+				rowData[6] = eavo.getEducation();
+				switch (eavo.getHire_type()) {
+				case "C":
+					rowData[7] = "정규직";
+					break;
+				case "N":
+					rowData[7] = "비정규직";
+					break;
+				case "F":
+					rowData[7] = "프리랜서";
+				}// end switch
+				rowData[8] = new Integer(eavo.getSal());
+				rowData[9] = eavo.getApp_date();
+				switch (eavo.getApp_status()) {
+				case "U":
+					rowData[10] = "응답대기";
+					break;
+				case "R":
+					rowData[10] = "열람";
+					break;
+				case "A":
+					rowData[10] = "지원수락";
+					break;
+				case "D":
+					rowData[10] = "지원거절";
+				}// end switch
 
-				// DTM에 추가
+				/* DTM에 추가 */
 				dtm.addRow(rowData);
+
 			} // end for
 
 			if (list.isEmpty()) {// 등록한 메뉴가 없을 때 : 도시락 추가 버튼을 통해 메뉴를 추가 할 수 있다.
@@ -102,16 +127,47 @@ public class EeAppController extends WindowAdapter implements MouseListener {
 	 */
 	private void showDetailErinfo() {
 		JTable jt = eav.getJtEr();
-		String erNum = String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
+		String app_num = String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
 		DetailErInfoVO deivo = null;
+		String appStatus = "";
 		try {
+			String erNum = ee_dao.selectErNumFromAppTb(app_num);
 			deivo = ee_dao.selectDetail(erNum, ee_id);
+			appStatus = ee_dao.selectApplication(ee_id, erNum);
+
+			// 사용자가 상세 구직정보 창을 보기전 응답상태에 따라 메시지를 보여주는 메서드.
+			appStatusMsg(appStatus);
+
+			EeDetailErView edev = new EeDetailErView(eav, deivo, erNum, ee_id, appStatus);
+
+			// edev.isActive() - EeDetailErView의 창이 닫혀지면 true발생.
+			if (edev.isActive()) {
+				setDTM(ee_id);
+			} // end if
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} // end catch
-		System.out.println(deivo);
-		new EeDetailErView(null, deivo, erNum, ee_id, eavo.getApp_status());
 	}// showDetailErinfo
+
+	/**
+	 * 상세 구직 정보 창을 보기전 응답상태에 따라 메시지를 띄워주는 메서드
+	 */
+	private void appStatusMsg(String appStatus) {
+		switch (appStatus.toUpperCase()) {
+		case "U":
+			JOptionPane.showMessageDialog(eav, "인사담당자가 아직 지원정보를 확인하지 않았습니다.");
+			break;
+		case "R":
+			JOptionPane.showMessageDialog(eav, "인사담당자가 검토중 입니다.");
+			break;
+		case "A":
+			JOptionPane.showMessageDialog(eav, "축하합니다!\n인사담당자가 긍정적으로 서류를 확인했습니다.\n개별적인 면접 연락이 올 예정입니다.");
+			break;
+		case "D":
+			JOptionPane.showMessageDialog(eav, "죄송합니다.\n불합격하셨습니다.");
+		}// switch
+	}// appStatusMsg()
 
 	/////////////////////////////// 안 쓰는 메소드들 ///////////////////////////////
 	@Override

@@ -20,6 +20,7 @@ import user.ee.vo.CoDetailVO;
 import user.ee.vo.DetailErInfoVO;
 import user.ee.vo.EeAppVO;
 import user.ee.vo.EeInterestAndAppVO;
+import user.util.UserLog;
 
 ////////////0210 다음할것 : 지원하기 구현(창을 닫고 다시 켯을때 하트가 리셋), 관심눌렀을때 값 보내는 방법///////////
 public class EeDetailErController extends WindowAdapter implements ActionListener, MouseListener {
@@ -29,6 +30,7 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 	private boolean mouseClickFlag;
 	private EeInterestAndAppVO eiaavo;
 	private EeDAO ee_dao;
+	private UserLog ul;
 
 	public EeDetailErController(EeDetailErView edev, String erNum, String eeId, boolean flagHeart) {
 		this.edev = edev;
@@ -36,6 +38,7 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 		this.eeId = eeId;
 		mouseClickFlag = flagHeart;
 		ee_dao = EeDAO.getInstance();
+		ul = new UserLog();
 	}
 
 	public void addUInterestEr() {
@@ -50,6 +53,7 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 		}
 		edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/r_heart.png"));
 		JOptionPane.showMessageDialog(edev, "관심 구인글에 추가되었습니다!");
+		ul.sendLog(eeId, "관심 구인글을 추가했습니다.");
 		try {
 			DetailErInfoVO devo = ee_dao.selectDetail(erNum, eeId);
 
@@ -67,11 +71,12 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 			deleteFlag = ee_dao.deleteInterestEr(eiaavo);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(edev, "리스트삭제에 실패했습니다.");
+			JOptionPane.showMessageDialog(edev, "DB문제!!");
 			return;
 		}
 		if (deleteFlag) {
 			JOptionPane.showMessageDialog(edev, "관심 구인글을 취소했습니다.");
+			ul.sendLog(eeId, "관심 구인글을 취소했습니다.");
 			edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/b_heart.png"));
 		} else {
 			JOptionPane.showMessageDialog(edev, "리스트삭제에 실패했습니다.");
@@ -93,7 +98,7 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 
 	public void apply() {
 		// 관심구인정보에 전달(eeAppVO)
-		boolean flag = false;
+		boolean appFlag = false;
 		List<EeAppVO> list = new ArrayList<EeAppVO>();
 		eiaavo = new EeInterestAndAppVO(erNum, eeId);
 		try {
@@ -103,20 +108,24 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 		}
 		try {
 			if (list.size() == 0) {
-				flag = true;
+				appFlag = true;
 			} else {
 				for (int i = 0; i < list.size(); i++) {
 					if (!(list.get(i).getEr_num().equals(erNum))) {
-						flag = true;
+						appFlag = true;
 					} else {
 						JOptionPane.showMessageDialog(edev, "이미 지원한 공고입니다.");
 						return;
 					}
 				}
 			}
-			if (flag) {
+			if (appFlag) {
 				ee_dao.insertApplication(eiaavo);
 				JOptionPane.showMessageDialog(edev, "지원이 완료되었습니다!");
+				ul.sendLog(eeId, "지원을 완료하였습니다.");
+				DetailErInfoVO deivo = ee_dao.selectDetail(erNum,eeId);
+				edev.dispose();
+				new EeDetailErView(edev, deivo, erNum, eeId, "ok");
 			} else {
 				JOptionPane.showMessageDialog(edev, "이미 지원한 공고입니다.");
 			}
@@ -157,8 +166,10 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 		}
 		if (mouseClickFlag) {
 			addUInterestEr();
+			
 		} else {
 			removeInterestEr();
+			
 		}
 	}
 

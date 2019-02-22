@@ -20,10 +20,13 @@ public class ErAppController extends WindowAdapter implements MouseListener {
 
 	private ErAppView erav;
 	private ErDAO er_dao;
+	private String er_id;
+
 	private final int DBL_CLICK = 2;
 
 	public ErAppController(ErAppView erav, String er_id) {
 		this.erav = erav;
+		this.er_id = er_id;
 		er_dao = ErDAO.getInstance();
 		setDTM(er_id);
 	}// 생성자
@@ -40,6 +43,11 @@ public class ErAppController extends WindowAdapter implements MouseListener {
 			// DB에서 관심회사를 조회.
 			List<ErListVO> list = er_dao.selectErList(er_Id);
 
+			
+			StringBuffer erCnt = new StringBuffer("내 구인정보 수 : ");
+			erCnt.append(String.valueOf(list.size())).append(" 개");
+			erav.getJlEeInfo().setText(erCnt.toString());
+			
 			// JTable에 조회한 정보를 출력.
 			ErListVO eivo = null;
 
@@ -54,10 +62,20 @@ public class ErAppController extends WindowAdapter implements MouseListener {
 				rowData[0] = new Integer(i + 1);
 				rowData[1] = eivo.getErNum();
 				rowData[2] = eivo.getSubject();
-				rowData[3] = eivo.getRank();
+				rowData[3] = (eivo.getRank().equals("N") ? "신입" : "경력");
 				rowData[4] = eivo.getLoc();
 				rowData[5] = eivo.getEducation();
-				rowData[6] = eivo.getHireType();
+				switch (eivo.getHireType()) {
+				case "C":
+					rowData[6] = "정규직";
+					break;
+				case "N":
+					rowData[6] = "비정규직";
+					break;
+				case "F":
+					rowData[6] = "프리랜서";
+					break;
+				}// end switch
 				rowData[7] = eivo.getInputDate();
 
 				// DTM에 추가
@@ -91,7 +109,12 @@ public class ErAppController extends WindowAdapter implements MouseListener {
 			if (me.getSource() == erav.getJtEeInfo()) {
 				JTable jt = erav.getJtEeInfo();
 				String er_num = (String) (jt.getValueAt(jt.getSelectedRow(), 1));
-				new AppListView(erav, er_num);
+				AppListView alv = new AppListView(erav, er_num);
+
+				// AppListView객체가 동작을 멈추면 true반환
+				if (alv.isActive()) {
+					setDTM(er_id);
+				} // end if
 			} // end if
 		}// end switch
 

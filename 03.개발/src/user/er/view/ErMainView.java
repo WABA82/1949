@@ -1,5 +1,7 @@
 package user.er.view;
 
+import java.sql.SQLException;
+
 import javax.sql.rowset.serial.SerialRef;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -9,6 +11,7 @@ import javax.swing.border.TitledBorder;
 
 import user.common.view.LoginView;
 import user.common.vo.ErMainVO;
+import user.dao.CommonDAO;
 import user.ee.controller.EeMainController;
 import user.er.controller.ErMainController;
 
@@ -18,20 +21,22 @@ public class ErMainView extends JFrame {
 	private JLabel jlUserInfo, jlLogOut, jlActivation;
 	private ErMainVO ermvo;
 	
+	
 	//삭제할것
 	private LoginView lv;
 	
 	//////////수정중
 	public ErMainView(ErMainVO ermvo) {
 		super("1949 - 기업사용자 ["+ermvo.getName()+"]");
+		System.out.println(ermvo);
 		this.ermvo=ermvo;
-		this.lv=lv;
 		
 		JLabel jlAct = new JLabel("회사정보 등록여부 : ");
 		JLabel jlImg = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/"+ermvo.getImg1()));
 		jlImg.setBorder(new TitledBorder("회사 이미지"));
 		
 		jlActivation = new JLabel(ermvo.getActivation());
+		System.out.println(ermvo.getActivation());
 		jlUserInfo = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/회원정보관리아이콘.png"));
 		JLabel jlUserMsg=new JLabel("회원정보관리");
 		add(jlUserMsg);
@@ -87,9 +92,6 @@ public class ErMainView extends JFrame {
 		setVisible(true);
 	}//생성자
 	
-	
-	
-	
 	public JButton getJbCoMgmt() {
 		return jbCoMgmt;
 	}
@@ -115,8 +117,15 @@ public class ErMainView extends JFrame {
 		return jlActivation;
 	}
 	
-//	public static void main(String[] args) {
-//		new ErMainView(null);
-//	}
+	/*********단위 테스트용 ******************/
+	public static void main(String[] args) {
+		ErMainVO ermvo;
+		try {
+			ermvo = CommonDAO.getInstance().selectErMain("song9912");
+			new ErMainView(ermvo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}// main
 	
 }

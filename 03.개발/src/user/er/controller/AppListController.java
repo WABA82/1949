@@ -20,14 +20,14 @@ import user.er.vo.DetailAppListVO;
 public class AppListController extends WindowAdapter implements MouseListener {
 
 	private AppListView alv;
-	// private String er_num;
+	private String er_num;
 	private ErDAO er_dao;
 
 	private final int DBL_CLICK = 2; // 더블 클릭 상수
 
 	public AppListController(AppListView alv, String er_num) {
 		this.alv = alv;
-		// this.er_num = er_num;
+		this.er_num = er_num;
 		er_dao = ErDAO.getInstance();
 		setDTM(er_num);
 	}// 생성자
@@ -46,6 +46,11 @@ public class AppListController extends WindowAdapter implements MouseListener {
 			// DB에서 관심회사를 조회.
 			List<DetailAppListVO> list = er_dao.selectDetailApplist(er_num);
 
+			StringBuffer appCnt = new StringBuffer("총 지원자 수 : ");
+			appCnt.append(String.valueOf(list.size())).append(" 명");
+			alv.getJlEeInfo().setText(appCnt.toString());
+			
+			
 			// JTable에 조회한 정보를 출력.
 			DetailAppListVO dalvo = null;
 			String imgPath = "C:/dev/1949/03.개발/가데이터/구직자사진/150x200px/";
@@ -62,14 +67,26 @@ public class AppListController extends WindowAdapter implements MouseListener {
 				rowData[1] = dalvo.getApp_num();
 				rowData[2] = new ImageIcon(imgPath + dalvo.getImg());
 				rowData[3] = dalvo.getName();
-				rowData[4] = dalvo.getRank();
+				rowData[4] = (dalvo.getRank().equals("N") ? "신입" : "경력");
 				rowData[5] = dalvo.getLoc();
 				rowData[6] = dalvo.getEducation();
 				rowData[7] = dalvo.getAge();
-				rowData[8] = dalvo.getPortfolio();
-				rowData[9] = dalvo.getGender();
+				rowData[8] = (dalvo.getPortfolio().equals("Y") ? "존재" : "없음");
+				rowData[9] = (dalvo.getGender().equals("M") ? "남자" : "여자");
 				rowData[10] = dalvo.getApp_date();
-				rowData[11] = dalvo.getApp_status();
+				switch (dalvo.getApp_status()) {
+				case "U":
+					rowData[11] = "응답대기";
+					break;
+				case "R":
+					rowData[11] = "열람";
+					break;
+				case "A":
+					rowData[11] = "지원수락";
+					break;
+				case "D":
+					rowData[11] = "지원거절";
+				}// end switch
 
 				// DTM에 추가
 				dtm.addRow(rowData);
@@ -98,7 +115,13 @@ public class AppListController extends WindowAdapter implements MouseListener {
 			if (me.getSource() == alv.getJtEeInfo()) {
 				JTable jt = alv.getJtEeInfo();
 				String app_num = (String) jt.getValueAt(jt.getSelectedRow(), 1);
-				new AppDetailView(alv, app_num);
+				AppDetailView adv = new AppDetailView(alv, app_num);
+
+				// AppDetailView객체가 동작을 멈추면 true반환
+				if (adv.isActive()) {
+					setDTM(er_num);
+				} // end if
+
 			} // end if
 		}// end switch
 	}// mouseClicked

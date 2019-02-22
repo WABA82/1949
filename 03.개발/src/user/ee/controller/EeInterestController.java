@@ -64,9 +64,14 @@ public class EeInterestController extends WindowAdapter implements ActionListene
 			// DB에서 관심회사를 조회.
 			List<EeInterestVO> list = ee_dao.selectInterestErInfoList(ee_id);
 
-			// JTable에 조회한 정보를 출력.
+			StringBuffer interestCnt = new StringBuffer("내 관심 구인정보 수 : ");
+			interestCnt.append(String.valueOf(list.size())).append(" 개");
+			
+			eiv.getJlEeInfo().setText(interestCnt.toString());
+
 			EeInterestVO eivo = null;
 
+			// JTable에 조회한 정보를 출력.
 			Object[] rowData = null;
 			for (int i = 0; i < list.size(); i++) {
 
@@ -79,10 +84,19 @@ public class EeInterestController extends WindowAdapter implements ActionListene
 				rowData[1] = eivo.getErNum();
 				rowData[2] = eivo.getSubject();
 				rowData[3] = eivo.getCoName();
-				rowData[4] = eivo.getRank();
+				rowData[4] = (eivo.getRank().equals("N") ? "신입" : "경력");
 				rowData[5] = eivo.getLoc();
 				rowData[6] = eivo.getEducation();
-				rowData[7] = eivo.getHireType();
+				switch (eivo.getHireType()) {
+				case "C":
+					rowData[7] = "정규직";
+					break;
+				case "N":
+					rowData[7] = "비정규직";
+					break;
+				case "F":
+					rowData[7] = "프리랜서";
+				}// end switch
 				rowData[8] = new Integer(eivo.getSal());
 				rowData[9] = eivo.getInputDate();
 
@@ -108,12 +122,21 @@ public class EeInterestController extends WindowAdapter implements ActionListene
 		JTable jt = eiv.getjtErInfo();
 		String erNum = String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
 		DetailErInfoVO deivo = null;
+		String appStatus = "";
 		try {
 			deivo = ee_dao.selectDetail(erNum, ee_id);
+			appStatus = ee_dao.selectApplication(ee_id, erNum);
+
+			EeDetailErView edev = new EeDetailErView(eiv, deivo, erNum, ee_id, appStatus);
+
+			// edev.isActive() - EeDetailErView의 창이 닫혀 지면 true발생
+			if (edev.isActive()) {
+				setDTM(ee_id);
+			} // end if
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} // end catch
-		new EeDetailErView(eiv, deivo, erNum, ee_id, null);
+		
 	}// showDetailErinfo
 
 	////////// 안쓰는 메소드//////////
