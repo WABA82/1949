@@ -39,7 +39,7 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 		ul = new UserLog();
 		erdao= ErDAO.getInstance();
 	}
-	public void modifyEr() {
+	public void modifyEr()throws NullPointerException {
 		boolean updateflag=false;
 		String rank = String.valueOf(emv.getJcbRank().getSelectedItem());
 		String hireType = String.valueOf(emv.getJcbHireType().getSelectedItem());
@@ -143,7 +143,25 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 	public void actionPerformed(ActionEvent ae) {
 		if(ae.getSource()==emv.getJbReg()) {
 			//등록하기
-			modifyEr();
+			if(emv.getJtfSubject().getText().trim()==null||emv.getJtfSubject().getText().trim().equals("")){
+				JOptionPane.showMessageDialog(emv, "제목은 필수 입력입니다.");
+				return;
+			}
+			if(emv.getJtfSal().getText().trim()==null||emv.getJtfSal().getText().trim().equals("")){
+				JOptionPane.showMessageDialog(emv, "급여는 필수 입력입니다.");
+				return;
+			}
+			if(emv.getJtaErDesc().getText().trim()==null||emv.getJtaErDesc().getText().trim().equals("")){
+				JOptionPane.showMessageDialog(emv, "상세설명은 필수 입력입니다.");
+				return;
+			}
+			try {
+				modifyEr();
+			}catch(NumberFormatException nfe) {
+				JOptionPane.showMessageDialog(emv, "급여는 숫자형식으로 입력해야합니다.");
+				nfe.printStackTrace();
+			}
+			
 		}
 		if(ae.getSource()==emv.getJbDelete()) {
 			//삭제하기

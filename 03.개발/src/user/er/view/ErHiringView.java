@@ -77,7 +77,7 @@ public class ErHiringView extends JDialog {
 		jbSelectAll.addActionListener(ehc);
 		addWindowListener(ehc);
 		
-		setBounds(100, 100, 1000, 500);
+		setBounds(100, 100, 1000, 527);
 		setResizable(false);
 		setVisible(true);
 		
