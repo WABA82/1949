@@ -72,8 +72,6 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
          //System.out.println(zip);//테스트하느라 - 필요없음
          String addrSeq= listSeq.get(row);
          
-         //혜원추가(주소검색 시 상세주소초기화)
-         cuiv.getJtfAddr2().setText("");
          
          if (suv != null) {
             suv.getJtfAddr1().setText(addr.toString());
@@ -81,6 +79,8 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
             suc.setAddrSeq(addrSeq);// seq
             //System.out.println("선택된 행의 seq : "+addrSeq);
          } else {
+        	 //혜원추가(주소검색 시 상세주소초기화)
+        	 cuiv.getJtfAddr2().setText("");
                cuiv.getJtfZipcode().setText(sav.getJtZip().getValueAt(row, 0).toString());
                cuiv.getJtfAddr1().setText(addr.toString());
                cuic.setAddrSeq(addrSeq); //이렇게 seq를 저장해서 수정 시 사용
