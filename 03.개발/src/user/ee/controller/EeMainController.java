@@ -50,9 +50,19 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 
 	public void checkActivation() throws SQLException {
 		//쓰레드 돌림
-		if (emvo.getActivation().equals("2")) {
-			JOptionPane.showMessageDialog(emv, "등록된 기본정보가 없습니다.");
-			mngUser();
+		if (emvo.getActivation().equals("0")) {
+			
+//			String eeid=emvo.getEeId();
+//			String act=CommonDAO.getInstance().selectActivation(emvo.getEeId());
+			
+			
+			ervo = eedao.selectEeReg(emvo.getEeId());
+//			System.out.println(emvo.getName()+ "   /   "+emvo.getActivation());
+		
+			System.out.println(ervo);
+			new EeInfoRegView(emv, ervo);
+			//mngUser();
+			
 		} else if(emvo.getActivation().equals("N")){
 //			조회 만들어야 함
 			 eivo = eedao.selectEeInfo(emvo.getEeId());
@@ -101,21 +111,21 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 
 	}// mouseClicked
 
-	public void setInfo(String eeid) {
-		JLabel activation = emv.getJlActivation();
-		JLabel img = emv.getJlImg();
-		EeMainVO emvo = null;
-
-		try {
-			emvo = C_dao.selectEeMain(eeid);
-			activation.setText(emvo.getActivation());
-			img.setText(emvo.getImg());
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-	}
+//	public void setInfo(String eeid) {
+//		JLabel activation = emv.getJlActivation();
+//		JLabel img = emv.getJlImg();
+//		EeMainVO emvo = null;
+//
+//		try {
+//			emvo = C_dao.selectEeMain(eeid);
+//			activation.setText(emvo.getActivation());
+//			img.setText(emvo.getImg());
+//
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//
+//	}
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {

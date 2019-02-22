@@ -80,10 +80,10 @@ public class EeInfoModifyView extends JDialog {
 		jcbRank = new JComboBox<>(rank);
 		
 		switch (eivo.getRank()) {
-		case "N":
+		case "C":
 			jcbRank.setSelectedIndex(0);
 			break;
-		case "C":
+		case "N":
 			jcbRank.setSelectedIndex(1);
 			break;
 		}// end switch
@@ -112,12 +112,18 @@ public class EeInfoModifyView extends JDialog {
 		String[] port = { "YES", "NO" };
 		jcbPortfolio = new JComboBox<>(port);
 
-	switch (eivo.getPortfolio()) {
-	case "Y":
-		jcbPortfolio.setSelectedIndex(0);
-	case "N":
-		jcbPortfolio.setSelectedIndex(1);
-	}//end switch
+//	switch (eivo.getPortfolio()) {
+//	case "Y":
+//		jcbPortfolio.setSelectedIndex(0);
+//	case "N":
+//		jcbPortfolio.setSelectedIndex(1);
+//	}//end switch
+		
+		if(eivo.getPortfolio().equals("Y")) {
+			jcbPortfolio.setSelectedIndex(0);
+		}else {
+			jcbPortfolio.setSelectedIndex(1);
+		}
 		
 		// Label
 		add(jlName);
@@ -155,6 +161,7 @@ public class EeInfoModifyView extends JDialog {
 
 		jtfExtResume = new JTextField(eivo.getExtResume());
 		add(jtfExtResume);
+		jtfExtResume.setEditable(false);
 		jtfExtResume.setBounds(325, 302, 130, 20);
 
 		// Combobox
@@ -179,7 +186,7 @@ public class EeInfoModifyView extends JDialog {
 
 		setVisible(true);
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 	}// »ý¼ºÀÚ
 

@@ -10,6 +10,7 @@ import java.sql.SQLException;
 
 import user.common.view.LoginView;
 import user.common.vo.ErMainVO;
+import user.dao.CommonDAO;
 import user.dao.ErDAO;
 import user.er.view.CoInfoModifyView;
 import user.er.view.CoInfoRegView;
@@ -26,21 +27,24 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 	private CoInsertVO civo;
 	private CoInfoVO cvo;
 	private ErDAO erdao;
+	private CommonDAO C_dao;
+	
 	//activation을 못받아서 String 대신 VO로 받음
 	public ErMainController(ErMainView emv, ErMainVO ermvo ) {
 		this.emv = emv;
 //		this.erId=erId;
 		this.ermvo=ermvo;
 		erdao=ErDAO.getInstance();
+		C_dao  = CommonDAO.getInstance();
 	}
 	
 	public void mngUser() throws SQLException {
-		if(ermvo.getActivation().equals("N")) {
+		if(ermvo.getActivation().equals("2")) {
 			new CoInfoRegView(emv, ermvo.getErId());
 			System.out.println(ermvo);
 		}else {
 				cvo=erdao.selectCoInfo(ermvo.getErId());
-				new CoInfoModifyView(emv, cvo);
+				CoInfoModifyView cmv =  new CoInfoModifyView(emv, cvo);
 		}//end else
 			
 	}//end if

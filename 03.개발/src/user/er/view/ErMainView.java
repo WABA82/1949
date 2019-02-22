@@ -21,6 +21,7 @@ public class ErMainView extends JFrame {
 	private JLabel jlUserInfo, jlLogOut, jlActivation;
 	private ErMainVO ermvo;
 	
+	
 	//삭제할것
 	private LoginView lv;
 	
@@ -91,9 +92,6 @@ public class ErMainView extends JFrame {
 		setVisible(true);
 	}//생성자
 	
-	
-	
-	
 	public JButton getJbCoMgmt() {
 		return jbCoMgmt;
 	}
@@ -120,14 +118,14 @@ public class ErMainView extends JFrame {
 	}
 	
 	/*********단위 테스트용 ******************/
-//	public static void main(String[] args) {
-//		ErMainVO ermvo;
-//		try {
-//			ermvo = CommonDAO.getInstance().selectErMain("sheep1212");
-//			new ErMainView(ermvo);
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}// main
+	public static void main(String[] args) {
+		ErMainVO ermvo;
+		try {
+			ermvo = CommonDAO.getInstance().selectErMain("song9912");
+			new ErMainView(ermvo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}// main
 	
 }

@@ -516,14 +516,14 @@ public class EeDAO {
 	}// selectCompany()
 
 	/* 단위 테스트용 main */
-	public static void main(String[] args) {
-		EeDAO ee_dao = EeDAO.getInstance();
-		try {
-			System.out.println(ee_dao.selectCompany("er_000028"));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} // end catch
-	}// main
+//	public static void main(String[] args) {
+//		EeDAO ee_dao = EeDAO.getInstance();
+//		try {
+//			System.out.println(ee_dao.selectCompany("er_000028"));
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} // end catch
+//	}// main
 
 	////////////////////////// 재현 끝 //////////////////////////
 
@@ -612,11 +612,26 @@ public class EeDAO {
 			// 커넥션 얻기.
 			con = getConn();
 
+			//쿼리문 수정해야 됨!!!!!!
+			
+			
 			// 쿼리문생성
 			StringBuilder selectMyInfo = new StringBuilder();
-			selectMyInfo.append("		select ei.ee_id, ut.name, ut.gender, ut.age")
-					.append("		from ee_info ei, user_table ut")
-					.append("		where (ei.ee_id = ut.id) and ei.ee_id = ? 	");
+//			if() {//조건을 노이미지로 할까?
+				selectMyInfo
+				.append("		select id, name, gender, age ")
+				.append("		from user_table ")
+				.append("		where id = ? 	");
+				
+				
+//				selectMyInfo
+//				.append("		select ei.ee_id, ut.name, ut.gender, ut.age")
+//				.append("		from ee_info ei, user_table ut")
+//				.append("		where (ei.ee_id = ut.id) and ei.ee_id = ? 	");
+				
+//			}else {
+//				
+//			}
 			pstmt = con.prepareStatement(selectMyInfo.toString());
 			// 바인드변수 값 할당.
 			pstmt.setString(1, eeid);
@@ -624,7 +639,7 @@ public class EeDAO {
 			// DB에서 조회하기s
 			rs = pstmt.executeQuery(); // 쿼리실행
 			if (rs.next()) {
-				ervo = new EeRegVO(rs.getString("ee_id"), rs.getString("name"), rs.getString("gender"),
+				ervo = new EeRegVO(rs.getString("id"), rs.getString("name"), rs.getString("gender"),
 						rs.getInt("age"));
 			} // end if
 
@@ -644,25 +659,32 @@ public class EeDAO {
 	}//
 
 	/**
+	 *	transaction 해보자. 
 	 * activation을 n에서 y로 변경하는 메서드.
-	 * 
 	 * @param eeid
 	 * @throws SQLException
 	 */
 
-	public void updateActivation(String eeid) throws SQLException {
-//		EeMainVO emvo=null;
-//			emvo=CommonDAO.getInstance().selectEeMain(eeid);
-//			emvo.getActivation(); 
-	}// updateActivation()
+	public void transactionActivation(String eeid) throws SQLException {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		
+		try {
+			con.setAutoCommit(false);
+		
+			pstmt.executeUpdate();
+			pstmt.executeUpdate();
 
-//	public static void main(String[] args) {
-//		try {
-//			System.out.println(EeDAO.getInstance().selectEeReg("gong1"));
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}
+			
+			con.commit(); //커밋
+			
+			
+		}catch(SQLException sql) {
+			
+		}
+	
+	
+	}//transactionActivation
 
 	/**
 	 * 19.02.16 모든 정보가져오는 VO
@@ -734,18 +756,21 @@ public class EeDAO {
 			con = getConn();
 
 			StringBuilder updateEeInfo = new StringBuilder();
-			updateEeInfo.append("	update ee_info	").append("	set lmg = ?	").append("	rank = ?, loc = ?	")
-					.append("	education = ?, portfolio = ?	").append("	ext_resume = ?	")
-					.append("	where ee_num = ?	");
+			updateEeInfo
+			.append("	  update ee_info	")
+			.append("  set  ee_num =? , img = ? , rank = ?, loc = ? , education = ? , portfolio = ? ,	ext_resume = ? ")
+			.append("	  where ee_num = ?	");
 
 			pstmt = con.prepareStatement(updateEeInfo.toString());
 
-			pstmt.setString(1, emvo.getImg());
-			pstmt.setString(2, emvo.getRank());
-			pstmt.setString(3, emvo.getLoc());
-			pstmt.setString(4, emvo.getEducation());
-			pstmt.setString(5, emvo.getPortfolio());
-			pstmt.setString(6, emvo.getExtResume());
+			pstmt.setString(1, emvo.getEeNum());
+			pstmt.setString(2, emvo.getImg());
+			pstmt.setString(3, emvo.getRank());
+			pstmt.setString(4, emvo.getLoc());
+			pstmt.setString(5, emvo.getEducation());
+			pstmt.setString(6, emvo.getPortfolio());
+			pstmt.setString(7, emvo.getExtResume());
+			pstmt.setString(8, emvo.getEeNum());
 
 			int cnt = pstmt.executeUpdate();
 			if (cnt == 1) {
@@ -762,6 +787,17 @@ public class EeDAO {
 		}
 
 		return flag;
+	}//UpdateEeinfo
+
+	//단위 테스트 UpdateEeinfo
+	public static void main(String[] args) {
+		EeModifyVO emvo=new EeModifyVO("ee_000121", "ee11,jpg", "Y", "서울", "고졸", "N", "테스트");
+			try {
+				EeDAO.getInstance().updateEeInfo(emvo);
+			} catch (SQLException e) {
+				System.out.println(emvo);
+				e.printStackTrace();
+			}
 	}
 	
 	

@@ -81,7 +81,9 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 	      
 	      userType=c_dao.login(id, pass);
 	      if(userType.equals("E")) {
-	         emvo = C_dao.selectEeMain(lv.getJtfId().getText());
+	    	  //activation만 vo받아서 입력해야된다.
+	    	String act=C_dao.selectActivation(id);
+	         emvo = C_dao.selectEeMain(id, act);
 	         new EeMainView(emvo);
 	         lv.dispose();
 	      }else if(userType.equals("R")){
