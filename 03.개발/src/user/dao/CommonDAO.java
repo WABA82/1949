@@ -165,7 +165,6 @@ public class CommonDAO {
        
        cstmt.execute();
        resultMsg = cstmt.getString(12);
-       System.out.println(resultMsg);
        }finally {
           if(cstmt!=null) {cstmt.close();}
           if(con!=null) {con.close();}
@@ -559,12 +558,12 @@ public class CommonDAO {
     }// selectEeMain
     
        /**
-        *박정미 er 아이디 받아오기 (출력됨)
+        *박정미 er 아이디 받아오기 구현 ㅇ       -새로가입한 er 사용자도 로그인 가능ㅇ  -02-22
      * @param id
      * @return
      * @throws SQLException
      */
-    public ErMainVO selectErMain(String id) throws SQLException {
+    public ErMainVO selectErMain(String id, String act) throws SQLException {
           ErMainVO emv=null;
           
           Connection con =null;
@@ -575,17 +574,28 @@ public class CommonDAO {
              con =getConn();
              
              StringBuilder selectErInfo = new StringBuilder();
-             selectErInfo.append(" select ut.id, ut.name, co.img1, ut.activation ")
-             .append(" from company co, user_table ut ").append(" where (ut.id=co.er_id) ")
+             if(act.equals("Y")) {
+             selectErInfo
+             .append(" select id, name, img1, activation ")
+             .append(" from company co, user_table ut ")
+             .append(" where (ut.id=er_id) ")
              .append(" and ut.id=? ");
+             }else {
+            	 selectErInfo
+            	 .append("select id, name, activation ")
+            	 .append(" from user_table ")
+            	 .append(" where id=? ");
+             }//end else
              pstmt =con.prepareStatement(selectErInfo.toString());
-             
              pstmt.setString(1, id );
              rs=pstmt.executeQuery();
              
              if(rs.next()){
-                emv= new ErMainVO(rs.getString("id"), rs.getString("name"),
-                      rs.getString("img1"), rs.getString("activation"));
+            	 if(act.equals("Y")) {
+            		 emv= new ErMainVO(rs.getString("id"), rs.getString("name"), rs.getString("img1"), rs.getString("activation"));
+            	 }else {
+            		 emv= new ErMainVO(rs.getString("id"), rs.getString("name"), "no_co_img1.png", rs.getString("activation"));
+            	 }
                 //System.out.println(emv); 값 받았는지 확인
              }
           }finally {
