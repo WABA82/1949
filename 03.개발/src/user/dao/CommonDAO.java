@@ -558,41 +558,52 @@ public class CommonDAO {
        return emvo;
     }// selectEeMain
     
-       /**
-        *박정미 er 아이디 받아오기 (출력됨)
-     * @param id
-     * @return
-     * @throws SQLException
-     */
-    public ErMainVO selectErMain(String id) throws SQLException {
-          ErMainVO emv=null;
+    /**
+     *박정미 er 아이디 받아오기 구현 ㅇ       -새로가입한 er 사용자도 로그인 가능ㅇ  -02-22
+  * @param id
+  * @return
+  * @throws SQLException
+  */
+ public ErMainVO selectErMain(String id, String act) throws SQLException {
+       ErMainVO emv=null;
+       
+       Connection con =null;
+       PreparedStatement pstmt =null;
+       ResultSet rs = null;
+       
+       try {
+          con =getConn();
           
-          Connection con =null;
-          PreparedStatement pstmt =null;
-          ResultSet rs = null;
+          StringBuilder selectErInfo = new StringBuilder();
+          if(act.equals("Y")) {
+          selectErInfo
+          .append(" select id, name, img1, activation ")
+          .append(" from company co, user_table ut ")
+          .append(" where (ut.id=er_id) ")
+          .append(" and ut.id=? ");
+          }else {
+             selectErInfo
+             .append("select id, name, activation ")
+             .append(" from user_table ")
+             .append(" where id=? ");
+          }//end else
+          pstmt =con.prepareStatement(selectErInfo.toString());
+          pstmt.setString(1, id );
+          rs=pstmt.executeQuery();
           
-          try {
-             con =getConn();
-             
-             StringBuilder selectErInfo = new StringBuilder();
-             selectErInfo.append(" select ut.id, ut.name, co.img1, ut.activation ")
-             .append(" from company co, user_table ut ").append(" where (ut.id=co.er_id) ")
-             .append(" and ut.id=? ");
-             pstmt =con.prepareStatement(selectErInfo.toString());
-             
-             pstmt.setString(1, id );
-             rs=pstmt.executeQuery();
-             
-             if(rs.next()){
-                emv= new ErMainVO(rs.getString("id"), rs.getString("name"),
-                      rs.getString("img1"), rs.getString("activation"));
-                //System.out.println(emv); 값 받았는지 확인
+          if(rs.next()){
+             if(act.equals("Y")) {
+                emv= new ErMainVO(rs.getString("id"), rs.getString("name"), rs.getString("img1"), rs.getString("activation"));
+             }else {
+                emv= new ErMainVO(rs.getString("id"), rs.getString("name"), "no_co_img1.png", rs.getString("activation"));
              }
-          }finally {
-             if(rs!=null) {   rs.close();   }
-             if(pstmt!=null) {pstmt.close();}
-             if(con!=null) {con.close();}
-          }//end finally
-          return emv;
-       }//selectErMain
+             //System.out.println(emv); 값 받았는지 확인
+          }
+       }finally {
+          if(rs!=null) {   rs.close();   }
+          if(pstmt!=null) {pstmt.close();}
+          if(con!=null) {con.close();}
+       }//end finally
+       return emv;
+    }//selectErMain
     }

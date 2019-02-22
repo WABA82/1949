@@ -80,14 +80,14 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
          String userType="";
          CommonDAO c_dao = CommonDAO.getInstance();
          
+         String act = C_dao.selectActivation(id);
          userType=c_dao.login(id, pass);
          if(userType.equals("E")) {
-            String act = C_dao.selectActivation(id);
             emvo = C_dao.selectEeMain(id, act);
             new EeMainView(emvo);
             lv.dispose();
          }else if(userType.equals("R")){
-            ermvo = C_dao.selectErMain(id);
+            ermvo = C_dao.selectErMain(id,act);
             new ErMainView(ermvo);
             lv.dispose();
          }else{
