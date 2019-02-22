@@ -138,7 +138,11 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 		if (e.getSource() == adv.getJbExtRsm()) { // 외부이력서 버튼 이벤트 처리
 
 			try {
-				extResumeDown();
+				switch (JOptionPane.showConfirmDialog(adv, "지원자의 이력서를 다운로드 하시겠습니까?")) {
+				case JOptionPane.OK_OPTION:
+					extResumeDown();
+					break;
+				}// end switch
 			} catch (UnknownHostException e1) {
 				JOptionPane.showMessageDialog(adv, "서버를 알 수 없습니다.");
 				e1.printStackTrace();
