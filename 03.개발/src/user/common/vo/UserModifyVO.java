@@ -1,7 +1,6 @@
 package user.common.vo;
 
 public class UserModifyVO {
-
 	private String id, name, pass, tel, seq, addrDetail, email;
 
 	public UserModifyVO(String id, String name, String pass, String tel, String seq, String addrDetail, String email) {

@@ -8,8 +8,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
+import user.common.view.ChangeUserInfoView;
 import user.common.view.LoginView;
 import user.common.vo.ErMainVO;
+
+import user.common.vo.UserInfoVO;
+
 import user.dao.CommonDAO;
 import user.dao.ErDAO;
 import user.er.view.CoInfoModifyView;
@@ -29,13 +33,13 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 	private ErDAO erdao;
 	private CommonDAO C_dao;
 	
-	//activationÀ» ¸ø¹Þ¾Æ¼­ String ´ë½Å VO·Î ¹ÞÀ½
-	public ErMainController(ErMainView emv, ErMainVO ermvo ) {
+	public ErMainController(ErMainView emv, ErMainVO ermvo/*String erId*/) {
+
 		this.emv = emv;
-//		this.erId=erId;
 		this.ermvo=ermvo;
 		erdao=ErDAO.getInstance();
-		C_dao  = CommonDAO.getInstance();
+
+		C_dao=CommonDAO.getInstance();
 	}
 	
 	public void mngUser() throws SQLException {
@@ -67,6 +71,18 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 
 	@Override
 	public void mouseClicked(MouseEvent me) {
+		//Ã‡Ã½Â¿Ã¸ Â±Ã¢Â¾Ã·ÃˆÂ¸Â¿Ã¸Â°Ã¼Â¸Â®
+			try {
+				if(me.getSource() == emv.getJlUserInfo()) {
+				UserInfoVO uivo=C_dao.selectUserInfo(ermvo.getErId());
+				new ChangeUserInfoView(emv, uivo);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			
+			
+		}//end if
+		
 		if(me.getSource() == emv.getJlLogOut()) {
 			new LoginView();
 			emv.dispose();

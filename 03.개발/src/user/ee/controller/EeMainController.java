@@ -46,10 +46,10 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 		eedao = EeDAO.getInstance();
 //		C_dao=CommonDAO.getInstance();
 //		setInfo("kun90");
-	}// »ı¼ºÀÚ
+	}// ìƒì„±ì
 
 	public void checkActivation() throws SQLException {
-		//¾²·¹µå µ¹¸²
+		//ì“°ë ˆë“œ ëŒë¦¼
 		if (emvo.getActivation().equals("0")) {
 			
 //			String eeid=emvo.getEeId();
@@ -64,7 +64,7 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 			//mngUser();
 			
 		} else if(emvo.getActivation().equals("N")){
-//			Á¶È¸ ¸¸µé¾î¾ß ÇÔ
+//			ì¡°íšŒ ë§Œë“¤ì–´ì•¼ í•¨
 			 eivo = eedao.selectEeInfo(emvo.getEeId());
 			new EeInfoModifyView(emv, eivo);
 		} // end if
@@ -87,7 +87,7 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 	}
 
 	/**
-	 * °ü½É ±¸ÀÎ ¸ñ·ÏÃ¢ ¶ç¿ì±â
+	 * ê´€ì‹¬ êµ¬ì¸ ëª©ë¡ì°½ ë„ìš°ê¸°
 	 */
 	public void showInterestEr() {
 		String eeid = "gong1";
@@ -99,7 +99,7 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 	}
 
 	/**
-	 * private EeMainView emv; ¸¶¿ì½º Å¬¸¯½Ã Á¾·á jlLogOut
+	 * private EeMainView emv; ë§ˆìš°ìŠ¤ í´ë¦­ì‹œ ì¢…ë£Œ jlLogOut
 	 */
 	@Override
 	public void mouseClicked(MouseEvent me) {

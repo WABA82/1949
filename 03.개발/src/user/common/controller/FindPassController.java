@@ -57,6 +57,7 @@ public class FindPassController extends WindowAdapter implements ActionListener 
 			
 			if(CommonDAO.getInstance().selectFindPass(fpvo)) {
 				JOptionPane.showMessageDialog(fpv, "입력하신 정보가 일치합니다.");
+				fpv.dispose();//비밀번호찾기창닫기
 				new SetNewPassView(lv, id);
 			}else{
 				JOptionPane.showMessageDialog(fpv, "정보가 올바르지 않습니다.");

@@ -22,7 +22,8 @@ public class UserInsertVO {
 		this.addrDetail = addrDetail;
 		this.questionType = questionType;
 		this.answer = answer;
-		this.userType=userType;
+		this.userType = userType;
+
 	}
 
 	public String getId() {
@@ -72,15 +73,18 @@ public class UserInsertVO {
 	
 	
 
+	public String getUserType() {
+		return userType;
+	}
+
 	@Override
 	public String toString() {
-		return "UserInsertVO [id=" + id + ", pasas=" + pass + ", name=" + name + ", ssn=" + ssn + ", tel=" + tel
+		return "UserInsertVO [id=" + id + ", pass=" + pass + ", name=" + name + ", ssn=" + ssn + ", tel=" + tel
 				+ ", email=" + email + ", addrSeq=" + addrSeq + ", addrDetail=" + addrDetail + ", questionType="
-				+ questionType + ", answer=" + answer + "]";
+				+ questionType + ", answer=" + answer + ", userType=" + userType + "]";
 	}
-	
-	
-	
-	
+
+
+
 	
 }
