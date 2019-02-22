@@ -366,7 +366,7 @@ public class EeDAO {
 	//////////// 재현코드 ////////////
 
 	/**
-	 * selectInterestErInfo : 일반사용자가 하트를 누른 구인정보를 DB에서 조회.
+	 * 재현 : selectInterestErInfo : 일반사용자가 하트를 누른 구인정보를 DB에서 조회.
 	 * 
 	 * @return
 	 *
@@ -385,7 +385,7 @@ public class EeDAO {
 
 			StringBuilder slcInterestErInfo = new StringBuilder(); // 관심구인정보조회 하기
 			slcInterestErInfo.append(
-					" select ei.ER_NUM, ei.SUBJECT, c.CO_NAME, ei.RANK, ei.LOC, ei.EDUCATION, ei.SAL, ei.HIRE_TYPE, ei.PORTFOLIO, ei.ER_DESC,  to_char(ei.INPUT_DATE, 'yyyy-dd-mm') INPUT_DATE");
+					" select ei.ER_NUM, ei.SUBJECT, c.CO_NAME, ei.RANK, ei.LOC, ei.EDUCATION, ei.SAL, ei.HIRE_TYPE, ei.PORTFOLIO, ei.ER_DESC,  to_char(ei.INPUT_DATE, 'yyyy-mm-dd') INPUT_DATE");
 			slcInterestErInfo.append(" from interest_er ie, er_info ei, company c");
 			slcInterestErInfo.append(" where (ie.er_num = ei.er_num) and (c.co_num=ei.co_num) and ie.ee_id = ?");
 			pstmt = con.prepareStatement(slcInterestErInfo.toString());

@@ -175,7 +175,7 @@ public class ErDetailEeView extends JDialog {
 		jbClose.addActionListener(edec);
 		addWindowListener(edec);
 
-		setBounds(100, 100, 490, 520);
+		setBounds(SDialog.getX() + 150, SDialog.getY() + 50, 490, 520);
 		setVisible(true);
 		setResizable(false);
 

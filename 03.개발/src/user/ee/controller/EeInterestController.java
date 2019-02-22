@@ -122,19 +122,21 @@ public class EeInterestController extends WindowAdapter implements ActionListene
 		JTable jt = eiv.getjtErInfo();
 		String erNum = String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
 		DetailErInfoVO deivo = null;
+		String appStatus = "";
 		try {
 			deivo = ee_dao.selectDetail(erNum, ee_id);
+			appStatus = ee_dao.selectApplication(ee_id, erNum);
+
+			EeDetailErView edev = new EeDetailErView(eiv, deivo, erNum, ee_id, appStatus);
+
+			// edev.isActive() - EeDetailErView의 창이 닫혀 지면 true발생
+			if (edev.isActive()) {
+				setDTM(ee_id);
+			} // end if
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} // end catch
-
-		EeDetailErView edev = new EeDetailErView(eiv, deivo, erNum, ee_id, null);
-
-		// edev.isActive() - EeDetailErView의 창이 닫혀 지면 true발생
-		if (edev.isActive()) {
-			setDTM(ee_id);
-		} // end if
-
+		
 	}// showDetailErinfo
 
 	////////// 안쓰는 메소드//////////

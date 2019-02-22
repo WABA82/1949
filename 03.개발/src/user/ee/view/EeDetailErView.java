@@ -287,7 +287,7 @@ public class EeDetailErView extends JDialog {
 		jbApply.addActionListener(edec);
 
 		/* 프레임 크기 설정 및 가시화 */
-		setBounds(100, 100, 410, 660);
+		setBounds((SDialog.getX() + 150),(SDialog.getY()-50), 410, 660);
 		setResizable(false);
 		setVisible(true);
 
