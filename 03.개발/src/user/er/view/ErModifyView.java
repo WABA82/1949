@@ -146,9 +146,9 @@ public class ErModifyView extends JDialog {
 		jlName.setBounds(210, 40, 60, 20);
 		jlTel.setBounds(210, 80, 60, 20);
 		jlEmail.setBounds(210, 120, 60, 20);
-		jtfName.setBounds(255, 37, 115, 23);
-		jtfTel.setBounds(255, 77, 115, 23);
-		jtfEmail.setBounds(255, 117, 115, 23);
+		jtfName.setBounds(255, 37, 125, 23);
+		jtfTel.setBounds(255, 77, 125, 23);
+		jtfEmail.setBounds(255, 117, 125, 23);
 
 		// 구인정보
 		JPanel infoPanel = new JPanel();
@@ -224,7 +224,6 @@ public class ErModifyView extends JDialog {
 		skillGridPanel.add(jchJS);
 		
 		int preSkill=0;
-		System.out.println(edvo.getListSkill());
 		if(edvo.getListSkill().contains("Java")) {
 			jchJava.setSelected(true);
 			preSkill++;
