@@ -98,6 +98,7 @@ public class EeDetailCoView extends JDialog {
 		/* 프레임 크기 설정 및 가시화 */
 		jbClose.setBounds(338, 562, 92, 24);
 		setBounds(100, 100, 480, 650);
+		setResizable(false);
 		setVisible(true);
 
 	}// 생성자

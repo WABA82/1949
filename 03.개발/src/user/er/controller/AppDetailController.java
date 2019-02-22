@@ -1,5 +1,6 @@
 package user.er.controller;
 
+import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -202,6 +203,17 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 		} // end if
 
 		if (daevo.getExt_resume() != null) {
+			// FileDialog로 이력서 저장장소, 파일명을 구하고 그 장소,파일로 fos로 write
+			FileDialog fdSave = new FileDialog(adv, "받을 경로 선택", FileDialog.SAVE);
+			fdSave.setVisible(true);
+
+			String path = fdSave.getDirectory();
+			String name = fdSave.getFile();
+			String resumeName = daevo.getExt_resume();
+			String ext = "";
+
+			// 확장자 만들기
+			ext = resumeName.substring(resumeName.lastIndexOf(".") + 1);
 
 			Socket socket = null;
 			DataOutputStream dos = null;
@@ -217,29 +229,31 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 				dos.flush();
 
 				// 서버에게 요청할 파일명 보내기.
-				dos.writeUTF(daevo.getExt_resume());
+				dos.writeUTF(daevo.getExt_resume().trim());
 				dos.flush();
 
 				dis = new DataInputStream(socket.getInputStream());
-				// System.out.println("클라이언트 "+ fileCnt+"개 받음");
+			
+				byte[] readData = new byte[512]; // 데이터가 담길 배열.
+				
+				int dataLen = 0; 	// readData배열 한 줄의 길이.
+				int dataArrCnt = 0;	// readData배열의 총 갯수.
+				
+				dataArrCnt = dis.readInt(); // 서버에서 보내오는 파일의 readData배열의 총 갯수 받기.
 
-				int fileCnt = 0; // 서버에서 보내오는 파일 조각의 갯수.
-				int data = 0; // 서버에서 보내오는 데이터
-
-				// 전달받을 파일 조각의 갯수
-				fileCnt = dis.readInt();
-
-				fos = new FileOutputStream("C:/dev/" + daevo.getExt_resume());
-
-				byte[] readData = new byte[512];
-				while (fileCnt > 0) {
-					data = dis.read(readData); // 서버에서 전송한 파일조각을 읽어들여
-					fos.write(readData, 0, data);// 생성한 파일로 기록
+				fos = new FileOutputStream(path + "/" + name + "." + ext); 
+				
+				// 배열의 갯수가 0이 아닌 동안 데이터 내보내기
+				while (dataArrCnt > 0) { 
+					dataLen = dis.read(readData); 
+					fos.write(readData, 0, dataLen);
 					fos.flush();
-					fileCnt--;
+					dataArrCnt--;
 				} // end while
 
 				dos.writeUTF("종료되었습니다.");
+				dos.flush();
+				JOptionPane.showMessageDialog(adv, "파일 다운이 완료되었습니다!");
 
 			} finally {
 				if (fos != null) {
