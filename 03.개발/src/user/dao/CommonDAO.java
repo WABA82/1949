@@ -464,14 +464,54 @@ public class CommonDAO {
         
         return flag;
     }
+    /**
+     * 박정미 - eemainVO를 위해서 activation을 받아오는 메서드
+     * @param id
+     * @return
+     * @throws SQLException
+     */
+    public String selectActivation(String id) throws SQLException {
+       String act="";
+       
+       Connection con=null;
+        PreparedStatement pstmt=null;
+        ResultSet rs=null;
+        
+        //드라이버 로딩
+        try {
+           con=getConn();
+           //쿼리문 생성
+           StringBuilder selectAct= new StringBuilder();
+           selectAct
+           .append("      select activation      ")
+           .append("      from user_table    ")
+           .append("      where id = ?   "   );
+           
+           pstmt=con.prepareStatement(selectAct.toString());
+           pstmt.setString(1,id );
+           
+           rs=pstmt.executeQuery();
+           
+           if(rs.next()) {
+              act =  rs.getString("activation");
+           }//end if
+           
+        }finally {
+           if( rs != null) { rs.close(); }
+           if( pstmt != null) { pstmt.close(); }
+           if( con != null) { con.close(); }
+        }//end finally
+        return act;
+    }//selectActivation
+    
     
     /**
-     *    김건하 아이디 받기
+     *    김건하 아이디 받기        *****회원가입 한 아이디 비번이 로그인 안되는 경우를 해결 - 메서드를 추가해줬음 02-21 
      * @return
      * @param eeId
      * @throws SQLException
      */
-    public EeMainVO selectEeMain(String eeid) throws SQLException {
+    public EeMainVO selectEeMain(String eeid, String act) throws SQLException {
        EeMainVO emvo=null;
        
        Connection con=null;
@@ -482,11 +522,19 @@ public class CommonDAO {
        try {
           con=getConn();
           //쿼리문 생성
+          
           StringBuilder selectMyInfo= new StringBuilder();
-          selectMyInfo
-          .append("      select ei.ee_id, ut.name, ei.img, ut.activation      ")
-          .append("      from ee_info ei, user_table ut   ")
-          .append("      where (ee_id = id) and ei.ee_id = ?   "   );
+          if(act.equals("Y")) {
+             selectMyInfo
+             .append("      select id, name, img, activation      ")
+             .append("      from ee_info ei, user_table ut   ")
+             .append("      where (ee_id = id) and ei.ee_id = ?   "   );
+          }else{
+             selectMyInfo
+             .append("      select id, name,  activation      ")
+             .append("      from user_table  ")
+             .append("      where id = ?   "   );
+          }
           
           pstmt=con.prepareStatement(selectMyInfo.toString());
           pstmt.setString(1,eeid );
@@ -494,7 +542,11 @@ public class CommonDAO {
           rs=pstmt.executeQuery();
           
           if(rs.next()) {
-             emvo = new EeMainVO(rs.getString("ee_id"),rs.getString("name"), rs.getString("img"), rs.getString("activation"));
+             if(act.equals("Y")) {
+                emvo = new EeMainVO(rs.getString("id"),rs.getString("name"), rs.getString("img"), rs.getString("activation"));
+             }else {
+                emvo = new EeMainVO(rs.getString("id"),rs.getString("name"), "no_ee_img.png", rs.getString("activation"));
+             }
           }//end if
           
        }finally {

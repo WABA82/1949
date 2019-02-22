@@ -109,21 +109,29 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 			String tel2=tel.replaceAll("-", "");
 		
 		if(tel2.length()!=11) {
-			JOptionPane.showMessageDialog(cuiv, "올바른 전화번호 형식이 아닙니다2.\n예)010-0000-0000");
+			JOptionPane.showMessageDialog(cuiv, "올바른 전화번호 형식이 아닙니다1.\n예)010-0000-0000");
 			return;
 			
 		}else {//11자리라면  :-있는지 확인하고, - - 사이 번호 자릿수 검증
 			//-필수입력
 			if(!(tel.contains("-"))) {
-				JOptionPane.showMessageDialog(cuiv, "올바른 전화번호 형식이 아닙니다1.\n 010-0000-0000");
+				JOptionPane.showMessageDialog(cuiv, "올바른 전화번호 형식이 아닙니다2.\n 010-0000-0000");
 				return;
-			}
+			}//end if
+			
+			//010외에는 되지 않도록
+			if(!(tel.substring(0, tel.indexOf("-")).equals("010"))) {
+				JOptionPane.showMessageDialog(cuiv, "올바른 전화번호 형식이 아닙니다3.\n 010-0000-0000");
+				return;
+			}//end if
+			
+			
 			//010-0000-0000
 			//첫-전까지자릿수3자리 , --사이 4자리, 나머지4자리(첫번째검증으로..)
 			if(!(tel.substring(0, tel.indexOf("-")).length()==3)
 				||!(tel.substring(tel.indexOf("-")+1, tel.lastIndexOf("-")).length()==4)) {
 					 
-					JOptionPane.showMessageDialog(cuiv, "올바른 전화번호 형식이 아닙니다3.\n 010-0000-0000");
+					JOptionPane.showMessageDialog(cuiv, "올바른 전화번호 형식이 아닙니다4.\n 010-0000-0000");
 					return;
 			}//end if
 			
@@ -180,7 +188,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 				JOptionPane.showMessageDialog(cuiv, "DB에서 문제가 발생했습니다.");
 				e.printStackTrace();
 			}
-		}else {//새비밀번호입력시
+		}else {//새비밀번호입력시//////////////////////////////////////////////////
 		
 			UserModifyVO umvo=new UserModifyVO(id, name, newPass1, tel, addrSeq, addrDetail, email);
 
@@ -191,12 +199,13 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 			}else {//새 비밀번호와 비밀번호 확인이 같다면 
 				if(!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("R")) {//null이면(아이디와비번이다르다면)
 					JOptionPane.showMessageDialog(cuiv, "비밀번호가 올바르지 않습니다.");
-				}else {//R이라면(아이디와 비밀번호가 맞다면) 수정됨===>여기서 검증!
-							if (CommonDAO.getInstance().updateUserInfo(umvo)) {//아이디비번맞는지확인맞다면//============
-								if(!checkPass(newPass1)) {//=====================================0221======
+				}else {//R이라면(아이디와 비밀번호가 맞다면) 수정됨
+							//if (CommonDAO.getInstance().updateUserInfo(umvo)) {
+								if(!checkPass(newPass1)) {
 									JOptionPane.showMessageDialog(cuiv, "비밀번호를 확인해주세요\n대문자,소문자,특수문자 조합");//왜안됨??????
 									return;
 								}else {
+									if (CommonDAO.getInstance().updateUserInfo(umvo)) {
 								JOptionPane.showMessageDialog(cuiv, "비밀번호가 수정되었습니다.");//숫자넣어도수정됨??
 								}
 						}//end else
