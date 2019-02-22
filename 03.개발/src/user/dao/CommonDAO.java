@@ -165,7 +165,6 @@ public class CommonDAO {
        
        cstmt.execute();
        resultMsg = cstmt.getString(12);
-       System.out.println(resultMsg);
        }finally {
           if(cstmt!=null) {cstmt.close();}
           if(con!=null) {con.close();}
@@ -320,10 +319,10 @@ public class CommonDAO {
             StringBuilder selectUserInfo=new StringBuilder();
             selectUserInfo.append("select u.id, u.name, u.tel, z.seq, z.zipcode,")
             .append("z.sido||' '||z.gugun||' '||z.dong||' '||z.bunji addr1 ,")
-            .append("	u.addr_detail addr2, u.email")
-            .append("		from user_table u, zipcode z ")
-            .append("		where u.addr_seq=z.seq and u.id in ? ");
-            //.append("		and u.id in ? ");
+            .append("   u.addr_detail addr2, u.email")
+            .append("      from user_table u, zipcode z ")
+            .append("      where u.addr_seq=z.seq and u.id in ? ");
+            //.append("      and u.id in ? ");
             
             pstmt=con.prepareStatement(selectUserInfo.toString());
             
@@ -395,40 +394,40 @@ public class CommonDAO {
      * @throws SQLException
      */
     public boolean updateUserInfoWithoutPass(UserModifyWithoutPassVO umvo2) throws SQLException {
-    	boolean flag=false;
-    	
-    	Connection con=null;
-    	PreparedStatement pstmt=null;
-    	
-    	try {
-    		con=getConn();
-    		
-    		StringBuilder updateUserInfo=new StringBuilder();
-    		
-    		updateUserInfo.append("update user_table    ")
-    		.append("        set  name=?, tel=?, addr_seq=?, addr_detail=?, email=? ")
-    		.append("        where id=? ");
-    		
-    		pstmt=con.prepareStatement(updateUserInfo.toString());
-    		
-    		pstmt.setString(1, umvo2.getName());
-    		pstmt.setString(2, umvo2.getTel());
-    		pstmt.setString(3, umvo2.getSeq());
-    		pstmt.setString(4, umvo2.getAddrDetail());
-    		pstmt.setString(5, umvo2.getEmail());
-    		pstmt.setString(6, umvo2.getId());
-    		
-    		int cnt=pstmt.executeUpdate();
-    		if(cnt==1) {
-    			flag=true;
-    		}
-    	}finally {
-    		if(pstmt!=null) {pstmt.close();}
-    		if(con!=null) {con.close();}
-    	}
-    	
-    	return flag;
-    	
+       boolean flag=false;
+       
+       Connection con=null;
+       PreparedStatement pstmt=null;
+       
+       try {
+          con=getConn();
+          
+          StringBuilder updateUserInfo=new StringBuilder();
+          
+          updateUserInfo.append("update user_table    ")
+          .append("        set  name=?, tel=?, addr_seq=?, addr_detail=?, email=? ")
+          .append("        where id=? ");
+          
+          pstmt=con.prepareStatement(updateUserInfo.toString());
+          
+          pstmt.setString(1, umvo2.getName());
+          pstmt.setString(2, umvo2.getTel());
+          pstmt.setString(3, umvo2.getSeq());
+          pstmt.setString(4, umvo2.getAddrDetail());
+          pstmt.setString(5, umvo2.getEmail());
+          pstmt.setString(6, umvo2.getId());
+          
+          int cnt=pstmt.executeUpdate();
+          if(cnt==1) {
+             flag=true;
+          }
+       }finally {
+          if(pstmt!=null) {pstmt.close();}
+          if(con!=null) {con.close();}
+       }
+       
+       return flag;
+       
     }
     
     /**
@@ -564,46 +563,48 @@ public class CommonDAO {
   * @return
   * @throws SQLException
   */
- public ErMainVO selectErMain(String id, String act) throws SQLException {
-       ErMainVO emv=null;
-       
-       Connection con =null;
-       PreparedStatement pstmt =null;
-       ResultSet rs = null;
-       
-       try {
-          con =getConn();
-          
-          StringBuilder selectErInfo = new StringBuilder();
-          if(act.equals("Y")) {
-          selectErInfo
-          .append(" select id, name, img1, activation ")
-          .append(" from company co, user_table ut ")
-          .append(" where (ut.id=er_id) ")
-          .append(" and ut.id=? ");
-          }else {
-             selectErInfo
-             .append("select id, name, activation ")
-             .append(" from user_table ")
-             .append(" where id=? ");
-          }//end else
-          pstmt =con.prepareStatement(selectErInfo.toString());
-          pstmt.setString(1, id );
-          rs=pstmt.executeQuery();
-          
-          if(rs.next()){
-             if(act.equals("Y")) {
-                emv= new ErMainVO(rs.getString("id"), rs.getString("name"), rs.getString("img1"), rs.getString("activation"));
-             }else {
-                emv= new ErMainVO(rs.getString("id"), rs.getString("name"), "no_co_img1.png", rs.getString("activation"));
-             }
-             //System.out.println(emv); 값 받았는지 확인
-          }
-       }finally {
-          if(rs!=null) {   rs.close();   }
-          if(pstmt!=null) {pstmt.close();}
-          if(con!=null) {con.close();}
-       }//end finally
-       return emv;
-    }//selectErMain
-    }
+	public ErMainVO selectErMain(String id, String act) throws SQLException {
+		ErMainVO emv = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = getConn();
+
+			StringBuilder selectErInfo = new StringBuilder();
+			if (act.equals("Y")) {
+				selectErInfo.append(" select id, name, img1, activation ").append(" from company co, user_table ut ")
+						.append(" where (ut.id=er_id) ").append(" and ut.id=? ");
+			} else {
+				selectErInfo.append("select id, name, activation ").append(" from user_table ").append(" where id=? ");
+			} // end else
+			pstmt = con.prepareStatement(selectErInfo.toString());
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				if (act.equals("Y")) {
+					emv = new ErMainVO(rs.getString("id"), rs.getString("name"), rs.getString("img1"),
+							rs.getString("activation"));
+				} else {
+					emv = new ErMainVO(rs.getString("id"), rs.getString("name"), "no_co_img1.png",
+							rs.getString("activation"));
+				}
+				// System.out.println(emv); 값 받았는지 확인
+			}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+		} // end finally
+		return emv;
+	}// selectErMain
+}

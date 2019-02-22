@@ -171,6 +171,10 @@ public class SignUpController extends WindowAdapter implements ActionListener {
       		
               /////////////////////////////////////////////주민번호 검증 완료 
               String ssn = ssn1+ssn2;
+              if(ssn.length()!=13) {
+            	  JOptionPane.showMessageDialog(suv, "주민번호는 13자리입니다.");
+            	  return;
+              };
               int[] flagNum= {2,3,4,5,6,7,8,9,2,3,4,5};
               int sum = 0;
               
@@ -180,7 +184,6 @@ public class SignUpController extends WindowAdapter implements ActionListener {
            	  //System.out.println("ssn.charat :"+ssn.charAt(i));
            	 // System.out.println("flag num :"+flagNum[i]);
            	  //System.out.println("sum :"+sum);
-           	  ///문제 생김 - 왜 sum 이 제대로 안나오지 데이터형 때문에 그런가?
            	  }//end for
              sum = (11-(sum%11))%10;
               if(!(sum == ssn.charAt(12)-48 )) {
@@ -194,17 +197,16 @@ public class SignUpController extends WindowAdapter implements ActionListener {
               try {
             	  Integer.parseInt(chkTel);
               }catch (NumberFormatException npe) {
-            	  JOptionPane.showMessageDialog(suv, "연락처는 숫자만 입력 가능합니다.\n 형식)000-0000-0000");
+            	  JOptionPane.showMessageDialog(suv, "연락처는 숫자만 입력 가능합니다.\n형식)000-0000-0000");
             	  return;
               }
               if(chkTel.length()<10) {
             	  JOptionPane.showMessageDialog(suv, "전화번호 숫자 안맞음 전화번호 형식이 잘못되었습니다.\n"+" 형식)000-0000-0000");
             	  return;
               }//end else
-              // 000-0000-0000
-              // 0123456789123
+              
               if(tel.indexOf("-")!=3 || !tel.substring((tel.length())-5, tel.length()-4).equals("-")) {
-            	  System.out.println("첫쨰 하이픈 위치 :"+tel.indexOf("-") +"//둘째 하이픈 인덱스 가져오기/"+tel.substring((tel.length())-5, tel.length()-4)+"tel의 길이 : "+tel.length());
+            	//System.out.println("첫쨰 하이픈 위치 :"+tel.indexOf("-") +"//둘째 하이픈 인덱스 가져오기/"+tel.substring((tel.length())-5, tel.length()-4)+"tel의 길이 : "+tel.length());
             	  JOptionPane.showMessageDialog(suv, "연락처 형식이 잘못되었습니다.하이픈 - ,- 인덱스로 거르기");
             	  return;
               };
@@ -250,7 +252,6 @@ public class SignUpController extends WindowAdapter implements ActionListener {
               }//QT 받기 끝    
     	 
     	 String resultMsg = "";
-          System.out.println("검증완료");
           UserInsertVO uivo = new UserInsertVO( id, pass1,name,ssn,tel,email, addrSeq, detailAddr, questionType ,answer,userType);
           try {
 			resultMsg=c_dao.insertUser(uivo);
@@ -258,8 +259,7 @@ public class SignUpController extends WindowAdapter implements ActionListener {
 			suv.dispose();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(suv, "회원가입 실패");
-			System.out.println("DB연동관련 insert 오류");
+			JOptionPane.showMessageDialog(suv, "회원가입 실패 - DB에 문제 발생(insert)");
 		}
           
      }//signUp

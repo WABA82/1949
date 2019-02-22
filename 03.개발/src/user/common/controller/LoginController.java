@@ -82,23 +82,25 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
          
          String act = C_dao.selectActivation(id);
          userType=c_dao.login(id, pass);
+         String act = C_dao.selectActivation(id);  //er도 act 필요하기 때문에 86번줄을 여기로 옮겨줌 
          if(userType.equals("E")) {
             emvo = C_dao.selectEeMain(id, act);
             new EeMainView(emvo);
             lv.dispose();
          }else if(userType.equals("R")){
-            ermvo = C_dao.selectErMain(id,act);
+            ermvo = C_dao.selectErMain(id, act);
             new ErMainView(ermvo);
             lv.dispose();
          }else{
-           JOptionPane.showMessageDialog(lv, "아이디와 비밀번호를 확인해주세요");
+          JOptionPane.showMessageDialog(lv, "아이디와 비밀번호를 확인해주세요");
            lv.getJtfId().setText("");
            lv.getJpfPass().setText("");
+           lv.getJtfId().requestFocus();
          }
       }// login
 
    public void signUp() {
-      new SignUpView(lv); ////////////////////////////////////////////////////////////////////////////////// 연결수정필요
+      new SignUpView(lv); 
    }// signUp
 
    public void findId() {
