@@ -194,3 +194,4 @@ public class ErDetailEeView extends JDialog {
 	}
 
 }// class
+

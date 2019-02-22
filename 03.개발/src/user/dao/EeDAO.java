@@ -568,15 +568,15 @@ public class EeDAO {
 		return cdvo;
 	}// selectCompany()
 
-//	/* 단위 테스트용 main */
-//	public static void main(String[] args) {
-//		EeDAO ee_dao = EeDAO.getInstance();
-//		try {
-//			System.out.println(ee_dao.selectErNumFromAppTb("app_000101"));
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} // end catch
-//	}// main
+	/* 단위 테스트용 main */
+	public static void main(String[] args) {
+		EeDAO ee_dao = EeDAO.getInstance();
+		try {
+			System.out.println(ee_dao.selectCompany("er_000033"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} // end catch
+	}// main
 
 	////////////////////////// 재현 끝 //////////////////////////
 

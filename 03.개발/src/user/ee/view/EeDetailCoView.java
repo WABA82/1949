@@ -36,7 +36,7 @@ public class EeDetailCoView extends JDialog {
 		jtfEstDate.setEditable(false);
 		memberNum.setEditable(false);
 
-		String imgPath = "C:/dev/1949/03.개발/no_img_files/";
+		String imgPath = "C:/dev/1949/03.개발/src/file/coImg/";
 		img1 = new JLabel(new ImageIcon(imgPath + cdvo.getImg1()));
 		img2 = new JLabel(new ImageIcon(imgPath + cdvo.getImg2()));
 		img3 = new JLabel(new ImageIcon(imgPath + cdvo.getImg3()));
@@ -98,6 +98,7 @@ public class EeDetailCoView extends JDialog {
 		/* 프레임 크기 설정 및 가시화 */
 		jbClose.setBounds(338, 562, 92, 24);
 		setBounds(100, 100, 480, 650);
+		setResizable(false);
 		setVisible(true);
 
 	}// 생성자
