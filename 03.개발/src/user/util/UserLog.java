@@ -2,6 +2,7 @@ package user.util;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -16,11 +17,11 @@ public class UserLog {
 		
 		try {
 			try {
-				client = new Socket("localhost", 7001);
+				client = new Socket("211.63.89.144", 7001);
 				dos = new DataOutputStream(client.getOutputStream());
 				
 				dos.writeUTF(id);
-				dos.writeUTF(client.getInetAddress().getHostAddress().toString());
+				dos.writeUTF(Inet4Address.getLocalHost().getHostAddress().toString());
 				dos.writeUTF(msg);
 				
 			} finally {

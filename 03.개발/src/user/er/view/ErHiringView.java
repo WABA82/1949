@@ -62,7 +62,7 @@ public class ErHiringView extends JDialog {
 		jcbSort.setBounds(10, 10, 100, 30);
 		jbDetailSearch.setBounds(880, 10, 100, 30);
 		jbSelectAll.setBounds(115, 10, 100, 30);
-		jspEe.setBounds(0, 50, 995, 450);
+		jspEe.setBounds(0, 50, 995, 800); //450
 		
 		add(jcbSort);
 		add(jspEe);
@@ -77,7 +77,7 @@ public class ErHiringView extends JDialog {
 		jbSelectAll.addActionListener(ehc);
 		addWindowListener(ehc);
 		
-		setBounds(100, 100, 1000, 527);
+		setBounds(100, 100, 1000, 877); //527
 		setResizable(false);
 		setVisible(true);
 		

@@ -89,6 +89,7 @@ public class EeHiringController extends WindowAdapter implements ActionListener,
 	public void searchCoName() {
 		ehc_dto.setCoName(ehv.getJtfSearch().getText().trim()); 
 		setDtm();
+		ehc_dto.setCoName("");
 	}
 	
 	public void showDetailErInfo() {
@@ -107,7 +108,6 @@ public class EeHiringController extends WindowAdapter implements ActionListener,
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println(appStatus);
 		new EeDetailErView(ehv, deivo, erNum, eeId , appStatus);
 	}
 	
@@ -142,6 +142,9 @@ public class EeHiringController extends WindowAdapter implements ActionListener,
 		}
 		
 		if(ae.getSource()==ehv.getJbWordSearch()) {
+			ehc_dto.setSort(" ");
+			ehc_dto.setCdt(" ");
+			ehc_dto.setCoName(" ");
 			//검색을 누르면
 			searchCoName();
 		}
@@ -150,6 +153,9 @@ public class EeHiringController extends WindowAdapter implements ActionListener,
 			detailSearch();
 		}
 		if(ae.getSource()==ehv.getJtfSearch()) {
+			ehc_dto.setSort(" ");
+			ehc_dto.setCdt(" ");
+			ehc_dto.setCoName(" ");
 			//텍스트필드 엔터를 누르면
 			searchCoName();
 		}

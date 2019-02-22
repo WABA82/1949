@@ -109,7 +109,7 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 			String ext ="";
 			
 			//확장자 만들기
-			ext = resumeName.substring(resumeName.lastIndexOf(".")+1);
+			ext = resumeName.substring(resumeName.lastIndexOf("."));
 			
 			Socket socket = null;
 			DataOutputStream dos = null;
@@ -117,16 +117,20 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 			FileOutputStream fos = null;
 
 			try {
-				socket = new Socket("localhost", 7002);
+				System.out.println("111");
+				socket = new Socket("211.63.89.144", 7002);
+				System.out.println("--"+socket);
 				dos = new DataOutputStream(socket.getOutputStream());
 
 				// 서버에게 이력서파일 전송 요청 보내기.
 				dos.writeUTF("ee_ext_request");
 				dos.flush();
+				System.out.println("222");
 
 				// 서버에게 요청할 파일명 보내기.
 				dos.writeUTF(devo.getExtResume().trim());
 				dos.flush();
+				System.out.println("333");
 
 				dis = new DataInputStream(socket.getInputStream());
 
@@ -136,7 +140,8 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 				// 전달받을 파일 조각의 갯수
 				fileCnt = dis.readInt();
 				
-				fos = new FileOutputStream(path+"/"+ name+"."+ext);
+				fos = new FileOutputStream(path+name+ext);
+				System.out.println("----"+path+name+ext);
 
 				byte[] readData = new byte[512];
 				while (fileCnt > 0) {

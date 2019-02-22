@@ -289,6 +289,7 @@ public class EeDetailErView extends JDialog {
 
 		/* 프레임 크기 설정 및 가시화 */
 		setBounds(100, 100, 410, 660);
+		setResizable(false);
 		setVisible(true);
 
 	}// 생성자
