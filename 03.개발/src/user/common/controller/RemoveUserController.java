@@ -19,7 +19,7 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 	private RemoveUserView ruv;
 	private String id;
 
-	public RemoveUserController(RemoveUserView ruv, String id) {
+	public RemoveUserController(RemoveUserView ruv, String id) {//view¹Þ±â....
 		this.ruv=ruv;
 		this.id=id;
 	}
