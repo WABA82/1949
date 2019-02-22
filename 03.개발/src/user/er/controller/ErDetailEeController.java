@@ -1,5 +1,7 @@
 package user.er.controller;
 
+import java.awt.FileDialog;
+import java.awt.GraphicsDevice.WindowTranslucency;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -96,23 +98,39 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 		} // end if
 
 		if (devo.getExtResume() != null) {
-
+			
+			// FileDialog로 이력서 저장장소, 파일명을 구하고 그 장소,파일로 fos로 write
+			FileDialog fdSave = new FileDialog(edev, "받을 경로 선택", FileDialog.SAVE);
+			fdSave.setVisible(true);
+			
+			String path = fdSave.getDirectory();
+			String name = fdSave.getFile();
+			String resumeName=devo.getExtResume();
+			String ext ="";
+			
+			//확장자 만들기
+			ext = resumeName.substring(resumeName.lastIndexOf("."));
+			
 			Socket socket = null;
 			DataOutputStream dos = null;
 			DataInputStream dis = null;
 			FileOutputStream fos = null;
 
 			try {
+				System.out.println("111");
 				socket = new Socket("211.63.89.144", 7002);
+				System.out.println("--"+socket);
 				dos = new DataOutputStream(socket.getOutputStream());
 
 				// 서버에게 이력서파일 전송 요청 보내기.
 				dos.writeUTF("ee_ext_request");
 				dos.flush();
+				System.out.println("222");
 
 				// 서버에게 요청할 파일명 보내기.
 				dos.writeUTF(devo.getExtResume().trim());
 				dos.flush();
+				System.out.println("333");
 
 				dis = new DataInputStream(socket.getInputStream());
 
@@ -121,8 +139,9 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 
 				// 전달받을 파일 조각의 갯수
 				fileCnt = dis.readInt();
-
-				fos = new FileOutputStream("C:/dev/" + devo.getExtResume());
+				
+				fos = new FileOutputStream(path+name+ext);
+				System.out.println("----"+path+name+ext);
 
 				byte[] readData = new byte[512];
 				while (fileCnt > 0) {
@@ -133,6 +152,8 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 				} // end while
 				
 				dos.writeUTF("종료되었습니다.");
+				dos.flush();
+				JOptionPane.showMessageDialog(edev, "파일 다운이 완료되었습니다!");
 				
 			} finally {
 				if(fos != null) {
@@ -165,6 +186,7 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 	public void actionPerformed(ActionEvent ae) {
 		if(ae.getSource()==edev.getJbRsmDown()) {
 			try {
+				
 				extRsmDown();
 			} catch (UnknownHostException e) {
 				e.printStackTrace();

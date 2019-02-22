@@ -43,6 +43,11 @@ public class ErAppController extends WindowAdapter implements MouseListener {
 			// DB에서 관심회사를 조회.
 			List<ErListVO> list = er_dao.selectErList(er_Id);
 
+			
+			StringBuffer erCnt = new StringBuffer("내 구인정보 수 : ");
+			erCnt.append(String.valueOf(list.size())).append(" 개");
+			erav.getJlEeInfo().setText(erCnt.toString());
+			
 			// JTable에 조회한 정보를 출력.
 			ErListVO eivo = null;
 

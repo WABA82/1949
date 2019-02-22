@@ -92,7 +92,7 @@ public class ErModifyView extends JDialog {
 		}	
 			
 		String[] eItem = { "고졸", "초대졸", "석사", "박사" };
-		jcbEducation = new JComboBox<>(eItem);
+		jcbEducation = new JComboBox<String>(eItem);
 		for(int i=0; i<eItem.length;i++) {
 			if(edvo.getEducation().equals(eItem[i])) {
 				jcbEducation.setSelectedIndex(i);
@@ -101,24 +101,26 @@ public class ErModifyView extends JDialog {
 		
 		String[] lItem = { "서울", "경기", "인천", "대전", "세종", "충남", "충북", "광주", "전남", "전북", "대구", "경북", "부산", "울산", "경남",
 				"강원", "제주", "전국" };
-		jcbLoc = new JComboBox<>(lItem);
+		jcbLoc = new JComboBox<String>(lItem);
 		for(int i=0; i<lItem.length;i++) {
 			if(edvo.getLoc().equals(lItem[i])) {
 				jcbLoc.setSelectedIndex(i);
 			}
 		}
 		
-		String[] hItem = { "정규직", "계약직", "프리 " };
-		jcbHireType = new JComboBox<>(hItem);
+		String[] hItem = { "정규직", "비정규직", "프리" };
+		jcbHireType = new JComboBox<String>(hItem);
 		// hiretype 'C' - 정규직'N' - 비정규직'F' - 프리랜서
-		for(int i=0; i<hItem.length;i++) {
-			if(edvo.getLoc().equals(hItem[i])) {
-				jcbHireType.setSelectedIndex(i);
-			}
+		if(edvo.getHireType().equals("C")) {
+			jcbHireType.setSelectedIndex(0);
+		}else if(edvo.getHireType().equals("N")) {
+			jcbHireType.setSelectedIndex(1);
+		}else if(edvo.getHireType().equals("F")) {
+			jcbHireType.setSelectedIndex(2);
 		}
 		
 		String[] pItem = { "YES", "NO" };
-		jcbPortfolio = new JComboBox<>(pItem);
+		jcbPortfolio = new JComboBox<String>(pItem);
 		if(edvo.getPortfolio().equals("Y")) {
 			jcbPortfolio.setSelectedIndex(0);
 		}else if(edvo.getPortfolio().equals("N")) {
@@ -144,9 +146,9 @@ public class ErModifyView extends JDialog {
 		jlName.setBounds(210, 40, 60, 20);
 		jlTel.setBounds(210, 80, 60, 20);
 		jlEmail.setBounds(210, 120, 60, 20);
-		jtfName.setBounds(255, 37, 115, 23);
-		jtfTel.setBounds(255, 77, 115, 23);
-		jtfEmail.setBounds(255, 117, 115, 23);
+		jtfName.setBounds(255, 37, 125, 23);
+		jtfTel.setBounds(255, 77, 125, 23);
+		jtfEmail.setBounds(255, 117, 125, 23);
 
 		// 구인정보
 		JPanel infoPanel = new JPanel();
@@ -222,7 +224,6 @@ public class ErModifyView extends JDialog {
 		skillGridPanel.add(jchJS);
 		
 		int preSkill=0;
-		System.out.println(edvo.getListSkill());
 		if(edvo.getListSkill().contains("Java")) {
 			jchJava.setSelected(true);
 			preSkill++;
@@ -278,7 +279,7 @@ public class ErModifyView extends JDialog {
 		add(jbCancel);
 		
 		/* 이벤트등록 */
-		ErModifyController emc = new ErModifyController(this,erNum,erId,emmc,preSkill);
+		ErModifyController emc = new ErModifyController(emmv,this,erNum,erId,emmc,preSkill);
 		jbCancel.addActionListener(emc);
 		jbReg.addActionListener(emc);
 		jbDelete.addActionListener(emc);

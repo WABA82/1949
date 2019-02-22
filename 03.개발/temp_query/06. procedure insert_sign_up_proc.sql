@@ -37,11 +37,11 @@ BEGIN
 	IF i_user_type = 'E' THEN
 		INSERT INTO user_table(id, pass, name, ssn, age, gender, tel, addr_seq, addr_detail, email, question_type, answer, user_type)
 		VALUES (i_id, i_pass, i_name, i_ssn, i_age, i_gender, i_tel, i_seq, i_addr_detail, i_email, i_q_type, i_answer, 'E');
-		msg := '일반사용자로 가입이 완료되었습니다.\n기본정보를 등록 후 구인정보 조회가 가능합니다.';
+		msg := '일반사용자로 가입이 완료되었습니다. 기본정보를 등록 후 구인정보 조회가 가능합니다.';
 	ELSE
 		INSERT INTO user_table(id, pass, name, ssn, age, gender, tel, addr_seq, addr_detail, email, question_type, answer, user_type)
 		VALUES (i_id, i_pass, i_name, i_ssn, i_age, i_gender, i_tel, i_seq, i_addr_detail, i_email, i_q_type, i_answer, 'R');	
-		msg := '기업사용자로 가입이 완료되었습니다.\n회사정보를 등록 후 구직정보 조회가 가능합니다.';
+		msg := '기업사용자로 가입이 완료되었습니다. 회사정보를 등록 후 구직정보 조회가 가능합니다.';
 	END IF;
 	
 

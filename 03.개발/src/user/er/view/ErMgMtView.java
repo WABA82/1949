@@ -29,6 +29,16 @@ public class ErMgMtView extends JDialog {
 			}
 		};
 		jtEr=new JTable(dtmEr);
+		jtEr.getColumnModel().getColumn(0).setPreferredWidth(50);
+		jtEr.getColumnModel().getColumn(1).setPreferredWidth(100);
+		jtEr.getColumnModel().getColumn(2).setPreferredWidth(370);
+		jtEr.getColumnModel().getColumn(3).setPreferredWidth(70);
+		jtEr.getColumnModel().getColumn(4).setPreferredWidth(70);
+		jtEr.getColumnModel().getColumn(5).setPreferredWidth(70);
+		jtEr.getColumnModel().getColumn(6).setPreferredWidth(70);
+		jtEr.getColumnModel().getColumn(7).setPreferredWidth(100);
+		jtEr.setRowHeight(30);
+		
 		JScrollPane jspEeInfo=new JScrollPane(jtEr);
 		
 		jbRegEr=new JButton("새 구인글 등록");

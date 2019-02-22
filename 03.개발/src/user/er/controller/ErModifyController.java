@@ -15,6 +15,7 @@ import user.dao.ErDAO;
 import user.ee.vo.EeInterestAndAppVO;
 import user.er.view.ErMgMtView;
 import user.er.view.ErModifyView;
+import user.er.vo.ErDetailVO;
 import user.er.vo.ErListVO;
 import user.er.vo.ErModifyVO;
 import user.util.UserLog;
@@ -26,17 +27,19 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 	private ErMgMtController emmc;
 	private int preSkill;
 	private UserLog ul;
+	private ErMgMtView emmv;
 	
-	public ErModifyController(ErModifyView emv, String erNum,String erId,ErMgMtController emmc, int preSkill) {
+	public ErModifyController(ErMgMtView emmv, ErModifyView emv, String erNum,String erId,ErMgMtController emmc, int preSkill) {
 		this.emv = emv;
 		this.erNum = erNum;
 		this.erId = erId;
 		this.emmc= emmc;
 		this.preSkill= preSkill;
+		this.emmv = emmv;
 		ul = new UserLog();
 		erdao= ErDAO.getInstance();
 	}
-	public void modifyEr() {
+	public void modifyEr()throws NullPointerException {
 		boolean updateflag=false;
 		String rank = String.valueOf(emv.getJcbRank().getSelectedItem());
 		String hireType = String.valueOf(emv.getJcbHireType().getSelectedItem());
@@ -76,7 +79,7 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 		
 		if(hireType.equals("정규직")) {
 			hireType="C";
-		}else if(hireType.equals("계약직")) {
+		}else if(hireType.equals("비정규직")) {
 			hireType="N";
 		}else if(hireType.equals("프리")) {
 			hireType="F";
@@ -105,7 +108,10 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 				JOptionPane.showMessageDialog(emv, "구인 정보가 수정되었습니다.");
 				ul.sendLog(erId, "구인 정보를 수정했습니다.");
 				emv.dispose();
+				//ErMgMtView emmv, ErDetailVO edvo, String erNum, String erId, ErMgMtController emmc
+				ErDetailVO edvo = erdao.selectErDetail(erNum);
 				emmc.setDtm();
+				new ErModifyView(emmv, edvo, erNum, erId, emmc);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -136,7 +142,25 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 	public void actionPerformed(ActionEvent ae) {
 		if(ae.getSource()==emv.getJbReg()) {
 			//등록하기
-			modifyEr();
+			if(emv.getJtfSubject().getText().trim()==null||emv.getJtfSubject().getText().trim().equals("")){
+				JOptionPane.showMessageDialog(emv, "제목은 필수 입력입니다.");
+				return;
+			}
+			if(emv.getJtfSal().getText().trim()==null||emv.getJtfSal().getText().trim().equals("")){
+				JOptionPane.showMessageDialog(emv, "급여는 필수 입력입니다.");
+				return;
+			}
+			if(emv.getJtaErDesc().getText().trim()==null||emv.getJtaErDesc().getText().trim().equals("")){
+				JOptionPane.showMessageDialog(emv, "상세설명은 필수 입력입니다.");
+				return;
+			}
+			try {
+				modifyEr();
+			}catch(NumberFormatException nfe) {
+				JOptionPane.showMessageDialog(emv, "급여는 숫자형식으로 입력해야합니다.");
+				nfe.printStackTrace();
+			}
+			
 		}
 		if(ae.getSource()==emv.getJbDelete()) {
 			//삭제하기

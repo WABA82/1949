@@ -64,9 +64,14 @@ public class EeInterestController extends WindowAdapter implements ActionListene
 			// DB에서 관심회사를 조회.
 			List<EeInterestVO> list = ee_dao.selectInterestErInfoList(ee_id);
 
-			// JTable에 조회한 정보를 출력.
+			StringBuffer interestCnt = new StringBuffer("내 관심 구인정보 수 : ");
+			interestCnt.append(String.valueOf(list.size())).append(" 개");
+			
+			eiv.getJlEeInfo().setText(interestCnt.toString());
+
 			EeInterestVO eivo = null;
 
+			// JTable에 조회한 정보를 출력.
 			Object[] rowData = null;
 			for (int i = 0; i < list.size(); i++) {
 

@@ -80,6 +80,12 @@ public class EeDAO {
 
 	}
 
+	/**
+	 * 기업정보를 모두 조회
+	 * @param eh_dto
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<EeHiringVO> selectEeHiring(EeHiringCdtDTO eh_dto) throws SQLException {
 		List<EeHiringVO> list = new ArrayList<EeHiringVO>();
 
@@ -91,9 +97,9 @@ public class EeDAO {
 
 			StringBuilder selectEeHiring = new StringBuilder();
 			selectEeHiring.append("select ei.er_num, ei.subject, ei.education, ei.rank, ei.loc, ei.hire_type,")
-					.append("to_char(ei.input_date,'yyyy-mm-dd-hh-mi') input_date, ei.sal, c.co_name	 ")
+					.append("to_char(ei.input_date,'yyyy-mm-dd hh:mi') input_date, ei.sal, c.co_name	 ")
 					.append("	from er_info ei ,company c	 ").append("	where (ei.co_num=c.co_num) ");
-
+			System.out.println(eh_dto.getCoName());
 			if (!(eh_dto.getCoName().trim() == null || eh_dto.getCoName().trim().equals(""))) {
 				selectEeHiring.append("and (c.co_name like '%").append(eh_dto.getCoName()).append("%' ) ");
 			}
@@ -103,14 +109,14 @@ public class EeDAO {
 
 			if (!(eh_dto.getSort().trim() == null || eh_dto.getSort().trim().equals(""))) {
 				if (eh_dto.getSort().equals("등록일순")) {
-					selectEeHiring.append("	order by ei.input_date	");
+					selectEeHiring.append("	order by ei.input_date desc, input_date desc");
 				} else if (eh_dto.getSort().equals("직급순")) {
-					selectEeHiring.append("	order by ei.rank	 ");
+					selectEeHiring.append("	order by ei.rank , input_date desc ");
 				} else if (eh_dto.getSort().equals("급여순")) {
-					selectEeHiring.append("	order by ei.sal	 ");
+					selectEeHiring.append("	order by ei.sal	desc, input_date desc ");
 				}
 			} else {
-				selectEeHiring.append("	order by ei.input_date	");
+				selectEeHiring.append("	order by ei.input_date desc	");
 			}
 
 			pstmt = con.prepareStatement(selectEeHiring.toString());
@@ -278,42 +284,43 @@ public class EeDAO {
 		return flag;
 	}
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////// 임시로 추가한 메소드(지원하기 버튼없애기
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 어렵다구욧!!!!!!!!!!!!!!)///////////////////////////////////////////
-//	public boolean selectApplication(String eeId,String eeNum ){
-//		boolean flag =false;
-//		Connection con = null;
-//		PreparedStatement pstmt = null;
-//		ResultSet rs = null;
-//
-//		try {// try : DB에서 조회하기
-//
-//			con = getConn(); // 커넥션 얻기.
-//			StringBuilder selectAppList = new StringBuilder(); // 지원현황테이블 list.
-//			selectAppList.append("dfdsfds");삭제예정
-//
-//			pstmt = con.prepareStatement(selectAppList.toString());
-//			// 바인드 변수
-//			pstmt.setString(1, );
-//			pstmt.setString(2, );
-//			// ResultSet 얻어오기.
-//			rs = pstmt.executeQuery();
-//			// VO선언 null;
-//			EeAppVO eavo = null;
-//			// VO생성 후 list에 담기
-//
-//		} finally { // finally : 연결끊기.
-//			if (rs != null) {rs.close();} // end if
-//			if (pstmt != null) {pstmt.close();} // end if
-//			if (con != null) {con.close();} // end if
-//		} // end finally
-//		
-//		return flag;
-//	}
 
-//	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
+	/**
+	 * 지원상태만 조회하는 클래스
+	 * @param eeId
+	 * @param erNum
+	 * @return
+	 * @throws SQLException
+	 */
+	public String selectApplication(String eeId,String erNum )throws SQLException{
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String appStatus ="";
+		try {
+			con = getConn();
+			StringBuilder selectAppStatus = new StringBuilder();
+			
+			selectAppStatus.append("select app_status from application where er_num=? and ee_id=?");
+
+			pstmt = con.prepareStatement(selectAppStatus.toString());
+			pstmt.setString(1,erNum );
+			pstmt.setString(2, eeId);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				appStatus= rs.getString("app_status");
+			}
+
+		} finally { // finally : 연결끊기.
+			if (rs != null) {rs.close();} // end if
+			if (pstmt != null) {pstmt.close();} // end if
+			if (con != null) {con.close();} // end if
+		} // end finally
+		
+		return appStatus;
+	}
+
 //	////////////////////////////////////////// 선의 소스
 //	////////////////////////////////////////// 끝//////////////////////////////////////////////////////////
 //
@@ -465,6 +472,52 @@ public class EeDAO {
 	}// selectAppList
 
 	/**
+	 * 재현 : 일반 사용자_지원 현황에서 자신이 지원한 회사의 er_num을 조회하는 메서드.
+	 * 
+	 * @param ee_id
+	 * @return
+	 * @throws SQLException
+	 */
+	public String selectErNumFromAppTb(String app_num) throws SQLException {
+
+		String er_num = ""; // 반환할 값의 변수
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {// try : DB에서 조회하기
+
+			con = getConn(); // 커넥션 얻기.
+			String selectErNumFromAppTb = " SELECT EI.ER_NUM FROM APPLICATION A, ER_INFO EI WHERE (A.ER_NUM = EI.ER_NUM) AND APP_NUM = ? ";
+			pstmt = con.prepareStatement(selectErNumFromAppTb);
+
+			// 바인드 변수
+			pstmt.setString(1, app_num);
+			// ResultSet 얻어오기.
+			rs = pstmt.executeQuery();
+
+			// 값 얻기
+			if (rs.next()) {
+				er_num = rs.getString("er_num");
+			} // end while
+
+		} finally { // finally : 연결끊기.
+			if (rs != null) {
+				rs.close();
+			} // end if
+			if (pstmt != null) {
+				pstmt.close();
+			} // end if
+			if (con != null) {
+				con.close();
+			} // end if
+		} // end finally
+
+		return er_num;
+	}// selectErNumFromAppTb(String ee_id)
+
+	/**
 	 * 회사 상세 정보 창을 채울 데이터를 조회하는 메서드.
 	 * 
 	 * @return
@@ -516,15 +569,14 @@ public class EeDAO {
 	}// selectCompany()
 
 	/* 단위 테스트용 main */
-//	public static void main(String[] args) {
-//		EeDAO ee_dao = EeDAO.getInstance();
-//		try {
-//			System.out.println(ee_dao.selectCompany("er_000028"));
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} // end catch
-//	}// main
-
+/*	public static void main(String[] args) {
+		EeDAO ee_dao = EeDAO.getInstance();
+		try {
+			System.out.println(ee_dao.selectCompany("er_000033"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} // end catch
+	}// main
 	////////////////////////// 재현 끝 //////////////////////////
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////// 김건하
@@ -799,9 +851,10 @@ public class EeDAO {
 				e.printStackTrace();
 			}
 	}
-	
-	
-	////////////////////////////////////////////////////////////////////////////////////////////////////////김건하 VO정리 끝///////////////////////////////////////////////////////////////////////////////////////////////
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////// 김건하
+	//////////////////////////////////////////////////////////////////////////////////////////////////////// VO정리
+	//////////////////////////////////////////////////////////////////////////////////////////////////////// 끝///////////////////////////////////////////////////////////////////////////////////////////////
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////// 김건하
 	//////////////////////////////////////////////////////////////////////////////////////////////////////// VO정리
