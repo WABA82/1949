@@ -1,6 +1,7 @@
 package user.ee.view;
 
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -17,11 +18,14 @@ import user.ee.controller.EeAppController;
 public class EeAppView extends JDialog {
 
 	private JTable jtApp;
+	private JLabel jlEeAppCnt;
 	private DefaultTableModel dtmApp;
 
 	private EeAppView(EeMainView emv, String ee_id) {
 		super(emv, "지원 현황", true);
 
+		jlEeAppCnt = new JLabel("내 지원 현황 수 : ");
+		
 		String[] erColumns = { "번호", /*"구인정보번호",*/ "지원번호", "제목", "회사명", "직급", "근무지역", "학력", "고용형태", "급여", "지원일", "지원상태" };
 		dtmApp = new DefaultTableModel(erColumns, 40) {
 			public boolean isCellEditable(int row, int column) {
@@ -48,7 +52,12 @@ public class EeAppView extends JDialog {
 		jtApp.setRowHeight(25);
 		
 		/* 배치 */
-		add("Center", jspEeInfo);
+		setLayout(null); // 수동 배치 설정
+		jlEeAppCnt.setBounds(10, 15, 200, 25);
+		jspEeInfo.setBounds(0, 50, 795, 495);
+
+		add(jlEeAppCnt);
+		add(jspEeInfo);
 
 		/* 이벤트 등록 */
 		EeAppController eac = new EeAppController(this, ee_id);
@@ -63,6 +72,10 @@ public class EeAppView extends JDialog {
 
 	public JTable getJtEr() {
 		return jtApp;
+	}
+	
+	public JLabel getJlEeAppCnt() {
+		return jlEeAppCnt;
 	}
 
 	public DefaultTableModel getDtmEr() {

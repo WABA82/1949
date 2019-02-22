@@ -230,7 +230,7 @@ public class EeDetailErView extends JDialog {
 		wrapPanel.add(skillGridPanel);
 
 		jbClose.setBounds(315, 575, 60, 25);
-		if (appStatus.trim() == null||appStatus.trim().equals("")) {
+		if (appStatus == null||appStatus.trim().equals("")) {
 			jlHeart.setBounds(65, 572, 32, 32);
 			jbCoInfo.setBounds(105, 575, 100, 25);
 			jbApply.setBounds(210, 575, 100, 25);
@@ -288,7 +288,8 @@ public class EeDetailErView extends JDialog {
 		jbApply.addActionListener(edec);
 
 		/* 프레임 크기 설정 및 가시화 */
-		setBounds(100, 100, 410, 660);
+		setBounds((SDialog.getX() + 150),(SDialog.getY()-50), 410, 660);
+		setResizable(false);
 		setVisible(true);
 
 	}// 생성자
