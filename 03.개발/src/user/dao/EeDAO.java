@@ -111,7 +111,7 @@ public class EeDAO {
 				if (eh_dto.getSort().equals("등록일순")) {
 					selectEeHiring.append("	order by ei.input_date desc, input_date desc");
 				} else if (eh_dto.getSort().equals("직급순")) {
-					selectEeHiring.append("	order by ei.rank desc , input_date desc ");
+					selectEeHiring.append("	order by ei.rank , input_date desc ");
 				} else if (eh_dto.getSort().equals("급여순")) {
 					selectEeHiring.append("	order by ei.sal	desc, input_date desc ");
 				}

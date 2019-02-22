@@ -35,10 +35,10 @@ public class ErDetailEeView extends JDialog {
 		add(jlImage);
 
 		if (interest.equals("0")) {
-			ImageIcon iiheart = new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/b_heart.png");
+			ImageIcon iiheart = new ImageIcon("C:/dev/1949/03.개발/src/file/b_heart.png");
 			jlHeart = new JLabel(iiheart);
 		} else if (interest.equals("1")) {
-			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/r_heart.png");
+			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/src/file/r_heart.png");
 			jlHeart = new JLabel(heart);
 			flagHeart = true;
 		}
