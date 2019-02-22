@@ -33,7 +33,7 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
       this.lv = lv;
       C_dao=CommonDAO.getInstance();
 
-   }// »ı¼ºÀÚ
+   }// ï¿½ê¹®ï¿½ê½¦ï¿½ì˜„
 
    @Override
    public void mouseClicked(MouseEvent me) {
@@ -55,7 +55,7 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
             e.printStackTrace();
          }
       } // end if
-   }// ¹öÆ°
+   }// è¸°ê¾ªë“‰
 
    @Override
    public void windowClosing(WindowEvent we) {
@@ -67,12 +67,12 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
          String pass=new String(lv.getJpfPass().getPassword());
          
          if(id==null||id.equals("")) {
-            JOptionPane.showMessageDialog(lv,"¾ÆÀÌµğ¸¦ ÀÔ·ÂÇÏ¼¼¿ä");
+            JOptionPane.showMessageDialog(lv,"ï¿½ë¸˜ï¿½ì” ï¿½ëµ’ç‘œï¿½ ï¿½ì—¯ï¿½ì °ï¿½ë¸¯ï¿½ê½­ï¿½ìŠ‚");
             lv.getJtfId().requestFocus();
             return;
          } // end if
          if (pass == null || pass.equals("")) {
-            JOptionPane.showMessageDialog(lv, "ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä");
+            JOptionPane.showMessageDialog(lv, "é®ê¾¨ï¿½è¸°ëŠìƒ‡ç‘œï¿½ ï¿½ì—¯ï¿½ì °ï¿½ë¸¯ï¿½ê½­ï¿½ìŠ‚");
             lv.getJpfPass().requestFocus();
             return;
          }
@@ -91,7 +91,7 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
             new ErMainView(ermvo);
             lv.dispose();
          }else{
-          JOptionPane.showMessageDialog(lv, "¾ÆÀÌµğ¿Í ºñ¹Ğ¹øÈ£¸¦ È®ÀÎÇØÁÖ¼¼¿ä");
+          JOptionPane.showMessageDialog(lv, "ï¿½ë¸˜ï¿½ì” ï¿½ëµ’ï¿½ï¿½ é®ê¾¨ï¿½è¸°ëŠìƒ‡ç‘œï¿½ ï¿½ì†—ï¿½ì”¤ï¿½ë¹äºŒì‡±ê½­ï¿½ìŠ‚");
            lv.getJtfId().setText("");
            lv.getJpfPass().setText("");
            lv.getJtfId().requestFocus();
@@ -126,3 +126,4 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
    public void mouseExited(MouseEvent e) {
    }
 }
+

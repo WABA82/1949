@@ -39,10 +39,10 @@ public class CoInfoRegView extends JDialog {
 		
 //		 ImageIcon ii1=new ImageIcon(location)
 		 
-		jlImg1 = new JLabel( new ImageIcon("C:\\dev/1949/03.개발/src/img/coImg/no_co_img1.png"));
-		jlImg2 = new JLabel(new ImageIcon("C:\\dev/1949/03.개발/src/img/coImg/no_co_img2.png"));
-		jlImg3 = new JLabel(new ImageIcon("C:\\dev/1949/03.개발/src/img/coImg/no_co_img3.png"));
-		jlImg4 = new JLabel(new ImageIcon("C:\\dev/1949/03.개발/src/img/coImg/no_co_img4.png"));
+		jlImg1 = new JLabel( new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/no_co_img1.png"));
+		jlImg2 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/no_co_img2.png"));
+		jlImg3 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/no_co_img3.png"));
+		jlImg4 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/no_co_img4.png"));
 		
 		//배치
 		setLayout(null);
@@ -146,7 +146,7 @@ public class CoInfoRegView extends JDialog {
 	}
 	
 //	public static void main(String[] args) {
-//		new CoInfoRegView();
+//		new CoInfoRegView(null, "song9912");
 //	}
 	
 }

@@ -10,7 +10,7 @@ public class CoInsertVO {
 	private String erId, img1, img2, img3, img4, coName, estDate, coDesc;
 	private int memberNum;
 	
-	public CoInsertVO(String erId, String img1, String img2, String img3, String img4, String coName, String estDate,
+	public CoInsertVO( String erId, String img1, String img2, String img3, String img4, String coName, String estDate,
 			String coDesc, int memberNum) {
 		this.erId = erId;
 		this.img1 = img1;
@@ -22,7 +22,8 @@ public class CoInsertVO {
 		this.coDesc = coDesc;
 		this.memberNum = memberNum;
 	}//»ý¼ºÀÚ
-
+	
+	
 	public String getErId() {
 		return erId;
 	}

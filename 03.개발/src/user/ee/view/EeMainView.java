@@ -1,13 +1,15 @@
 package user.ee.view;
 
+import java.sql.SQLException;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import user.common.vo.EeMainVO;
+import user.dao.CommonDAO;
 import user.ee.controller.EeMainController;
 
 public class EeMainView extends JFrame {
@@ -31,14 +33,15 @@ public class EeMainView extends JFrame {
 		jlImg.setBorder(new TitledBorder("내 이미지"));
 		jlActivation = new JLabel( emvo.getActivation() );
 			
-		jlUserInfo = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/eeimg/회원정보관리아이콘.png") );
-		jlLogOut = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/eeimg/로그아웃이미지.png"));
-
+		jlUserInfo = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/eeImg/회원정보관리아이콘.png") );
+		jlLogOut = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/eeImg/로그아웃이미지.png"));
+		
 		jbEeInfo = new JButton("기본정보 관리");
 		jbErInfo = new JButton("구인정보 보기");
 		jbInterestEr = new JButton("관심 구인정보");
 		jbApp = new JButton("지원현황");
 
+		System.out.println(emvo);
 		setLayout(null);
 		
 		JLabel jlUserInfoMsg=new JLabel("회원정보 관리");
@@ -117,10 +120,17 @@ public class EeMainView extends JFrame {
 		return jlImg;
 	}
 	
-	//단위 테스트 나중에 지우기.
-	public static void main(String[] args) {
-		EeMainVO emvo  = new EeMainVO("gong1", "공의선", "ee5.jpg", "N");
-		new EeMainView(emvo);
-	}// main
+	
+	/*****단위 테스트용 ******************/
+//	public static void main(String[] args) {
+//		EeMainVO emvo;
+//		try {
+//			emvo = CommonDAO.getInstance().selectEeMain("chubae11");
+//			new EeMainView(emvo);
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}// main
+	
 	
 }// class

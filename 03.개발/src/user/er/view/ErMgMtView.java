@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import user.er.controller.ErMgMtController;
 import user.er.vo.ErListVO;
 
+
 @SuppressWarnings("serial")
 public class ErMgMtView extends JDialog {
 
@@ -28,6 +29,16 @@ public class ErMgMtView extends JDialog {
 			}
 		};
 		jtEr=new JTable(dtmEr);
+		jtEr.getColumnModel().getColumn(0).setPreferredWidth(50);
+		jtEr.getColumnModel().getColumn(1).setPreferredWidth(100);
+		jtEr.getColumnModel().getColumn(2).setPreferredWidth(370);
+		jtEr.getColumnModel().getColumn(3).setPreferredWidth(70);
+		jtEr.getColumnModel().getColumn(4).setPreferredWidth(70);
+		jtEr.getColumnModel().getColumn(5).setPreferredWidth(70);
+		jtEr.getColumnModel().getColumn(6).setPreferredWidth(70);
+		jtEr.getColumnModel().getColumn(7).setPreferredWidth(100);
+		jtEr.setRowHeight(30);
+		
 		JScrollPane jspEeInfo=new JScrollPane(jtEr);
 		
 		jbRegEr=new JButton("새 구인글 등록");
@@ -40,9 +51,6 @@ public class ErMgMtView extends JDialog {
 		add(jspEeInfo);
 		add(jbRegEr);
 		
-		////////// 가데이터
-		erId = "moonlight";
-		/////////
 		ErMgMtController emmc = new ErMgMtController(this,erId);
 		jbRegEr.addActionListener(emmc);
 		jtEr.addMouseListener(emmc);
@@ -68,7 +76,7 @@ public class ErMgMtView extends JDialog {
 
 
 	public static void main(String[] args) {
-		new ErMgMtView(null, null, null);
+		new ErMgMtView(null, null, "moonlight");
 	}
 	
 }

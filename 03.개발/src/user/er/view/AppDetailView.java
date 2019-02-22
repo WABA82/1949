@@ -157,7 +157,7 @@ public class AppDetailView extends JDialog {
 		jbClose.addActionListener(adc); // 닫기 버튼 이벤트 등록
 
 		/* 프레임 크기 설정 및 가시화 */
-		setBounds(100, 100, 490, 520);
+		setBounds((alv.getX() + 100), (alv.getY() + 100), 490, 520);
 		setResizable(false);
 		setVisible(true);
 
@@ -224,7 +224,7 @@ public class AppDetailView extends JDialog {
 	/****** getter 메서드 끝 ******/
 
 	public static void main(String[] args) {
-		new AppDetailView(null, "app_000001");
+		new AppDetailView(null, "app_000061");
 	}// main
 
 }// class

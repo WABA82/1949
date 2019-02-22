@@ -44,6 +44,12 @@ public class EeInsertVO {
 		return extResume;
 	}
 
+	@Override
+	public String toString() {
+		return "EeInsertVO [eeId=" + eeId + ", img=" + img + ", rank=" + rank + ", loc=" + loc + ", education="
+				+ education + ", portfolio=" + portfolio + ", extResume=" + extResume + "]";
+	}
+
 	
 	
 	

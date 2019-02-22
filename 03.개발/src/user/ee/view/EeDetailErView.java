@@ -88,10 +88,10 @@ public class EeDetailErView extends JDialog {
 
 		// 버튼들
 		if (deivo.getInterest().equals("0")) {
-			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/b_heart.png");
+			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/src/file/b_heart.png");
 			jlHeart = new JLabel(heart);
 		} else if (deivo.getInterest().equals("1")) {
-			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/r_heart.png");
+			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/src/file/r_heart.png");
 			jlHeart = new JLabel(heart);
 			flagHeart = true;
 		}
@@ -201,27 +201,27 @@ public class EeDetailErView extends JDialog {
 		JLabel[] arrLbSkill = { jlSkill1, jlSkill2, jlSkill3, jlSkill4, jlSkill5, jlSkill6, jlSkill7, jlSkill8 };
 		for (int i = 0; i < deivo.getSkill().size(); i++) {
 			if (deivo.getSkill().get(i).equals("Java")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/Java.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/Java.png"));
 			} else if (deivo.getSkill().get(i).equals("JSP/Servlet")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/jsp_servelt.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/jsp_servelt.png"));
 
 			} else if (deivo.getSkill().get(i).equals("Spring")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/spring.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/spring.png"));
 
 			} else if (deivo.getSkill().get(i).equals("Oracle")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/oracle.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/oracle.png"));
 
 			} else if (deivo.getSkill().get(i).equals("HTML")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/html.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/html.png"));
 
 			} else if (deivo.getSkill().get(i).equals("CSS")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/css.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/css.png"));
 
 			} else if (deivo.getSkill().get(i).equals("Linux")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/linux.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/linux.png"));
 
 			} else if (deivo.getSkill().get(i).equals("JS")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/js.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/js.png"));
 			}
 			skillGridPanel.add(arrLbSkill[i]);
 		} // end for
@@ -229,8 +229,7 @@ public class EeDetailErView extends JDialog {
 		wrapPanel.add(skillGridPanel);
 
 		jbClose.setBounds(315, 575, 60, 25);
-		appStatus = null; // 지원하기 테스트용
-		if (appStatus == null) {
+		if (appStatus == null||appStatus.trim().equals("")) {
 			jlHeart.setBounds(65, 572, 32, 32);
 			jbCoInfo.setBounds(105, 575, 100, 25);
 			jbApply.setBounds(210, 575, 100, 25);
@@ -255,7 +254,6 @@ public class EeDetailErView extends JDialog {
 		jtfEducation.setText(deivo.getEdudation());
 		jtfLoc.setText(deivo.getLoc());
 		jtfSal.setText(String.valueOf(deivo.getSal()));
-		jtfPortfolio.setText(deivo.getPortfolio());
 		jtaErDesc.setText(deivo.getErDesc());
 		jtaErDesc.setEditable(false);
 
@@ -273,11 +271,15 @@ public class EeDetailErView extends JDialog {
 			jtfRank.setText("경력");
 		} else if (deivo.getRank().equals("N")) {
 			jtfRank.setText("신입");
-
+		}// end if
+		
+		if(deivo.getPortfolio().equals("Y")) {
+			jtfPortfolio.setText("있음");
+		}else if(deivo.getPortfolio().equals("N")) {
+			jtfPortfolio.setText("없음");
 		}
-		// EeHiringView ehv, DetailErInfoVO deivo, String erNum, String eeId,String
-		// appStatus
-		// 이벤트
+		
+		// 이벤트 등록 //
 		EeDetailErController edec = new EeDetailErController(this, erNum, eeId, flagHeart);
 		jlHeart.addMouseListener(edec);
 		jbCoInfo.addActionListener(edec);
@@ -285,7 +287,8 @@ public class EeDetailErView extends JDialog {
 		jbApply.addActionListener(edec);
 
 		/* 프레임 크기 설정 및 가시화 */
-		setBounds(100, 100, 410, 660);
+		setBounds((SDialog.getX() + 150),(SDialog.getY()-50), 410, 660);
+		setResizable(false);
 		setVisible(true);
 
 	}// 생성자
