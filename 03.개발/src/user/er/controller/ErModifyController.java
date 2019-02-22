@@ -84,7 +84,6 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 		}else if(hireType.equals("프리")) {
 			hireType="F";
 		}
-		System.out.println("고용형태"+hireType);
 		
 		if(portfolio.equals("YES")) {
 			portfolio="Y";

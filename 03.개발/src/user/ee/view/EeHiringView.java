@@ -97,7 +97,6 @@ public class EeHiringView extends JDialog {
 		jtfSearch.requestFocus();
 		
 	}//ErHiringView
-
 	
 
 	public JTextField getJtfSearch() {

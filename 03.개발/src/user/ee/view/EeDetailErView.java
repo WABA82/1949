@@ -30,7 +30,6 @@ public class EeDetailErView extends JDialog {
 
 	public EeDetailErView(JDialog SDialog, DetailErInfoVO deivo, String erNum, String eeId, String appStatus) {
 		super(SDialog, "상세구인정보", true);/* 창의 제목 */
-		System.out.println(appStatus);
 		/* 컴포넌트 생성 */
 		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/no_co_img1.png");
 		// 라벨들
@@ -89,10 +88,10 @@ public class EeDetailErView extends JDialog {
 
 		// 버튼들
 		if (deivo.getInterest().equals("0")) {
-			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/b_heart.png");
+			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/src/file/b_heart.png");
 			jlHeart = new JLabel(heart);
 		} else if (deivo.getInterest().equals("1")) {
-			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/r_heart.png");
+			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/src/file/r_heart.png");
 			jlHeart = new JLabel(heart);
 			flagHeart = true;
 		}
@@ -202,27 +201,27 @@ public class EeDetailErView extends JDialog {
 		JLabel[] arrLbSkill = { jlSkill1, jlSkill2, jlSkill3, jlSkill4, jlSkill5, jlSkill6, jlSkill7, jlSkill8 };
 		for (int i = 0; i < deivo.getSkill().size(); i++) {
 			if (deivo.getSkill().get(i).equals("Java")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/Java.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/Java.png"));
 			} else if (deivo.getSkill().get(i).equals("JSP/Servlet")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/jsp_servelt.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/jsp_servelt.png"));
 
 			} else if (deivo.getSkill().get(i).equals("Spring")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/spring.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/spring.png"));
 
 			} else if (deivo.getSkill().get(i).equals("Oracle")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/oracle.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/oracle.png"));
 
 			} else if (deivo.getSkill().get(i).equals("HTML")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/html.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/html.png"));
 
 			} else if (deivo.getSkill().get(i).equals("CSS")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/css.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/css.png"));
 
 			} else if (deivo.getSkill().get(i).equals("Linux")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/linux.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/linux.png"));
 
 			} else if (deivo.getSkill().get(i).equals("JS")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/Test_ Skill_Image/js.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/js.png"));
 			}
 			skillGridPanel.add(arrLbSkill[i]);
 		} // end for

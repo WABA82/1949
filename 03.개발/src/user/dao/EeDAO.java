@@ -99,7 +99,7 @@ public class EeDAO {
 			selectEeHiring.append("select ei.er_num, ei.subject, ei.education, ei.rank, ei.loc, ei.hire_type,")
 					.append("to_char(ei.input_date,'yyyy-mm-dd hh:mi') input_date, ei.sal, c.co_name	 ")
 					.append("	from er_info ei ,company c	 ").append("	where (ei.co_num=c.co_num) ");
-
+			System.out.println(eh_dto.getCoName());
 			if (!(eh_dto.getCoName().trim() == null || eh_dto.getCoName().trim().equals(""))) {
 				selectEeHiring.append("and (c.co_name like '%").append(eh_dto.getCoName()).append("%' ) ");
 			}
@@ -111,7 +111,7 @@ public class EeDAO {
 				if (eh_dto.getSort().equals("등록일순")) {
 					selectEeHiring.append("	order by ei.input_date desc, input_date desc");
 				} else if (eh_dto.getSort().equals("직급순")) {
-					selectEeHiring.append("	order by ei.rank desc , input_date desc ");
+					selectEeHiring.append("	order by ei.rank , input_date desc ");
 				} else if (eh_dto.getSort().equals("급여순")) {
 					selectEeHiring.append("	order by ei.sal	desc, input_date desc ");
 				}
