@@ -472,6 +472,52 @@ public class EeDAO {
 	}// selectAppList
 
 	/**
+	 * 재현 : 일반 사용자_지원 현황에서 자신이 지원한 회사의 er_num을 조회하는 메서드.
+	 * 
+	 * @param ee_id
+	 * @return
+	 * @throws SQLException
+	 */
+	public String selectErNumFromAppTb(String app_num) throws SQLException {
+
+		String er_num = ""; // 반환할 값의 변수
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {// try : DB에서 조회하기
+
+			con = getConn(); // 커넥션 얻기.
+			String selectErNumFromAppTb = " SELECT EI.ER_NUM FROM APPLICATION A, ER_INFO EI WHERE (A.ER_NUM = EI.ER_NUM) AND APP_NUM = ? ";
+			pstmt = con.prepareStatement(selectErNumFromAppTb);
+
+			// 바인드 변수
+			pstmt.setString(1, app_num);
+			// ResultSet 얻어오기.
+			rs = pstmt.executeQuery();
+
+			// 값 얻기
+			if (rs.next()) {
+				er_num = rs.getString("er_num");
+			} // end while
+
+		} finally { // finally : 연결끊기.
+			if (rs != null) {
+				rs.close();
+			} // end if
+			if (pstmt != null) {
+				pstmt.close();
+			} // end if
+			if (con != null) {
+				con.close();
+			} // end if
+		} // end finally
+
+		return er_num;
+	}// selectErNumFromAppTb(String ee_id)
+
+	/**
 	 * 회사 상세 정보 창을 채울 데이터를 조회하는 메서드.
 	 * 
 	 * @return
@@ -522,15 +568,15 @@ public class EeDAO {
 		return cdvo;
 	}// selectCompany()
 
-	/* 단위 테스트용 main */
-	public static void main(String[] args) {
-		EeDAO ee_dao = EeDAO.getInstance();
-		try {
-			System.out.println(ee_dao.selectCompany("er_000028"));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} // end catch
-	}// main
+//	/* 단위 테스트용 main */
+//	public static void main(String[] args) {
+//		EeDAO ee_dao = EeDAO.getInstance();
+//		try {
+//			System.out.println(ee_dao.selectErNumFromAppTb("app_000101"));
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} // end catch
+//	}// main
 
 	////////////////////////// 재현 끝 //////////////////////////
 
@@ -770,9 +816,10 @@ public class EeDAO {
 
 		return flag;
 	}
-	
-	
-	////////////////////////////////////////////////////////////////////////////////////////////////////////김건하 VO정리 끝///////////////////////////////////////////////////////////////////////////////////////////////
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////// 김건하
+	//////////////////////////////////////////////////////////////////////////////////////////////////////// VO정리
+	//////////////////////////////////////////////////////////////////////////////////////////////////////// 끝///////////////////////////////////////////////////////////////////////////////////////////////
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////// 김건하
 	//////////////////////////////////////////////////////////////////////////////////////////////////////// VO정리

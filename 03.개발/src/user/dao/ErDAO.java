@@ -77,9 +77,13 @@ public class ErDAO {
 
 			StringBuilder selectErList = new StringBuilder();
 			selectErList.append(
-					" select ei.er_num,ei.subject,ei.rank,ei.loc,ei.education,ei.hire_type,to_char(ei.input_date,'yyyy-mm-dd-hh-mi') input_date ")
-					.append(" from er_info ei, company c ").append(" where (ei.co_num = c.co_num)and(c.er_id=?) ")
-					.append(" order by input_date desc ");
+//					" select ei.er_num,ei.subject,ei.rank,ei.loc,ei.education,ei.hire_type,to_char(ei.input_date,'yyyy-mm-dd') input_date ")
+//					.append(" from er_info ei, company c ").append(" where (ei.co_num = c.co_num)and(c.er_id=?) ");
+///////////////////////////////////////////////////					
+					
+//					" select ei.er_num,ei.subject,ei.rank,ei.loc,ei.education,ei.hire_type,to_char(ei.input_date,'yyyy-mm-dd-hh-mi') input_date ")
+//					.append(" from er_info ei, company c ").append(" where (ei.co_num = c.co_num)and(c.er_id=?) ")
+//					.append(" order by input_date desc ");
 
 			pstmt = con.prepareStatement(selectErList.toString());
 			pstmt.setString(1, erId);
