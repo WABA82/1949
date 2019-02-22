@@ -320,10 +320,10 @@ public class CommonDAO {
             StringBuilder selectUserInfo=new StringBuilder();
             selectUserInfo.append("select u.id, u.name, u.tel, z.seq, z.zipcode,")
             .append("z.sido||' '||z.gugun||' '||z.dong||' '||z.bunji addr1 ,")
-            .append("	u.addr_detail addr2, u.email")
-            .append("		from user_table u, zipcode z ")
-            .append("		where u.addr_seq=z.seq and u.id in ? ");
-            //.append("		and u.id in ? ");
+            .append("   u.addr_detail addr2, u.email")
+            .append("      from user_table u, zipcode z ")
+            .append("      where u.addr_seq=z.seq and u.id in ? ");
+            //.append("      and u.id in ? ");
             
             pstmt=con.prepareStatement(selectUserInfo.toString());
             
@@ -395,40 +395,40 @@ public class CommonDAO {
      * @throws SQLException
      */
     public boolean updateUserInfoWithoutPass(UserModifyWithoutPassVO umvo2) throws SQLException {
-    	boolean flag=false;
-    	
-    	Connection con=null;
-    	PreparedStatement pstmt=null;
-    	
-    	try {
-    		con=getConn();
-    		
-    		StringBuilder updateUserInfo=new StringBuilder();
-    		
-    		updateUserInfo.append("update user_table    ")
-    		.append("        set  name=?, tel=?, addr_seq=?, addr_detail=?, email=? ")
-    		.append("        where id=? ");
-    		
-    		pstmt=con.prepareStatement(updateUserInfo.toString());
-    		
-    		pstmt.setString(1, umvo2.getName());
-    		pstmt.setString(2, umvo2.getTel());
-    		pstmt.setString(3, umvo2.getSeq());
-    		pstmt.setString(4, umvo2.getAddrDetail());
-    		pstmt.setString(5, umvo2.getEmail());
-    		pstmt.setString(6, umvo2.getId());
-    		
-    		int cnt=pstmt.executeUpdate();
-    		if(cnt==1) {
-    			flag=true;
-    		}
-    	}finally {
-    		if(pstmt!=null) {pstmt.close();}
-    		if(con!=null) {con.close();}
-    	}
-    	
-    	return flag;
-    	
+       boolean flag=false;
+       
+       Connection con=null;
+       PreparedStatement pstmt=null;
+       
+       try {
+          con=getConn();
+          
+          StringBuilder updateUserInfo=new StringBuilder();
+          
+          updateUserInfo.append("update user_table    ")
+          .append("        set  name=?, tel=?, addr_seq=?, addr_detail=?, email=? ")
+          .append("        where id=? ");
+          
+          pstmt=con.prepareStatement(updateUserInfo.toString());
+          
+          pstmt.setString(1, umvo2.getName());
+          pstmt.setString(2, umvo2.getTel());
+          pstmt.setString(3, umvo2.getSeq());
+          pstmt.setString(4, umvo2.getAddrDetail());
+          pstmt.setString(5, umvo2.getEmail());
+          pstmt.setString(6, umvo2.getId());
+          
+          int cnt=pstmt.executeUpdate();
+          if(cnt==1) {
+             flag=true;
+          }
+       }finally {
+          if(pstmt!=null) {pstmt.close();}
+          if(con!=null) {con.close();}
+       }
+       
+       return flag;
+       
     }
     
     /**
@@ -464,7 +464,6 @@ public class CommonDAO {
         
         return flag;
     }
-    
     /**
      * 박정미 - eemainVO를 위해서 activation을 받아오는 메서드
      * @param id
@@ -472,9 +471,9 @@ public class CommonDAO {
      * @throws SQLException
      */
     public String selectActivation(String id) throws SQLException {
-    	String act="";
-    	
-    	Connection con=null;
+       String act="";
+       
+       Connection con=null;
         PreparedStatement pstmt=null;
         ResultSet rs=null;
         
@@ -505,6 +504,7 @@ public class CommonDAO {
         return act;
     }//selectActivation
     
+    
     /**
      *    김건하 아이디 받기        *****회원가입 한 아이디 비번이 로그인 안되는 경우를 해결 - 메서드를 추가해줬음 02-21 
      * @return
@@ -525,15 +525,15 @@ public class CommonDAO {
           
           StringBuilder selectMyInfo= new StringBuilder();
           if(act.equals("Y")) {
-        	  selectMyInfo
-        	  .append("      select id, name, img, activation      ")
-        	  .append("      from ee_info ei, user_table ut   ")
-        	  .append("      where (ee_id = id) and ei.ee_id = ?   "   );
+             selectMyInfo
+             .append("      select id, name, img, activation      ")
+             .append("      from ee_info ei, user_table ut   ")
+             .append("      where (ee_id = id) and ei.ee_id = ?   "   );
           }else{
-        	  selectMyInfo
-        	  .append("      select id, name,  activation      ")
-        	  .append("      from user_table  ")
-        	  .append("      where id = ?   "   );
+             selectMyInfo
+             .append("      select id, name,  activation      ")
+             .append("      from user_table  ")
+             .append("      where id = ?   "   );
           }
           
           pstmt=con.prepareStatement(selectMyInfo.toString());
@@ -542,11 +542,11 @@ public class CommonDAO {
           rs=pstmt.executeQuery();
           
           if(rs.next()) {
-        	  if(act.equals("Y")) {
-        		  emvo = new EeMainVO(rs.getString("id"),rs.getString("name"), rs.getString("img"), rs.getString("activation"));
-        	  }else {
-        		  emvo = new EeMainVO(rs.getString("id"),rs.getString("name"), "no_ee_img.png", rs.getString("activation"));
-        	  }
+             if(act.equals("Y")) {
+                emvo = new EeMainVO(rs.getString("id"),rs.getString("name"), rs.getString("img"), rs.getString("activation"));
+             }else {
+                emvo = new EeMainVO(rs.getString("id"),rs.getString("name"), "no_ee_img.png", rs.getString("activation"));
+             }
           }//end if
           
        }finally {
@@ -559,7 +559,7 @@ public class CommonDAO {
     }// selectEeMain
     
        /**
-        *박정미 er 아이디 받아오기 (출력됨)   ----여기도 이미지 없을 때 대비해서 메서드 따와야됨
+        *박정미 er 아이디 받아오기 (출력됨)
      * @param id
      * @return
      * @throws SQLException

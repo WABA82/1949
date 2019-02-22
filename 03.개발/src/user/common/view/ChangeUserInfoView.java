@@ -1,5 +1,7 @@
 package user.common.view;
 
+import java.awt.Color;
+
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -30,13 +32,19 @@ public class ChangeUserInfoView extends JDialog {
 		JLabel jlEmail = new JLabel("이메일");
 
 		jtfId = new JTextField(uivo.getId());
+		jtfId.setEditable(false);//id 변경 막기
+		jtfId.setBackground(Color.WHITE);
 		jpfOriginalPass = new JPasswordField();
 		jpfNewPass1 = new JPasswordField();
 		jpfNewPass2 = new JPasswordField();
 		jtfName = new JTextField(uivo.getName());
 		jtfTel = new JTextField(uivo.getTel());
 		jtfZipcode = new JTextField(uivo.getZipcode());
+		jtfZipcode.setEditable(false);//우편번호 수정 막기
+		jtfZipcode.setBackground(Color.WHITE);
 		jtfAddr1 = new JTextField(uivo.getAddr1());
+		jtfAddr1.setEditable(false);//주소 수정 막기
+		jtfAddr1.setBackground(Color.WHITE);
 		jtfAddr2 = new JTextField(uivo.getAddr2());
 		jtfEmail = new JTextField(uivo.getEmail());
 
