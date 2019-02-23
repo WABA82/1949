@@ -51,9 +51,7 @@ public class AdminUtil {
 	 * @throws UnknownHostException
 	 * @throws IOException
 	 */
-	public void deleteFile(String fileName, String flag, Socket client, 
-			DataOutputStream dos, DataInputStream dis) 
-					throws UnknownHostException, IOException {
+	public void deleteFile(String fileName, String flag, Socket client, DataOutputStream dos, DataInputStream dis) throws UnknownHostException, IOException {
 		client = new Socket("211.63.89.144", 7002);
 		
 		dos = new DataOutputStream(client.getOutputStream());

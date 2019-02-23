@@ -24,107 +24,105 @@ import user.ee.view.EeMainView;
 import user.er.view.ErMainView;
 
 public class LoginController extends WindowAdapter implements ActionListener, MouseListener {
-   private LoginView lv;
-   private EeMainVO emvo;
-   private ErMainVO ermvo;
-   private CommonDAO C_dao;
+	private LoginView lv;
+	private EeMainVO emvo;
+	private ErMainVO ermvo;
+	private CommonDAO C_dao;
 
-   public LoginController(LoginView lv) {
-      this.lv = lv;
-      C_dao=CommonDAO.getInstance();
+	public LoginController(LoginView lv) {
+		this.lv = lv;
+		C_dao = CommonDAO.getInstance();
 
-   }// ìƒì„±ì
+	}// »ı¼ºÀÚ
 
-   @Override
-   public void mouseClicked(MouseEvent me) {
-      if (me.getSource() == lv.getJlSignUp()) {
-         signUp();
-      } else if (me.getSource() == lv.getJlFindID()) {
-         findId();
-      } else if (me.getSource() == lv.getJlFindPass()) {
-         findPass();
-      } // end else
-   }// mouseClicked
+	@Override
+	public void mouseClicked(MouseEvent me) {
+		if (me.getSource() == lv.getJlSignUp()) {
+			signUp();
+		} else if (me.getSource() == lv.getJlFindID()) {
+			findId();
+		} else if (me.getSource() == lv.getJlFindPass()) {
+			findPass();
+		} // end else
+	}// mouseClicked
 
-   @Override
-   public void actionPerformed(ActionEvent ae) {
-      if (ae.getSource() == lv.getJbLogin()) {
-         try {
-            login();
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
-      } // end if
-   }// ë²„íŠ¼
+	@Override
+	public void actionPerformed(ActionEvent ae) {
+		if (ae.getSource() == lv.getJbLogin()) {
+			try {
+				login();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} // end if
+	}// ¹öÆ°
 
-   @Override
-   public void windowClosing(WindowEvent we) {
-      lv.dispose();
-   }
+	@Override
+	public void windowClosing(WindowEvent we) {
+		lv.dispose();
+	}
 
-   public void login() throws SQLException {
-         String id=lv.getJtfId().getText().trim();
-         String pass=new String(lv.getJpfPass().getPassword());
-         
-         if(id==null||id.equals("")) {
-            JOptionPane.showMessageDialog(lv,"ì•„ì´ë””ë¥¼ ì…ë ¥í•˜ì„¸ìš”");
-            lv.getJtfId().requestFocus();
-            return;
-         } // end if
-         if (pass == null || pass.equals("")) {
-            JOptionPane.showMessageDialog(lv, "ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”");
-            lv.getJpfPass().requestFocus();
-            return;
-         }
-         
-         String userType="";
-         CommonDAO c_dao = CommonDAO.getInstance();
-         
-         String act = C_dao.selectActivation(id);
-         userType=c_dao.login(id, pass);
-         String act = C_dao.selectActivation(id);  //erë„ act í•„ìš”í•˜ê¸° ë•Œë¬¸ì— 86ë²ˆì¤„ì„ ì—¬ê¸°ë¡œ ì˜®ê²¨ì¤Œ 
-         if(userType.equals("E")) {
-            emvo = C_dao.selectEeMain(id, act);
-            new EeMainView(emvo);
-            lv.dispose();
-         }else if(userType.equals("R")){
-            ermvo = C_dao.selectErMain(id, act);
-            new ErMainView(ermvo);
-            lv.dispose();
-         }else{
-          JOptionPane.showMessageDialog(lv, "ì•„ì´ë””ì™€ ë¹„ë°€ë²ˆí˜¸ë¥¼ í™•ì¸í•´ì£¼ì„¸ìš”");
-           lv.getJtfId().setText("");
-           lv.getJpfPass().setText("");
-           lv.getJtfId().requestFocus();
-         }
-      }// login
+	public void login() throws SQLException {
+		String id = lv.getJtfId().getText().trim();
+		String pass = new String(lv.getJpfPass().getPassword());
 
-   public void signUp() {
-      new SignUpView(lv); 
-   }// signUp
+		if (id == null || id.equals("")) {
+			JOptionPane.showMessageDialog(lv, "¾ÆÀÌµğ¸¦ ÀÔ·ÂÇÏ¼¼¿ä");
+			lv.getJtfId().requestFocus();
+			return;
+		} // end if
+		if (pass == null || pass.equals("")) {
+			JOptionPane.showMessageDialog(lv, "ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä");
+			lv.getJpfPass().requestFocus();
+			return;
+		}
 
-   public void findId() {
-      new FindIdView(lv);
-   }// findId
+		String userType = "";
+		CommonDAO c_dao = CommonDAO.getInstance();
 
-   public void findPass() {
-      new FindPassView(lv);
-   }// findPass
+		userType = c_dao.login(id, pass);
+		String act = C_dao.selectActivation(id); // erµµ act ÇÊ¿äÇÏ±â ¶§¹®¿¡ 86¹øÁÙÀ» ¿©±â·Î ¿Å°ÜÁÜ
+		if (userType.equals("E")) {
+			emvo = C_dao.selectEeMain(id, act);
+			new EeMainView(emvo);
+			lv.dispose();
+		} else if (userType.equals("R")) {
+			ermvo = C_dao.selectErMain(id, act);
+			new ErMainView(ermvo);
+			lv.dispose();
+		} else {
+			JOptionPane.showMessageDialog(lv, "¾ÆÀÌµğ¿Í ºñ¹Ğ¹øÈ£¸¦ È®ÀÎÇØÁÖ¼¼¿ä");
+			lv.getJtfId().setText("");
+			lv.getJpfPass().setText("");
+			lv.getJtfId().requestFocus();
+		}
+	}// login
 
-   @Override
-   public void mousePressed(MouseEvent e) {
-   }
+	public void signUp() {
+		new SignUpView(lv);
+	}// signUp
 
-   @Override
-   public void mouseReleased(MouseEvent e) {
-   }
+	public void findId() {
+		new FindIdView(lv);
+	}// findId
 
-   @Override
-   public void mouseEntered(MouseEvent e) {
-   }
+	public void findPass() {
+		new FindPassView(lv);
+	}// findPass
 
-   @Override
-   public void mouseExited(MouseEvent e) {
-   }
+	@Override
+	public void mousePressed(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+	}
 }
-

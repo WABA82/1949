@@ -32,7 +32,7 @@ public class FileServer extends Thread {
 
 				FileServerHelper fsh = new FileServerHelper(listHelper, client, dis, dos);
 			}
-			
+
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
