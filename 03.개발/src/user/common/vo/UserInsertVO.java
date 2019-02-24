@@ -3,7 +3,8 @@ package user.common.vo;
 public class UserInsertVO {
 
 	private String id, pass, name, ssn, tel, email, addrSeq, addrDetail, questionType, answer, userType;
-
+	
+	
 	public UserInsertVO() {
 		super();
 	}
@@ -64,6 +65,13 @@ public class UserInsertVO {
 	public String getAnswer() {
 		return answer;
 	}
+	
+	public String getUserType() {
+		return userType;
+	}
+	
+	
+	
 
 	public String getUserType() {
 		return userType;
@@ -76,4 +84,7 @@ public class UserInsertVO {
 				+ questionType + ", answer=" + answer + ", userType=" + userType + "]";
 	}
 
+
+
+	
 }

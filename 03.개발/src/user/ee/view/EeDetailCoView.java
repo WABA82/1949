@@ -1,7 +1,9 @@
 package user.ee.view;
 
 import java.awt.Color;
+import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -11,17 +13,14 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import user.dao.EeDAO;
 import user.ee.controller.EeDetailCoController;
 import user.ee.vo.CoDetailVO;
 
 @SuppressWarnings("serial")
 public class EeDetailCoView extends JDialog {
-
-	/* 인스턴스변수 */
 	private JButton jbClose;
 	private JLabel img1, img2, img3, img4;
-	private JTextField jtfCoName, jtfEstDate, memberNum;
-	private JTextArea jtaCoDesc;
 
 	public EeDetailCoView(EeDetailErView edev, CoDetailVO cdvo) {
 		super(edev, "회사상세정보", true);
@@ -30,20 +29,20 @@ public class EeDetailCoView extends JDialog {
 		JLabel jlEstDate = new JLabel("설립년도");
 		JLabel jlmemberNum = new JLabel(" 사원수");
 
-		jtfCoName = new JTextField(); // 회사명
-		jtfEstDate = new JTextField(); // 설립일
-		memberNum = new JTextField(); // 사원수
-
+		JTextField jtfCoName = new JTextField(cdvo.getCo_name()); // 회사명
+		JTextField jtfEstDate = new JTextField(cdvo.getEst_date()); // 설립일
+		JTextField memberNum = new JTextField(String.valueOf(cdvo.getMember_num())); // 사원수
 		jtfCoName.setEditable(false);
 		jtfEstDate.setEditable(false);
 		memberNum.setEditable(false);
 
-		img1 = new JLabel();
-		img2 = new JLabel();
-		img3 = new JLabel();
-		img4 = new JLabel();
+		String imgPath = "C:/dev/1949/03.개발/src/file/coImg/";
+		img1 = new JLabel(new ImageIcon(imgPath + cdvo.getImg1()));
+		img2 = new JLabel(new ImageIcon(imgPath + cdvo.getImg2()));
+		img3 = new JLabel(new ImageIcon(imgPath + cdvo.getImg3()));
+		img4 = new JLabel(new ImageIcon(imgPath + cdvo.getImg4()));
 
-		jtaCoDesc = new JTextArea(); // 상세정보.
+		JTextArea jtaCoDesc = new JTextArea(cdvo.getCo_desc()); // 상세정보.
 		jtaCoDesc.setEditable(false);
 		JScrollPane jspTaDesc = new JScrollPane(jtaCoDesc);
 
@@ -92,7 +91,7 @@ public class EeDetailCoView extends JDialog {
 		add(jbClose);
 
 		/* 이벤트 등록 */
-		EeDetailCoController edcc = new EeDetailCoController(this, cdvo);
+		EeDetailCoController edcc = new EeDetailCoController(this);
 		addWindowListener(edcc);
 		jbClose.addActionListener(edcc);
 
@@ -124,32 +123,16 @@ public class EeDetailCoView extends JDialog {
 		return img4;
 	}
 
-	public JTextField getJtfCoName() {
-		return jtfCoName;
-	}
-
-	public JTextField getJtfEstDate() {
-		return jtfEstDate;
-	}
-
-	public JTextField getMemberNum() {
-		return memberNum;
-	}
-
-	public JTextArea getJtaCoDesc() {
-		return jtaCoDesc;
-	}
-
-//	/* 단위 테스트용 */
-//	public static void main(String[] args) {
-//		EeDAO ee_dao = EeDAO.getInstance();
-//		CoDetailVO cdvo;
-//		try {
-//			cdvo = ee_dao.selectCompany("er_000033");
-//			new EeDetailCoView(null, cdvo);
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} // end catch
-//	}// main
+	/* 단위 테스트용 */
+	public static void main(String[] args) {
+		EeDAO ee_dao = EeDAO.getInstance();
+		CoDetailVO cdvo;
+		try {
+			cdvo = ee_dao.selectCompany("er_000033");
+			new EeDetailCoView(null, cdvo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} // end catch
+	}// main
 
 }// class
