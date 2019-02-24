@@ -16,12 +16,15 @@ import user.er.view.ErMainView;
 
 public class RemoveUserController extends WindowAdapter implements ActionListener {
 	
+	private ChangeUserInfoView cuiv;
 	private RemoveUserView ruv;
 	private String id;
+	
 
-	public RemoveUserController(RemoveUserView ruv, String id) {//view받기....
+	public RemoveUserController(ChangeUserInfoView cuiv ,RemoveUserView ruv, String id) {//view받기....
 		this.ruv=ruv;
 		this.id=id;
+		this.cuiv=cuiv;
 	}
 	
 
@@ -49,6 +52,7 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 					if(CommonDAO.getInstance().deleteUserInfo(id)) {
 						JOptionPane.showMessageDialog(ruv, "정상탈퇴처리되었습니다.");
 						ruv.dispose();
+						cuiv.dispose();
 											
 					}//end if
 				}//end else
