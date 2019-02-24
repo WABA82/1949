@@ -44,7 +44,7 @@ public class CommonDAO {
     private Connection getConn() throws SQLException {
         Connection con = null;
 
-        String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl";// í•™ì›ì—ì„œ ë°”ê¿€ê²ƒ!!
+        String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl";// ÇĞ¿ø¿¡¼­ ¹Ù²Ü °Í
         String id = "kanu";
         String pass = "share";
         con = DriverManager.getConnection(url, id, pass);
@@ -52,7 +52,7 @@ public class CommonDAO {
     }
 
     /**
-     * ë°•ì •ë¯¸ ë¡œê·¸ì¸ ê¸°ëŠ¥ 
+     * ¹ÚÁ¤¹Ì ·Î±×ÀÎ ±â´É
      * @param id
      * @param pass
      * @return
@@ -92,7 +92,7 @@ public class CommonDAO {
     }// login
 
     /**
-     * ë°•ì •ë¯¸ ì£¼ì†Œ ê²€ìƒ‰ ì™„ì„±
+     * ¹ÚÁ¤¹Ì ÁÖ¼Ò °Ë»ö ¿Ï¼º
      * @param dong
      * @return
      * @throws SQLException
@@ -127,10 +127,10 @@ public class CommonDAO {
           }
        } // end finally
        return list;
-    }//ì£¼ì†Œ ê²€ìƒ‰ ì™„ì„± ì—¬ê¸°ê¹Œì§€ 
+    }// ÁÖ¼Ò °Ë»ö ¿Ï¼º ¿©±â±îÁö 
 
     /**
-     * ë°•ì •ë¯¸ ìœ ì € ì •ë³´ ë“±ë¡  ////êµ¬í˜„ì¤‘
+     * ¹ÚÁ¤¹Ì À¯Àú Á¤º¸ µî·Ï
      * @param uivo
      * @throws SQLException
      */
@@ -142,7 +142,7 @@ public class CommonDAO {
        try {
        con = getConn();
        
-       //3. í”„ë¡œì‹œì € ì‹¤í–‰ ê°ì²´ ì–»ê¸°
+       //3. ÇÁ·Î½ÃÀú ½ÇÇà °´Ã¼ ¾ò±â
        cstmt = con.prepareCall("{ call insert_sign_up_proc(?,?,?,?,?,?,?,?,?,?,?,?) }");
 /*i_id IN VARCHAR2, i_pass IN VARCHAR2, i_name IN VARCHAR2,
        i_ssn IN CHAR, i_tel IN VARCHAR2, i_email IN VARCHAR2,
@@ -174,7 +174,7 @@ public class CommonDAO {
     }//insertUser
 
     /**
-     * ìµœí˜œì› ì•„ì´ë”” ì°¾ê¸°
+     * ÃÖÇı¿ø ¾ÆÀÌµğ Ã£±â
      * @param fivo
      * @return
      * @throws SQLException
@@ -216,7 +216,7 @@ public class CommonDAO {
     }
     
     /**
-     * ìµœí˜œì› ë¹„ë°€ë²ˆí˜¸ ë³€ê²½ì „ íšŒì›ì •ë³´ë°›ì•„ ê²€ì¦
+     * ÃÖÇı¿ø ºñ¹Ğ¹øÈ£ º¯°æÀü È¸¿øÁ¤º¸¹Ş¾Æ °ËÁõ
      * @param fpvo
      * @return
      * @throws SQLException
@@ -263,7 +263,7 @@ public class CommonDAO {
     }//selectFindPass
     
     /**
-     * ìµœí˜œì› ë¹„ë°€ë²ˆí˜¸ ë³€ê²½í•˜ê¸°
+     * ÃÖÇı¿ø ºñ¹Ğ¹øÈ£ º¯°æÇÏ±â
      * @param spvo
      * @return
      * @throws SQLException
@@ -301,7 +301,7 @@ public class CommonDAO {
     }//updatePass
     
     /**
-     * ìµœí˜œì› ì‚¬ìš©ì ì •ë³´ì¡°íšŒ
+     * ÃÖÇı¿ø »ç¿ëÀÚ Á¤º¸ Á¶È¸
      * @param id
      * @return
      * @throws SQLException
@@ -345,7 +345,7 @@ public class CommonDAO {
     }
     
     /**
-     * ìµœí˜œì› ì‚¬ìš©ì ì •ë³´ ìˆ˜ì •
+     * ÃÖÇı¿ø »ç¿ëÀÚ Á¤º¸ ¼öÁ¤
      * @param umvo
      * @return
      * @throws SQLException
@@ -388,7 +388,7 @@ public class CommonDAO {
         
     }
     /**
-     * ìµœí˜œì› ì‚¬ìš©ì ì •ë³´ ìˆ˜ì •2(ë¹„ë°€ë²ˆí˜¸ ìˆ˜ì •í•˜ì§€ ì•Šì„ ë•Œ)
+     * ÃÖÇı¿ø »ç¿ëÀÚ Á¤º¸ ¼öÁ¤2(ºñ¹Ğ¹øÈ£ ¼öÁ¤ÇÏÁö ¾ÊÀ» ¶§)
      * @param umvo
      * @return
      * @throws SQLException
@@ -431,7 +431,7 @@ public class CommonDAO {
     }
     
     /**
-     * ìµœí˜œì› íšŒì› ì •ë³´ ì‚­ì œ
+     * ÃÖÇı¿ø È¸¿ø Á¤º¸ »èÁ¦
      * @param id
      * @return
      * @throws SQLException
@@ -464,7 +464,7 @@ public class CommonDAO {
         return flag;
     }
     /**
-     * ë°•ì •ë¯¸ - eemainVOë¥¼ ìœ„í•´ì„œ activationì„ ë°›ì•„ì˜¤ëŠ” ë©”ì„œë“œ
+     * ¹ÚÁ¤¹Ì - eemainVO¸¦ À§ÇØ¼­ activationÀ» ¹Ş¾Æ¿À´Â ¸Ş¼­µå
      * @param id
      * @return
      * @throws SQLException
@@ -476,10 +476,10 @@ public class CommonDAO {
         PreparedStatement pstmt=null;
         ResultSet rs=null;
         
-        //ë“œë¼ì´ë²„ ë¡œë”©
+        // µå¶óÀÌ¹ö ·Îµù
         try {
            con=getConn();
-           //ì¿¼ë¦¬ë¬¸ ìƒì„±
+           // Äõ¸®¹® »ı¼º
            StringBuilder selectAct= new StringBuilder();
            selectAct
            .append("      select activation      ")
@@ -505,7 +505,7 @@ public class CommonDAO {
     
     
     /**
-     *    ê¹€ê±´í•˜ ì•„ì´ë”” ë°›ê¸°        *****íšŒì›ê°€ì… í•œ ì•„ì´ë”” ë¹„ë²ˆì´ ë¡œê·¸ì¸ ì•ˆë˜ëŠ” ê²½ìš°ë¥¼ í•´ê²° - ë©”ì„œë“œë¥¼ ì¶”ê°€í•´ì¤¬ìŒ 02-21 
+     * ±è°ÇÇÏ ¾ÆÀÌµğ ¹Ş±â        *****È¸¿ø°¡ÀÔ ÇÑ ¾ÆÀÌµğ ºñ¹øÀÌ ·Î±×ÀÎ ¾ÈµÇ´Â °æ¿ì¸¦ ÇØ°á - ¸Ş¼­µå¸¦ Ãß°¡ÇØÁáÀ½ 02-21 
      * @return
      * @param eeId
      * @throws SQLException
@@ -517,10 +517,10 @@ public class CommonDAO {
        PreparedStatement pstmt=null;
        ResultSet rs=null;
        
-       //ë“œë¼ì´ë²„ ë¡œë”©
+       // µå¶óÀÌ¹ö ·Îµù
        try {
           con=getConn();
-          //ì¿¼ë¦¬ë¬¸ ìƒì„±
+          // Äõ¸®¹® »ı¼º
           
           StringBuilder selectMyInfo= new StringBuilder();
           if(act.equals("Y")) {
@@ -559,7 +559,7 @@ public class CommonDAO {
     
 
     /**
-     *ë°•ì •ë¯¸ er ì•„ì´ë”” ë°›ì•„ì˜¤ê¸° êµ¬í˜„ ã…‡       -ìƒˆë¡œê°€ì…í•œ er ì‚¬ìš©ìë„ ë¡œê·¸ì¸ ê°€ëŠ¥ã…‡  -02-22
+     *¹ÚÁ¤¹Ì er ¾ÆÀÌµğ ¹Ş¾Æ¿À±â ±¸Çö ¤·       -»õ·Î°¡ÀÔÇÑ er »ç¿ëÀÚµµ ·Î±×ÀÎ °¡´É¤·  -02-22
   * @param id
   * @return
   * @throws SQLException
@@ -593,7 +593,7 @@ public class CommonDAO {
 					emv = new ErMainVO(rs.getString("id"), rs.getString("name"), "no_co_img1.png",
 							rs.getString("activation"));
 				}
-				// System.out.println(emv); ê°’ ë°›ì•˜ëŠ”ì§€ í™•ì¸
+				// System.out.println(emv); °ª ¹Ş¾Ò´ÂÁö È®ÀÎ
 			}
 		} finally {
 			if (rs != null) {

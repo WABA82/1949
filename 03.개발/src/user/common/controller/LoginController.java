@@ -33,7 +33,7 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
       this.lv = lv;
       C_dao=CommonDAO.getInstance();
 
-   }// ï¿½ê¹®ï¿½ê½¦ï¿½ì˜„
+   }// »ı¼ºÀÚ
 
    @Override
    public void mouseClicked(MouseEvent me) {
@@ -55,7 +55,7 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
             e.printStackTrace();
          }
       } // end if
-   }// è¸°ê¾ªë“‰
+   }// ¹öÆ°
 
    @Override
    public void windowClosing(WindowEvent we) {
@@ -67,12 +67,12 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
          String pass=new String(lv.getJpfPass().getPassword());
          
          if(id==null||id.equals("")) {
-            JOptionPane.showMessageDialog(lv,"ï¿½ë¸˜ï¿½ì” ï¿½ëµ’ç‘œï¿½ ï¿½ì—¯ï¿½ì °ï¿½ë¸¯ï¿½ê½­ï¿½ìŠ‚");
+            JOptionPane.showMessageDialog(lv,"¾ÆÀÌµğ¸¦ ÀÔ·ÂÇÏ¼¼¿ä");
             lv.getJtfId().requestFocus();
             return;
          } // end if
          if (pass == null || pass.equals("")) {
-            JOptionPane.showMessageDialog(lv, "é®ê¾¨ï¿½è¸°ëŠìƒ‡ç‘œï¿½ ï¿½ì—¯ï¿½ì °ï¿½ë¸¯ï¿½ê½­ï¿½ìŠ‚");
+            JOptionPane.showMessageDialog(lv, "ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä");
             lv.getJpfPass().requestFocus();
             return;
          }
@@ -80,8 +80,8 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
          String userType="";
          CommonDAO c_dao = CommonDAO.getInstance();
          
-         String act = C_dao.selectActivation(id);
          userType=c_dao.login(id, pass);
+         String act = C_dao.selectActivation(id);   //erµµ act ÇÊ¿äÇÏ±â ¶§¹®¿¡ 86¹øÁÙÀ» ¿©±â·Î ¿Å°ÜÁÜ 
          if(userType.equals("E")) {
             emvo = C_dao.selectEeMain(id, act);
             new EeMainView(emvo);
@@ -91,7 +91,7 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
             new ErMainView(ermvo);
             lv.dispose();
          }else{
-          JOptionPane.showMessageDialog(lv, "ï¿½ë¸˜ï¿½ì” ï¿½ëµ’ï¿½ï¿½ é®ê¾¨ï¿½è¸°ëŠìƒ‡ç‘œï¿½ ï¿½ì†—ï¿½ì”¤ï¿½ë¹äºŒì‡±ê½­ï¿½ìŠ‚");
+          JOptionPane.showMessageDialog(lv, "¾ÆÀÌµğ¿Í ºñ¹Ğ¹øÈ£¸¦ È®ÀÎÇØÁÖ¼¼¿ä");
            lv.getJtfId().setText("");
            lv.getJpfPass().setText("");
            lv.getJtfId().requestFocus();
