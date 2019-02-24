@@ -26,6 +26,7 @@ import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 
 import admin.file.FileServer;
 import admin.view.AdminMainView;
@@ -117,6 +118,7 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 			SimpleDateFormat sdf = null;
 			Date date = null;
 			StringBuilder msg = null; // Log화면에 보여줄 msg
+			JScrollPane jsp = amv.getJspLog();
 			
 			try {
 				while(true) {
@@ -138,6 +140,8 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 					
 					// 유저로부터 받은 msg를 로그창에 찍음
 					dlm.addElement(msg.toString());
+					
+					jsp.getVerticalScrollBar().setValue(jsp.getVerticalScrollBar().getMaximum());
 				}
 			} finally {
 				if (clientLog != null) { clientLog.close(); }
