@@ -13,13 +13,14 @@ public class LogTest { // 서버에 요청을 보내는 예시
 		
 		try {
 			try {
-				client = new Socket("localhost", 7001);
-				dos = new DataOutputStream(client.getOutputStream());
-				
-				dos.writeUTF("id");
-				dos.writeUTF(client.getInetAddress().toString());
-				dos.writeUTF("요청내용");
-				
+			
+			client = new Socket("localhost", 7001);
+			dos = new DataOutputStream(client.getOutputStream());
+			
+			dos.writeUTF("id");
+			dos.writeUTF(client.getInetAddress().toString());
+			dos.writeUTF("요청내용");
+			
 				
 			} finally {
 				if (dos != null) { dos.close(); }
