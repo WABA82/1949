@@ -13,6 +13,7 @@ import admin.controller.AdminMainController;
 public class AdminMainView extends JFrame {
 	
 	private JList<String> jlLog;
+	private JScrollPane jspLog;
 	private DefaultListModel<String> dlmLog;
 	private JButton jbMgmt, jbServerOn, jbSaveLog, jbExit;
 
@@ -26,7 +27,7 @@ public class AdminMainView extends JFrame {
 		jbSaveLog = new JButton("로그 저장");
 		jbExit = new JButton("종료");
 
-		JScrollPane jspLog = new JScrollPane(jlLog);
+		jspLog = new JScrollPane(jlLog);
 		jspLog.setBorder(new TitledBorder("Log"));
 		
 		JPanel rightPanel = new JPanel();
@@ -70,6 +71,9 @@ public class AdminMainView extends JFrame {
 		setVisible(true);
 	}
 	
+	public JScrollPane getJspLog() {
+		return jspLog;
+	}
 	public JList<String> getJlLog() {
 		return jlLog;
 	}

@@ -23,6 +23,7 @@ public class UserInsertVO {
 		this.questionType = questionType;
 		this.answer = answer;
 		this.userType = userType;
+
 	}
 
 	public String getId() {
@@ -64,6 +65,13 @@ public class UserInsertVO {
 	public String getAnswer() {
 		return answer;
 	}
+	
+	public String getUserType() {
+		return userType;
+	}
+	
+	
+	
 
 	public String getUserType() {
 		return userType;

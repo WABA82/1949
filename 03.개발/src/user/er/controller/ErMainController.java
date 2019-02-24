@@ -11,7 +11,9 @@ import java.sql.SQLException;
 import user.common.view.ChangeUserInfoView;
 import user.common.view.LoginView;
 import user.common.vo.ErMainVO;
+
 import user.common.vo.UserInfoVO;
+
 import user.dao.CommonDAO;
 import user.dao.ErDAO;
 import user.er.view.CoInfoModifyView;
@@ -31,20 +33,22 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 	private ErDAO erdao;
 	private CommonDAO C_dao;
 	
-	
 	public ErMainController(ErMainView emv, ErMainVO ermvo/*String erId*/) {
+
 		this.emv = emv;
 		this.ermvo=ermvo;
 		erdao=ErDAO.getInstance();
+
 		C_dao=CommonDAO.getInstance();
 	}
 	
 	public void mngUser() throws SQLException {
-		if(ermvo.getActivation().equals("S")) {
+		if(ermvo.getActivation().equals("2")) {
 			new CoInfoRegView(emv, ermvo.getErId());
+			System.out.println(ermvo);
 		}else {
 				cvo=erdao.selectCoInfo(ermvo.getErId());
-				new CoInfoModifyView(emv, cvo);
+				CoInfoModifyView cmv =  new CoInfoModifyView(emv, cvo);
 		}//end else
 			
 	}//end if
@@ -67,7 +71,7 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 
 	@Override
 	public void mouseClicked(MouseEvent me) {
-		//Çý¿ø ±â¾÷È¸¿ø°ü¸®
+		//Ã‡Ã½Â¿Ã¸ Â±Ã¢Â¾Ã·ÃˆÂ¸Â¿Ã¸Â°Ã¼Â¸Â®
 			try {
 				if(me.getSource() == emv.getJlUserInfo()) {
 				UserInfoVO uivo=C_dao.selectUserInfo(ermvo.getErId());

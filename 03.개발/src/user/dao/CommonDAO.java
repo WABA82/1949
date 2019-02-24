@@ -44,7 +44,7 @@ public class CommonDAO {
     private Connection getConn() throws SQLException {
         Connection con = null;
 
-        String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl";// 학원에서 바꿀것!!
+        String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl";// 학원에서 바꿀 것
         String id = "kanu";
         String pass = "share";
         con = DriverManager.getConnection(url, id, pass);
@@ -52,7 +52,7 @@ public class CommonDAO {
     }
 
     /**
-     * 박정미 로그인 기능 
+     * 박정미 로그인 기능
      * @param id
      * @param pass
      * @return
@@ -127,10 +127,10 @@ public class CommonDAO {
           }
        } // end finally
        return list;
-    }//주소 검색 완성 여기까지 
+    }// 주소 검색 완성 여기까지 
 
     /**
-     * 박정미 유저 정보 등록  ////구현중
+     * 박정미 유저 정보 등록
      * @param uivo
      * @throws SQLException
      */
@@ -301,7 +301,7 @@ public class CommonDAO {
     }//updatePass
     
     /**
-     * 최혜원 사용자 정보조회
+     * 최혜원 사용자 정보 조회
      * @param id
      * @return
      * @throws SQLException
@@ -476,10 +476,10 @@ public class CommonDAO {
         PreparedStatement pstmt=null;
         ResultSet rs=null;
         
-        //드라이버 로딩
+        // 드라이버 로딩
         try {
            con=getConn();
-           //쿼리문 생성
+           // 쿼리문 생성
            StringBuilder selectAct= new StringBuilder();
            selectAct
            .append("      select activation      ")
@@ -505,7 +505,7 @@ public class CommonDAO {
     
     
     /**
-     *    김건하 아이디 받기        *****회원가입 한 아이디 비번이 로그인 안되는 경우를 해결 - 메서드를 추가해줬음 02-21 
+     * 김건하 아이디 받기        *****회원가입 한 아이디 비번이 로그인 안되는 경우를 해결 - 메서드를 추가해줬음 02-21 
      * @return
      * @param eeId
      * @throws SQLException
@@ -517,10 +517,10 @@ public class CommonDAO {
        PreparedStatement pstmt=null;
        ResultSet rs=null;
        
-       //드라이버 로딩
+       // 드라이버 로딩
        try {
           con=getConn();
-          //쿼리문 생성
+          // 쿼리문 생성
           
           StringBuilder selectMyInfo= new StringBuilder();
           if(act.equals("Y")) {
@@ -557,6 +557,7 @@ public class CommonDAO {
        return emvo;
     }// selectEeMain
     
+
     /**
      *박정미 er 아이디 받아오기 구현 ㅇ       -새로가입한 er 사용자도 로그인 가능ㅇ  -02-22
   * @param id

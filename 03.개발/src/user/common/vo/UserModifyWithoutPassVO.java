@@ -2,6 +2,7 @@ package user.common.vo;
 
 public class UserModifyWithoutPassVO {
 
+
 	private String id, name, tel, seq, addrDetail, email;
 
 	public UserModifyWithoutPassVO(String id, String name, String tel, String seq, String addrDetail, String email) {
@@ -46,3 +47,4 @@ public class UserModifyWithoutPassVO {
 	
 	
 }
+
