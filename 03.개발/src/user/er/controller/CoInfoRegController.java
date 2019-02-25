@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 
 import user.dao.ErDAO;
 import user.er.view.CoInfoRegView;
+import user.er.vo.ActivationVO;
 import user.er.vo.CoInsertVO;
 
 public class CoInfoRegController extends WindowAdapter implements MouseListener, ActionListener {
@@ -72,7 +73,7 @@ public class CoInfoRegController extends WindowAdapter implements MouseListener,
    }// mouseClicked
 
    public void register() throws SQLException {
-
+	   boolean insertFlag = false;
       if (uploadImg1 == null) {
          JOptionPane.showMessageDialog(cirv, "메인사진은 입력해주셔야합니다");
          return;
@@ -127,8 +128,15 @@ public class CoInfoRegController extends WindowAdapter implements MouseListener,
          CoInsertVO civo = null;
          civo = new CoInsertVO(erId, uploadImg1.getName(), uploadImg2.getName(), uploadImg3.getName(), uploadImg4.getName(), coName,
                estDate, coDesc, memberNum);
-         System.out.println(civo);
-         erdao.insertCoInfo(civo);
+         ActivationVO avo=new ActivationVO(erId);
+         System.out.println("civo값 : "+civo+"avo의 값은 : "+avo);
+         
+         insertFlag = erdao.updateErInfo(civo, avo);
+         if(insertFlag) {
+        	 JOptionPane.showMessageDialog(cirv, "회사가 등록되었습니다.");
+         }
+         
+         
          System.out.println("등록");
          JOptionPane.showMessageDialog(cirv, "회사 정보가 등록되었습니다\n이제부터 구직 정보를 조회가능합니다.");
    }// register

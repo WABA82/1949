@@ -14,6 +14,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import user.common.vo.EeMainVO;
+import user.dao.CommonDAO;
 import user.dao.EeDAO;
 import user.ee.view.EeInfoModifyView;
 import user.ee.view.EeMainView;
