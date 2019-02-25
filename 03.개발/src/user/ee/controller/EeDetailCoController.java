@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 
 import user.ee.view.EeDetailCoView;
 import user.ee.vo.CoDetailVO;
+import user.util.UserUtil;
 
 /**
  * 회사 상세 정보의 컨트롤러.
@@ -88,64 +89,19 @@ public class EeDetailCoController extends WindowAdapter implements ActionListene
 //		for (int i = 0; i < fileArr.length; i++) {
 //			System.out.println(fileArr[i].getName());
 //		} // end for
-
 		for (int i = 0; i < fileArr.length; i++) {
 
-			// 이미지 파일이 없다면 실행.
+			// user.img.co패키지에 이미지 파일이 없다면 실행.
 			if (!fileArr[i].exists()) {
-
-				Socket client = new Socket("localhost", 7002); // "211.63.89.144", 7002 : 영근컴퓨터IP, 파일서버의 포트
-
+				Socket client = null; // "211.63.89.144", 7002 : 영근컴퓨터IP, 파일서버의 포트
 				DataInputStream dis = null;
 				DataOutputStream dos = null;
 				FileOutputStream fos = null;
 
-				try {
-					dis = new DataInputStream(client.getInputStream()); // 서버에게 받을 데이터input스트림
-					dos = new DataOutputStream(client.getOutputStream()); // 서버에게 보낼 데이터output스트림
-					fos = new FileOutputStream(fileArr[i]); // 서버에게 받은 파일 로컬로 내보내기.
-
-					// 서버에서 보내오는 데이터를 담을 byte배열.
-					byte[] data = new byte[512];
-					// 한줄씩 읽은 배열의 길이 저장.
-					int dataArrLen = 0;
-					// 총 받아오는 배열의 갯수.
-					int totalDtArrCnt = 0;
-
-					// 파일 요청 메시지 보내기 : "기업이미지 요청"
-					dos.writeUTF("coImg_request");
-					dos.flush();
-
-					// 파일 이름 메시지 보내기
-					dos.writeUTF(fileArr[i].getName());
-					dos.flush();
-
-					// 1. 서버에서 보내오는 배열의 갯수 받기.
-					totalDtArrCnt = dis.readInt();
-
-					while (totalDtArrCnt > 0) {
-						dataArrLen = dis.read(data); // .read(byte 배열) : byte 배열을 받아서 배열의 길이를 반환. byte 배열이 존재 하지 않으면 -1
-														// 반환.
-						fos.write(data, 0, dataArrLen); // .write() : byte 배열을 byte 배열의 0번째 부터 dataArrLen까지 내보냅니다.
-						fos.flush();
-						totalDtArrCnt--; // byte 배열의 갯수를 한개씩 줄여줍니다.
-					} // end while
-
-				} finally {
-					if (fos != null) {
-						fos.close();
-					} // end if
-					if (dos != null) {
-						dos.close();
-					} // end if
-					if (dis != null) {
-						dis.close();
-					} // end if
-					if (client != null) {
-						client.close();
-					} // end if
-				} // end finally
+				UserUtil util = new UserUtil(); // 서버와 소통할 유틸객체 생성.
+				util.reqFile(fileArr[i].getName(), "co", client, dos, dis, fos);
 			} // end if
+
 		} // end for
 	}// reqCoImg()
 

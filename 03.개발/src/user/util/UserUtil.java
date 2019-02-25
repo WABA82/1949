@@ -118,9 +118,10 @@ public class UserUtil {
 	 * @param fos
 	 * @throws IOException
 	 */
-	public void reqFile(String newFileName, String flag, Socket client, DataOutputStream dos, DataInputStream dis,
-			FileOutputStream fos) throws IOException {
+	public void reqFile(String newFileName, String flag, Socket client, DataOutputStream dos, DataInputStream dis, FileOutputStream fos) throws IOException {
+		System.out.println(client);
 		client = new Socket("211.63.89.144", 7002);
+		System.out.println(client);
 
 		dos = new DataOutputStream(client.getOutputStream());
 		dis = new DataInputStream(client.getInputStream());
@@ -141,9 +142,9 @@ public class UserUtil {
 		int len = 0;
 
 		if (flag.equals("co")) {
-			fos = new FileOutputStream("C:/dev/1949/03.개발/src/user/img/co/" + newFileName);
+			fos = new FileOutputStream("C:/dev/1949/03.개발/src/user/img/co" + newFileName);
 		} else if (flag.equals("ee")) {
-			fos = new FileOutputStream("C:/dev/1949/03.개발/src/user/img/ee/" + newFileName);
+			fos = new FileOutputStream("C:/dev/1949/03.개발/src/user/img/ee" + newFileName);
 		}
 
 		for (int i = 0; i < arrCnt; i++) {
