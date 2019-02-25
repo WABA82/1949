@@ -2,6 +2,7 @@ package user.run;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -16,9 +17,9 @@ public class LogTest {
 				client = new Socket("211.63.89.144", 7001);
 				dos = new DataOutputStream(client.getOutputStream());
 				
-				dos.writeUTF("won");
-				dos.writeUTF(client.getInetAddress().toString());
-				dos.writeUTF("요청내용");
+				dos.writeUTF("Jeong");
+				dos.writeUTF(Inet4Address.getLocalHost().getHostAddress().toString());
+				dos.writeUTF("회원가입이 완료되었습니다.");
 				
 				
 			} finally {

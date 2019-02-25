@@ -69,13 +69,6 @@ public class UserInsertVO {
 	public String getUserType() {
 		return userType;
 	}
-	
-	
-	
-
-	public String getUserType() {
-		return userType;
-	}
 
 	@Override
 	public String toString() {
