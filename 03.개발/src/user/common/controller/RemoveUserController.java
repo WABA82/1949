@@ -71,19 +71,15 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 		}
 	}//removeUser	
 	
-	
-	
 	public void checkPass(String pass1,String pass2) {
-		
-	
-		
-		
+
 		
 	}
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if(ae.getSource()==ruv.getJbDelete()) {
-			//checkPass();
 			removeUser(id);
 		}
 		if(ae.getSource()==ruv.getJbClose()) {
@@ -92,6 +88,7 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 	}
 	@Override
 	public void windowClosing(WindowEvent e) {
+		ruv.dispose();
 	}
 
 }

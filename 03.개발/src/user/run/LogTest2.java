@@ -18,9 +18,9 @@ public class LogTest2 {
 				client = new Socket("211.63.89.144", 7001);
 				dos = new DataOutputStream(client.getOutputStream());
 				
-				dos.writeUTF("won");
+				dos.writeUTF("hyewon");
 				dos.writeUTF(Inet4Address.getLocalHost().getHostAddress().toString());
-				dos.writeUTF("회원 정보를 수정하였습니다.");
+				dos.writeUTF("회원정보를 수정하였습니다.");
 				
 				
 			} finally {

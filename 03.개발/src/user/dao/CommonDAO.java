@@ -44,7 +44,7 @@ public class CommonDAO {
     private Connection getConn() throws SQLException {
         Connection con = null;
 
-        String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl";// 학원에서 바꿀 것
+        String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl";
         String id = "kanu";
         String pass = "share";
         con = DriverManager.getConnection(url, id, pass);
@@ -322,7 +322,6 @@ public class CommonDAO {
             .append("   u.addr_detail addr2, u.email")
             .append("      from user_table u, zipcode z ")
             .append("      where u.addr_seq=z.seq and u.id in ? ");
-            //.append("      and u.id in ? ");
             
             pstmt=con.prepareStatement(selectUserInfo.toString());
             

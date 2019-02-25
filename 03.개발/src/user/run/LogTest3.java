@@ -17,9 +17,9 @@ public class LogTest3 {
 				client = new Socket("211.63.89.144", 7001);
 				dos = new DataOutputStream(client.getOutputStream());
 				
-				dos.writeUTF("won");
+				dos.writeUTF("hyewon");
 				dos.writeUTF(Inet4Address.getLocalHost().getHostAddress().toString());
-				dos.writeUTF("회원 정보를 삭제하였습니다.");
+				dos.writeUTF("회원탈퇴했습니다.");
 				
 				
 			} finally {

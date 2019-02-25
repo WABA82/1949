@@ -6,9 +6,9 @@ import java.net.Inet4Address;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class LogTest {
+public class LogTest1 {
 
-	public LogTest() {
+	public LogTest1() {
 		Socket client = null;
 		DataOutputStream dos = null;
 		
@@ -17,7 +17,7 @@ public class LogTest {
 				client = new Socket("211.63.89.144", 7001);
 				dos = new DataOutputStream(client.getOutputStream());
 				
-				dos.writeUTF("won");
+				dos.writeUTF("hyewon");
 				dos.writeUTF(Inet4Address.getLocalHost().getHostAddress().toString());
 				dos.writeUTF("회원 비밀번호를 변경하였습니다.");
 				
@@ -35,6 +35,6 @@ public class LogTest {
 	}
 	
 	public static void main(String[] args) {
-		new LogTest();
+		new LogTest1();
 	}
 }
