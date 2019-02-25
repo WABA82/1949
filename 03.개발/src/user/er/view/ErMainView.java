@@ -15,6 +15,7 @@ import user.dao.CommonDAO;
 import user.ee.controller.EeMainController;
 import user.er.controller.ErMainController;
 
+@SuppressWarnings("serial")
 public class ErMainView extends JFrame {
 
 	private JButton jbCoMgmt, jbEeInfo, jbErMgmt, jbApp, jbInterestEe;
