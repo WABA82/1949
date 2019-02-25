@@ -201,6 +201,8 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 								}else {
 									if (CommonDAO.getInstance().updateUserInfo(umvo)) {
 								JOptionPane.showMessageDialog(cuiv, "회원정보가 수정되었습니다.");
+								cuiv.dispose();
+								new LogTestChangeUserInfo();
 								}//end if
 						}//end else
 					
