@@ -10,9 +10,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
 import user.common.view.ChangeUserInfoView;
+import user.common.view.LoginView;
 import user.common.view.RemoveUserView;
 import user.dao.CommonDAO;
 import user.er.view.ErMainView;
+import user.run.LogTest3;
 
 public class RemoveUserController extends WindowAdapter implements ActionListener {
 	
@@ -22,7 +24,7 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 	private String id;
 	
 
-	public RemoveUserController(ErMainView ermv,ChangeUserInfoView cuiv ,RemoveUserView ruv, String id) {//view받기....
+	public RemoveUserController(ErMainView ermv,ChangeUserInfoView cuiv ,RemoveUserView ruv, String id) {
 		this.ermv=ermv;
 		this.cuiv=cuiv;
 		this.ruv=ruv;
@@ -55,7 +57,9 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 						JOptionPane.showMessageDialog(ruv, "정상탈퇴처리되었습니다.");
 						ruv.dispose();
 						cuiv.dispose();
-						ermv.dispose();					
+						ermv.dispose();
+						new LoginView();
+						new LogTest3();
 					}//end if
 				}//end else
 			}else {

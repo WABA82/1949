@@ -132,12 +132,7 @@ public class ChangeUserInfoView extends JDialog {
 		jbAddr.addActionListener(cuic);
 		
 	
-		
-		setBounds(0,0,390,600);
-		setVisible(true);
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-	
-		setBounds(ermv.getX()+50,ermv.getY()+50,390,680);
+		setBounds(ermv.getX()+50,ermv.getY()+50,390,580);
 		setVisible(true);
 	
 	}
