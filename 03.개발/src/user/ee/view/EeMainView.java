@@ -122,15 +122,6 @@ public class EeMainView extends JFrame {
 	
 	
 	/*****단위 테스트용 ******************/
-//	public static void main(String[] args) {
-//		EeMainVO emvo;
-//		try {
-//			emvo = CommonDAO.getInstance().selectEeMain("chubae11");
-//			new EeMainView(emvo);
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}// main
 	
 	
 }// class

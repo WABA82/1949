@@ -26,7 +26,6 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 	
 	private ErMainView emv;
 	private String erId;
-	
 	private ErMainVO ermvo;
 	private CoInsertVO civo;
 	private CoInfoVO cvo;
@@ -43,12 +42,13 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 	}
 	
 	public void mngUser() throws SQLException {
-		if(ermvo.getActivation().equals("2")) {
+		if(ermvo.getActivation().equals("N")) {
 			new CoInfoRegView(emv, ermvo.getErId());
 			System.out.println(ermvo);
-		}else {
+			
+		}else if(ermvo.getActivation().equals("Y")){
 				cvo=erdao.selectCoInfo(ermvo.getErId());
-				CoInfoModifyView cmv =  new CoInfoModifyView(emv, cvo);
+				new CoInfoModifyView(emv, cvo);
 		}//end else
 			
 	}//end if
@@ -71,8 +71,8 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 
 	@Override
 	public void mouseClicked(MouseEvent me) {
-		//Çý¿ø ±â¾÷È¸¿ø°ü¸®
-			try {
+
+		try {
 				if(me.getSource() == emv.getJlUserInfo()) {
 				UserInfoVO uivo=C_dao.selectUserInfo(ermvo.getErId());
 				new ChangeUserInfoView(emv, uivo);

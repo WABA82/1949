@@ -34,6 +34,7 @@ public class EeInfoRegView extends JDialog {
 	public EeInfoRegView(EeMainView emv, EeRegVO ervo) {
 		super(emv, "기본 정보 관리",true);
 		this.ervo=ervo;
+		
 		//image
 		ImageIcon ii=new ImageIcon("C:/dev/1949/03.개발/no_img_files/no_ee_img.png");
 		jlImage=new JLabel(ii);
@@ -160,7 +161,7 @@ public class EeInfoRegView extends JDialog {
 		
 		setVisible(true);
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 	}//EeInfoRegView
 
@@ -220,12 +221,5 @@ public class EeInfoRegView extends JDialog {
 	public JTextField getJtfGender() {
 		return jtfGender;
 	}
-	
-	
-//	public static void main(String[] args) {
-//		new EeInfoRegView(null);
-//	}//main
-	
-	
 	
 }//class

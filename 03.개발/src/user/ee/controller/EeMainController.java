@@ -46,33 +46,28 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 		eedao = EeDAO.getInstance();
 //		C_dao=CommonDAO.getInstance();
 //		setInfo("kun90");
-	}// ÏÉùÏÑ±Ïûê
+	}//ª˝º∫¿⁄
 
 	public void checkActivation() throws SQLException {
-		//Ïì∞Î†àÎìú ÎèåÎ¶º
-		if (emvo.getActivation().equals("0")) {
-			
-//			String eeid=emvo.getEeId();
-//			String act=CommonDAO.getInstance().selectActivation(emvo.getEeId());
-			
-			
+
+		if (emvo.getActivation().equals("N")) {
+			JOptionPane.showMessageDialog(emv, "∞≥¿Œ¡§∫∏∞° µÓ∑œµ«¡ˆ æ æ“Ω¿¥œ¥Ÿ.!");
 			ervo = eedao.selectEeReg(emvo.getEeId());
-//			System.out.println(emvo.getName()+ "   /   "+emvo.getActivation());
-		
+			
+			
 			System.out.println(ervo);
 			new EeInfoRegView(emv, ervo);
-			//mngUser();
 			
-		} else if(emvo.getActivation().equals("N")){
-//			Ï°∞Ìöå ÎßåÎì§Ïñ¥Ïïº Ìï®
+		} else if(emvo.getActivation().equals("Y")){
 			 eivo = eedao.selectEeInfo(emvo.getEeId());
 			new EeInfoModifyView(emv, eivo);
 		} // end if
+		
 	}// checkActivation()
 
 	public void mngUser() throws SQLException {
-		ervo = eedao.selectEeReg(emvo.getEeId());
-		new EeInfoRegView(emv, ervo);
+//		ervo = eedao.selectEeReg(emvo.getEeId());
+//		new EeInfoRegView(emv, ervo);
 	}
 
 	public void mngEe() {
@@ -87,7 +82,7 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 	}
 
 	/**
-	 * Í¥ÄÏã¨ Íµ¨Ïù∏ Î™©Î°ùÏ∞Ω ÎùÑÏö∞Í∏∞
+	 * 
 	 */
 	public void showInterestEr() {
 		String eeid = "gong1";
@@ -99,7 +94,7 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 	}
 
 	/**
-	 * private EeMainView emv; ÎßàÏö∞Ïä§ ÌÅ¥Î¶≠Ïãú Ï¢ÖÎ£å jlLogOut
+	 
 	 */
 	@Override
 	public void mouseClicked(MouseEvent me) {
@@ -111,21 +106,6 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 
 	}// mouseClicked
 
-//	public void setInfo(String eeid) {
-//		JLabel activation = emv.getJlActivation();
-//		JLabel img = emv.getJlImg();
-//		EeMainVO emvo = null;
-//
-//		try {
-//			emvo = C_dao.selectEeMain(eeid);
-//			activation.setText(emvo.getActivation());
-//			img.setText(emvo.getImg());
-//
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//
-//	}
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
