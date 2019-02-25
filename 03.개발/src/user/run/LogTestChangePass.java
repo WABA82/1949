@@ -3,13 +3,12 @@ package user.run;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Inet4Address;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class LogTest2 {
+public class LogTestChangePass {
 
-	public LogTest2() {
+	public LogTestChangePass() {
 		Socket client = null;
 		DataOutputStream dos = null;
 		
@@ -20,7 +19,7 @@ public class LogTest2 {
 				
 				dos.writeUTF("hyewon");
 				dos.writeUTF(Inet4Address.getLocalHost().getHostAddress().toString());
-				dos.writeUTF("회원정보를 수정하였습니다.");
+				dos.writeUTF("회원 비밀번호를 수정하였습니다.");
 				
 				
 			} finally {
@@ -36,6 +35,7 @@ public class LogTest2 {
 	}
 	
 	public static void main(String[] args) {
-		new LogTest2();
+		new LogTestChangePass();
 	}
 }
+

@@ -18,7 +18,7 @@ import user.common.vo.UserModifyVO;
 import user.common.vo.UserModifyWithoutPassVO;
 import user.dao.CommonDAO;
 import user.er.view.ErMainView;
-import user.run.LogTest2;
+import user.run.LogTestChangeUserInfo;
 
 public class ChangeUserInfoController extends WindowAdapter implements ActionListener {
 
@@ -176,7 +176,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 						if (CommonDAO.getInstance().updateUserInfoWithoutPass(umvo2)) {
 							JOptionPane.showMessageDialog(cuiv, "회원정보가 수정되었습니다.");
 							cuiv.dispose();
-							new LogTest2();
+							new LogTestChangeUserInfo();
 						}//end if
 					}//end else
 			} catch (SQLException e) {

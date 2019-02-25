@@ -6,9 +6,9 @@ import java.net.Inet4Address;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class LogTest3 {
+public class LogTestRemoveUser {
 
-	public LogTest3() {
+	public LogTestRemoveUser() {
 		Socket client = null;
 		DataOutputStream dos = null;
 		
@@ -35,6 +35,6 @@ public class LogTest3 {
 	}
 	
 	public static void main(String[] args) {
-		new LogTest3();
+		new LogTestRemoveUser();
 	}
 }

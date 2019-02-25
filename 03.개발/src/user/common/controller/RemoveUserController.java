@@ -14,7 +14,7 @@ import user.common.view.LoginView;
 import user.common.view.RemoveUserView;
 import user.dao.CommonDAO;
 import user.er.view.ErMainView;
-import user.run.LogTest3;
+import user.run.LogTestRemoveUser;
 
 public class RemoveUserController extends WindowAdapter implements ActionListener {
 	
@@ -59,7 +59,7 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 						cuiv.dispose();
 						ermv.dispose();
 						new LoginView();
-						new LogTest3();
+						new LogTestRemoveUser();
 					}//end if
 				}//end else
 			}else {
