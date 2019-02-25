@@ -16,6 +16,7 @@ import javax.swing.border.TitledBorder;
 
 import user.ee.controller.EeDetailErController;
 import user.ee.vo.DetailErInfoVO;
+import user.util.UserUtil;
 
 /**
  * 일반사용자 - 구인정보보기 - 상세구인정보 View
