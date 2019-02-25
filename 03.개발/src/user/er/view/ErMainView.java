@@ -117,7 +117,7 @@ public class ErMainView extends JFrame {
 		return jlActivation;
 	}
 	
-	/*********단위 테스트용 ******************/
+	/*********단위 테스트용 ******************//*
 	public static void main(String[] args) {
 		ErMainVO ermvo;
 		try {
@@ -127,5 +127,5 @@ public class ErMainView extends JFrame {
 			e.printStackTrace();
 		}
 	}// main
-	
+*/	
 }

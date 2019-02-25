@@ -24,12 +24,13 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 	private ChangeUserInfoView cuiv;
 	private UserInfoVO uivo;
 	private String addrSeq;
-	private ErMainView emv;
+	private ErMainView ermv;
 	
-	public ChangeUserInfoController(ChangeUserInfoView cuiv, UserInfoVO uivo) {
+	public ChangeUserInfoController(ErMainView ermv, ChangeUserInfoView cuiv, UserInfoVO uivo) {
 		this.cuiv=cuiv;
 		this.uivo=uivo;
 		this.addrSeq=uivo.getSeq();
+		this.ermv = ermv;
 	}
 	
 	public boolean checkPass(String pass) { // 비밀번호 검증, 최대 12자리, 대문자 소문자 특수문자 조합
@@ -212,7 +213,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 	}//modifyUser	
 
 	public void removeUser() {
-		new RemoveUserView(emv, uivo.getId());
+		new RemoveUserView(cuiv,ermv, uivo.getId());
 	}
 
 	@Override

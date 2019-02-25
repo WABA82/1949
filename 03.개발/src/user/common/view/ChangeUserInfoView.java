@@ -18,7 +18,7 @@ public class ChangeUserInfoView extends JDialog {
 	private JPasswordField jpfOriginalPass, jpfNewPass1, jpfNewPass2;
 	private JButton jbModify, jbDelete, jbClose, jbAddr;
 
-	public ChangeUserInfoView(ErMainView emv, UserInfoVO uivo) {
+	public ChangeUserInfoView(ErMainView ermv, UserInfoVO uivo) {
 		
 		setTitle("회원 정보 수정");
 		JLabel jlId = new JLabel("아이디");
@@ -124,7 +124,7 @@ public class ChangeUserInfoView extends JDialog {
 		jbClose.setBounds(233, 455, 92, 30);
 		add(jbClose);
 		
-		ChangeUserInfoController cuic=new ChangeUserInfoController(this, uivo);
+		ChangeUserInfoController cuic=new ChangeUserInfoController(ermv, this, uivo);
 		addWindowListener(cuic);
 		jbModify.addActionListener(cuic);
 		jbDelete.addActionListener(cuic);
@@ -137,7 +137,7 @@ public class ChangeUserInfoView extends JDialog {
 		setVisible(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	
-		setBounds(emv.getX()+50,emv.getY()+50,390,680);
+		setBounds(ermv.getX()+50,ermv.getY()+50,390,680);
 		setVisible(true);
 	
 	}
