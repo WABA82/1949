@@ -18,6 +18,7 @@ import user.common.vo.UserModifyVO;
 import user.common.vo.UserModifyWithoutPassVO;
 import user.dao.CommonDAO;
 import user.er.view.ErMainView;
+import user.run.LogTest2;
 
 public class ChangeUserInfoController extends WindowAdapter implements ActionListener {
 
@@ -145,6 +146,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 		//이메일 검증
 		if(email.length() <14) {//@. 포함 최소 14자리 이상
 			JOptionPane.showMessageDialog(cuiv, "이메일은 14자리 이상이어야합니다.");
+			return;
 		}else {//14자리이상이라면
 	
 		if(!(email.contains("@")&& email.contains("."))) {
@@ -174,6 +176,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 						if (CommonDAO.getInstance().updateUserInfoWithoutPass(umvo2)) {
 							JOptionPane.showMessageDialog(cuiv, "회원정보가 수정되었습니다.");
 							cuiv.dispose();
+							new LogTest2();
 						}//end if
 					}//end else
 			} catch (SQLException e) {

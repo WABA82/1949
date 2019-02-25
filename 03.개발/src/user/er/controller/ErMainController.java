@@ -84,8 +84,8 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 		}//end if
 		
 		if(me.getSource() == emv.getJlLogOut()) {
-			new LoginView();
 			emv.dispose();
+			new LoginView();
 		}//end if
 	}
 	
