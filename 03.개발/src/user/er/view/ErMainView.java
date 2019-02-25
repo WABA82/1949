@@ -15,6 +15,7 @@ import user.dao.CommonDAO;
 import user.ee.controller.EeMainController;
 import user.er.controller.ErMainController;
 
+@SuppressWarnings("serial")
 public class ErMainView extends JFrame {
 
 	private JButton jbCoMgmt, jbEeInfo, jbErMgmt, jbApp, jbInterestEe;
@@ -118,6 +119,14 @@ public class ErMainView extends JFrame {
 	}
 	
 	/*********단위 테스트용 ******************/
-
-	
+/*	public static void main(String[] args) {
+		ErMainVO ermvo;
+		try {
+			ermvo = CommonDAO.getInstance().selectErMain("song9912");
+			new ErMainView(ermvo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}// main
+*/	
 }
