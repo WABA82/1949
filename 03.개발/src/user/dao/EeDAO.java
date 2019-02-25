@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import user.ee.dto.EeHiringCdtDTO;
-import user.ee.vo.ActivationVO;
 import user.ee.vo.CoDetailVO;
 import user.ee.vo.DetailErInfoVO;
 import user.ee.vo.EeAppVO;
@@ -23,8 +22,6 @@ import user.ee.vo.EeRegVO;
 
 public class EeDAO {
 	private static EeDAO Ee_dao;
-	private Connection con;
-	private PreparedStatement pstmt1, pstmt2;
 
 	public EeDAO() {
 		try {
@@ -53,10 +50,10 @@ public class EeDAO {
 		return con;
 	}// getConns
 
-	////////////////////////////////////////// ï¿½ï¿½ï¿½ï¿½
-	////////////////////////////////////////// ï¿½ï¿½ï¿½ï¿½//////////////////////////////////////////////////////////
+	////////////////////////////////////////// ¼±ÀÇ
+	////////////////////////////////////////// ¼Ò½º//////////////////////////////////////////////////////////
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ ï§ï¿½ï¿½ï¿½ï¿½ï¿½æ¹²ï¿½ ï¿½ï¿½ç‘œëŒ€ãˆƒ applicationï¿½ï¿½ï¿½ëŒ€ï¿½ï¿½ï¿½ ï¿½ê³—ï¿½ëŒ„ï¿½ï¿½ ï¿½ï½Šë¦°
+	 * ¼±ÀÇ Áö¿øÇÏ±â ´©¸£¸é applicationÅ×ÀÌºí¿¡ µ¥ÀÌÅÍ ³Ö±â
 	 */
 	public void insertApplication(EeInterestAndAppVO eiaavo) throws SQLException {
 		Connection con = null;
@@ -84,7 +81,7 @@ public class EeDAO {
 	}
 
 	/**
-	 * æ¹²ê³—ï¿½ï¿½ï¿½ï¿½è¹‚ëŒ€ï¿½ï¿½ ï§â‘¤ï¿½ï¿½ è­°ê³ ï¿½ï¿½
+	 * ±â¾÷Á¤º¸¸¦ ¸ğµÎ Á¶È¸
 	 * @param eh_dto
 	 * @return
 	 * @throws SQLException
@@ -111,11 +108,11 @@ public class EeDAO {
 			}
 
 			if (!(eh_dto.getSort().trim() == null || eh_dto.getSort().trim().equals(""))) {
-				if (eh_dto.getSort().equals("ï¿½ê¹…ï¿½ï¿½ì‡±ï¿½ï¿½")) {
+				if (eh_dto.getSort().equals("µî·ÏÀÏ¼ø")) {
 					selectEeHiring.append("	order by ei.input_date desc, input_date desc");
-				} else if (eh_dto.getSort().equals("ï§ï¿½æ¹²ï¿½ï¿½ï¿½")) {
+				} else if (eh_dto.getSort().equals("Á÷±Ş¼ø")) {
 					selectEeHiring.append("	order by ei.rank , input_date desc ");
-				} else if (eh_dto.getSort().equals("æ¹²ï¿½ï¿½ÑŠï¿½ï¿½")) {
+				} else if (eh_dto.getSort().equals("±Ş¿©¼ø")) {
 					selectEeHiring.append("	order by ei.sal	desc, input_date desc ");
 				}
 			} else {
@@ -164,7 +161,7 @@ public class EeDAO {
 			pstmt.setString(1, erNum);
 			// 5.
 			rs = pstmt.executeQuery();
-			// ï¿½ï¿½ï¿½Î»ï¿½ï¿½ è‚„ï¿½ï¿½ï¿½æ¿¡ï¿½ è­°ê³ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½è‚„ï¿½ï¿½ï¿½åª›ï¿½ è­°ëŒï¿½Ñ‹ï¿½ï¿½ ï¿½ï¿½ VOç‘œï¿½ ï¿½ï¿½ï¿½ê¹Šï¿½ï¿½æ€¨ï¿½ åª›ï¿½ ç•°ï¿½åª›ï¿½
+			// ÀÔ·ÂµÈ ÄÚµå·Î Á¶È¸µÈ ·¹ÄÚµå°¡ Á¸ÀçÇÒ ¶§ VO¸¦ »ı¼ºÇÏ°í °ª Ãß°¡
 			while (rs.next()) {
 				listSkill.add(rs.getString("skill_name"));
 			} // end if
@@ -183,7 +180,7 @@ public class EeDAO {
 		return listSkill;
 	}
 
-	// 0210 ï¿½ï¿½ï¿½ï¿½ detailErInfo å¯ƒï¿½ï¿½ï¿½
+	// 0210 ¼±ÀÇ detailErInfo °Ë»ö
 	public DetailErInfoVO selectDetail(String erNum, String eeId) throws SQLException {
 
 		DetailErInfoVO deivo = null;
@@ -208,7 +205,7 @@ public class EeDAO {
 			pstmt.setString(3, erNum);
 			// 5.
 			rs = pstmt.executeQuery();
-			// ï¿½ï¿½ï¿½Î»ï¿½ï¿½ è‚„ï¿½ï¿½ï¿½æ¿¡ï¿½ è­°ê³ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½è‚„ï¿½ï¿½ï¿½åª›ï¿½ è­°ëŒï¿½Ñ‹ï¿½ï¿½ ï¿½ï¿½ VOç‘œï¿½ ï¿½ï¿½ï¿½ê¹Šï¿½ï¿½æ€¨ï¿½ åª›ï¿½ ç•°ï¿½åª›ï¿½
+			// ÀÔ·ÂµÈ ÄÚµå·Î Á¶È¸µÈ ·¹ÄÚµå°¡ Á¸ÀçÇÒ ¶§ VO¸¦ »ı¼ºÇÏ°í °ª Ãß°¡
 			if (rs.next()) {
 				deivo = new DetailErInfoVO(rs.getString("er_num"), rs.getString("subject"), rs.getString("name"),
 						rs.getString("tel"), rs.getString("email"), rs.getString("input_date"), rs.getString("img1"),
@@ -253,7 +250,7 @@ public class EeDAO {
 		}
 	}// insertInterestEr
 
-	// 0210 ï¿½ï¿½ï¿½ï¿½ æ„¿ï¿½ï¿½Ñˆë„ï¿½ë©¸ë‚¬æ€¨ï¿½ ï¿½ï¿½å«„ï¿½
+	// 0210 ¼±ÀÇ °ü½É±¸ÀÎ°ø°í Á¦°Å
 	public boolean deleteInterestEr(EeInterestAndAppVO eiaavo) throws SQLException {
 		boolean flag = false;
 
@@ -289,7 +286,7 @@ public class EeDAO {
 
 
 	/**
-	 * ï§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï§ï¿½ è­°ê³ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ëŒ€ï¿½ï¿½ï¿½ï¿½
+	 * Áö¿ø»óÅÂ¸¸ Á¶È¸ÇÏ´Â Å¬·¡½º
 	 * @param eeId
 	 * @param erNum
 	 * @return
@@ -315,7 +312,7 @@ public class EeDAO {
 				appStatus= rs.getString("app_status");
 			}
 
-		} finally { // finally : ï¿½ê³Œê»ï¿½ï¿½æ¹²ï¿½.
+		} finally { // finally : ¿¬°á²÷±â.
 			if (rs != null) {rs.close();} // end if
 			if (pstmt != null) {pstmt.close();} // end if
 			if (con != null) {con.close();} // end if
@@ -324,15 +321,15 @@ public class EeDAO {
 		return appStatus;
 	}
 
-//	////////////////////////////////////////// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-//	////////////////////////////////////////// ï¿½ï¿½//////////////////////////////////////////////////////////
+//	////////////////////////////////////////// ¼±ÀÇ ¼Ò½º
+//	////////////////////////////////////////// ³¡//////////////////////////////////////////////////////////
 //
 //	
 //
 //		//String eeNum, img, id, name, rank, loc, education, portfolio, gender, inputDate, extResume;
 //		//int age;
 //		
-//		//è‘ì‡°â”è‡¾ï¿½ ï¿½ï¿½ï¿½ï¿½
+//		//Äõ¸®¹® »ı¼º
 //		StringBuilder selectInfo=new StringBuilder();
 //		selectInfo
 //		.append("		select ei.ee_num, ei.img, ut.name, ei.rank, ei.loc, ei.education, ei.portfolio, ut.gender, ei.ext_resume, to_char(ei.input_date,'yyyy-mm-dd')input_date, ut.age  ")
@@ -357,7 +354,7 @@ public class EeDAO {
 //		return eivo;
 //	}//selectEeinfo
 //	
-//	//VOï¿½ï¿½ï¿½ï¿½æ¿¡ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//	//VOÁ¦´ë·Î ÀÛµ¿ÇÔ. ¼öÁ¤¾ÈÇÔ
 ////	public static void main(String[] args) {
 ////		try {
 ////			System.out.println(EeDAO.getInstance().selectEeInfo("gong1"));
@@ -366,10 +363,10 @@ public class EeDAO {
 ////		}
 ////	}
 
-	//////////// ï¿½Ñ‹ï¿½ï¿½è‚„ï¿½ï¿½ï¿½ ////////////
+	//////////// ÀçÇöÄÚµå ////////////
 
 	/**
-	 * ï¿½Ñ‹ï¿½ï¿½ : selectInterestErInfo : ï¿½ì‡°ï¿½ï¿½ÑŠï¿½â‘¹ï¿½ï¿½åª›ï¿½ ï¿½ï¿½ï¿½ëªƒï¿½ï¿½ ï¿½ï¿½ç‘œï¿½ æ´ÑŠï¿½ëª„ï¿½ï¿½è¹‚ëŒ€ï¿½ï¿½ DBï¿½ï¿½ï¿½ï¿½ è­°ê³ ï¿½ï¿½.
+	 * ÀçÇö : selectInterestErInfo : ÀÏ¹İ»ç¿ëÀÚ°¡ ÇÏÆ®¸¦ ´©¸¥ ±¸ÀÎÁ¤º¸¸¦ DB¿¡¼­ Á¶È¸.
 	 * 
 	 * @return
 	 *
@@ -382,23 +379,23 @@ public class EeDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		try {// try : DBï¿½ï¿½ï¿½ï¿½ è­°ê³ ï¿½ï¿½ï¿½ï¿½æ¹²ï¿½
+		try {// try : DB¿¡¼­ Á¶È¸ÇÏ±â
 
-			con = getConn(); // è€Œã…»ï¿½Î¼ï¿½ï¿½ ï¿½ì‚°ë¦°.
+			con = getConn(); // Ä¿³Ø¼Ç ¾ò±â.
 
-			StringBuilder slcInterestErInfo = new StringBuilder(); // æ„¿ï¿½ï¿½Ñˆë„ï¿½ëª„ï¿½ï¿½è¹‚ëŒâ€œï¿½ï¿½ ï¿½ï¿½æ¹²ï¿½
+			StringBuilder slcInterestErInfo = new StringBuilder(); // °ü½É±¸ÀÎÁ¤º¸Á¶È¸ ÇÏ±â
 			slcInterestErInfo.append(
 					" select ei.ER_NUM, ei.SUBJECT, c.CO_NAME, ei.RANK, ei.LOC, ei.EDUCATION, ei.SAL, ei.HIRE_TYPE, ei.PORTFOLIO, ei.ER_DESC,  to_char(ei.INPUT_DATE, 'yyyy-mm-dd') INPUT_DATE");
 			slcInterestErInfo.append(" from interest_er ie, er_info ei, company c");
 			slcInterestErInfo.append(" where (ie.er_num = ei.er_num) and (c.co_num=ei.co_num) and ie.ee_id = ?");
 			pstmt = con.prepareStatement(slcInterestErInfo.toString());
 
-			// è«›ï¿½ï¿½ëªƒï¿½ï¿½è¹‚ï¿½ï¿½ï¿½ åª›ï¿½ ï¿½ï½Šë¦°
+			// ¹ÙÀÎµåº¯¼ö °ª ³Ö±â
 			pstmt.setString(1, ee_id);
 
 			rs = pstmt.executeQuery();
 			EeInterestVO eivo = null;
-			// è­°ê³ ï¿½ï¿½ï¿½ï¿½ ï¿½ê³—ï¿½ëŒ„ï¿½ï¿½
+			// Á¶È¸µÈ µ¥ÀÌÅÍ
 			while (rs.next()) {
 				eivo = new EeInterestVO(rs.getString("er_num"), rs.getString("SUBJECT"), rs.getString("CO_NAME"),
 						rs.getString("RANK"), rs.getString("LOC"), rs.getString("EDUCATION"), rs.getString("HIRE_TYPE"),
@@ -406,7 +403,7 @@ public class EeDAO {
 				list.add(eivo);
 			} // end if
 
-		} finally { // finally : ï¿½ê³Œê»ï¿½ï¿½æ¹²ï¿½.
+		} finally { // finally : ¿¬°á²÷±â.
 			if (rs != null) {
 				rs.close();
 			} // end if
@@ -422,7 +419,7 @@ public class EeDAO {
 	}// end selectInterestErInfo
 
 	/**
-	 * ï¿½ì‡°ï¿½ï¿½ÑŠï¿½â‘¹ï¿½ï¿½ï¿½ï¿½ ï§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï§â‘¸ï¿½ï¿½ï¿½ ï§¢ï¿½ï¿½ï¿½ åª›ï¿½ï¿½ï¿½ è­°ê³ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï§ï¿½ï¿½ï¿½ï¿½ï¿½.
+	 * ÀÏ¹İ»ç¿ëÀÚÀÇ Áö¿øÇöÈ² ¸ñ·ÏÀ» Ã¤¿ï °ªÀ» Á¶È¸ÇÏ´Â ¸Ş¼Òµå.
 	 * 
 	 * @param ee_id
 	 * @return
@@ -435,22 +432,22 @@ public class EeDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		try {// try : DBï¿½ï¿½ï¿½ï¿½ è­°ê³ ï¿½ï¿½ï¿½ï¿½æ¹²ï¿½
+		try {// try : DB¿¡¼­ Á¶È¸ÇÏ±â
 
-			con = getConn(); // è€Œã…»ï¿½Î¼ï¿½ï¿½ ï¿½ì‚°ë¦°.
-			StringBuilder selectAppList = new StringBuilder(); // ï§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â‘ºï¿½ï¿½ï¿½ëŒ€ï¿½ list.
+			con = getConn(); // Ä¿³Ø¼Ç ¾ò±â.
+			StringBuilder selectAppList = new StringBuilder(); // Áö¿øÇöÈ²Å×ÀÌºí list.
 			selectAppList.append(
 					" select a.app_num, ei.er_num, ei.subject, c.co_name, ei.rank, ei.loc, ei.education, ei.hire_type, ei.sal, to_char(a.app_date,'yyyy-mm-dd') app_date, a.app_status");
 			selectAppList.append(" from application a, er_info ei, company c");
 			selectAppList.append(" where (a.er_num=ei.er_num) and (ei.co_num=c.co_num) and a.ee_id=?");
 			pstmt = con.prepareStatement(selectAppList.toString());
-			// è«›ï¿½ï¿½ëªƒï¿½ï¿½ è¹‚ï¿½ï¿½ï¿½
+			// ¹ÙÀÎµå º¯¼ö
 			pstmt.setString(1, ee_id);
-			// ResultSet ï¿½ì‚´ï¿½ëŒï¿½ã…ºë¦°.
+			// ResultSet ¾ò¾î¿À±â.
 			rs = pstmt.executeQuery();
-			// VOï¿½ï¿½ï¿½ï¿½ null;
+			// VO¼±¾ğ null;
 			EeAppVO eavo = null;
-			// VOï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ listï¿½ï¿½ ï¿½ë‹¿ë¦°
+			// VO»ı¼º ÈÄ list¿¡ ´ã±â
 			while (rs.next()) {
 				eavo = new EeAppVO(rs.getString("app_num"), rs.getString("er_num"), rs.getString("subject"),
 						rs.getString("co_name"), rs.getString("rank"), rs.getString("loc"), rs.getString("education"),
@@ -459,7 +456,7 @@ public class EeDAO {
 				list.add(eavo);
 			} // end while
 
-		} finally { // finally : ï¿½ê³Œê»ï¿½ï¿½æ¹²ï¿½.
+		} finally { // finally : ¿¬°á²÷±â.
 			if (rs != null) {
 				rs.close();
 			} // end if
@@ -475,7 +472,7 @@ public class EeDAO {
 	}// selectAppList
 
 	/**
-	 * ï¿½Ñ‹ï¿½ï¿½ : ï¿½ì‡°ï¿½ ï¿½ÑŠï¿½â‘¹ï¿½ï¿½_ï§ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½â‘¹ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï§ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ÑŠï¿½ï¿½ er_numï¿½ï¿½ è­°ê³ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï§ï¿½ï¿½ï¿½ï¿½ï¿½.
+	 * ÀçÇö : ÀÏ¹İ »ç¿ëÀÚ_Áö¿ø ÇöÈ²¿¡¼­ ÀÚ½ÅÀÌ Áö¿øÇÑ È¸»çÀÇ er_numÀ» Á¶È¸ÇÏ´Â ¸Ş¼­µå.
 	 * 
 	 * @param ee_id
 	 * @return
@@ -483,29 +480,29 @@ public class EeDAO {
 	 */
 	public String selectErNumFromAppTb(String app_num) throws SQLException {
 
-		String er_num = ""; // è«›ï¿½ï¿½ï¿½ï¿½ï¿½ åª›ï¿½ï¿½ï¿½ è¹‚ï¿½ï¿½ï¿½
+		String er_num = ""; // ¹İÈ¯ÇÒ °ªÀÇ º¯¼ö
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		try {// try : DBï¿½ï¿½ï¿½ï¿½ è­°ê³ ï¿½ï¿½ï¿½ï¿½æ¹²ï¿½
+		try {// try : DB¿¡¼­ Á¶È¸ÇÏ±â
 
-			con = getConn(); // è€Œã…»ï¿½Î¼ï¿½ï¿½ ï¿½ì‚°ë¦°.
+			con = getConn(); // Ä¿³Ø¼Ç ¾ò±â.
 			String selectErNumFromAppTb = " SELECT EI.ER_NUM FROM APPLICATION A, ER_INFO EI WHERE (A.ER_NUM = EI.ER_NUM) AND APP_NUM = ? ";
 			pstmt = con.prepareStatement(selectErNumFromAppTb);
 
-			// è«›ï¿½ï¿½ëªƒï¿½ï¿½ è¹‚ï¿½ï¿½ï¿½
+			// ¹ÙÀÎµå º¯¼ö
 			pstmt.setString(1, app_num);
-			// ResultSet ï¿½ì‚´ï¿½ëŒï¿½ã…ºë¦°.
+			// ResultSet ¾ò¾î¿À±â.
 			rs = pstmt.executeQuery();
 
-			// åª›ï¿½ ï¿½ì‚°ë¦°
+			// °ª ¾ò±â
 			if (rs.next()) {
 				er_num = rs.getString("er_num");
 			} // end while
 
-		} finally { // finally : ï¿½ê³Œê»ï¿½ï¿½æ¹²ï¿½.
+		} finally { // finally : ¿¬°á²÷±â.
 			if (rs != null) {
 				rs.close();
 			} // end if
@@ -521,12 +518,12 @@ public class EeDAO {
 	}// selectErNumFromAppTb(String ee_id)
 
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½è¹‚ï¿½ ï§¡ìŒï¿½ï¿½ ï§¢ï¿½ï¿½ï¿½ ï¿½ê³—ï¿½ëŒ„ï¿½ê³•ï¿½ï¿½ è­°ê³ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï§ï¿½ï¿½ï¿½ï¿½ï¿½.
+	 * È¸»ç »ó¼¼ Á¤º¸ Ã¢À» Ã¤¿ï µ¥ÀÌÅÍ¸¦ Á¶È¸ÇÏ´Â ¸Ş¼­µå.
 	 * 
 	 * @return
 	 */
 	public CoDetailVO selectCompany(String er_num) throws SQLException {
-		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½è¹‚ï¿½ VOç‘œï¿½ ï¿½ï¿½ï¿½ï¿½.
+		// È¸»ç »ó¼¼ Á¤º¸ VO¸¦ ¼±¾ğ.
 		CoDetailVO cdvo = null;
 
 		Connection con = null;
@@ -544,10 +541,10 @@ public class EeDAO {
 			selectCompany.append(" where (ei.co_num = c.co_num) and ei.er_num = ? ");
 			pstmt = con.prepareStatement(selectCompany.toString());
 
-			// è«›ï¿½ï¿½ëªƒï¿½ï¿½ è¹‚ï¿½ï¿½ï¿½.
+			// ¹ÙÀÎµå º¯¼ö.
 			pstmt.setString(1, er_num);
 
-			// è‘ì‡°â”è‡¾ï¿½ ï¿½ã…½ï¿½ï¿½ï¿½ï¿½æ€¨ï¿½ ResultSet è«›ï¿½æ¹²ï¿½.
+			// Äõ¸®¹® ½ÇÇàÇÏ°í ResultSet ¹Ş±â.
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
@@ -571,7 +568,7 @@ public class EeDAO {
 		return cdvo;
 	}// selectCompany()
 
-	/* ï¿½â‘¥ï¿½ï¿½ ï¿½ï¿½ï¿½ã…½ï¿½ëª„ï¿½ï¿½ main */
+	/* ´ÜÀ§ Å×½ºÆ®¿ë main */
 /*	public static void main(String[] args) {
 		EeDAO ee_dao = EeDAO.getInstance();
 		try {
@@ -580,87 +577,77 @@ public class EeDAO {
 			e.printStackTrace();
 		} // end catch
 	}// main
-	////////////////////////// ï¿½Ñ‹ï¿½ï¿½ ï¿½ï¿½ //////////////////////////
+	////////////////////////// ÀçÇö ³¡ //////////////////////////
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////////// æºï¿½å«„ëŒ„ï¿½ï¿½
-	//////////////////////////////////////////////////////////////////////////////////////////////////////// VOï¿½ï¿½ç”±ï¿½
-	//////////////////////////////////////////////////////////////////////////////////////////////////////// ï¿½ï¿½ï¿½ï¿½///////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////// ±è°ÇÇÏ
+	//////////////////////////////////////////////////////////////////////////////////////////////////////// VOÁ¤¸®
+	//////////////////////////////////////////////////////////////////////////////////////////////////////// ½ÃÀÛ///////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * 19.02.10æºï¿½å«„ëŒ„ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½è¹‚ï¿½ ï¿½ï¿½ï¿½ï¿½
+	 * 19.02.10±è°ÇÇÏ È¸¿øÁ¤º¸ ÀÔ·Â
 	 * 
 	 * @param eivo
 	 * @throws SQLException
 	 */
-	public boolean insertEeinfo(Connection con, EeInsertVO eivo) throws SQLException {
-		boolean insertFlag = false; 
+	public boolean insertEeinfo(EeInsertVO eivo) throws SQLException {
+		boolean flag = false; // trueÀÏ ¶§
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = getConn();
 
 			StringBuilder insertInfo = new StringBuilder();
-			insertInfo
-			.append("  insert into ee_info(ee_num, ee_id, img, rank, loc, education, portfolio, ext_resume)  ")
-			.append("  values( ee_code, ?, ?, ?, ?, ?, ?, ? )" );
-			pstmt1 = con.prepareStatement(insertInfo.toString());
+			insertInfo.append(
+					"		insert into ee_info(ee_num, ee_id, img, rank, loc, education, portfolio, ext_resume)	")
+					.append("		values( ee_code, ?, ?, ?, ?, ?, ?, ? )	");
+			pstmt = con.prepareStatement(insertInfo.toString());
 
-			pstmt1.setString(1, eivo.getEeId());
-			pstmt1.setString(2, eivo.getImg());
-			pstmt1.setString(3, eivo.getRank());
-			pstmt1.setString(4, eivo.getLoc());
-			pstmt1.setString(5, eivo.getEducation());
-			pstmt1.setString(6, eivo.getPortfolio());
-			pstmt1.setString(7, eivo.getExtResume());
+			pstmt.setString(1, eivo.getEeId());
+			pstmt.setString(2, eivo.getImg());
+			pstmt.setString(3, eivo.getRank());
+			pstmt.setString(4, eivo.getLoc());
+			pstmt.setString(5, eivo.getEducation());
+			pstmt.setString(6, eivo.getPortfolio());
+			pstmt.setString(7, eivo.getExtResume());
 
-			int cnt = pstmt1.executeUpdate();
-			
-			if (cnt == 1) {
-				insertFlag = true;
+			int cnt = pstmt.executeUpdate();
+			if (cnt != 1) {
+				// pstmt¿¡¼­ Äõ¸®¹®ÀÌ Á¤»óÀûÀ¸·Î ½ÇÇàÀÌ µÇ¸í 1(insert)À» ¹İÈ¯. - false
+				// ¾Æ´Ï¶ó¸é 1ÀÌ ¹İÈ¯ÀÌ ¾ÈµÈ´Ù. true
+				flag = true;
 			} // end if
 
-		return insertFlag;
+		} finally {
+			if (pstmt != null) {
+				pstmt.close();
+			} // end if
+			if (con != null) {
+				con.close();
+			} // end if
+		} // end finally
+
+		return flag;
 	}// insertEeinfo
 
-//	public static void main(String[] args) throws SQLException {
-//	Connection con=EeDAO.getInstance().getConn();
-//	EeInsertVO eivo = new EeInsertVO("root", "123.jpg", "C", "ì„œìš¸", "ê³ ì¡¸", "N", "test.txt");
-//	System.out.println(Ee_dao.insertEeinfo(con, eivo));
-//	System.out.println(eivo);
-//}// main
-	
-	public boolean updateActivation(Connection con, ActivationVO avo) throws SQLException {
-		boolean updateFlag=false;
-		
-		StringBuilder updateActivation=new StringBuilder();
-		
-		updateActivation
-		.append("  update user_table  ")
-		.append("  set activation='Y'  ")
-		.append("  where id=?  ");
-		
-		pstmt2=con.prepareStatement(updateActivation.toString());
-		
-		pstmt2.setString(1, avo.getId());
-		
-		int cnt=pstmt2.executeUpdate();
-		if( cnt==1) {
-			updateFlag=true;
-		}//end if
-		return updateFlag;
-	}//updateActivation
-	
-	//íŠ¸ëœì­ì…˜ ì—…ë°ì´íŠ¸ ë‹¨ìœ„ í…ŒìŠ¤íŠ¸ìš©
-//	public static void main(String[] args) throws SQLException {
-//		ActivationVO avo=new ActivationVO("oh99");
-//		Connection con=EeDAO.getInstance().getConn();
-//		System.out.println(EeDAO.getInstance().updateActivation(con, avo));
-//		System.out.println(avo);
-//	}
-	
-	
-	
-	
+//	public static void main(String[] args) {
+//		//// "choi7" , "ee1.jpg", "C", "ÀÎÃµ", "´ëÁ¹", "Y", "ÀÌ·Â¼­"
+//		//// String eeId, String img, String rank, String loc, String education, String
+//		//// portfolio, String extResume
+//
+//		EeInsertVO eivo = new EeInsertVO("kun90", "ee1.jpg", "C", "ÀÎÃµ", "´ëÁ¹", "Y", "ÀÌ·Â¼­.txt");
+//		System.out.println(eivo);
+//		try {
+//			EeDAO.getInstance().insertEeinfo(eivo);
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}// main
 
 	/**
-	 * 19.02.11 æºï¿½å«„ëŒ„ï¿½ï¿½ EeRegVO
+	 * 19.02.11 ±è°ÇÇÏ EeRegVO
 	 * 
 	 * @return
 	 * @throws SQLException
@@ -674,15 +661,15 @@ public class EeDAO {
 
 		try {
 
-			// è€Œã…»ï¿½Î¼ï¿½ï¿½ ï¿½ì‚°ë¦°.
+			// Ä¿³Ø¼Ç ¾ò±â.
 			con = getConn();
 
-			//è‘ì‡°â”è‡¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ëŒï¿½ï¿½ ï¿½ï¿½!!!!!!
+			//Äõ¸®¹® ¼öÁ¤ÇØ¾ß µÊ!!!!!!
 			
 			
-			// è‘ì‡°â”è‡¾ëª„ï¿½ï¿½ï¿½ï¿½
+			// Äõ¸®¹®»ı¼º
 			StringBuilder selectMyInfo = new StringBuilder();
-//			if() {//è­°ê³Œêµ”ï¿½ï¿½ ï¿½ëª„ï¿½ëŒ€ï¿½ëª„ï¿½æ¿¡ï¿½ ï¿½ï¿½æºï¿½?
+//			if() {//Á¶°ÇÀ» ³ëÀÌ¹ÌÁö·Î ÇÒ±î?
 				selectMyInfo
 				.append("		select id, name, gender, age ")
 				.append("		from user_table ")
@@ -698,11 +685,11 @@ public class EeDAO {
 //				
 //			}
 			pstmt = con.prepareStatement(selectMyInfo.toString());
-			// è«›ï¿½ï¿½ëªƒï¿½ï¿½è¹‚ï¿½ï¿½ï¿½ åª›ï¿½ ï¿½ï¿½ï¿½ï¿½.
+			// ¹ÙÀÎµåº¯¼ö °ª ÇÒ´ç.
 			pstmt.setString(1, eeid);
 
-			// DBï¿½ï¿½ï¿½ï¿½ è­°ê³ ï¿½ï¿½ï¿½ï¿½æ¹²ï¿½s
-			rs = pstmt.executeQuery(); // è‘ì‡°â”ï¿½ã…½ï¿½ï¿½
+			// DB¿¡¼­ Á¶È¸ÇÏ±âs
+			rs = pstmt.executeQuery(); // Äõ¸®½ÇÇà
 			if (rs.next()) {
 				ervo = new EeRegVO(rs.getString("id"), rs.getString("name"), rs.getString("gender"),
 						rs.getInt("age"));
@@ -724,8 +711,8 @@ public class EeDAO {
 	}//
 
 	/**
-	 *	transaction ï¿½ëŒ€ë‚«ï¿½ï¿½. 
-	 * activationï¿½ï¿½ nï¿½ï¿½ï¿½ï¿½ yæ¿¡ï¿½ è¹‚ï¿½å¯ƒì€ï¿½ï¿½ï¿½ï¿½ ï§ï¿½ï¿½ï¿½ï¿½ï¿½.
+	 *	transaction ÇØº¸ÀÚ. 
+	 * activationÀ» n¿¡¼­ y·Î º¯°æÇÏ´Â ¸Ş¼­µå.
 	 * @param eeid
 	 * @throws SQLException
 	 */
@@ -741,92 +728,18 @@ public class EeDAO {
 			pstmt.executeUpdate();
 
 			
-			con.commit(); //è€Œã…»ï¿½
+			con.commit(); //Ä¿¹Ô
 			
 			
 		}catch(SQLException sql) {
 			
 		}
 	
+	
 	}//transactionActivation
 
 	/**
-	 *  íŠ¸ëœì­ì…˜ ë©”ì†Œë“œ
-	 *  	ê¹€ê±´í•˜
-	 * @param eeid
-	 * @throws SQLException
-	 */
-
-	public boolean updateUserInfo(EeInsertVO eivo, ActivationVO avo) throws SQLException {
-	
-		boolean updateFlag = false;
-		
-		try {
-			con=getConn();
-			con.setAutoCommit(false);
-			
-			try {
-				boolean insert = insertEeinfo(con, eivo);
-				System.out.println("--insert ì—¬ê¸° ê°’ì€ true?"+insert);
-				boolean update = updateActivation(con, avo);
-				System.out.println("updateê°’ì€ true ì¸ê°€ìš”?"+update);
-				if(insert && update) {
-					updateFlag = true;
-					con.commit();
-				}else {
-					con.rollback();
-				}//end else
-			
-		}finally {
-			closeAll();
-		}//end finally
-		
-		}catch(SQLException e) {
-			try {	
-				con.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-			e.printStackTrace();
-		}
-		
-		return updateFlag;
-	}//updateUserinfo
-	
-	//íŠ¸ëœì­ì…˜ ë‹¨ìœ„í…ŒìŠ¤íŠ¸....
-//	public static void main(String[] args) throws SQLException {
-//		EeInsertVO eivo=new EeInsertVO("kun90", "12.jpg", "N", "ì„œìš¸", "ê³ ì¡¸", "Y", "test.txt");
-//		ActivationVO avo=new ActivationVO("kun90");
-//		System.out.println(EeDAO.getInstance().updateUserInfo(eivo, avo));
-//	}
-	
-	
-	/**
-	 * 	ì—°ê²°ëŠëŠ” ë©”ì†Œë“œ
-	 * @throws SQLException
-	 */
-	public void closeAll() throws SQLException {
-		if(pstmt2 != null) {
-			pstmt2.close();
-		}//end if
-		
-		if(pstmt1 != null) {
-			pstmt1.close();
-		}//end if
-		
-		if(con != null) {
-			con.close();
-		}//end if
-		
-	}//closeall
-	
-	
-	
-	
-	
-	
-	/**
-	 * 19.02.16 ï§â‘¤ï¿½ï¿½ ï¿½ï¿½è¹‚ë‹¿ï¿½ï¿½ëª„ï¿½ã…»ï¿½ï¿½ VO
+	 * 19.02.16 ¸ğµç Á¤º¸°¡Á®¿À´Â VO
 	 * 
 	 * @param eeId
 	 * @return
@@ -875,7 +788,7 @@ public class EeDAO {
 
 	}// selectEeInfo
 
-	// ï¿½â‘¥ï¿½ï¿½ ï¿½ï¿½ï¿½ã…½ï¿½ï¿½ ï¿½ê¹ƒë‚¬
+	// ´ÜÀ§ Å×½ºÆ® ¼º°ø
 //	public static void main(String[] args) {
 //		try {
 //			System.out.println(EeDAO.getInstance().selectEeInfo("kun90"));
@@ -928,9 +841,9 @@ public class EeDAO {
 		return flag;
 	}//UpdateEeinfo
 
-	//ï¿½â‘¥ï¿½ï¿½ ï¿½ï¿½ï¿½ã…½ï¿½ï¿½ UpdateEeinfo
+	//´ÜÀ§ Å×½ºÆ® UpdateEeinfo
 	public static void main(String[] args) {
-		EeModifyVO emvo=new EeModifyVO("ee_000121", "ee11,jpg", "Y", "ï¿½ï¿½ï¿½ï¿½", "æ€¨ï¿½è­°ï¿½", "N", "ï¿½ï¿½ï¿½ã…½ï¿½ï¿½");
+		EeModifyVO emvo=new EeModifyVO("ee_000121", "ee11,jpg", "Y", "¼­¿ï", "°íÁ¹", "N", "Å×½ºÆ®");
 			try {
 				EeDAO.getInstance().updateEeInfo(emvo);
 			} catch (SQLException e) {
@@ -939,13 +852,13 @@ public class EeDAO {
 			}
 	}
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////////// æºï¿½å«„ëŒ„ï¿½ï¿½
-	//////////////////////////////////////////////////////////////////////////////////////////////////////// VOï¿½ï¿½ç”±ï¿½
-	//////////////////////////////////////////////////////////////////////////////////////////////////////// ï¿½ï¿½///////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////// ±è°ÇÇÏ
+	//////////////////////////////////////////////////////////////////////////////////////////////////////// VOÁ¤¸®
+	//////////////////////////////////////////////////////////////////////////////////////////////////////// ³¡///////////////////////////////////////////////////////////////////////////////////////////////
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////////// æºï¿½å«„ëŒ„ï¿½ï¿½
-	//////////////////////////////////////////////////////////////////////////////////////////////////////// VOï¿½ï¿½ç”±ï¿½
-	//////////////////////////////////////////////////////////////////////////////////////////////////////// ï¿½ï¿½///////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////// ±è°ÇÇÏ
+	//////////////////////////////////////////////////////////////////////////////////////////////////////// VOÁ¤¸®
+	//////////////////////////////////////////////////////////////////////////////////////////////////////// ³¡///////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
