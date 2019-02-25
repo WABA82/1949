@@ -71,7 +71,7 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 
 	@Override
 	public void mouseClicked(MouseEvent me) {
-		//Ã‡Ã½Â¿Ã¸ Â±Ã¢Â¾Ã·ÃˆÂ¸Â¿Ã¸Â°Ã¼Â¸Â®
+		//Çý¿ø È¸¿ø¼öÁ¤Ã¢ ¶ç¿ì±â
 			try {
 				if(me.getSource() == emv.getJlUserInfo()) {
 				UserInfoVO uivo=C_dao.selectUserInfo(ermvo.getErId());
