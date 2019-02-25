@@ -19,7 +19,7 @@ public class LogTest1 {
 				
 				dos.writeUTF("hyewon");
 				dos.writeUTF(Inet4Address.getLocalHost().getHostAddress().toString());
-				dos.writeUTF("회원 비밀번호를 변경하였습니다.");
+				dos.writeUTF("회원 비밀번호를 수정하였습니다.");
 				
 				
 			} finally {
@@ -35,6 +35,7 @@ public class LogTest1 {
 	}
 	
 	public static void main(String[] args) {
-		new LogTest1();
+		new LogTest2();
 	}
 }
+
