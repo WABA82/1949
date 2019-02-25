@@ -323,45 +323,7 @@ public class EeDAO {
 
 //	////////////////////////////////////////// 선의 소스
 //	////////////////////////////////////////// 끝//////////////////////////////////////////////////////////
-//
-//	
-//
-//		//String eeNum, img, id, name, rank, loc, education, portfolio, gender, inputDate, extResume;
-//		//int age;
-//		
-//		//쿼리문 생성
-//		StringBuilder selectInfo=new StringBuilder();
-//		selectInfo
-//		.append("		select ei.ee_num, ei.img, ut.name, ei.rank, ei.loc, ei.education, ei.portfolio, ut.gender, ei.ext_resume, to_char(ei.input_date,'yyyy-mm-dd')input_date, ut.age  ")
-//		.append("		from ee_info ei, user_table ut		")
-//		.append("		where (ee_id = id) and ei.ee_id = ?  ");
-//		
-//		pstmt=con.prepareStatement(selectInfo.toString());
-//		pstmt.setString(1, eeid);
-//		rs=pstmt.executeQuery();
-//		
-//		if(rs.next()) {
-//			eivo=new EeInfoVO(rs.getString("EE_NUM"), rs.getString("IMG"),rs.getString("NAME"), rs.getString("RANK"),rs.getString("LOC"),
-//						rs.getString("EDUCATION"), rs.getString("PORTFOLIO"), rs.getString("GENDER"), rs.getString("EXT_RESUME"), rs.getInt("AGE"));
-//		}
-//			
-//		}finally {
-//			if( rs != null ) { rs.close(); }
-//			if( pstmt != null ) { pstmt.close(); }
-//			if( con != null ) { con.close(); }
-//		}//end finally
-//		
-//		return eivo;
-//	}//selectEeinfo
-//	
-//	//VO제대로 작동함. 수정안함
-////	public static void main(String[] args) {
-////		try {
-////			System.out.println(EeDAO.getInstance().selectEeInfo("gong1"));
-////		} catch (SQLException e) {
-////			e.printStackTrace();
-////		}
-////	}
+
 
 	//////////// 재현코드 ////////////
 
