@@ -141,9 +141,9 @@ public class UserUtil {
 		int len = 0;
 
 		if (flag.equals("co")) {
-			fos = new FileOutputStream("C:/dev/1949/03.개발/src/admin/img/co/" + newFileName);
+			fos = new FileOutputStream("C:/dev/1949/03.개발/src/user/img/co/" + newFileName);
 		} else if (flag.equals("ee")) {
-			fos = new FileOutputStream("C:/dev/1949/03.개발/src/admin/img/ee/" + newFileName);
+			fos = new FileOutputStream("C:/dev/1949/03.개발/src/user/img/ee/" + newFileName);
 		}
 
 		for (int i = 0; i < arrCnt; i++) {
