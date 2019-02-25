@@ -31,6 +31,7 @@ public class EeDetailErView extends JDialog {
 	public EeDetailErView(JDialog SDialog, DetailErInfoVO deivo, String erNum, String eeId, String appStatus) {
 		super(SDialog, "상세구인정보", true);/* 창의 제목 */
 		/* 컴포넌트 생성 */
+		
 		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/no_co_img1.png");
 		// 라벨들
 		JLabel jlImage = new JLabel(erLogo);
