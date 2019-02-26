@@ -706,7 +706,7 @@ public class ErDAO {
 			StringBuilder selectEeHiring = new StringBuilder();
 
 			selectEeHiring.append(" select ei.ee_num, ei.img, ut.name, ei.rank, ei.loc, ").append(
-					" ei.education, ut.age, ei.portfolio, ut.gender, to_char(ei.input_date,'yyyy-mm-dd-hh-mi') input_date ")
+					" ei.education, ut.age, ei.portfolio, ut.gender, to_char(ei.input_date,'yyyy-mm-dd hh:mi') input_date ")
 					.append(" from   ee_info ei, user_table ut ").append(" where ut.id= ei.ee_id ");
 
 			if (!(erhcdto.getCdt() == null || erhcdto.getCdt().equals(""))) {
