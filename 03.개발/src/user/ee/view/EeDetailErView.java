@@ -2,11 +2,18 @@ package user.ee.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -16,6 +23,7 @@ import javax.swing.border.TitledBorder;
 
 import user.ee.controller.EeDetailErController;
 import user.ee.vo.DetailErInfoVO;
+import user.util.UserUtil;
 
 /**
  * 일반사용자 - 구인정보보기 - 상세구인정보 View
@@ -31,8 +39,7 @@ public class EeDetailErView extends JDialog {
 	public EeDetailErView(JDialog SDialog, DetailErInfoVO deivo, String erNum, String eeId, String appStatus) {
 		super(SDialog, "상세구인정보", true);/* 창의 제목 */
 		/* 컴포넌트 생성 */
-		
-		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/no_co_img1.png");
+		ImageIcon erLogo = new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/no_co_img1.png");
 		// 라벨들
 		JLabel jlImage = new JLabel(erLogo);
 		JLabel jlSubject = new JLabel("제목");
@@ -68,9 +75,8 @@ public class EeDetailErView extends JDialog {
 		jtaErDesc.setColumns(25);
 		JScrollPane jspErDesc = new JScrollPane(jtaErDesc);
 
-		ImageIcon imgSkill = new ImageIcon("C:/dev/1949/03.개발/src/admin/img/co/오라클.png");
 		JLabel jlSkill1, jlSkill2, jlSkill3, jlSkill4, jlSkill5, jlSkill6, jlSkill7, jlSkill8;
-		jlSkill1 = new JLabel(imgSkill);
+		jlSkill1 = new JLabel();
 		jlSkill1.setBorder(new LineBorder(Color.BLACK));
 		jlSkill2 = new JLabel("");
 		jlSkill2.setBorder(new LineBorder(Color.BLACK));
@@ -89,10 +95,10 @@ public class EeDetailErView extends JDialog {
 
 		// 버튼들
 		if (deivo.getInterest().equals("0")) {
-			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/src/file/b_heart.png");
+			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/src/user/img/b_heart.png");
 			jlHeart = new JLabel(heart);
 		} else if (deivo.getInterest().equals("1")) {
-			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/src/file/r_heart.png");
+			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/src/user/img/r_heart.png");
 			jlHeart = new JLabel(heart);
 			flagHeart = true;
 		}
@@ -202,27 +208,27 @@ public class EeDetailErView extends JDialog {
 		JLabel[] arrLbSkill = { jlSkill1, jlSkill2, jlSkill3, jlSkill4, jlSkill5, jlSkill6, jlSkill7, jlSkill8 };
 		for (int i = 0; i < deivo.getSkill().size(); i++) {
 			if (deivo.getSkill().get(i).equals("Java")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/Java.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/Java.png"));
 			} else if (deivo.getSkill().get(i).equals("JSP/Servlet")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/jsp_servelt.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/jsp_servelt.png"));
 
 			} else if (deivo.getSkill().get(i).equals("Spring")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/spring.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/spring.png"));
 
 			} else if (deivo.getSkill().get(i).equals("Oracle")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/oracle.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/oracle.png"));
 
 			} else if (deivo.getSkill().get(i).equals("HTML")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/html.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/html.png"));
 
 			} else if (deivo.getSkill().get(i).equals("CSS")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/css.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/css.png"));
 
 			} else if (deivo.getSkill().get(i).equals("Linux")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/linux.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/linux.png"));
 
 			} else if (deivo.getSkill().get(i).equals("JS")) {
-				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/js.png"));
+				arrLbSkill[i].setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/js.png"));
 			}
 			skillGridPanel.add(arrLbSkill[i]);
 		} // end for
@@ -247,7 +253,24 @@ public class EeDetailErView extends JDialog {
 		add(wrapPanel);
 
 		jtfSubject.setText(deivo.getSubject());
-		jlImage.setIcon(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/" + deivo.getImg1()));
+		//이미지가 없으면 받아오기 있으면 기존이미지 사용.
+		File imgFile = new File("C:/dev/1949/03.개발/src/user/img/co/"+deivo.getImg1());
+		
+		if(!imgFile.exists()) {
+			Socket client = null;
+			DataInputStream dis =null;
+			DataOutputStream dos = null;
+			FileOutputStream fos = null;
+			try {
+				UserUtil uu = new UserUtil();
+				uu.reqFile(deivo.getImg1(), "co", client, dos, dis, fos);
+			} catch (IOException e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(this, "이미지를 받아오는데 실패했습니다.");
+			}
+		}
+		
+		jlImage.setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/" + deivo.getImg1()));
 		jtfCoName.setText(deivo.getCoName());
 		jtfName.setText(deivo.getName());
 		jtfTel.setText(deivo.getTel());

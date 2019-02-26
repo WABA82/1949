@@ -26,7 +26,6 @@ import user.er.vo.CoInsertVO;
 public class CoInfoModifyController extends WindowAdapter implements ActionListener, MouseListener {
 
 	private CoInfoModifyView cimv;
-	private String coNum;
 	private File uploadImg1, uploadImg2, uploadImg3, uploadImg4;
 	String path, name;
 	private ErDAO erdao;
@@ -65,9 +64,23 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 			String estDate = cimv.getJtfEstDate().getText().trim();
 			int memberNum = Integer.parseInt(cimv.getMemberNum().getText().trim());
 			
+			//기본 이미지 불러오기
 			if (uploadImg1 == null) {
 				uploadImg1 = new File("C:/dev/1949/03.개발/src/user/img/co/"+cvo.getImg1() );
 			} // end if
+			
+			if (uploadImg2 == null) {
+				uploadImg2 = new File("C:/dev/1949/03.개발/src/user/img/co/"+cvo.getImg2() );
+			} // end if
+			
+			if (uploadImg3 == null) {
+				uploadImg3 = new File("C:/dev/1949/03.개발/src/user/img/co/"+cvo.getImg3() );
+			} // end if
+			
+			if (uploadImg4 == null) {
+				uploadImg4 = new File("C:/dev/1949/03.개발/src/user/img/co/"+cvo.getImg4() );
+			} // end if
+			
 			
 			if (uploadImg1 == null) {
 				JOptionPane.showMessageDialog(cimv, "메인사진은 넣어 주셔야합니다");
@@ -83,6 +96,11 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 				JOptionPane.showMessageDialog(cimv, "설립일을 입력해주세요.");
 				return;
 			} // end if
+			
+			if(estDate.length()  > 12 ) {
+	        	 JOptionPane.showMessageDialog(cimv, "설립년도의 입력형식을 예와 같이 8자리로 해주세요\nex)19910717");
+	        	 return;
+	         }//end if
 
 			if (memberNum == 0) {
 				JOptionPane.showMessageDialog(cimv, "사원수를 입력해주세요.");

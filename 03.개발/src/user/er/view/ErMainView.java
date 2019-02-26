@@ -21,12 +21,9 @@ public class ErMainView extends JFrame {
 	private JButton jbCoMgmt, jbEeInfo, jbErMgmt, jbApp, jbInterestEe;
 	private JLabel jlUserInfo, jlLogOut, jlActivation;
 	private ErMainVO ermvo;
-	
-	
 	//삭제할것
 	private LoginView lv;
 	
-	//////////수정중
 	public ErMainView(ErMainVO ermvo) {
 		super("1949 - 기업사용자 ["+ermvo.getName()+"]");
 		System.out.println(ermvo);

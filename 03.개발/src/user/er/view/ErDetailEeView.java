@@ -28,17 +28,17 @@ public class ErDetailEeView extends JDialog {
 	public ErDetailEeView(JDialog SDialog, DetailEeInfoVO devo, String eeNum, String erId, String interest) {
 		super(SDialog, "구직자 상세 정보", true);
 		setLayout(null);
-		ImageIcon ii = new ImageIcon("C:/dev/1949/03.개발/src/file/eeImg/" + devo.getImg());
+		ImageIcon ii = new ImageIcon("C:/dev/1949/03.개발/src/user/img/ee/" + devo.getImg());
 		JLabel jlImage = new JLabel(ii);
 		jlImage.setBorder(new TitledBorder("구직자 이미지"));
 		jlImage.setBounds(38, 20, 160, 225);
 		add(jlImage);
 
 		if (interest.equals("0")) {
-			ImageIcon iiheart = new ImageIcon("C:/dev/1949/03.개발/src/file/b_heart.png");
+			ImageIcon iiheart = new ImageIcon("C:/dev/1949/03.개발/src/user/img/b_heart.png");
 			jlHeart = new JLabel(iiheart);
 		} else if (interest.equals("1")) {
-			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/src/file/r_heart.png");
+			ImageIcon heart = new ImageIcon("C:/dev/1949/03.개발/src/user/img/r_heart.png");
 			jlHeart = new JLabel(heart);
 			flagHeart = true;
 		}

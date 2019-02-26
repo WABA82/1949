@@ -87,34 +87,41 @@ public class CoInfoRegController extends WindowAdapter implements MouseListener,
 
          String coName = cirv.getJtfCoName().getText().trim();
          String estDate = cirv.getJtfEstDate().getText().trim();
+         String coDesc = cirv.getJtaCoDesc().getText().trim();
+         
+         if (coName.equals("")) {
+        	 JOptionPane.showMessageDialog(cirv, "회사명을 입력해주세요.");
+        	 return;
+         } // end if
+         
+         if (estDate.isEmpty()) {
+        	 JOptionPane.showMessageDialog(cirv, "설립일을 입력해주세요.");
+        	 return;
+         }//end if
+         
          if(estDate.length() != 8) {
-        	 JOptionPane.showMessageDialog(cirv, "입력형식을 8자리로 만 해주세요\nex)19910717");
+        	 JOptionPane.showMessageDialog(cirv, "설립년도의 입력형식을 예와 같이 8자리로 해주세요\nex)19910717");
         	 return;
          }//end if
          
          int memberNum=0;
          try {
-          memberNum = Integer.parseInt(cirv.getMemberNum().getText().trim());
+        	 memberNum = Integer.parseInt(cirv.getMemberNum().getText().trim());
+          
+          if (memberNum == 0 ) {
+        	  JOptionPane.showMessageDialog(cirv, "사원수를 입력해주세요.");
+        	  return;
+          } // end if
+          
          }catch(NumberFormatException nfe){
-        	 JOptionPane.showMessageDialog(cirv, " 사원수는 숫자만 입력");
+        	 JOptionPane.showMessageDialog(cirv, " 사원수는 숫자만 입력 가능합니다.");
         	 return;
          }//end catch
-         
-         if (coName.equals("")) {
-            JOptionPane.showMessageDialog(cirv, "회사명을 입력해주세요.");
-            return;
-         } // end if
 
-         if (estDate.isEmpty()) {
-        	 JOptionPane.showMessageDialog(cirv, "설립일을 입력해주세요.");
-            return;
-         }//end if
-
-         if (memberNum == 0) {
-            JOptionPane.showMessageDialog(cirv, "사원수를 입력해주세요.");
-            return;
-         } // end if
-
+         if(coDesc.equals("")) {
+        	 JOptionPane.showMessageDialog(cirv, "기업 설명을 입력해주세요!");
+        	 return;
+         }
          
          if (uploadImg1 == null) {
             uploadImg1 = new File("C:/dev/1949/03.개발/src/user/img/co/no_co_img1.png");
@@ -134,7 +141,6 @@ public class CoInfoRegController extends WindowAdapter implements MouseListener,
          }//end if
          
 //         System.out.println(uploadImg1+" "+uploadImg2 );
-         String coDesc = cirv.getJtaCoDesc().getText().trim();
 
          CoInsertVO civo = null;
          civo = new CoInsertVO(erId, uploadImg1.getName(), uploadImg2.getName(), uploadImg3.getName(), uploadImg4.getName(), coName,
@@ -146,7 +152,6 @@ public class CoInfoRegController extends WindowAdapter implements MouseListener,
          if(insertFlag) {
         	 JOptionPane.showMessageDialog(cirv, "회사가 등록되었습니다.");
          }
-         
          
          System.out.println("등록");
          JOptionPane.showMessageDialog(cirv, "회사 정보가 등록되었습니다\n이제부터 구직 정보를 조회가능합니다.");
