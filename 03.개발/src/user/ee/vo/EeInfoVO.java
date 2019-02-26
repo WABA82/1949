@@ -7,16 +7,17 @@ package user.ee.vo;
  */
 public class EeInfoVO {
 
-	private String eeNum, img, name, rank, loc, education, portfolio, gender, extResume;
+	private String  eeId, eeNum, img, name, rank, loc, education, portfolio, gender, extResume;
 	private int age;
 	
 	public EeInfoVO() {
 		super();
 	}
 
-	public EeInfoVO(String eeNum, String img, String name, String rank, String loc, String education, String portfolio,
+	public EeInfoVO(String eeId, String eeNum, String img, String name, String rank, String loc, String education, String portfolio,
 			String gender, String extResume, int age) {
 		super();
+		this.eeId=eeId;
 		this.eeNum = eeNum;
 		this.img = img;
 		this.name = name;
@@ -29,6 +30,9 @@ public class EeInfoVO {
 		this.age = age;
 	}
 
+	public String getEeId() {
+		return eeId;
+	}
 	public String getEeNum() {
 		return eeNum;
 	}

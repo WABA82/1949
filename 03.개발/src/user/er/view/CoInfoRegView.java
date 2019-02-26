@@ -72,7 +72,7 @@ public class CoInfoRegView extends JDialog {
 		jbClose.setBounds(342, 446, 92, 24);
 		
 		//이벤트 등록 
-		CoInfoRegController crc= new CoInfoRegController(this, erId);
+		CoInfoRegController crc= new CoInfoRegController(this, erId, emv);
 		addWindowListener(crc);
 		jbClose.addActionListener(crc);
 		jbReg.addActionListener(crc);
