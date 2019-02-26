@@ -16,13 +16,12 @@ import user.common.view.SetNewPassView;
 import user.common.vo.FindPassVO;
 import user.common.vo.SetPassVO;
 import user.dao.CommonDAO;
+import user.run.LogTestChangePass;
 
 public class SetNewPassController extends WindowAdapter implements ActionListener {
 
 	private SetNewPassView snpv;
 	private String id;
-	private FindPassView fpv;
-	private LoginView lv;
 
 	public SetNewPassController(SetNewPassView snpv, String id) {
 		this.snpv = snpv;
@@ -103,6 +102,7 @@ public class SetNewPassController extends WindowAdapter implements ActionListene
 						if (CommonDAO.getInstance().updatePass(spvo)) {
 							JOptionPane.showMessageDialog(snpv, "비밀번호가 수정되었습니다.");
 							snpv.dispose();
+							new LogTestChangePass();
 						return;
 						} // end if
 				}//end else

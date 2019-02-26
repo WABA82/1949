@@ -18,18 +18,20 @@ import user.common.vo.UserModifyVO;
 import user.common.vo.UserModifyWithoutPassVO;
 import user.dao.CommonDAO;
 import user.er.view.ErMainView;
+import user.run.LogTestChangeUserInfo;
 
 public class ChangeUserInfoController extends WindowAdapter implements ActionListener {
 
 	private ChangeUserInfoView cuiv;
 	private UserInfoVO uivo;
 	private String addrSeq;
-	private ErMainView emv;
+	private ErMainView ermv;
 	
-	public ChangeUserInfoController(ChangeUserInfoView cuiv, UserInfoVO uivo) {
+	public ChangeUserInfoController(ErMainView ermv, ChangeUserInfoView cuiv, UserInfoVO uivo) {
 		this.cuiv=cuiv;
 		this.uivo=uivo;
 		this.addrSeq=uivo.getSeq();
+		this.ermv = ermv;
 	}
 	
 	public boolean checkPass(String pass) { // 비밀번호 검증, 최대 12자리, 대문자 소문자 특수문자 조합
@@ -144,6 +146,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 		//이메일 검증
 		if(email.length() <14) {//@. 포함 최소 14자리 이상
 			JOptionPane.showMessageDialog(cuiv, "이메일은 14자리 이상이어야합니다.");
+			return;
 		}else {//14자리이상이라면
 	
 		if(!(email.contains("@")&& email.contains("."))) {
@@ -173,6 +176,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 						if (CommonDAO.getInstance().updateUserInfoWithoutPass(umvo2)) {
 							JOptionPane.showMessageDialog(cuiv, "회원정보가 수정되었습니다.");
 							cuiv.dispose();
+							new LogTestChangeUserInfo();
 						}//end if
 					}//end else
 			} catch (SQLException e) {
@@ -197,6 +201,8 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 								}else {
 									if (CommonDAO.getInstance().updateUserInfo(umvo)) {
 								JOptionPane.showMessageDialog(cuiv, "회원정보가 수정되었습니다.");
+								cuiv.dispose();
+								new LogTestChangeUserInfo();
 								}//end if
 						}//end else
 					
@@ -212,7 +218,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 	}//modifyUser	
 
 	public void removeUser() {
-		new RemoveUserView(emv, uivo.getId());
+		new RemoveUserView(cuiv,ermv, uivo.getId());
 	}
 
 	@Override
