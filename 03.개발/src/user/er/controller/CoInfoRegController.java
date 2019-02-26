@@ -14,8 +14,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import user.common.vo.ErMainVO;
+import user.dao.CommonDAO;
 import user.dao.ErDAO;
 import user.er.view.CoInfoRegView;
+import user.er.view.ErMainView;
 import user.er.vo.ActivationVO;
 import user.er.vo.CoInsertVO;
 
@@ -27,10 +30,12 @@ public class CoInfoRegController extends WindowAdapter implements MouseListener,
    private String path, name;
    private ErDAO erdao;
    private CoInsertVO civo;
+   private ErMainView emv;
 
-   public CoInfoRegController(CoInfoRegView cirv, String erId) {
+   public CoInfoRegController(CoInfoRegView cirv, String erId, ErMainView emv) {
       this.cirv = cirv;
       this.erId = erId;
+      this.emv=emv;
       erdao = ErDAO.getInstance();
    }// 생성자
 
@@ -45,6 +50,7 @@ public class CoInfoRegController extends WindowAdapter implements MouseListener,
          try {
             register();
          } catch (SQLException e) {
+        	 JOptionPane.showMessageDialog(cirv, "DB오류");
             e.printStackTrace();
          }
       } else if (ae.getSource() == cirv.getJbClose()) {
@@ -81,12 +87,17 @@ public class CoInfoRegController extends WindowAdapter implements MouseListener,
 
          String coName = cirv.getJtfCoName().getText().trim();
          String estDate = cirv.getJtfEstDate().getText().trim();
+         if(estDate.length() != 8) {
+        	 JOptionPane.showMessageDialog(cirv, "입력형식을 8자리로 만 해주세요\nex)19910717");
+        	 return;
+         }//end if
          
          int memberNum=0;
          try {
           memberNum = Integer.parseInt(cirv.getMemberNum().getText().trim());
          }catch(NumberFormatException nfe){
-        	 JOptionPane.showMessageDialog(cirv, "숫자만 입력");
+        	 JOptionPane.showMessageDialog(cirv, " 사원수는 숫자만 입력");
+        	 return;
          }//end catch
          
          if (coName.equals("")) {
@@ -95,9 +106,9 @@ public class CoInfoRegController extends WindowAdapter implements MouseListener,
          } // end if
 
          if (estDate.isEmpty()) {
-            JOptionPane.showMessageDialog(cirv, "설립일을 입력해주세요.");
+        	 JOptionPane.showMessageDialog(cirv, "설립일을 입력해주세요.");
             return;
-         } // end if
+         }//end if
 
          if (memberNum == 0) {
             JOptionPane.showMessageDialog(cirv, "사원수를 입력해주세요.");
@@ -139,6 +150,10 @@ public class CoInfoRegController extends WindowAdapter implements MouseListener,
          
          System.out.println("등록");
          JOptionPane.showMessageDialog(cirv, "회사 정보가 등록되었습니다\n이제부터 구직 정보를 조회가능합니다.");
+         ErMainVO updateEmvo=  CommonDAO.getInstance().selectErMain(erId, "Y");
+         new ErMainView(updateEmvo);
+         emv.dispose();
+         cirv.dispose();
    }// register
 
    public void chgImg(JLabel jl, int imgNumber) {

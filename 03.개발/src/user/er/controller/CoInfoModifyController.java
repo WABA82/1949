@@ -14,9 +14,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import user.common.vo.ErMainVO;
+import user.dao.CommonDAO;
 import user.dao.EeDAO;
 import user.dao.ErDAO;
 import user.er.view.CoInfoModifyView;
+import user.er.view.ErMainView;
 import user.er.vo.CoInfoVO;
 import user.er.vo.CoInsertVO;
 
@@ -27,10 +30,13 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 	private File uploadImg1, uploadImg2, uploadImg3, uploadImg4;
 	String path, name;
 	private ErDAO erdao;
+	private CoInfoVO cvo;
+	private ErMainView emv;
 
-	public CoInfoModifyController(CoInfoModifyView cimv, String coNum) {
+	public CoInfoModifyController(CoInfoModifyView cimv,  CoInfoVO cvo, ErMainView emv) {
 		this.cimv = cimv;
-		this.coNum = coNum;
+		this.cvo=cvo;
+		this.emv=emv;
 		erdao = ErDAO.getInstance();
 	}// 생성자
 
@@ -53,10 +59,16 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 	public void modify() {
 
 		try {
+			String erId=cvo.getErId();
+			String coNum=cvo.getCoNum();
 			String coName = cimv.getJtfCoName().getText().trim();
 			String estDate = cimv.getJtfEstDate().getText().trim();
 			int memberNum = Integer.parseInt(cimv.getMemberNum().getText().trim());
-
+			
+			if (uploadImg1 == null) {
+				uploadImg1 = new File("C:/dev/1949/03.개발/src/user/img/co/"+cvo.getImg1() );
+			} // end if
+			
 			if (uploadImg1 == null) {
 				JOptionPane.showMessageDialog(cimv, "메인사진은 넣어 주셔야합니다");
 				return;
@@ -77,9 +89,6 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 				return;
 			} // end if
 
-			if (uploadImg1 == null) {
-				uploadImg1 = new File("C:/dev/1949/03.개발/src/user/img/co/no_co_img1.png");
-			} // end if
 
 			if (uploadImg2 == null) {
 				uploadImg2 = new File("C:/dev/1949/03.개발/src/user/img/co/no_co_img2.png");
@@ -103,15 +112,18 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 
 			switch (JOptionPane.showConfirmDialog(cimv, updateMsg.toString())) {
 			case JOptionPane.OK_OPTION:
-				CoInfoVO cvo = new CoInfoVO(coNum, coName, uploadImg1.getName(), uploadImg2.getName(),
+				CoInfoVO cvo = new CoInfoVO(erId, coNum, coName, uploadImg1.getName(), uploadImg2.getName(),
 						uploadImg3.getName(), uploadImg4.getName(), estDate, coDesc, memberNum);
-
-//			System.out.println("변경");
-//			System.out.println(cvo);
+				System.out.println(uploadImg1.getName());
 
 				try {
 					erdao.updateCoInfo(cvo);
 					JOptionPane.showMessageDialog(cimv, "회사 정보가 수정 되었습니다");
+					ErMainVO updateEmvo=CommonDAO.getInstance().selectErMain(erId, "Y");
+					new ErMainView(updateEmvo);
+					cimv.dispose();
+					emv.dispose();
+					
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
