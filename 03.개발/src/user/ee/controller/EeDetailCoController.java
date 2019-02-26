@@ -76,7 +76,7 @@ public class EeDetailCoController extends WindowAdapter implements ActionListene
 	 * @throws UnknownHostException
 	 * @throws IOException
 	 */
-	public void reqCoImg() throws UnknownHostException, IOException {
+	private void reqCoImg() throws UnknownHostException, IOException {
 
 		String coImgFilePath = "C:/dev/1949/03.°³¹ß/src/user/img/co/";
 		File imgFile1 = new File(coImgFilePath + cdvo.getImg1());
