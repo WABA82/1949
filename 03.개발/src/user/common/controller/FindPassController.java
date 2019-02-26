@@ -84,4 +84,3 @@ public class FindPassController extends WindowAdapter implements ActionListener 
 		fpv.dispose();
 	}
 }
-//count(*)가1이면존재 0이면 존재하지않음

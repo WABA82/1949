@@ -44,7 +44,7 @@ public class CommonDAO {
     private Connection getConn() throws SQLException {
         Connection con = null;
 
-        String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl";// 학원에서 바꿀 것
+        String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl";
         String id = "kanu";
         String pass = "share";
         con = DriverManager.getConnection(url, id, pass);
@@ -173,6 +173,86 @@ public class CommonDAO {
 
     }//insertUser
 
+    /**
+     * 박정미 
+     * 회원 가입 시 아이디 중복 체크를 확인하는 메서드 
+     * @param id
+     * @return
+     * @throws SQLException
+     */
+    public boolean checkID(String id) throws SQLException {
+    	boolean IDflag = false;
+    	
+    	Connection con =null;
+    	 PreparedStatement pstmt = null;
+         ResultSet rs = null;
+         try {
+	            con = getConn();
+	            
+	            String chkId = " select id from user_table where id= ? ";
+	            pstmt = con.prepareStatement(chkId);
+	            pstmt.setString(1, id);
+	            
+	            rs = pstmt.executeQuery();
+	            
+	            if(rs.next()) {
+	            	IDflag=true;
+	            }//end if
+            
+     		} finally {
+	        	 if (rs != null) {
+	                 rs.close();
+	              }
+	              if (pstmt != null) {
+	                 pstmt.close();
+	              }
+	              if (con != null) {
+	                 con.close();
+	              }
+         }
+    	return IDflag;
+         
+    }//checkID
+    
+    /**
+     * 박정미
+     * 주민등록번호 중복을 확인하는 메서드
+     * @param ssn
+     * @return
+     */
+    public boolean checkSsn(String ssn) throws SQLException {
+    	boolean ssnFlag = false;
+    	
+    	Connection con =null;
+    	PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+	            con = getConn();
+	            
+	            String chkSsn = " select ssn from user_table where ssn= ? ";
+	            pstmt = con.prepareStatement(chkSsn);
+	            pstmt.setString(1, ssn);
+	            
+	            rs = pstmt.executeQuery();
+	            
+	            if(rs.next()) {
+	            	ssnFlag=true;
+	            }//end if
+            
+     		} finally {
+	        	 if (rs != null) {
+	                 rs.close();
+	              }
+	              if (pstmt != null) {
+	                 pstmt.close();
+	              }
+	              if (con != null) {
+	                 con.close();
+	              }
+     		}//end finally
+    	return ssnFlag;
+    }//checkSsn
+    
     /**
      * 최혜원 아이디 찾기
      * @param fivo
@@ -322,7 +402,6 @@ public class CommonDAO {
             .append("   u.addr_detail addr2, u.email")
             .append("      from user_table u, zipcode z ")
             .append("      where u.addr_seq=z.seq and u.id in ? ");
-            //.append("      and u.id in ? ");
             
             pstmt=con.prepareStatement(selectUserInfo.toString());
             

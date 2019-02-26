@@ -16,9 +16,8 @@ public class RemoveUserView extends JDialog {
 	private JButton jbDelete, jbClose;
 	private JPasswordField jpfPass1, jpfPass2;
 	
-//public RemoveUserView(String id) {
-	public RemoveUserView(ErMainView emv, String id) {
-		super(emv, "1949 - È¸¿ø Å»Åð", true);
+	public RemoveUserView(ChangeUserInfoView cuiv,ErMainView ermv, String id) {
+		super(ermv, "1949 - È¸¿ø Å»Åð", true);
 		
 		
 		jpfPass1 = new JPasswordField(); 
@@ -54,7 +53,7 @@ public class RemoveUserView extends JDialog {
 		add(jbDelete);
 		add(jbClose);
 		
-		RemoveUserController ruc = new RemoveUserController(this, id);
+		RemoveUserController ruc = new RemoveUserController(ermv,cuiv,this, id);
 		jbDelete.addActionListener(ruc);
 		jbClose.addActionListener(ruc);
 		
