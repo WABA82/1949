@@ -76,7 +76,7 @@ public class CoInfoModifyView extends JDialog {
 
 		
 		//이벤트 처리
-		CoInfoModifyController cimc = new CoInfoModifyController(this, cvo.getCoNum());
+		CoInfoModifyController cimc = new CoInfoModifyController(this,  cvo, emv );
 		addWindowListener(cimc);
 		jbClose.addActionListener(cimc);
 		jbModify.addActionListener(cimc);

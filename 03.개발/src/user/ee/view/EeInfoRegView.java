@@ -150,7 +150,7 @@ public class EeInfoRegView extends JDialog {
 		jcbPortfolio.setBounds(325,222,130,20);
 		
 		//이벤트 등록
-		EeInfoRegController eirc=new EeInfoRegController(this, ervo.getEeId());
+		EeInfoRegController eirc=new EeInfoRegController(this, ervo.getEeId(), emv);
 		jbRegisterExt.addActionListener(eirc);
 		jbClose.addActionListener(eirc);
 		jbRegisterImg.addActionListener(eirc);

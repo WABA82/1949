@@ -21,7 +21,7 @@ public class EeAppView extends JDialog {
 	private JLabel jlEeAppCnt;
 	private DefaultTableModel dtmApp;
 
-	private EeAppView(EeMainView emv, String ee_id) {
+	public EeAppView(EeMainView emv, String ee_id) {
 		super(emv, "지원 현황", true);
 
 		jlEeAppCnt = new JLabel("내 지원 현황 수 : ");

@@ -35,11 +35,13 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 	private String eeId;// 내 아이디.
 	private EeRegVO ervo;
 	private EeMainVO emvo;
+	private EeMainView emv;
 
 	// 생성자.
-	public EeInfoRegController(EeInfoRegView eirv, String eeId) {
+	public EeInfoRegController(EeInfoRegView eirv, String eeId, EeMainView emv) {
 		this.eirv = eirv;
 		this.eeId = eeId;
+		this.emv=emv;
 		eedao = EeDAO.getInstance();
 	}// 생성자
 
@@ -71,12 +73,12 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 				insertFlag=	eedao.updateUserInfo(eivo, avo);
 				if(insertFlag) {
 					JOptionPane.showMessageDialog(eirv, "개인정보가 등록 되었습니다.");
-					String act=CommonDAO.getInstance().selectActivation(eeId);
-					
 					//창 다시 띄우기?
-//					EeMainVO newEmvo=CommonDAO.getInstance().selectEeMain(eeId, act);
-//					new EeMainView(newEmvo);
-//					eirv.dispose();
+					
+					EeMainVO updateEmvo=CommonDAO.getInstance().selectEeMain(eeId, "Y");
+					new EeMainView(updateEmvo);
+					emv.dispose();
+					eirv.dispose();
 					
 				}//end if
 				System.out.println("insert 도 과연 true 일까요??"+insertFlag);

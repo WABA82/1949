@@ -7,6 +7,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -20,6 +21,7 @@ import user.dao.ErDAO;
 import user.er.view.AppDetailView;
 import user.er.vo.DetailAppEeVO;
 import user.er.vo.ErAppStatusVO;
+import user.util.UserUtil;
 
 /**
  * 상세 지원자 정보 창의 컨트롤러.
@@ -63,7 +65,23 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 			daevo = er_dao.selectDetailAppEe(app_num);
 
 			if (daevo != null) {
-				String imgPath = "C:/dev/1949/03.개발/가데이터/구직자사진/150x200px/";
+				String imgPath = "C:/dev/1949/03.개발/src/user/img/ee/";
+				File imgFile = new File(imgPath + daevo.getImg());
+				// user.img.co패키지에 이미지 파일이 없다면 실행.
+				System.out.println(imgFile.exists());
+				if (!imgFile.exists()) {
+					try {
+						Socket client = null; // "211.63.89.144", 7002 : 영근컴퓨터IP, 파일서버의 포트
+						DataInputStream dis = null;
+						DataOutputStream dos = null;
+						FileOutputStream fos = null;
+						UserUtil util = new UserUtil(); // 서버와 소통할 유틸객체 생성.
+
+						util.reqFile(imgFile.getName(), "ee", client, dos, dis, fos);
+					} catch (IOException e) {
+						e.printStackTrace();
+					} // end try
+				} // end if
 				adv.getJlImage().setIcon(new ImageIcon(imgPath + daevo.getImg()));
 				adv.getJtfName().setText(daevo.getName());
 				adv.getJtfTel().setText(daevo.getTel());
