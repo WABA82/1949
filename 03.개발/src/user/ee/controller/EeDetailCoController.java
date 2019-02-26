@@ -83,14 +83,9 @@ public class EeDetailCoController extends WindowAdapter implements ActionListene
 		File imgFile2 = new File(coImgFilePath + cdvo.getImg2());
 		File imgFile3 = new File(coImgFilePath + cdvo.getImg3());
 		File imgFile4 = new File(coImgFilePath + cdvo.getImg4());
-
 		File[] fileArr = { imgFile1, imgFile2, imgFile3, imgFile4 };
-		// 단위 테스트 : 이미지파일 배열에 들어있는 파일들의 이름 찍어보기.
-//		for (int i = 0; i < fileArr.length; i++) {
-//			System.out.println(fileArr[i].getName());
-//		} // end for
-		for (int i = 0; i < fileArr.length; i++) {
 
+		for (int i = 0; i < fileArr.length; i++) {
 			// user.img.co패키지에 이미지 파일이 없다면 실행.
 			if (!fileArr[i].exists()) {
 				Socket client = null; // "211.63.89.144", 7002 : 영근컴퓨터IP, 파일서버의 포트
@@ -101,8 +96,7 @@ public class EeDetailCoController extends WindowAdapter implements ActionListene
 				UserUtil util = new UserUtil(); // 서버와 소통할 유틸객체 생성.
 				util.reqFile(fileArr[i].getName(), "co", client, dos, dis, fos);
 			} // end if
-
-		} // end for
+		}// end for
 	}// reqCoImg()
 
 	@Override

@@ -42,7 +42,8 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 	private ErDAO erdao;
 	private CommonDAO C_dao;
 	
-	public ErMainController(ErMainView emv, ErMainVO ermvo ) {
+	public ErMainController(ErMainView emv, ErMainVO ermvo) {
+
 		this.emv = emv;
 		this.ermvo=ermvo;
 		erdao=ErDAO.getInstance();
@@ -126,8 +127,8 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 		}//end if
 		
 		if(me.getSource() == emv.getJlLogOut()) {
-			new LoginView();
 			emv.dispose();
+			new LoginView();
 		}//end if
 		
 	}//mouseClicked

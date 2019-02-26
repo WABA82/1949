@@ -60,6 +60,7 @@ public class ErHiringController extends WindowAdapter implements ActionListener,
 				
 				//서버에서 없는 이미지 파일받아오기
 				File imgFile = new File("C:/dev/1949/03.개발/src/user/img/ee/"+erhvo.getImg());
+				System.out.println(erhvo.getImg()+"---"+imgFile.exists());
 				if(!imgFile.exists()) {
 					Socket client = null;
 					DataInputStream dis =null;

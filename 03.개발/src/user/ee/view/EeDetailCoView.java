@@ -1,6 +1,7 @@
 package user.ee.view;
 
 import java.awt.Color;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -11,6 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import user.dao.EeDAO;
 import user.ee.controller.EeDetailCoController;
 import user.ee.vo.CoDetailVO;
 
@@ -140,16 +142,16 @@ public class EeDetailCoView extends JDialog {
 		return jtaCoDesc;
 	}
 
-//	/* 단위 테스트용 */
-//	public static void main(String[] args) {
-//		EeDAO ee_dao = EeDAO.getInstance();
-//		CoDetailVO cdvo;
-//		try {
-//			cdvo = ee_dao.selectCompany("er_000033");
-//			new EeDetailCoView(null, cdvo);
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} // end catch
-//	}// main
+	/* 단위 테스트용 */
+	public static void main(String[] args) {
+		EeDAO ee_dao = EeDAO.getInstance();
+		CoDetailVO cdvo;
+		try {
+			cdvo = ee_dao.selectCompany("er_000033");
+			new EeDetailCoView(null, cdvo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} // end catch
+	}// main
 
 }// class

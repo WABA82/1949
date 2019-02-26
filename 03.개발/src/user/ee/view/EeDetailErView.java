@@ -255,7 +255,6 @@ public class EeDetailErView extends JDialog {
 		jtfSubject.setText(deivo.getSubject());
 		//이미지가 없으면 받아오기 있으면 기존이미지 사용.
 		File imgFile = new File("C:/dev/1949/03.개발/src/user/img/co/"+deivo.getImg1());
-		
 		if(!imgFile.exists()) {
 			Socket client = null;
 			DataInputStream dis =null;
