@@ -51,19 +51,6 @@ public class ErInterestController extends WindowAdapter implements MouseListener
 	 */
 	private void setDTM(String er_id) {
 
-//		try {
-//			reqEeImg();
-//		} catch (UnknownHostException e1) {
-//			JOptionPane.showMessageDialog(eriv, "서버의 IP를 찾을수 없습니다.");
-//			e1.printStackTrace();
-//		} catch (ClassNotFoundException e1) {
-//			JOptionPane.showMessageDialog(eriv, "객체를 찾을 수 없습니다.");
-//			e1.printStackTrace();
-//		} catch (IOException e1) {
-//			JOptionPane.showMessageDialog(eriv, "파일을 내보내는 도중 문제가 발생했습니다.");
-//			e1.printStackTrace();
-//		} // end catch
-
 		DefaultTableModel dtm = eriv.getDtmEeInfo();
 		dtm.setRowCount(0); // DTM 0으로 초기화.
 
@@ -162,83 +149,6 @@ public class ErInterestController extends WindowAdapter implements MouseListener
 			e.printStackTrace();
 		} // end catch
 	}// showDetailErInfo()
-
-//	private void reqEeImg() throws UnknownHostException, IOException, ClassNotFoundException {
-//		// 파일서버에 접속해서 없는 co이미지를 내려받는 메소드
-//		Socket client = null;
-//		DataOutputStream dos = null;
-//		DataInputStream dis = null;
-//		ObjectOutputStream oos = null;
-//		ObjectInputStream ois = null;
-//		FileOutputStream fos = null;
-//
-//		try {
-//			client = new Socket("211.63.89.144", 7002);
-//
-//			dos = new DataOutputStream(client.getOutputStream());
-//			dis = new DataInputStream(client.getInputStream());
-//
-//			dos.writeUTF("eeImgs_list_req"); // flag - ee전체 파일목록 요청
-//			dos.flush();
-//
-//			ois = new ObjectInputStream(client.getInputStream());
-//
-//			// 파일서버로부터 파일명리스트를 전달받음
-//			List<String> listImg = (List<String>) ois.readObject();
-//
-//			File dir = new File("C:/dev/1949/03.개발/src/user/img/ee");
-//			for (File f : dir.listFiles()) {
-//				listImg.remove(f.getName()); // 존재하는 파일은 제외
-//			}
-//
-//			oos = new ObjectOutputStream(client.getOutputStream());
-//
-//			// user에 없는 파일들, 파일서버에 전송
-//			oos.writeObject(listImg);
-//			oos.flush();
-//
-//			String fileName = "";
-//			byte[] readData = new byte[512];
-//			int arrCnt = 0;
-//			int len = 0;
-//
-//			for (int i = 0; i < listImg.size(); i++) {
-//				fileName = dis.readUTF(); // 파일명 받기
-//
-//				arrCnt = dis.readInt(); // 파일 크기 받기
-//
-//				fos = new FileOutputStream(dir.getAbsolutePath() + "/" + fileName);
-//
-//				for (int j = 0; j < arrCnt; j++) {
-//					len = dis.read(readData);
-//					fos.write(readData, 0, len);
-//					fos.flush();
-//				}
-//				fos.close();
-//				dos.writeUTF("downDone");
-//				dos.flush();
-//			}
-//		} finally {
-//			if (client != null) {
-//				client.close();
-//			}
-//			if (dos != null) {
-//				dos.close();
-//			}
-//			if (dis != null) {
-//				dis.close();
-//			}
-//			if (oos != null) {
-//				oos.close();
-//			}
-//			if (ois != null) {
-//				ois.close();
-//			}
-//			if (fos != null) {
-//				fos.close();
-//			}
-//		} // end finally
-//	}// reqEeImg()
 
 	////////// 안쓰는 메소드 //////////
 	@Override
