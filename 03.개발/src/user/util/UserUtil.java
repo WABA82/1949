@@ -136,6 +136,7 @@ public class UserUtil {
 
 		int arrCnt = dis.readInt();
 
+		System.out.println( "---- file size is ------"+ arrCnt);
 		byte[] readData = new byte[512];
 		int len = 0;
 
