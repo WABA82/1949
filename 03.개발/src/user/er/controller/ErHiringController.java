@@ -109,7 +109,7 @@ public class ErHiringController extends WindowAdapter implements ActionListener,
 		}
 	}//setDtm
 	
-	public void showDetailErInfo() {
+	public void showDetailEeInfo() {
 		JTable jt = ehv.getJtEeInfo();
 		String eeNum= String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
 		DetailEeInfoVO devo = null;
@@ -138,7 +138,7 @@ public class ErHiringController extends WindowAdapter implements ActionListener,
 		case 2:
 			if(me.getSource()==ehv.getJtEeInfo())
 			{
-				showDetailErInfo();
+				showDetailEeInfo();
 			}
 		}
 	}
