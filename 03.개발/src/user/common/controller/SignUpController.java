@@ -1,6 +1,7 @@
 package user.common.controller;
 
 import java.awt.HeadlessException;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -14,7 +15,7 @@ import user.common.view.SearchAddrView;
 import user.common.view.SignUpView;
 import user.common.vo.UserInsertVO;
 import user.dao.CommonDAO;
-import user.run.LogTest;
+import user.run.LogTestSignUp;
 
 public class SignUpController extends WindowAdapter implements ActionListener {
 	private SignUpView suv;
@@ -319,7 +320,7 @@ public class SignUpController extends WindowAdapter implements ActionListener {
 		try {
 			resultMsg = c_dao.insertUser(uivo);
 			JOptionPane.showMessageDialog(suv, resultMsg);
-			new LogTest();
+			new LogTestSignUp();
 			
 			
 			
