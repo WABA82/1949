@@ -32,7 +32,7 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 	private ErDAO erdao;
 	private CommonDAO C_dao;
 	
-	public ErMainController(ErMainView emv, ErMainVO ermvo/*String erId*/) {
+	public ErMainController(ErMainView emv, ErMainVO ermvo) {
 
 		this.emv = emv;
 		this.ermvo=ermvo;
@@ -71,8 +71,8 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 
 	@Override
 	public void mouseClicked(MouseEvent me) {
-
-		try {
+		//Çý¿ø È¸¿ø¼öÁ¤Ã¢ ¶ç¿ì±â
+			try {
 				if(me.getSource() == emv.getJlUserInfo()) {
 				UserInfoVO uivo=C_dao.selectUserInfo(ermvo.getErId());
 				new ChangeUserInfoView(emv, uivo);
@@ -84,8 +84,8 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 		}//end if
 		
 		if(me.getSource() == emv.getJlLogOut()) {
-			new LoginView();
 			emv.dispose();
+			new LoginView();
 		}//end if
 	}
 	

@@ -119,7 +119,6 @@ public class UserUtil {
 	 * @throws IOException
 	 */
 	public void reqFile(String newFileName, String flag, Socket client, DataOutputStream dos, DataInputStream dis, FileOutputStream fos) throws IOException {
-		
 		client = new Socket("211.63.89.144", 7002);
 
 		dos = new DataOutputStream(client.getOutputStream());
