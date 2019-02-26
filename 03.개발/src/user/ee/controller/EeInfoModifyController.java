@@ -21,19 +21,20 @@ import user.ee.view.EeInfoModifyView;
 import user.ee.view.EeMainView;
 import user.ee.vo.EeInfoVO;
 import user.ee.vo.EeModifyVO;
+import user.ee.vo.EeRegVO;
 
 public class EeInfoModifyController extends WindowAdapter implements ActionListener {
 
 	private EeInfoVO eivo;
 	private EeInfoModifyView eimv;
 	private File uploadImg;
-	private String eeNum;
 	private EeDAO eedao;
-	public EeInfoModifyController(EeInfoModifyView eimv, String eeNum, EeInfoVO eivo) {
+	private EeMainView emv;
+	
+	public EeInfoModifyController(EeInfoModifyView eimv, EeInfoVO eivo, EeMainView emv) {
 		this.eimv = eimv;
 		this.eivo=eivo;
-		this.eeNum=eeNum;
-//		uploadImg="";
+		this.emv=emv;
 		eedao=EeDAO.getInstance();
 	}
 
@@ -48,8 +49,11 @@ public class EeInfoModifyController extends WindowAdapter implements ActionListe
 		String portfolio = tempPortfolio.replaceAll("YES", "Y").replaceAll("NO", "N");
 		String extResume = eimv.getJtfExtResume().getText();
 		StringBuilder updateMsg= new StringBuilder();
-		
-		
+//		uploadImg=new File( "C:/dev/1949/03.개발/src/file/eeImg/" + eivo.getImg());
+	
+		if(uploadImg == null) {
+			uploadImg = new File("C:/dev/1949/03.개발/src/file/eeImg/" + eivo.getImg());
+		}//end if
 		
 		///////////여기서 수정////////////
 //		if(uploadImg == null) {
@@ -70,13 +74,18 @@ public class EeInfoModifyController extends WindowAdapter implements ActionListe
 		
 		switch(JOptionPane.showConfirmDialog(eimv, updateMsg)) {
 		case JOptionPane.OK_OPTION :
-		EeModifyVO emvo= new EeModifyVO(eeNum, uploadImg.getName(),
+			System.out.println(uploadImg.getName());
+		EeModifyVO emvo= new EeModifyVO(eivo.getEeNum(), uploadImg.getName(),
 				rank,loc,education, portfolio, extResume);
 				System.out.println(emvo);
 		try {
 			eedao.updateEeInfo(emvo); //DB테이블에서 update수행
 			JOptionPane.showMessageDialog(eimv, "개인정보가 변경되었습니다.");
-
+			
+			//메인창 종료휴 업데이트로 띄우기
+			EeMainVO updateEmvo=CommonDAO.getInstance().selectEeMain(eivo.getEeId(), "Y");
+			new EeMainView(updateEmvo);
+			emv.dispose();
 			
 			////////////////////////////////////////////////////이미지 시작///////////////////////////////////
 			if( !uploadImg.getName().equals("")) {// 변경한 이미지가 존재하는 경우

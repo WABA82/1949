@@ -1060,7 +1060,7 @@ public class ErDAO {
 		try {
 			con = getConn();
 			StringBuilder selectInfo = new StringBuilder();
-			selectInfo.append(" 	select co_num, co_name, img1, img2, img3, img4, to_char(est_date,'yyyy-mm-dd') est_date, co_desc, member_num	 ")
+			selectInfo.append(" 	select er_id, co_num, co_name, img1, img2, img3, img4, to_char(est_date,'yyyy-mm-dd') est_date, co_desc, member_num	 ")
 					.append(" 	from company 	").append(" 	where er_id = ? 	");
 			pstmt = con.prepareStatement(selectInfo.toString());
 
@@ -1069,7 +1069,7 @@ public class ErDAO {
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
-				civo = new CoInfoVO(rs.getString("co_num"), rs.getString("co_name"), rs.getString("img1"),
+				civo = new CoInfoVO(rs.getString("er_id"), rs.getString("co_num"), rs.getString("co_name"), rs.getString("img1"),
 						rs.getString("img2"), rs.getString("img3"), rs.getString("img4"), rs.getString("est_date"),
 						rs.getString("co_desc"), rs.getInt("member_num"));
 			} // end if
@@ -1104,21 +1104,22 @@ public class ErDAO {
 			con = getConn();
 //co_num, co_name, img1, img2, img3,img4, est_date, co_desc, member_num
 			StringBuilder updateInfo = new StringBuilder();
-			updateInfo.append(" update company ").append(
-					" set co_name = ?, img1 = ?, img2 = ?, img3 = ?, img4 = ?, est_date = ? , co_desc = ?, member_num = ? ")
-					.append(" where co_num = ? ");
+			updateInfo.append(" update company ")
+			.append(" set er_id =?, co_name = ?, img1 = ?, img2 = ?, img3 = ?, img4 = ?, est_date = ? , co_desc = ?, member_num = ? ")
+			.append(" where co_num = ? ");
 
 			pstmt = con.prepareStatement(updateInfo.toString());
 
-			pstmt.setString(1, cvo.getCoName());
-			pstmt.setString(2, cvo.getImg1());
-			pstmt.setString(3, cvo.getImg2());
-			pstmt.setString(4, cvo.getImg3());
-			pstmt.setString(5, cvo.getImg4());
-			pstmt.setString(6, cvo.getEstDate());
-			pstmt.setString(7, cvo.getCoDesc());
-			pstmt.setInt(8, cvo.getMemberNum());
-			pstmt.setString(9, cvo.getCoNum());
+			pstmt.setString(1, cvo.getErId());
+			pstmt.setString(2, cvo.getCoName());
+			pstmt.setString(3, cvo.getImg1());
+			pstmt.setString(4, cvo.getImg2());
+			pstmt.setString(5, cvo.getImg3());
+			pstmt.setString(6, cvo.getImg4());
+			pstmt.setString(7, cvo.getEstDate());
+			pstmt.setString(8, cvo.getCoDesc());
+			pstmt.setInt(9, cvo.getMemberNum());
+			pstmt.setString(10, cvo.getCoNum());
 
 			int cnt = pstmt.executeUpdate();
 
@@ -1138,14 +1139,14 @@ public class ErDAO {
 		return flag;
 	}// updateCoInfo
 
-	public static void main(String[] args) {
-		CoInfoVO civo=new CoInfoVO("co_000013", "주윤발", "123.jpg", "23.jpg", "d3.jpg", "d32.jpg", "1990-12-12", "회사소개.", 30);
-		try {
-			System.out.println(ErDAO.getInstance().updateCoInfo(civo));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String[] args) {
+//		CoInfoVO civo=new CoInfoVO("co_000013", "주윤발", "123.jpg", "23.jpg", "d3.jpg", "d32.jpg", "1990-12-12", "회사소개.", 30);
+//		try {
+//			System.out.println(ErDAO.getInstance().updateCoInfo(civo));
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	/**
 	 * activation를 Y로 바꿔주는 트랜잭션
@@ -1185,6 +1186,7 @@ public class ErDAO {
 			}
 			e.printStackTrace();
 		}
+		
 		
 		return updateEr;
 	}

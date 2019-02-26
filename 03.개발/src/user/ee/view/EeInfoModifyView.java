@@ -14,6 +14,7 @@ import javax.swing.border.TitledBorder;
 
 import user.ee.controller.EeInfoModifyController;
 import user.ee.vo.EeInfoVO;
+import user.ee.vo.EeRegVO;
 
 public class EeInfoModifyView extends JDialog {
 
@@ -21,12 +22,12 @@ public class EeInfoModifyView extends JDialog {
 	private JComboBox<String> jcbRank, jcbLoc, jcbEducation, jcbPortfolio;
 	private JTextField jtfExtResume;
 	private JLabel jlImag;
-
+	private EeInfoVO eivo;
 	private EeMainView emv;
 
 	public EeInfoModifyView(EeMainView emv, EeInfoVO eivo) {
 		super(emv, "기본 정보 관리 수정", true);
-		this.emv = emv;
+		this.eivo=eivo;
 		// image
 		ImageIcon ii = new ImageIcon("C:/dev/1949/03.개발/src/file/eeImg/" + eivo.getImg());
 		jlImag = new JLabel(ii);
@@ -112,12 +113,6 @@ public class EeInfoModifyView extends JDialog {
 		String[] port = { "YES", "NO" };
 		jcbPortfolio = new JComboBox<>(port);
 
-//	switch (eivo.getPortfolio()) {
-//	case "Y":
-//		jcbPortfolio.setSelectedIndex(0);
-//	case "N":
-//		jcbPortfolio.setSelectedIndex(1);
-//	}//end switch
 		
 		if(eivo.getPortfolio().equals("Y")) {
 			jcbPortfolio.setSelectedIndex(0);
@@ -175,7 +170,7 @@ public class EeInfoModifyView extends JDialog {
 		jcbPortfolio.setBounds(325, 222, 130, 20);
 
 		// 이벤트 처리
-		EeInfoModifyController eimc = new EeInfoModifyController(this, eivo.getEeNum(), eivo);
+		EeInfoModifyController eimc = new EeInfoModifyController(this, eivo ,emv );
 		jbModify.addActionListener(eimc);
 		jbModifyImg.addActionListener(eimc);
 		jbModifyExt.addActionListener(eimc);

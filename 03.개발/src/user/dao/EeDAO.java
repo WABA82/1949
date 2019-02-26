@@ -800,19 +800,16 @@ public class EeDAO {
 		try {
 			con = getConn();
 			StringBuilder selectInfo = new StringBuilder();
-			selectInfo.append(" 	select ei.ee_num, ei.img, ut.name, ei.rank, ei.loc, ei.education, ")
+			selectInfo.append(" 	select ee_id, ei.ee_num, ei.img, ut.name, ei.rank, ei.loc, ei.education, ")
 					.append("	ei.portfolio, ut.gender, ei.ext_resume, ut.age	")
 					.append("	from ee_info ei, user_table ut		").append("	where (ee_id= id) and ei.ee_id= ? ");
-
-//			private String eeNum, img, name, rank, loc, education, portfolio, gender, extResume;
-//			private int age;
 
 			pstmt = con.prepareStatement(selectInfo.toString());
 			pstmt.setString(1, eeId);
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
-				eivo = new EeInfoVO(rs.getString("EE_NUM"), rs.getString("IMG"), rs.getString("NAME"),
+				eivo = new EeInfoVO(rs.getString("EE_ID"), rs.getString("EE_NUM"), rs.getString("IMG"), rs.getString("NAME"),
 						rs.getString("RANK"), rs.getString("LOC"), rs.getString("EDUCATION"), rs.getString("PORTFOLIO"),
 						rs.getString("GENDER"), rs.getString("EXT_RESUME"), rs.getInt("AGE"));
 

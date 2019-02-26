@@ -129,10 +129,10 @@ public class EeHiringView extends JDialog {
 		return jcbSort;
 	}
 
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		
 		new EeHiringView(null,null,"gong1");
-	}
+	}*/
 	
 	
 }//class

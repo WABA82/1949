@@ -10,13 +10,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import user.common.view.ChangeUserInfoView;
 import user.common.view.LoginView;
 import user.common.vo.EeMainVO;
+import user.common.vo.UserInfoVO;
 import user.dao.CommonDAO;
 import user.dao.EeDAO;
+import user.ee.view.EeAppView;
 import user.ee.view.EeHiringView;
 import user.ee.view.EeInfoModifyView;
 import user.ee.view.EeInfoRegView;
@@ -30,30 +32,23 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 
 	private EeMainView emv;
 	private EeMainVO emvo;
-//	private LoginView lv;
-
 	private EeDAO eedao;
-	private CommonDAO C_dao;
-	private EeHiringView ehv;
 	private EeRegVO ervo;
-	private EeInfoRegView eirv;
 	private EeInfoVO eivo;
+	private UserInfoVO uivo;
 	
 	public EeMainController(EeMainView emv, EeMainVO emvo) {
-//		this.eirv=eirv;
 		this.emvo = emvo;
 		this.emv = emv;
 		eedao = EeDAO.getInstance();
-//		C_dao=CommonDAO.getInstance();
-//		setInfo("kun90");
 	}//생성자
 
-	public void checkActivation() throws SQLException {
+	//첫번째 버튼 회원정보를 보여준다
+	public void mngUser() throws SQLException {
 
 		if (emvo.getActivation().equals("N")) {
 			JOptionPane.showMessageDialog(emv, "개인정보가 등록되지 않았습니다.!");
 			ervo = eedao.selectEeReg(emvo.getEeId());
-			
 			
 			System.out.println(ervo);
 			new EeInfoRegView(emv, ervo);
@@ -65,73 +60,103 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 		
 	}// checkActivation()
 
-	public void mngUser() throws SQLException {
-//		ervo = eedao.selectEeReg(emvo.getEeId());
-//		new EeInfoRegView(emv, ervo);
-	}
+	/** 개인 정보 수정을 할수있는 method
+	 * @throws SQLException **/
+	public void mngEe() throws SQLException {
+		uivo=CommonDAO.getInstance().selectUserInfo(emvo.getEeId());
+//		System.out.println(uivo);
+		
+//		new ChangeUserInfoView(emv, uivo);
 
-	public void mngEe() {
-
-	}
-
-	public void showHiring() {
-//		EeMainView emv = new EeMainView(emvo);
-		List<EeHiringVO> ehvo = new ArrayList<EeHiringVO>();
-		String eeid = "testId";
-		new EeHiringView(emv, ehvo, eeid);
-	}
-
-	/**
-	 * 
-	 */
-	public void showInterestEr() {
-		String eeid = "gong1";
-		new EeInterestView(emv, eeid);
+	}//mngEe
+	
+	
+	/** 회사 정보를 볼수 있는 method**/
+	public void showHiring() throws SQLException {
+		
+		if(emvo.getActivation().equals("N")) {
+			JOptionPane.showMessageDialog(emv, "개인정보가 등록되어야 이용하실수 있습니다.");
+		}else if(emvo.getActivation().equals("Y")) {
+			List<EeHiringVO> ehvo = new ArrayList<EeHiringVO>();
+		new EeHiringView(emv, ehvo, emvo.getEeId());
+		}//end if
+		
+	}//showHiring
+	
+	/** 관심구인정보를 볼수있는 method**/
+	public void showInterestEr() throws SQLException {
+		
+		if(emvo.getActivation().equals("N")) {
+			JOptionPane.showMessageDialog(emv, "개인정보가 등록되어야 이용하실수 있습니다.");
+		}else if(emvo.getActivation().equals("Y")) {
+			new EeInterestView(emv, emvo.getEeId());
+		}//end if
+		
 	}// showInterestEr
 
-	public void showApp() {
-//		new EeAppView();
-	}
+	/** 지원한 회사정보를 볼수 있는 method**/
+	public void showApp() throws SQLException {
+		
+		if(emvo.getActivation().equals("N")) {
+			JOptionPane.showMessageDialog(emv, "개인정보가 등록되어야 이용하실수 있습니다.");
+		}else if(emvo.getActivation().equals("Y")) {
+			new EeAppView(emv, emvo.getEeId());
+		}//end else
+		
+	}//showApp
 
-	/**
-	 
-	 */
 	@Override
 	public void mouseClicked(MouseEvent me) {
 		if (me.getSource() == emv.getJlLogOut()) {
 			new LoginView();
 			emv.dispose();
-
 		} // end if
 
+		if(me.getSource() == emv.getJlUserInfo()) {
+			try {
+				mngEe();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}//end if
+		
 	}// mouseClicked
 
-
 	@Override
-	public void actionPerformed(ActionEvent ae) {
+	public void actionPerformed(ActionEvent ae)  {
 
 		if (ae.getSource() == emv.getJbEeInfo()) {
-//			try {
-//				mngUser();
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-			
 			try {
-				checkActivation();
+				mngUser();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		} // end if
 
 		if (ae.getSource() == emv.getJbErInfo()) {
-			showHiring();
+			try {
+				showHiring();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		} // end if
 
 		if (ae.getSource() == emv.getJbInterestEr()) {
-			showInterestEr();
+			try {
+				showInterestEr();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		} // end if
 
+		if(ae.getSource() == emv.getJbApp()) {
+			try {
+				showApp();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}// actionPerformed
 
 	@Override

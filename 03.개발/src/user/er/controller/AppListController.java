@@ -4,6 +4,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -16,6 +25,7 @@ import user.dao.ErDAO;
 import user.er.view.AppDetailView;
 import user.er.view.AppListView;
 import user.er.vo.DetailAppListVO;
+import user.util.UserUtil;
 
 public class AppListController extends WindowAdapter implements MouseListener {
 
@@ -46,14 +56,13 @@ public class AppListController extends WindowAdapter implements MouseListener {
 			// DB에서 관심회사를 조회.
 			List<DetailAppListVO> list = er_dao.selectDetailApplist(er_num);
 
-			StringBuffer appCnt = new StringBuffer("총 지원자 수 : ");
+			StringBuilder appCnt = new StringBuilder("총 지원자 수 : ");
 			appCnt.append(String.valueOf(list.size())).append(" 명");
 			alv.getJlEeInfo().setText(appCnt.toString());
-			
-			
+
 			// JTable에 조회한 정보를 출력.
 			DetailAppListVO dalvo = null;
-			String imgPath = "C:/dev/1949/03.개발/가데이터/구직자사진/150x200px/";
+			String imgPath = "C:/dev/1949/03.개발/src/user/img/ee/";
 
 			Object[] rowData = null;
 			for (int i = 0; i < list.size(); i++) {
@@ -65,6 +74,24 @@ public class AppListController extends WindowAdapter implements MouseListener {
 				rowData = new Object[12];
 				rowData[0] = new Integer(i + 1);
 				rowData[1] = dalvo.getApp_num();
+
+				File imgFile = new File(imgPath + dalvo.getImg());
+				// user.img.co패키지에 이미지 파일이 없다면 실행.
+				System.out.println(imgFile.exists());
+				if (!imgFile.exists()) {
+					try {
+						Socket client = null; // "211.63.89.144", 7002 : 영근컴퓨터IP, 파일서버의 포트
+						DataInputStream dis = null;
+						DataOutputStream dos = null;
+						FileOutputStream fos = null;
+						UserUtil util = new UserUtil(); // 서버와 소통할 유틸객체 생성.
+
+						util.reqFile(imgFile.getName(), "ee", client, dos, dis, fos);
+					} catch (IOException e) {
+						e.printStackTrace();
+					} // end try
+				} // end if
+
 				rowData[2] = new ImageIcon(imgPath + dalvo.getImg());
 				rowData[3] = dalvo.getName();
 				rowData[4] = (dalvo.getRank().equals("N") ? "신입" : "경력");
@@ -102,6 +129,69 @@ public class AppListController extends WindowAdapter implements MouseListener {
 		} // end catch
 
 	}// setDTM
+
+//	/**
+//	 * 파일서버로부터 admin.img.ee에 없는 이미지를 받는 메소드
+//	 * 
+//	 * @throws UnknownHostException
+//	 * @throws IOException
+//	 * @throws ClassNotFoundException
+//	 */
+//	public void getEeImgs() throws UnknownHostException, IOException, ClassNotFoundException {
+//		Socket client = null;
+//		DataOutputStream dos = null;
+//		DataInputStream dis = null;
+//
+//		// 파일서버에 접속해서 없는 ee이미지를 내려받는 메소드
+//		try {
+//			client = new Socket("211.63.89.144", 7002);
+//
+//			dos = new DataOutputStream(client.getOutputStream());
+//			dis = new DataInputStream(client.getInputStream());
+//
+//			dos.writeUTF("eeImgs_list_req"); // flag - co전체 파일목록 요청
+//			dos.flush();
+//
+//			ois = new ObjectInputStream(client.getInputStream());
+//
+//			// 파일서버로부터 파일명리스트를 전달받음
+//			List<String> listImg = (List<String>) ois.readObject();
+//
+//			File dir = new File("C:/dev/1949/03.개발/src/admin/img/ee");
+//			for (File f : dir.listFiles()) {
+//				listImg.remove(f.getName()); // 존재하는 파일은 제외
+//			}
+//
+//			oos = new ObjectOutputStream(client.getOutputStream());
+//
+//			// Admin에 없는 파일들, 파일서버에 전송
+//			oos.writeObject(listImg);
+//			oos.flush();
+//
+//			byte[] readData = new byte[512];
+//			int arrCnt = 0;
+//			int len = 0;
+//			String fileName = "";
+//			for (int i = 0; i < listImg.size(); i++) {
+//				fileName = dis.readUTF(); // 파일명 받기
+//
+//				arrCnt = dis.readInt(); // 파일 크기 받기
+//
+//				fos = new FileOutputStream(dir.getAbsolutePath() + "/" + fileName);
+//
+//				for (int j = 0; j < arrCnt; j++) {
+//					len = dis.read(readData);
+//					fos.write(readData, 0, len);
+//					fos.flush();
+//				}
+//				fos.close();
+//				dos.writeUTF("downDone");
+//				dos.flush();
+//			}
+//		} finally {
+//			closeStreams();
+//		}
+//	}
 
 	@Override
 	public void windowClosing(WindowEvent e) {
