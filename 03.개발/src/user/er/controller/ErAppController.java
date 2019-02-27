@@ -107,19 +107,24 @@ public class ErAppController extends WindowAdapter implements MouseListener {
 		switch (me.getClickCount()) {
 		case DBL_CLICK:
 			if (me.getSource() == erav.getJtEeInfo()) {
-				JTable jt = erav.getJtEeInfo();
-				String er_num = (String) (jt.getValueAt(jt.getSelectedRow(), 1));
-				AppListView alv = new AppListView(erav, er_num);
-
-				// AppListView객체가 동작을 멈추면 true반환
-				if (alv.isActive()) {
-					setDTM(er_id);
-				} // end if
+				showAppList();
 			} // end if
 		}// end switch
 
 	}// mouseClicked
 
+	
+	private void showAppList() {
+		JTable jt = erav.getJtEeInfo();
+		String er_num = (String) (jt.getValueAt(jt.getSelectedRow(), 1));
+		AppListView alv = new AppListView(erav, er_num);
+
+		// AppListView객체가 동작을 멈추면 true반환
+		if (alv.isActive()) {
+			setDTM(er_id);
+		} // end if
+	}// showAppList 
+	
 	/////////// 안쓰는 메소드 ///////////
 	@Override
 	public void mousePressed(MouseEvent e) {

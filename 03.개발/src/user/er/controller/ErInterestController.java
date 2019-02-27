@@ -126,12 +126,12 @@ public class ErInterestController extends WindowAdapter implements MouseListener
 		switch (me.getClickCount()) {
 		case DBL_CLICK:
 			if (me.getSource() == eriv.getJtEeInfo()) {
-				showDetailErInfo();
+				showDetailEeInfo();
 			} // end if
 		}// end switch
 	}// mouseClicked
 
-	private void showDetailErInfo() {
+	private void showDetailEeInfo() {
 		JTable jt = eriv.getJtEeInfo();
 		String eeNum = String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
 		DetailEeInfoVO devo = null;
