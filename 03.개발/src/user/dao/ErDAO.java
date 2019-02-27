@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import user.er.dto.ErHiringCdtDTO;
+import user.er.vo.ActivationVO;
 import user.er.vo.CoInfoVO;
 import user.er.vo.CoInsertVO;
 import user.er.vo.DetailAppEeVO;
@@ -32,6 +33,7 @@ public class ErDAO {
 	private PreparedStatement pstmt3;
 	private Connection con;
 	private int insertSkillcnt;
+	private PreparedStatement coPstmt1, coPstmt2;
 
 	public ErDAO() {
 		try {
@@ -704,7 +706,7 @@ public class ErDAO {
 			StringBuilder selectEeHiring = new StringBuilder();
 
 			selectEeHiring.append(" select ei.ee_num, ei.img, ut.name, ei.rank, ei.loc, ").append(
-					" ei.education, ut.age, ei.portfolio, ut.gender, to_char(ei.input_date,'yyyy-mm-dd-hh-mi') input_date ")
+					" ei.education, ut.age, ei.portfolio, ut.gender, to_char(ei.input_date,'yyyy-mm-dd hh:mi') input_date ")
 					.append(" from   ee_info ei, user_table ut ").append(" where ut.id= ei.ee_id ");
 
 			if (!(erhcdto.getCdt() == null || erhcdto.getCdt().equals(""))) {
@@ -971,54 +973,75 @@ public class ErDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean insertCoInfo(CoInsertVO civo) throws SQLException {
-		boolean flag = false;
-		Connection con = null;
-		PreparedStatement pstmt = null;
+	public boolean insertCoInfo(Connection con, CoInsertVO civo) throws SQLException {
+		boolean insertFlag = false;
 
-		try {
-			con = getConn();
+		StringBuilder insertCo = new StringBuilder();
+		insertCo.append(
+				" 	insert into company( co_num, er_id, img1, img2, img3, img4, co_name, est_date, co_desc, member_num )	")
+				.append(" 	values(  co_code, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ");
 
-//private String erId, img1, img2, img3, img4, coName, estDate, coDesc;
-//private int memberNum;
-//er_id, img1, img2, img3, img4, co_name, est_Date,co_desc
+		
+		coPstmt1 = con.prepareStatement(insertCo.toString());
 
-			StringBuilder insertCo = new StringBuilder();
-			insertCo.append(
-					" 	insert into company( co_num, er_id, img1, img2, img3, img4, co_name, est_date, co_desc, member_num )	")
-					.append(" 	values(  co_code, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ");
+		coPstmt1.setString(1, civo.getErId());
+		coPstmt1.setString(2, civo.getImg1());
+		coPstmt1.setString(3, civo.getImg2());
+		coPstmt1.setString(4, civo.getImg3());
+		coPstmt1.setString(5, civo.getImg4());
+		coPstmt1.setString(6, civo.getCoName());
+		coPstmt1.setString(7, civo.getEstDate());
+		coPstmt1.setString(8, civo.getCoDesc());
+		coPstmt1.setInt(9, civo.getMemberNum());
 
-			pstmt = con.prepareStatement(insertCo.toString());
+		int cnt = coPstmt1.executeUpdate();
+		if (cnt == 1) {
+			insertFlag = true;
+		} // end if
 
-			pstmt.setString(1, civo.getErId());
-			pstmt.setString(2, civo.getImg1());
-			pstmt.setString(3, civo.getImg2());
-			pstmt.setString(4, civo.getImg3());
-			pstmt.setString(5, civo.getImg4());
-			pstmt.setString(6, civo.getCoName());
-			pstmt.setString(7, civo.getEstDate());
-			pstmt.setString(8, civo.getCoDesc());
-			pstmt.setInt(9, civo.getMemberNum());
-
-			int cnt = 0;
-			cnt = pstmt.executeUpdate();
-			if (cnt == 1) {
-				flag = true;
-			} // end if
-
-		} finally {
-			if (pstmt != null) {
-				pstmt.close();
-			}
-			if (con != null) {
-				con.close();
-			}
-		} // end finally
-
-		return flag;
+		return insertFlag;
 	}// insertCoInfo
 
 
+	/**
+	 * 회사 등록시 activation을 Y로 바꿔주는 메소드
+	 * 
+	 * @param con
+	 * @param avo
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean updateActivation(Connection con, ActivationVO avo) throws SQLException {
+		boolean updateFlag = false;
+
+		StringBuilder updateActivation = new StringBuilder();
+		updateActivation
+		.append("  update user_table  ")
+		.append("  set activation='Y'  ")
+		.append("  where id=?  ");
+
+		coPstmt2=con.prepareStatement(updateActivation.toString());
+		
+		coPstmt2.setString(1, avo.getId());
+
+		int cnt = coPstmt2.executeUpdate();
+
+		if (cnt == 1) {
+			updateFlag = true;
+		} // end if
+
+		return updateFlag;
+	}// end if
+
+//	public static void main(String[] args) throws SQLException {
+//		Connection con=ErDAO.getInstance().getConn();
+//		ActivationVO avo=new ActivationVO("song9912");
+//		System.out.println(avo);
+//		System.out.println(ErDAO.getInstance().updateActivation(con, avo));
+//	}//main
+	
+	
+	
 	/**
 	 * 19.02.17 회사의 정보를 가져오는 method
 	 * 
@@ -1037,7 +1060,7 @@ public class ErDAO {
 		try {
 			con = getConn();
 			StringBuilder selectInfo = new StringBuilder();
-			selectInfo.append(" 	select co_num, co_name, img1, img2, img3, img4, to_char(est_date,'yyyy-mm-dd') est_date, co_desc, member_num	 ")
+			selectInfo.append(" 	select er_id, co_num, co_name, img1, img2, img3, img4, to_char(est_date,'yyyy-mm-dd') est_date, co_desc, member_num	 ")
 					.append(" 	from company 	").append(" 	where er_id = ? 	");
 			pstmt = con.prepareStatement(selectInfo.toString());
 
@@ -1046,7 +1069,7 @@ public class ErDAO {
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
-				civo = new CoInfoVO(rs.getString("co_num"), rs.getString("co_name"), rs.getString("img1"),
+				civo = new CoInfoVO(rs.getString("er_id"), rs.getString("co_num"), rs.getString("co_name"), rs.getString("img1"),
 						rs.getString("img2"), rs.getString("img3"), rs.getString("img4"), rs.getString("est_date"),
 						rs.getString("co_desc"), rs.getInt("member_num"));
 			} // end if
@@ -1081,21 +1104,22 @@ public class ErDAO {
 			con = getConn();
 //co_num, co_name, img1, img2, img3,img4, est_date, co_desc, member_num
 			StringBuilder updateInfo = new StringBuilder();
-			updateInfo.append(" update company ").append(
-					" set co_name = ?, img1 = ?, img2 = ?, img3 = ?, img4 = ?, est_date = ? , co_desc = ?, member_num = ? ")
-					.append(" where co_num = ? ");
+			updateInfo.append(" update company ")
+			.append(" set er_id =?, co_name = ?, img1 = ?, img2 = ?, img3 = ?, img4 = ?, est_date = ? , co_desc = ?, member_num = ? ")
+			.append(" where co_num = ? ");
 
 			pstmt = con.prepareStatement(updateInfo.toString());
 
-			pstmt.setString(1, cvo.getCoName());
-			pstmt.setString(2, cvo.getImg1());
-			pstmt.setString(3, cvo.getImg2());
-			pstmt.setString(4, cvo.getImg3());
-			pstmt.setString(5, cvo.getImg4());
-			pstmt.setString(6, cvo.getEstDate());
-			pstmt.setString(7, cvo.getCoDesc());
-			pstmt.setInt(8, cvo.getMemberNum());
-			pstmt.setString(9, cvo.getCoNum());
+			pstmt.setString(1, cvo.getErId());
+			pstmt.setString(2, cvo.getCoName());
+			pstmt.setString(3, cvo.getImg1());
+			pstmt.setString(4, cvo.getImg2());
+			pstmt.setString(5, cvo.getImg3());
+			pstmt.setString(6, cvo.getImg4());
+			pstmt.setString(7, cvo.getEstDate());
+			pstmt.setString(8, cvo.getCoDesc());
+			pstmt.setInt(9, cvo.getMemberNum());
+			pstmt.setString(10, cvo.getCoNum());
 
 			int cnt = pstmt.executeUpdate();
 
@@ -1115,15 +1139,69 @@ public class ErDAO {
 		return flag;
 	}// updateCoInfo
 
-	public static void main(String[] args) {
-		CoInfoVO civo=new CoInfoVO("co_000013", "주윤발", "123.jpg", "23.jpg", "d3.jpg", "d32.jpg", "1990-12-12", "회사소개.", 30);
-		try {
-			System.out.println(ErDAO.getInstance().updateCoInfo(civo));
-		} catch (SQLException e) {
+//	public static void main(String[] args) {
+//		CoInfoVO civo=new CoInfoVO("co_000013", "주윤발", "123.jpg", "23.jpg", "d3.jpg", "d32.jpg", "1990-12-12", "회사소개.", 30);
+//		try {
+//			System.out.println(ErDAO.getInstance().updateCoInfo(civo));
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}
+
+	/**
+	 * activation를 Y로 바꿔주는 트랜잭션
+	 * @param civo
+	 * @param avo
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean updateErInfo(CoInsertVO civo, ActivationVO avo) throws SQLException {
+		boolean updateEr = false;
+		
+		try {	
+			con=getConn();
+			con.setAutoCommit(false);
+		
+		try {	
+			boolean insert = insertCoInfo(con, civo);
+				System.out.println("insert는 값은?"+insert);
+			boolean update = updateActivation(con, avo);
+				System.out.println("update의 값은?"+update);
+			if( insert && update) {
+				updateEr=true;
+				con.commit();
+			}else {
+				con.rollback();
+			}//end else
+			
+		}finally {
+			closeAll();
+		}//end finally
+		
+		}catch(SQLException e) {
+			try {	
+				con.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		}
+		
+		
+		return updateEr;
 	}
 
+	//트랜잭션을 사용한 단위 테스트
+//	public static void main(String[] args) throws SQLException{
+//		CoInsertVO civo=new CoInsertVO("song9912", "sd.img", "sd.img", "se.img", "sdf.img", "건하회사", "2019-02-12", "안녕하세요", 15);
+//		ActivationVO avo=new ActivationVO("song9912");		
+//		Connection con=ErDAO.getInstance().getConn();
+//		System.out.println(ErDAO.getInstance().updateErInfo(civo, avo));
+//		
+//	}//main
+	
+	
+	
 //////////////////////////////////////////김건하 끝 ///////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 

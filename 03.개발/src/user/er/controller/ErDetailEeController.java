@@ -189,8 +189,10 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 				
 				extRsmDown();
 			} catch (UnknownHostException e) {
+				JOptionPane.showMessageDialog(edev, "DB오류!");
 				e.printStackTrace();
 			} catch (IOException e) {
+				JOptionPane.showMessageDialog(edev, "DB오류!");
 				e.printStackTrace();
 			}
 		}

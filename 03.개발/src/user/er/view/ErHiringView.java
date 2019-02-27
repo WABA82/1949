@@ -31,7 +31,7 @@ public class ErHiringView extends JDialog {
 		};
 		jtEeInfo = new JTable(dtmEeInfo) {
 			@Override
-			public Class getColumnClass(int column) {
+			public Class<?> getColumnClass(int column) {
 				return getValueAt(0, column).getClass();
 			}
 		};

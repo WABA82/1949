@@ -10,13 +10,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import user.common.view.ChangeUserInfoView;
 import user.common.view.LoginView;
 import user.common.vo.EeMainVO;
+import user.common.vo.UserInfoVO;
 import user.dao.CommonDAO;
 import user.dao.EeDAO;
+import user.ee.view.EeAppView;
 import user.ee.view.EeHiringView;
 import user.ee.view.EeInfoModifyView;
 import user.ee.view.EeInfoRegView;
@@ -30,128 +32,131 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 
 	private EeMainView emv;
 	private EeMainVO emvo;
-//	private LoginView lv;
-
 	private EeDAO eedao;
-	private CommonDAO C_dao;
-	private EeHiringView ehv;
 	private EeRegVO ervo;
-	private EeInfoRegView eirv;
 	private EeInfoVO eivo;
+	private UserInfoVO uivo;
 	
 	public EeMainController(EeMainView emv, EeMainVO emvo) {
-//		this.eirv=eirv;
 		this.emvo = emvo;
 		this.emv = emv;
 		eedao = EeDAO.getInstance();
-//		C_dao=CommonDAO.getInstance();
-//		setInfo("kun90");
-	}// ÏÉùÏÑ±Ïûê
+	}//ª˝º∫¿⁄
 
-	public void checkActivation() throws SQLException {
-		//Ïì∞Î†àÎìú ÎèåÎ¶º
-		if (emvo.getActivation().equals("0")) {
-			
-//			String eeid=emvo.getEeId();
-//			String act=CommonDAO.getInstance().selectActivation(emvo.getEeId());
-			
-			
+	//√ππ¯¬∞ πˆ∆∞ »∏ø¯¡§∫∏∏¶ ∫∏ø©¡ÿ¥Ÿ
+	public void mngUser() throws SQLException {
+
+		if (emvo.getActivation().equals("N")) {
+			JOptionPane.showMessageDialog(emv, "∞≥¿Œ¡§∫∏∞° µÓ∑œµ«¡ˆ æ æ“Ω¿¥œ¥Ÿ.!");
 			ervo = eedao.selectEeReg(emvo.getEeId());
-//			System.out.println(emvo.getName()+ "   /   "+emvo.getActivation());
-		
+			
 			System.out.println(ervo);
 			new EeInfoRegView(emv, ervo);
-			//mngUser();
 			
-		} else if(emvo.getActivation().equals("N")){
-//			Ï°∞Ìöå ÎßåÎì§Ïñ¥Ïïº Ìï®
+		} else if(emvo.getActivation().equals("Y")){
 			 eivo = eedao.selectEeInfo(emvo.getEeId());
 			new EeInfoModifyView(emv, eivo);
 		} // end if
+		
 	}// checkActivation()
 
-	public void mngUser() throws SQLException {
-		ervo = eedao.selectEeReg(emvo.getEeId());
-		new EeInfoRegView(emv, ervo);
-	}
+	/** ∞≥¿Œ ¡§∫∏ ºˆ¡§¿ª «“ºˆ¿÷¥¬ method
+	 * @throws SQLException **/
+	public void mngEe() throws SQLException {
+		uivo=CommonDAO.getInstance().selectUserInfo(emvo.getEeId());
+//		System.out.println(uivo);
+		
+//		new ChangeUserInfoView(emv, uivo);
 
-	public void mngEe() {
-
-	}
-
-	public void showHiring() {
-//		EeMainView emv = new EeMainView(emvo);
-		List<EeHiringVO> ehvo = new ArrayList<EeHiringVO>();
-		String eeid = "testId";
-		new EeHiringView(emv, ehvo, eeid);
-	}
-
-	/**
-	 * Í¥ÄÏã¨ Íµ¨Ïù∏ Î™©Î°ùÏ∞Ω ÎùÑÏö∞Í∏∞
-	 */
-	public void showInterestEr() {
-		String eeid = "gong1";
-		new EeInterestView(emv, eeid);
+	}//mngEe
+	
+	
+	/** »∏ªÁ ¡§∫∏∏¶ ∫ººˆ ¿÷¥¬ method**/
+	public void showHiring() throws SQLException {
+		
+		if(emvo.getActivation().equals("N")) {
+			JOptionPane.showMessageDialog(emv, "∞≥¿Œ¡§∫∏∞° µÓ∑œµ«æÓæﬂ ¿ÃøÎ«œΩ«ºˆ ¿÷Ω¿¥œ¥Ÿ.");
+		}else if(emvo.getActivation().equals("Y")) {
+			List<EeHiringVO> ehvo = new ArrayList<EeHiringVO>();
+		new EeHiringView(emv, ehvo, emvo.getEeId());
+		}//end if
+		
+	}//showHiring
+	
+	/** ∞¸Ω…±∏¿Œ¡§∫∏∏¶ ∫ººˆ¿÷¥¬ method**/
+	public void showInterestEr() throws SQLException {
+		
+		if(emvo.getActivation().equals("N")) {
+			JOptionPane.showMessageDialog(emv, "∞≥¿Œ¡§∫∏∞° µÓ∑œµ«æÓæﬂ ¿ÃøÎ«œΩ«ºˆ ¿÷Ω¿¥œ¥Ÿ.");
+		}else if(emvo.getActivation().equals("Y")) {
+			new EeInterestView(emv, emvo.getEeId());
+		}//end if
+		
 	}// showInterestEr
 
-	public void showApp() {
-//		new EeAppView();
-	}
+	/** ¡ˆø¯«— »∏ªÁ¡§∫∏∏¶ ∫ººˆ ¿÷¥¬ method**/
+	public void showApp() throws SQLException {
+		
+		if(emvo.getActivation().equals("N")) {
+			JOptionPane.showMessageDialog(emv, "∞≥¿Œ¡§∫∏∞° µÓ∑œµ«æÓæﬂ ¿ÃøÎ«œΩ«ºˆ ¿÷Ω¿¥œ¥Ÿ.");
+		}else if(emvo.getActivation().equals("Y")) {
+			new EeAppView(emv, emvo.getEeId());
+		}//end else
+		
+	}//showApp
 
-	/**
-	 * private EeMainView emv; ÎßàÏö∞Ïä§ ÌÅ¥Î¶≠Ïãú Ï¢ÖÎ£å jlLogOut
-	 */
 	@Override
 	public void mouseClicked(MouseEvent me) {
 		if (me.getSource() == emv.getJlLogOut()) {
 			new LoginView();
 			emv.dispose();
-
 		} // end if
 
+		if(me.getSource() == emv.getJlUserInfo()) {
+			try {
+				mngEe();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}//end if
+		
 	}// mouseClicked
 
-//	public void setInfo(String eeid) {
-//		JLabel activation = emv.getJlActivation();
-//		JLabel img = emv.getJlImg();
-//		EeMainVO emvo = null;
-//
-//		try {
-//			emvo = C_dao.selectEeMain(eeid);
-//			activation.setText(emvo.getActivation());
-//			img.setText(emvo.getImg());
-//
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//
-//	}
-
 	@Override
-	public void actionPerformed(ActionEvent ae) {
+	public void actionPerformed(ActionEvent ae)  {
 
 		if (ae.getSource() == emv.getJbEeInfo()) {
-//			try {
-//				mngUser();
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-			
 			try {
-				checkActivation();
+				mngUser();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		} // end if
 
 		if (ae.getSource() == emv.getJbErInfo()) {
-			showHiring();
+			try {
+				showHiring();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		} // end if
 
 		if (ae.getSource() == emv.getJbInterestEr()) {
-			showInterestEr();
+			try {
+				showInterestEr();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		} // end if
 
+		if(ae.getSource() == emv.getJbApp()) {
+			try {
+				showApp();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}// actionPerformed
 
 	@Override

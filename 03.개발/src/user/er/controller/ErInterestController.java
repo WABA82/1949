@@ -4,6 +4,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -17,6 +23,7 @@ import user.er.view.ErDetailEeView;
 import user.er.view.ErInterestView;
 import user.er.vo.DetailEeInfoVO;
 import user.er.vo.ErHiringForInterestVO;
+import user.util.UserUtil;
 
 public class ErInterestController extends WindowAdapter implements MouseListener {
 
@@ -43,6 +50,7 @@ public class ErInterestController extends WindowAdapter implements MouseListener
 	 * @param er_id
 	 */
 	private void setDTM(String er_id) {
+
 		DefaultTableModel dtm = eriv.getDtmEeInfo();
 		dtm.setRowCount(0); // DTM 0으로 초기화.
 
@@ -56,7 +64,7 @@ public class ErInterestController extends WindowAdapter implements MouseListener
 
 			// JTable에 조회한 정보를 출력.
 			ErHiringForInterestVO erhForInterest = null;
-			String imgPath = "C:/dev/1949/03.개발/가데이터/구직자사진/150x200px/";
+			String imgPath = "C:/dev/1949/03.개발/src/user/img/ee/";
 
 			Object[] rowData = null;
 			for (int i = 0; i < list.size(); i++) {
@@ -68,6 +76,23 @@ public class ErInterestController extends WindowAdapter implements MouseListener
 				rowData = new Object[11];
 				rowData[0] = new Integer(i + 1);
 				rowData[1] = erhForInterest.getEe_num();
+
+				File imgFile = new File(imgPath + erhForInterest.getImg());
+				// user.img.co패키지에 이미지 파일이 없다면 실행.
+				System.out.println(imgFile.exists());
+				if (!imgFile.exists()) {
+					Socket client = null; // "211.63.89.144", 7002 : 영근컴퓨터IP, 파일서버의 포트
+					DataInputStream dis = null;
+					DataOutputStream dos = null;
+					FileOutputStream fos = null;
+					UserUtil util = new UserUtil(); // 서버와 소통할 유틸객체 생성.
+					try {
+						util.reqFile(imgFile.getName(), "ee", client, dos, dis, fos);
+					} catch (IOException e) {
+						e.printStackTrace();
+					} // end try
+				} // end if
+
 				rowData[2] = new ImageIcon(imgPath + erhForInterest.getImg());
 				rowData[3] = erhForInterest.getName();
 				rowData[4] = (erhForInterest.getRank().equals("N") ? "경력" : "신입");
@@ -82,7 +107,7 @@ public class ErInterestController extends WindowAdapter implements MouseListener
 				dtm.addRow(rowData);
 			} // end for
 
-			if (list.isEmpty()) {// 등록한 메뉴가 없을 때 : 도시락 추가 버튼을 통해 메뉴를 추가 할 수 있다.
+			if (list.isEmpty()) {
 				JOptionPane.showMessageDialog(eriv, "관심구인정보가 없습니다. 먼저 구인정보에서 하트를 눌러주세요.");
 			} // end if
 
@@ -106,7 +131,7 @@ public class ErInterestController extends WindowAdapter implements MouseListener
 		}// end switch
 	}// mouseClicked
 
-	public void showDetailErInfo() {
+	private void showDetailErInfo() {
 		JTable jt = eriv.getJtEeInfo();
 		String eeNum = String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
 		DetailEeInfoVO devo = null;

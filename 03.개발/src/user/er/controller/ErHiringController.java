@@ -5,6 +5,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -21,6 +27,7 @@ import user.er.view.ErDetailSearchView;
 import user.er.view.ErHiringView;
 import user.er.vo.DetailEeInfoVO;
 import user.er.vo.ErHiringVO;
+import user.util.UserUtil;
 
 public class ErHiringController extends WindowAdapter implements ActionListener, MouseListener {
 	private ErHiringView ehv;
@@ -50,7 +57,25 @@ public class ErHiringController extends WindowAdapter implements ActionListener,
 				rowData = new Object[11];
 				rowData[0]= new Integer(i+1);
 				rowData[1]= erhvo.getEeNum();
-				rowData[2]= new ImageIcon("C:/dev/1949/03.개발/src/file/eeImg/"+erhvo.getImg());
+				
+				//서버에서 없는 이미지 파일받아오기
+				File imgFile = new File("C:/dev/1949/03.개발/src/user/img/ee/"+erhvo.getImg());
+				System.out.println(erhvo.getImg()+"---"+imgFile.exists());
+				if(!imgFile.exists()) {
+					Socket client = null;
+					DataInputStream dis =null;
+					DataOutputStream dos = null;
+					FileOutputStream fos = null;
+					try {
+						UserUtil uu = new UserUtil();
+						uu.reqFile(erhvo.getImg(), "ee", client, dos, dis, fos);
+					} catch (IOException e) {
+						e.printStackTrace();
+						JOptionPane.showMessageDialog(ehv, "이미지를 받아오는데 실패했습니다.");
+					}
+				}
+				//System.out.println("confirm");
+				rowData[2]= new ImageIcon("C:/dev/1949/03.개발/src/user/img/ee/"+erhvo.getImg());
 				rowData[3]= erhvo.getName();
 				if(erhvo.getRank().equals("N")) {
 					rowData[4]= "신입";
@@ -84,7 +109,7 @@ public class ErHiringController extends WindowAdapter implements ActionListener,
 		}
 	}//setDtm
 	
-	public void showDetailErInfo() {
+	public void showDetailEeInfo() {
 		JTable jt = ehv.getJtEeInfo();
 		String eeNum= String.valueOf(jt.getValueAt(jt.getSelectedRow(), 1));
 		DetailEeInfoVO devo = null;
@@ -113,7 +138,7 @@ public class ErHiringController extends WindowAdapter implements ActionListener,
 		case 2:
 			if(me.getSource()==ehv.getJtEeInfo())
 			{
-				showDetailErInfo();
+				showDetailEeInfo();
 			}
 		}
 	}

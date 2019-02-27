@@ -66,7 +66,7 @@ public class AppListView extends JDialog {
 		jtApp.addMouseListener(alc);
 
 		/* 프레임 크기 설정 및 가시화 */
-		setBounds((erav.getX() + 150), (erav.getY() + 50), 800, 500);
+		setBounds(/*(erav.getX() + 150)*/100, /*(erav.getY() + 50)*/100, 800, 500);
 		setResizable(false);
 		setVisible(true);
 
