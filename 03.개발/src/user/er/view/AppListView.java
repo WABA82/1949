@@ -85,7 +85,7 @@ public class AppListView extends JDialog {
 	}
 
 	public static void main(String[] args) {
-		new AppListView(null, "er_000032");
+		new AppListView(null, "er_000033");
 	}// main
 
 }// class

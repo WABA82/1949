@@ -51,7 +51,7 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 			JOptionPane.showMessageDialog(edev, "추가에 실패했습니다.");
 			return;
 		}
-		edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/r_heart.png"));
+		edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/r_heart.png"));
 		JOptionPane.showMessageDialog(edev, "관심 구인글에 추가되었습니다!");
 		ul.sendLog(eeId, "관심 구인글을 추가했습니다.");
 		try {
@@ -77,7 +77,7 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 		if (deleteFlag) {
 			JOptionPane.showMessageDialog(edev, "관심 구인글을 취소했습니다.");
 			ul.sendLog(eeId, "관심 구인글을 취소했습니다.");
-			edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/b_heart.png"));
+			edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/b_heart.png"));
 		} else {
 			JOptionPane.showMessageDialog(edev, "리스트삭제에 실패했습니다.");
 		}
