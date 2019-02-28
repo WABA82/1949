@@ -22,6 +22,7 @@ import user.ee.view.EeMainView;
 import user.ee.vo.EeInfoVO;
 import user.ee.vo.EeModifyVO;
 import user.ee.vo.EeRegVO;
+import user.file.FileUser;
 
 public class EeInfoModifyController extends WindowAdapter implements ActionListener {
 
@@ -93,7 +94,7 @@ public class EeInfoModifyController extends WindowAdapter implements ActionListe
 					
 					File original = new File("C:/dev/1949/03.개발/src/file/eeImg/"+eimv.getJlImag());
 					original.delete();
-					uploadImgFile(uploadImg.getAbsoluteFile());
+					FileUser.getInstance().uploadImgFile(uploadImg.getAbsoluteFile());
 				} catch (IOException e) {
 					e.printStackTrace();
 				}//end cath
@@ -169,34 +170,7 @@ public class EeInfoModifyController extends WindowAdapter implements ActionListe
 	}//changeExt
 
 	/////////////////////////////////이미지 업로드///////////////////////////////////
-	private void uploadImgFile(File file) throws IOException{
-		FileInputStream fis=null;
-		FileOutputStream fos=null;
-		
-		try {
-		fis = new FileInputStream(file);
-		byte[] readData = new byte[512];
-		
-		int len = 0;
-		String uploadPath= "C:/dev/1949/03.개발/src/user/img/ee/";
-		fos = new FileOutputStream(uploadPath+file.getName());
-		
-		while( (len=fis.read(readData)) != -1) {
-			fos.write(readData, 0, len);
-			fos.flush();
-		}//end while
-		
-		}finally {
-			if(fis!=null) {
-				fis.close();
-			}//end if
-			if(fos!=null) {
-				fos.close();
-			}//end if
-			
-		}//end finally
-		
-	}//uploadImg
+	
 	
 	
 	@Override

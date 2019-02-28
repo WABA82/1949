@@ -8,6 +8,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import user.common.view.ChangeUserInfoView;
@@ -17,7 +18,6 @@ import user.common.vo.UserInfoVO;
 import user.common.vo.UserModifyVO;
 import user.common.vo.UserModifyWithoutPassVO;
 import user.dao.CommonDAO;
-import user.er.view.ErMainView;
 import user.run.LogTestChangeUserInfo;
 
 public class ChangeUserInfoController extends WindowAdapter implements ActionListener {
@@ -25,13 +25,14 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 	private ChangeUserInfoView cuiv;
 	private UserInfoVO uivo;
 	private String addrSeq;
-	private ErMainView ermv;
+	private JFrame jf;
 	
-	public ChangeUserInfoController(ErMainView ermv, ChangeUserInfoView cuiv, UserInfoVO uivo) {
+	
+	public ChangeUserInfoController(JFrame jf, ChangeUserInfoView cuiv, UserInfoVO uivo) {
 		this.cuiv=cuiv;
 		this.uivo=uivo;
 		this.addrSeq=uivo.getSeq();
-		this.ermv = ermv;
+		this.jf = jf;
 	}
 	
 	public boolean checkPass(String pass) { // 비밀번호 검증, 최대 12자리, 대문자 소문자 특수문자 조합
@@ -218,7 +219,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 	}//modifyUser	
 
 	public void removeUser() {
-		new RemoveUserView(cuiv,ermv, uivo.getId());
+		new RemoveUserView(cuiv, jf, uivo.getId());
 	}
 
 	@Override

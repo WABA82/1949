@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import user.common.view.ChangeUserInfoView;
@@ -77,8 +78,9 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 	
 	/** 회원정보를 수정하는 method**/
 	public void mngEr() throws SQLException {
+		JFrame jf=new JFrame();
 			UserInfoVO uivo=C_dao.selectUserInfo(ermvo.getErId());
-			new ChangeUserInfoView(emv, uivo);
+			new ChangeUserInfoView(jf, uivo);
 	}//mngEr
 	
 	/** 관심 구직자를 볼수 있는 method**/

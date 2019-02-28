@@ -5,9 +5,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -23,6 +30,7 @@ import user.ee.vo.ActivationVO;
 import user.ee.vo.EeInsertVO;
 import user.ee.vo.EeInterestAndAppVO;
 import user.ee.vo.EeRegVO;
+import user.file.FileUser;
 
 public class EeInfoRegController extends WindowAdapter implements ActionListener {
 
@@ -43,9 +51,10 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 		this.eeId = eeId;
 		this.emv=emv;
 		eedao = EeDAO.getInstance();
+		
 	}// 생성자
 
-	// 이미지전송도 같이 수행
+	
 	public void register() {
 		boolean insertFlag =false;
 		
@@ -87,6 +96,21 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 				e.printStackTrace();
 			}//end catch
 	
+			//이미지 user.ee로 전송
+			if( !uploadImg.getName().equals("")) {// 변경한 이미지가 존재하는 경우
+					
+					File original = new File("C:/dev/1949/03.개발/src/file/eeImg/"+eirv.getJlImage());
+					original.delete();
+					try {
+						FileUser.getInstance().uploadImgFile(uploadImg);
+						FileUser.getInstance().eeInfoImgSend(uploadImg.getName());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}//end catch
+			}//end if
+			
+			
 	}// register
 
 	public void changeImg() {
@@ -113,7 +137,7 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 		} // end if
 
 	}// changeImg
-
+	
 	@Override
 	public void windowClosing(WindowEvent e) {
 		eirv.dispose();
