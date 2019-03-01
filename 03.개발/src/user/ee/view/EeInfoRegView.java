@@ -36,7 +36,7 @@ public class EeInfoRegView extends JDialog {
 		this.ervo=ervo;
 		
 		//image
-		ImageIcon ii=new ImageIcon("C:/dev/1949/03.개발/no_img_files/no_ee_img.png");
+		ImageIcon ii=new ImageIcon("C:/dev/1949/03.개발/src/user/img/ee/no_ee_img.png");
 		jlImage=new JLabel(ii);
 		jlImage.setBorder(new TitledBorder("구직자 이미지"));
 		jlImage.setBounds(38, 20, 160, 225);

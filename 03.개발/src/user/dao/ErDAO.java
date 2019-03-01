@@ -54,7 +54,8 @@ public class ErDAO {
 
 		Connection con = null;
 
-		String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl";
+		String url = "jdbc:oracle:thin:@localhost:1521:orcl"; // 집 개발용
+		// String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl";
 		String id = "kanu";
 		String pass = "share";
 		con = DriverManager.getConnection(url, id, pass);

@@ -225,7 +225,8 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 	public void getEeImgs() throws UnknownHostException, IOException, ClassNotFoundException { 
 		// 파일서버에 접속해서 없는 ee이미지를 내려받는 메소드
 		try {
-			client = new Socket("211.63.89.144", 7002);
+			client = new Socket("localhost", 7002);
+			// client = new Socket("211.63.89.144", 7002);
 			
 			dos = new DataOutputStream(client.getOutputStream());
 			dis = new DataInputStream(client.getInputStream());
@@ -285,7 +286,9 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 		// 파일서버에 접속해서 없는 co이미지를 내려받는 메소드
 		
 		try {
-			client = new Socket("211.63.89.144", 7002);
+			
+			client = new Socket("localhost", 7002);
+			// client = new Socket("211.63.89.144", 7002);
 			
 			dos = new DataOutputStream(client.getOutputStream());
 			dis = new DataInputStream(client.getInputStream());

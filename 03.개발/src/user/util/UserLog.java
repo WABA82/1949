@@ -17,7 +17,8 @@ public class UserLog {
 		
 		try {
 			try {
-				client = new Socket("211.63.89.144", 7001);
+				client = new Socket("localhost", 7001);
+				// client = new Socket("211.63.89.144", 7001);
 				dos = new DataOutputStream(client.getOutputStream());
 				
 				dos.writeUTF(id);

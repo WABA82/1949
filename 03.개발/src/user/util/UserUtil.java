@@ -26,7 +26,8 @@ public class UserUtil {
 	 */
 	public void deleteFile(String fileName, String flag, Socket client, DataOutputStream dos, DataInputStream dis)
 			throws UnknownHostException, IOException {
-		client = new Socket("211.63.89.144", 7002);
+		client = new Socket("localhost", 7002);
+		// client = new Socket("211.63.89.144", 7002);
 
 		dos = new DataOutputStream(client.getOutputStream());
 		dis = new DataInputStream(client.getInputStream());
@@ -62,7 +63,8 @@ public class UserUtil {
 	 */
 	public void addNewFile(String newFileName, File newFile, String flag, Socket client, DataOutputStream dos,
 			DataInputStream dis, FileInputStream fis) throws IOException {
-		client = new Socket("211.63.89.144", 7002);
+		client = new Socket("localhost", 7002);
+		// client = new Socket("211.63.89.144", 7002);
 
 		dos = new DataOutputStream(client.getOutputStream());
 		dis = new DataInputStream(client.getInputStream());
@@ -119,7 +121,8 @@ public class UserUtil {
 	 * @throws IOException
 	 */
 	public void reqFile(String newFileName, String flag, Socket client, DataOutputStream dos, DataInputStream dis, FileOutputStream fos) throws IOException {
-		client = new Socket("211.63.89.144", 7002);
+		client = new Socket("localhost", 7002);
+		// client = new Socket("211.63.89.144", 7002);
 
 		dos = new DataOutputStream(client.getOutputStream());
 		dis = new DataInputStream(client.getInputStream());
