@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import user.ee.dto.EeHiringCdtDTO;
-import user.ee.vo.ActivationVO;
 import user.ee.vo.CoDetailVO;
 import user.ee.vo.DetailErInfoVO;
 import user.ee.vo.EeAppVO;
@@ -557,25 +556,25 @@ public class EeDAO {
 	public boolean insertEeinfo(Connection con, EeInsertVO eivo) throws SQLException {
 		boolean insertFlag = false; //
 
-			StringBuilder insertInfo = new StringBuilder();
-			insertInfo
-			.append("  insert into ee_info(ee_num, ee_id, img, rank, loc, education, portfolio, ext_resume)  ")
-			.append("  values( ee_code, ?, ?, ?, ?, ?, ?, ? )" );
-			pstmt1 = con.prepareStatement(insertInfo.toString());
+		StringBuilder insertInfo = new StringBuilder();
+		insertInfo
+		.append("  insert into ee_info(ee_num, ee_id, img, rank, loc, education, portfolio, ext_resume)  ")
+		.append("  values( ee_code, ?, ?, ?, ?, ?, ?, ? )" );
+		pstmt1 = con.prepareStatement(insertInfo.toString());
 
-			pstmt1.setString(1, eivo.getEeId());
-			pstmt1.setString(2, eivo.getImg());
-			pstmt1.setString(3, eivo.getRank());
-			pstmt1.setString(4, eivo.getLoc());
-			pstmt1.setString(5, eivo.getEducation());
-			pstmt1.setString(6, eivo.getPortfolio());
-			pstmt1.setString(7, eivo.getExtResume());
+		pstmt1.setString(1, eivo.getEeId());
+		pstmt1.setString(2, eivo.getImg());
+		pstmt1.setString(3, eivo.getRank());
+		pstmt1.setString(4, eivo.getLoc());
+		pstmt1.setString(5, eivo.getEducation());
+		pstmt1.setString(6, eivo.getPortfolio());
+		pstmt1.setString(7, eivo.getExtResume());
 
-			int cnt = pstmt1.executeUpdate();
-			
-			if (cnt == 1) {
-				insertFlag = true;
-			} // end if
+		int cnt = pstmt1.executeUpdate();
+		
+		if (cnt == 1) {
+			insertFlag = true;
+		} // end if
 
 		return insertFlag;
 	}// insertEeinfo
@@ -589,10 +588,10 @@ public class EeDAO {
 
 	/**
 	 * 	김건하 activation 처리 메소드
+	 * 0302 ActivationVO 불필요해서 수정처리 - 영근
 	 * @throws SQLException 
-	 * 
 	 */
-	public boolean updateActivation(Connection con, ActivationVO avo) throws SQLException {
+	public boolean updateActivation(Connection con, String id) throws SQLException {
 		boolean updateFlag=false;
 		
 		StringBuilder updateActivation=new StringBuilder();
@@ -604,12 +603,14 @@ public class EeDAO {
 		
 		pstmt2=con.prepareStatement(updateActivation.toString());
 		
-		pstmt2.setString(1, avo.getId());
+		pstmt2.setString(1, id);
 		
 		int cnt=pstmt2.executeUpdate();
+		
 		if( cnt==1) {
 			updateFlag=true;
 		}//end if
+		
 		return updateFlag;
 	}//updateActivation
 	
@@ -624,11 +625,11 @@ public class EeDAO {
 	/**
 	 *  트랜잭션 메소드
 	 *  	김건하
+	 *  기본정보 등록과 유저 activation Y로 변경하는 트랜잭션
 	 * @param eeid
 	 * @throws SQLException
 	 */
-
-	public boolean updateUserInfo(EeInsertVO eivo, ActivationVO avo) throws SQLException {
+	public boolean updateUserInfo(EeInsertVO eivo) throws SQLException {
 	
 		boolean updateFlag = false;
 		
@@ -638,9 +639,8 @@ public class EeDAO {
 			
 			try {
 				boolean insert = insertEeinfo(con, eivo);
-				System.out.println("--insert 여기 값은 true?"+insert);
-				boolean update = updateActivation(con, avo);
-				System.out.println("update값은 true 인가요?"+update);
+				boolean update = updateActivation(con, eivo.getEeId());
+				
 				if(insert && update) {
 					updateFlag = true;
 					con.commit();
@@ -648,9 +648,9 @@ public class EeDAO {
 					con.rollback();
 				}//end else
 			
-		}finally {
-			closeAll();
-		}//end finally
+			}finally {
+				closeAll();
+			}//end finally
 		
 		}catch(SQLException e) {
 			try {	
@@ -664,14 +664,6 @@ public class EeDAO {
 		return updateFlag;
 	}//updateUserinfo
 
-	//트랜잭션 단위테스트....
-//	public static void main(String[] args) throws SQLException {
-//		EeInsertVO eivo=new EeInsertVO("kun90", "12.jpg", "N", "서울", "고졸", "Y", "test.txt");
-//		ActivationVO avo=new ActivationVO("kun90");
-//		System.out.println(EeDAO.getInstance().updateUserInfo(eivo, avo));
-//	}
-	
-	
 	/**
 	 * 	연결끊어주는 메소드
 	 * @throws SQLException

@@ -14,39 +14,37 @@ import java.io.IOException;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import sun.rmi.server.Activation;
 import user.common.vo.EeMainVO;
 import user.dao.CommonDAO;
 import user.dao.EeDAO;
 import user.ee.view.EeInfoRegView;
 import user.ee.view.EeMainView;
 import user.ee.view.ModifyExtView;
-import user.ee.vo.ActivationVO;
 import user.ee.vo.EeInsertVO;
-import user.ee.vo.EeInterestAndAppVO;
 import user.ee.vo.EeRegVO;
-import user.file.FileUser;
+import user.util.UserLog;
 import user.util.UserUtil;
 
 public class EeInfoRegController extends WindowAdapter implements ActionListener {
 
 	/* 인스턴스변수 */
 	private EeInfoRegView eirv;
+	
 	private File uploadImg;
+	private File uploadExt;
+	
 	private EeDAO eedao;
-	private EeInfoRegController eirc;
 	private Connection con;
 	private String eeId;// 내 아이디.
 	private EeRegVO ervo;
 	private EeMainVO emvo;
 	private EeMainView emv;
 	private UserUtil uu;
+	private UserLog ul;
 
 	// 생성자.
 	public EeInfoRegController(EeInfoRegView eirv, String eeId, EeMainView emv) {
@@ -55,6 +53,7 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 		this.emv=emv;
 		eedao = EeDAO.getInstance();
 		uu = new UserUtil();
+		ul = new UserLog();
 	}// 생성자
 
 	
@@ -72,22 +71,50 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 		String education = eirv.getJcbEducation().getSelectedItem().toString();
 		String tempPortfolio = eirv.getJcbPortfolio().getSelectedItem().toString();
 		String portfolio = tempPortfolio.equals("YES") ? "Y" : "N";
-		String extResume = eirv.getJtfExtResume().getText();
+		String extResume = "".equals(eirv.getJtfExtResume().getText()) ? "" : eirv.getJtfExtResume().getText();
 		
-		///////////////////////////////// 작업중
+		if (!"".equals(extResume)) {
+			extResume = System.currentTimeMillis()+extResume;
+		}
 		
 		String imgName = System.currentTimeMillis()+uploadImg.getName();
 		
 		EeInsertVO eivo = new EeInsertVO(eeId, imgName, rank, loc, education, portfolio, extResume);
 		System.out.println("-----------"+eivo);
-		ActivationVO avo = new ActivationVO(eeId);
-		System.out.println(avo);
+		// ActivationVO, FileUser(UserUtil 사용) 안써도 될듯..(영근 0302)
 		
 		try {
-			insertFlag=	eedao.updateUserInfo(eivo, avo);
+			insertFlag=	eedao.updateUserInfo(eivo);
 			if(insertFlag) {
 				JOptionPane.showMessageDialog(eirv, "개인정보가 등록 되었습니다.");
 				//창 다시 띄우기?
+				
+				try {
+					///////////////////////// 0301 영근 이미지 FS에 추가기능 구현 ////////////////////////////////
+					Socket client = null;
+					DataOutputStream dos = null;
+					DataInputStream dis = null;
+					FileInputStream fis = null;
+					FileOutputStream fos = null;
+					
+					// 새로운 이미지 파일 FileServer에 추가
+					uu.addNewFile(imgName, uploadImg, "ee", client, dos, dis, fis); // 새로운 이미지를 전송
+					System.out.println("--- 이미지파일 등록");
+					// FilerServer로부터 이미지 요청
+					uu.reqFile(imgName, "ee", client, dos, dis, fos); // 새로운 이미지를 FS에게 요청, 저장
+					System.out.println("--- 이미지파일 요청");
+					
+					// 새로운 이력서 파일이 존재하면 FileServer에 추가
+					if (!"".equals(extResume)) {
+						uu.addNewFile(extResume, uploadExt, "ext", client, dos, dis, fis);
+						System.out.println("--- 이력서 파일 등록만 수행");
+					}
+					
+					ul.sendLog(eeId, "기본정보 등록");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}//end catch
 				
 				EeMainVO updateEmvo=CommonDAO.getInstance().selectEeMain(eeId, "Y");
 				new EeMainView(updateEmvo);
@@ -95,39 +122,10 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 				eirv.dispose();
 				
 			}//end if
-			System.out.println("insert 도 과연 true 일까요??"+insertFlag);
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(eirv, "DB문제 발생");
 			e.printStackTrace();
 		}//end catch
-
-		//이미지 user.ee로 전송
-		if( !uploadImg.getName().equals("")) {// 변경한 이미지가 존재하는 경우
-			
-			File original = new File("C:/dev/1949/03.개발/src/file/eeImg/"+eirv.getJlImage());
-			original.delete();
-			try {
-				FileUser.getInstance().uploadImgFile(uploadImg);
-				FileUser.getInstance().eeInfoImgSend(uploadImg.getName());
-				
-				// 여기 맞나? 확인할 것..
-				///////////////////////// 0301 영근 이미지 FS에 추가기능 구현 ////////////////////////////////
-				Socket client = null;
-				DataOutputStream dos = null;
-				DataInputStream dis = null;
-				FileInputStream fis = null;
-				FileOutputStream fos = null;
-				
-				// 새로운 파일 FileServer에 추가
-				uu.addNewFile(uploadImg.getName(), uploadImg, "ee", client, dos, dis, fis); // 새로운 이미지를 전송
-				// FilerServer로부터 이미지 요청
-				uu.reqFile(uploadImg.getName(), "ee", client, dos, dis, fos); // 새로운 이미지를 FS에게 요청, 저장
-
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}//end catch
-		}//end if
 	}// register
 
 	public void changeImg() throws IOException {
@@ -148,15 +146,11 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 			if (flag) {
 				uploadImg = new File(path + name);
 				eirv.getJlImage().setIcon(new ImageIcon(uploadImg.getAbsolutePath()));
-				
-				///////////////////// 이미지 변경했으면 플레그를 변경 ////////////////////
-				
 			} else {
 				JOptionPane.showMessageDialog(eirv, name + "은 사용할수 없습니다.");
 				return;
 			} // end else
 		} // end if
-
 	}// changeImg
 	
 	@Override
@@ -183,8 +177,8 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 
 		// 외부 이력서 등록 버튼 눌렀을 때.
 		if (ae.getSource() == eirv.getJbRegisterExt()) {
-			new ModifyExtView(eirv, eirc);
-			}// end if
+			new ModifyExtView(eirv, eirv, this, null, null, "reg");
+		}// end if
 
 		// 등록 버튼 눌렀을 때.
 		if (ae.getSource() == eirv.getJbRegister()) {
@@ -196,4 +190,7 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 
 	}// actionPerformed
 
+	public void setUploadExt(File uploadExt) {
+		this.uploadExt = uploadExt;
+	}
 }// class

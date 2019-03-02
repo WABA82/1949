@@ -28,8 +28,9 @@ public class EeInfoModifyView extends JDialog {
 	public EeInfoModifyView(EeMainView emv, EeInfoVO eivo) {
 		super(emv, "기본 정보 관리 수정", true);
 		this.eivo=eivo;
+		
 		// image
-		ImageIcon ii = new ImageIcon("C:/dev/1949/03.개발/src/file/eeImg/" + eivo.getImg());
+		ImageIcon ii = new ImageIcon("C:/dev/1949/03.개발/src/user/img/ee/" + eivo.getImg());
 		jlImag = new JLabel(ii);
 		jlImag.setBorder(new TitledBorder("구직자 이미지"));
 		jlImag.setBounds(38, 20, 160, 225);
@@ -179,10 +180,8 @@ public class EeInfoModifyView extends JDialog {
 		setLayout(null);
 		setBounds(100, 100, 490, 460);
 
-		setVisible(true);
 		setResizable(false);
-//		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
+		setVisible(true);
 	}// 생성자
 
 	public JButton getJbModify() {
