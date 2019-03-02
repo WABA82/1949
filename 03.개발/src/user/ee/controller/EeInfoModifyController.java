@@ -49,6 +49,8 @@ public class EeInfoModifyController extends WindowAdapter implements ActionListe
 		this.eivo=eivo;
 		this.emv=emv;
 		eedao=EeDAO.getInstance();
+		uu = new UserUtil();
+		ul = new UserLog();
 	}
 
 	// 이력서 수정하는 Method
@@ -85,35 +87,26 @@ public class EeInfoModifyController extends WindowAdapter implements ActionListe
 			
 			String imgName = "";
 			String extName = "";
+			
 			if(imgChgFlag) {
 				imgName = System.currentTimeMillis()+uploadImg.getName();
+			} else {
+				imgName = eivo.getImg();
 			}
 			
 			if(extChgFlag) {
 				extName = System.currentTimeMillis()+uploadExt.getName();
+			} else {
+				extName = eivo.getExtResume();
 			}
 
-			EeModifyVO emvo = null;
-			if (imgChgFlag && extChgFlag) {
-				emvo = new EeModifyVO(eivo.getEeNum(), imgName,
-						rank,loc,education, portfolio, extName);
-			} else if (imgChgFlag && !extChgFlag) {
-				emvo= new EeModifyVO(eivo.getEeNum(), imgName,
-						rank,loc,education, portfolio, eivo.getExtResume());
-			} else if (!imgChgFlag && extChgFlag) {
-				emvo= new EeModifyVO(eivo.getEeNum(), eivo.getImg(),
-						rank,loc,education, portfolio, extName);
-			}
+			EeModifyVO emvo = new EeModifyVO(eivo.getEeNum(), imgName,
+					rank,loc,education, portfolio, extName);
 			
 			System.out.println(emvo);
 			try {
 				if(eedao.updateEeInfo(emvo)) {
 					JOptionPane.showMessageDialog(eimv, "개인정보가 변경되었습니다.");
-					
-					//메인창 종료휴 업데이트로 띄우기
-					EeMainVO updateEmvo=CommonDAO.getInstance().selectEeMain(eivo.getEeId(), "Y");
-					new EeMainView(updateEmvo);
-					emv.dispose();
 					
 					///////////////////////// 0302 영근 이미지 FS에 추가기능 구현 ////////////////////////////////
 					Socket client = null;
@@ -128,6 +121,7 @@ public class EeInfoModifyController extends WindowAdapter implements ActionListe
 						
 						System.out.println("getImg = "+eivo.getImg());
 						// 새로운 이미지 파일 FileServer에 삭제, 추가, 요청
+						System.out.println("111");
 						uu.deleteFile(eivo.getImg(), "ee", client, dos, dis);
 						System.out.println("--- 기존 이미지 삭제");
 						
@@ -139,7 +133,7 @@ public class EeInfoModifyController extends WindowAdapter implements ActionListe
 						System.out.println("--- 이미지파일 요청");
 					}
 					
-					if (extChgFlag) {
+					if (extChgFlag && !"".equals(eimv.getJtfExtResume().getText().trim())) {
 						// 새로운 이력서 파일이 존재하면 FileServer에 삭제, 추가
 						uu.deleteFile(eivo.getExtResume(), "ext", client, dos, dis);
 						System.out.println("--- 기존이력서 삭제");
@@ -149,6 +143,11 @@ public class EeInfoModifyController extends WindowAdapter implements ActionListe
 					}
 					
 					ul.sendLog(eivo.getEeId(), "기본정보 수정");
+					
+					//메인창 종료휴 업데이트로 띄우기
+					EeMainVO updateEmvo=CommonDAO.getInstance().selectEeMain(eivo.getEeId(), "Y");
+					new EeMainView(updateEmvo);
+					emv.dispose();
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();

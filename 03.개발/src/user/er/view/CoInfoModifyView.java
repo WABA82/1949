@@ -41,10 +41,10 @@ public class CoInfoModifyView extends JDialog {
 		jbModify = new JButton("수정");
 		jbClose = new JButton("닫기");
 
-		jlImg1 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/"+cvo.getImg1()));
-		jlImg2 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/"+cvo.getImg2()));
-		jlImg3 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/"+cvo.getImg3()));
-		jlImg4 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/"+cvo.getImg4()));
+		jlImg1 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/"+cvo.getImg1()));
+		jlImg2 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/"+cvo.getImg2()));
+		jlImg3 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/"+cvo.getImg3()));
+		jlImg4 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/"+cvo.getImg4()));
 		System.out.println(cvo);
 		// 배치
 		setLayout(null);

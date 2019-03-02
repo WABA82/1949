@@ -58,8 +58,8 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 			System.out.println(ermvo);
 			
 		}else if(ermvo.getActivation().equals("Y")){
-				cvo=erdao.selectCoInfo(ermvo.getErId());
-				new CoInfoModifyView(emv, cvo);
+			cvo=erdao.selectCoInfo(ermvo.getErId());
+			new CoInfoModifyView(emv, cvo);
 		}//end else
 			
 	}//end if

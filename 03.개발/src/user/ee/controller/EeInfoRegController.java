@@ -110,7 +110,7 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 						System.out.println("--- 이력서 파일 등록만 수행");
 					}
 					
-					ul.sendLog(eeId, "기본정보 등록");
+					ul.sendLog(eeId, "신규 기본정보 등록");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

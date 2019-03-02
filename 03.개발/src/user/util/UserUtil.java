@@ -29,9 +29,11 @@ public class UserUtil {
 		client = new Socket("localhost", 7002);
 		// client = new Socket("211.63.89.144", 7002);
 
+		System.out.println("222");
 		dos = new DataOutputStream(client.getOutputStream());
 		dis = new DataInputStream(client.getInputStream());
 
+		System.out.println("333");
 		if (flag.equals("ee")) {
 			dos.writeUTF("eeImg_delete");
 		} else if (flag.equals("ext")) {
@@ -41,9 +43,12 @@ public class UserUtil {
 		}
 		dos.flush();
 
+		System.out.println("444");
 		dos.writeUTF(fileName); // 기존 이미지명 전달
+		System.out.println("기존 이미지명 - "+fileName);
 		dos.flush();
 
+		System.out.println("555");
 		dis.readUTF(); // 응답 후 연결 종료
 
 		closeStreams(client, dos, dis, null, null, null, null);

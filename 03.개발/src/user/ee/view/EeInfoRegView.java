@@ -151,18 +151,16 @@ public class EeInfoRegView extends JDialog {
 		
 		//이벤트 등록
 		EeInfoRegController eirc=new EeInfoRegController(this, ervo.getEeId(), emv);
+		addWindowListener(eirc);
 		jbRegisterExt.addActionListener(eirc);
 		jbClose.addActionListener(eirc);
 		jbRegisterImg.addActionListener(eirc);
 		jbRegister.addActionListener(eirc);
 //		
 		setLayout(null);
-		setBounds( emv.getX()+450, emv.getY(), 490, 465);
-		
-		setVisible(true);
+		setBounds( emv.getX()+250, emv.getY()+100, 490, 465);
 		setResizable(false);
-//		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
+		setVisible(true);
 	}//EeInfoRegView
 
 	
