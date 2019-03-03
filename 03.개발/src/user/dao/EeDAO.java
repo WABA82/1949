@@ -22,7 +22,9 @@ import user.ee.vo.EeRegVO;
 
 public class EeDAO {
 	private static EeDAO Ee_dao;
-
+	private Connection con;
+	private PreparedStatement pstmt1, pstmt2;
+	
 	public EeDAO() {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
@@ -43,6 +45,7 @@ public class EeDAO {
 
 		Connection con = null;
 
+		// String url = "jdbc:oracle:thin:@localhost:1521:orcl"; // 집 개발용
 		String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl";
 		String id = "kanu";
 		String pass = "share";
@@ -323,45 +326,7 @@ public class EeDAO {
 
 //	////////////////////////////////////////// 선의 소스
 //	////////////////////////////////////////// 끝//////////////////////////////////////////////////////////
-//
-//	
-//
-//		//String eeNum, img, id, name, rank, loc, education, portfolio, gender, inputDate, extResume;
-//		//int age;
-//		
-//		//쿼리문 생성
-//		StringBuilder selectInfo=new StringBuilder();
-//		selectInfo
-//		.append("		select ei.ee_num, ei.img, ut.name, ei.rank, ei.loc, ei.education, ei.portfolio, ut.gender, ei.ext_resume, to_char(ei.input_date,'yyyy-mm-dd')input_date, ut.age  ")
-//		.append("		from ee_info ei, user_table ut		")
-//		.append("		where (ee_id = id) and ei.ee_id = ?  ");
-//		
-//		pstmt=con.prepareStatement(selectInfo.toString());
-//		pstmt.setString(1, eeid);
-//		rs=pstmt.executeQuery();
-//		
-//		if(rs.next()) {
-//			eivo=new EeInfoVO(rs.getString("EE_NUM"), rs.getString("IMG"),rs.getString("NAME"), rs.getString("RANK"),rs.getString("LOC"),
-//						rs.getString("EDUCATION"), rs.getString("PORTFOLIO"), rs.getString("GENDER"), rs.getString("EXT_RESUME"), rs.getInt("AGE"));
-//		}
-//			
-//		}finally {
-//			if( rs != null ) { rs.close(); }
-//			if( pstmt != null ) { pstmt.close(); }
-//			if( con != null ) { con.close(); }
-//		}//end finally
-//		
-//		return eivo;
-//	}//selectEeinfo
-//	
-//	//VO제대로 작동함. 수정안함
-////	public static void main(String[] args) {
-////		try {
-////			System.out.println(EeDAO.getInstance().selectEeInfo("gong1"));
-////		} catch (SQLException e) {
-////			e.printStackTrace();
-////		}
-////	}
+
 
 	//////////// 재현코드 ////////////
 
@@ -579,9 +544,7 @@ public class EeDAO {
 	}// main
 	////////////////////////// 재현 끝 //////////////////////////
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////////// 김건하
-	//////////////////////////////////////////////////////////////////////////////////////////////////////// VO정리
-	//////////////////////////////////////////////////////////////////////////////////////////////////////// 시작///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////// 김건하 VO정리 시작///////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
@@ -590,62 +553,138 @@ public class EeDAO {
 	 * @param eivo
 	 * @throws SQLException
 	 */
-	public boolean insertEeinfo(EeInsertVO eivo) throws SQLException {
-		boolean flag = false; // true일 때
+	public boolean insertEeinfo(Connection con, EeInsertVO eivo) throws SQLException {
+		boolean insertFlag = false; //
 
-		Connection con = null;
-		PreparedStatement pstmt = null;
+		StringBuilder insertInfo = new StringBuilder();
+		insertInfo
+		.append("  insert into ee_info(ee_num, ee_id, img, rank, loc, education, portfolio, ext_resume)  ")
+		.append("  values( ee_code, ?, ?, ?, ?, ?, ?, ? )" );
+		pstmt1 = con.prepareStatement(insertInfo.toString());
 
-		try {
-			con = getConn();
+		pstmt1.setString(1, eivo.getEeId());
+		pstmt1.setString(2, eivo.getImg());
+		pstmt1.setString(3, eivo.getRank());
+		pstmt1.setString(4, eivo.getLoc());
+		pstmt1.setString(5, eivo.getEducation());
+		pstmt1.setString(6, eivo.getPortfolio());
+		pstmt1.setString(7, eivo.getExtResume());
 
-			StringBuilder insertInfo = new StringBuilder();
-			insertInfo.append(
-					"		insert into ee_info(ee_num, ee_id, img, rank, loc, education, portfolio, ext_resume)	")
-					.append("		values( ee_code, ?, ?, ?, ?, ?, ?, ? )	");
-			pstmt = con.prepareStatement(insertInfo.toString());
+		int cnt = pstmt1.executeUpdate();
+		
+		if (cnt == 1) {
+			insertFlag = true;
+		} // end if
 
-			pstmt.setString(1, eivo.getEeId());
-			pstmt.setString(2, eivo.getImg());
-			pstmt.setString(3, eivo.getRank());
-			pstmt.setString(4, eivo.getLoc());
-			pstmt.setString(5, eivo.getEducation());
-			pstmt.setString(6, eivo.getPortfolio());
-			pstmt.setString(7, eivo.getExtResume());
-
-			int cnt = pstmt.executeUpdate();
-			if (cnt != 1) {
-				// pstmt에서 쿼리문이 정상적으로 실행이 되명 1(insert)을 반환. - false
-				// 아니라면 1이 반환이 안된다. true
-				flag = true;
-			} // end if
-
-		} finally {
-			if (pstmt != null) {
-				pstmt.close();
-			} // end if
-			if (con != null) {
-				con.close();
-			} // end if
-		} // end finally
-
-		return flag;
+		return insertFlag;
 	}// insertEeinfo
-
-//	public static void main(String[] args) {
-//		//// "choi7" , "ee1.jpg", "C", "인천", "대졸", "Y", "이력서"
-//		//// String eeId, String img, String rank, String loc, String education, String
-//		//// portfolio, String extResume
-//
-//		EeInsertVO eivo = new EeInsertVO("kun90", "ee1.jpg", "C", "인천", "대졸", "Y", "이력서.txt");
+	
+//	public static void main(String[] args) throws SQLException {
+//		Connection con=EeDAO.getInstance().getConn();
+//		EeInsertVO eivo = new EeInsertVO("root", "123.jpg", "C", "서울", "고졸", "N", "test.txt");
+//		System.out.println(Ee_dao.insertEeinfo(con, eivo));
 //		System.out.println(eivo);
-//		try {
-//			EeDAO.getInstance().insertEeinfo(eivo);
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
 //	}// main
 
+	/**
+	 * 	김건하 activation 처리 메소드
+	 * 0302 ActivationVO 불필요해서 수정처리 - 영근
+	 * @throws SQLException 
+	 */
+	public boolean updateActivation(Connection con, String id) throws SQLException {
+		boolean updateFlag=false;
+		
+		StringBuilder updateActivation=new StringBuilder();
+		
+		updateActivation
+		.append("  update user_table  ")
+		.append("  set activation='Y'  ")
+		.append("  where id=?  ");
+		
+		pstmt2=con.prepareStatement(updateActivation.toString());
+		
+		pstmt2.setString(1, id);
+		
+		int cnt=pstmt2.executeUpdate();
+		
+		if( cnt==1) {
+			updateFlag=true;
+		}//end if
+		
+		return updateFlag;
+	}//updateActivation
+	
+	//트랜잭션 업데이트 단위 테스트용
+//	public static void main(String[] args) throws SQLException {
+//		ActivationVO avo=new ActivationVO("oh99");
+//		Connection con=EeDAO.getInstance().getConn();
+//		System.out.println(EeDAO.getInstance().updateActivation(con, avo));
+//		System.out.println(avo);
+//	}
+	
+	/**
+	 *  트랜잭션 메소드
+	 *  	김건하
+	 *  기본정보 등록과 유저 activation Y로 변경하는 트랜잭션
+	 * @param eeid
+	 * @throws SQLException
+	 */
+	public boolean updateUserInfo(EeInsertVO eivo) throws SQLException {
+	
+		boolean updateFlag = false;
+		
+		try {
+			con=getConn();
+			con.setAutoCommit(false);
+			
+			try {
+				boolean insert = insertEeinfo(con, eivo);
+				boolean update = updateActivation(con, eivo.getEeId());
+				
+				if(insert && update) {
+					updateFlag = true;
+					con.commit();
+				}else {
+					con.rollback();
+				}//end else
+			
+			}finally {
+				closeAll();
+			}//end finally
+		
+		}catch(SQLException e) {
+			try {	
+				con.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+		
+		return updateFlag;
+	}//updateUserinfo
+
+	/**
+	 * 	연결끊어주는 메소드
+	 * @throws SQLException
+	 */
+	public void closeAll() throws SQLException {
+		if(pstmt2 != null) {
+			pstmt2.close();
+		}//end if
+		
+		if(pstmt1 != null) {
+			pstmt1.close();
+		}//end if
+		
+		if(con != null) {
+			con.close();
+		}//end if
+		
+	}//closeall
+	
+	
+	
 	/**
 	 * 19.02.11 김건하 EeRegVO
 	 * 
@@ -754,19 +793,16 @@ public class EeDAO {
 		try {
 			con = getConn();
 			StringBuilder selectInfo = new StringBuilder();
-			selectInfo.append(" 	select ei.ee_num, ei.img, ut.name, ei.rank, ei.loc, ei.education, ")
+			selectInfo.append(" 	select ee_id, ei.ee_num, ei.img, ut.name, ei.rank, ei.loc, ei.education, ")
 					.append("	ei.portfolio, ut.gender, ei.ext_resume, ut.age	")
 					.append("	from ee_info ei, user_table ut		").append("	where (ee_id= id) and ei.ee_id= ? ");
-
-//			private String eeNum, img, name, rank, loc, education, portfolio, gender, extResume;
-//			private int age;
 
 			pstmt = con.prepareStatement(selectInfo.toString());
 			pstmt.setString(1, eeId);
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
-				eivo = new EeInfoVO(rs.getString("EE_NUM"), rs.getString("IMG"), rs.getString("NAME"),
+				eivo = new EeInfoVO(rs.getString("EE_ID"), rs.getString("EE_NUM"), rs.getString("IMG"), rs.getString("NAME"),
 						rs.getString("RANK"), rs.getString("LOC"), rs.getString("EDUCATION"), rs.getString("PORTFOLIO"),
 						rs.getString("GENDER"), rs.getString("EXT_RESUME"), rs.getInt("AGE"));
 

@@ -3,6 +3,12 @@ package user.er.view;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -10,6 +16,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -19,6 +26,7 @@ import javax.swing.border.TitledBorder;
 import user.er.controller.ErAddController;
 import user.er.controller.ErMgMtController;
 import user.er.vo.ErDefaultVO;
+import user.util.UserUtil;
 
 @SuppressWarnings("serial")
 public class ErAddView extends JDialog {
@@ -37,7 +45,22 @@ public class ErAddView extends JDialog {
 		// 이미지아이콘 : 회사로고
 		
 		// 라벨들
-		JLabel jlImage = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/"+edfvo.getImg1()));
+		File imgFile = new File("C:/dev/1949/03.개발/src/user/img/co/"+edfvo.getImg1());
+		if(!imgFile.exists()) {
+			Socket client = null;
+			DataInputStream dis =null;
+			DataOutputStream dos = null;
+			FileOutputStream fos = null;
+			try {
+				UserUtil uu = new UserUtil();
+				uu.reqFile(edfvo.getImg1(), "co", client, dos, dis, fos);
+			} catch (IOException e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(this, "이미지를 받아오는데 실패했습니다.");
+			}
+		}
+		
+		JLabel jlImage = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/"+edfvo.getImg1()));
 		JLabel jlName = new JLabel("이름");
 		JLabel jlTel = new JLabel("연락처");
 		JLabel jlEmail = new JLabel("이메일");

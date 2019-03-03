@@ -71,9 +71,6 @@ public class ErMgMtController extends WindowAdapter implements MouseListener, Ac
 				rowData[7] = ervo.getInputDate();
 				dtmErList.addRow(rowData);
 			}
-/*			if(list.isEmpty()) {
-				JOptionPane.showMessageDialog(emmv, "등록된 구인글이 없습니다.");
-			}*/
 			
 		}catch(SQLException e){
 			JOptionPane.showMessageDialog(emmv, "DB에러");

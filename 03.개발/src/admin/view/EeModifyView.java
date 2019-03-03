@@ -151,7 +151,7 @@ public class EeModifyView extends JDialog {
 		add(jcbPortfolio);
 		jcbPortfolio.setBounds(325,272,130,20);
 		
-		JTextField jtfGender=new JTextField(eivo.getGender());
+		JTextField jtfGender=new JTextField(eivo.getGender().equals("F") ? "여자" : "남자");
 		jtfGender.setEditable(false);
 		add(jtfGender);
 		jtfGender.setBounds(325, 311, 130, 20);
