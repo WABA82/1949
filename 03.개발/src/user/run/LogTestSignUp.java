@@ -14,8 +14,8 @@ public class LogTestSignUp {
 		
 		try {
 			try {
-				client = new Socket("localhost", 7001);
-				// client = new Socket("211.63.89.144", 7001);
+				//client = new Socket("localhost", 7001);
+				client = new Socket("211.63.89.144", 7001);
 				dos = new DataOutputStream(client.getOutputStream());
 				
 				dos.writeUTF("jeongmi"); // 정미가 아니라 유저 아이디지...수정필요
