@@ -118,7 +118,8 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 
 			try {
 				System.out.println("111");
-				socket = new Socket("211.63.89.144", 7002);
+				socket = new Socket("localhost", 7002);
+				// socket = new Socket("211.63.89.144", 7002);
 				System.out.println("--"+socket);
 				dos = new DataOutputStream(socket.getOutputStream());
 

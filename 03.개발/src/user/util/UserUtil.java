@@ -26,11 +26,14 @@ public class UserUtil {
 	 */
 	public void deleteFile(String fileName, String flag, Socket client, DataOutputStream dos, DataInputStream dis)
 			throws UnknownHostException, IOException {
+		// client = new Socket("localhost", 7002);
 		client = new Socket("211.63.89.144", 7002);
 
+		System.out.println("222");
 		dos = new DataOutputStream(client.getOutputStream());
 		dis = new DataInputStream(client.getInputStream());
 
+		System.out.println("333");
 		if (flag.equals("ee")) {
 			dos.writeUTF("eeImg_delete");
 		} else if (flag.equals("ext")) {
@@ -40,9 +43,12 @@ public class UserUtil {
 		}
 		dos.flush();
 
+		System.out.println("444");
 		dos.writeUTF(fileName); // 기존 이미지명 전달
+		System.out.println("기존 이미지명 - "+fileName);
 		dos.flush();
 
+		System.out.println("555");
 		dis.readUTF(); // 응답 후 연결 종료
 
 		closeStreams(client, dos, dis, null, null, null, null);
@@ -62,6 +68,7 @@ public class UserUtil {
 	 */
 	public void addNewFile(String newFileName, File newFile, String flag, Socket client, DataOutputStream dos,
 			DataInputStream dis, FileInputStream fis) throws IOException {
+		// client = new Socket("localhost", 7002);
 		client = new Socket("211.63.89.144", 7002);
 
 		dos = new DataOutputStream(client.getOutputStream());
@@ -119,6 +126,7 @@ public class UserUtil {
 	 * @throws IOException
 	 */
 	public void reqFile(String newFileName, String flag, Socket client, DataOutputStream dos, DataInputStream dis, FileOutputStream fos) throws IOException {
+		// client = new Socket("localhost", 7002);
 		client = new Socket("211.63.89.144", 7002);
 
 		dos = new DataOutputStream(client.getOutputStream());

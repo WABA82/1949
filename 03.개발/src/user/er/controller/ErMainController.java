@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import user.common.view.ChangeUserInfoView;
@@ -57,8 +58,8 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 			System.out.println(ermvo);
 			
 		}else if(ermvo.getActivation().equals("Y")){
-				cvo=erdao.selectCoInfo(ermvo.getErId());
-				new CoInfoModifyView(emv, cvo);
+			cvo=erdao.selectCoInfo(ermvo.getErId());
+			new CoInfoModifyView(emv, cvo);
 		}//end else
 			
 	}//end if
@@ -77,8 +78,9 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 	
 	/** 회원정보를 수정하는 method**/
 	public void mngEr() throws SQLException {
+		JFrame jf=new JFrame();
 			UserInfoVO uivo=C_dao.selectUserInfo(ermvo.getErId());
-			new ChangeUserInfoView(emv, uivo);
+			new ChangeUserInfoView(jf, uivo);
 	}//mngEr
 	
 	/** 관심 구직자를 볼수 있는 method**/

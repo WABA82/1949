@@ -30,15 +30,15 @@ public class ErMainView extends JFrame {
 		this.ermvo=ermvo;
 		
 		JLabel jlAct = new JLabel("회사정보 등록여부 : ");
-		JLabel jlImg = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/"+ermvo.getImg1()));
+		JLabel jlImg = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/"+ermvo.getImg1()));
 		jlImg.setBorder(new TitledBorder("회사 이미지"));
 		
 		jlActivation = new JLabel(ermvo.getActivation());
 		System.out.println(ermvo.getActivation());
-		jlUserInfo = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/회원정보관리아이콘.png"));
+		jlUserInfo = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/userInfoMgmt.png"));
 		JLabel jlUserMsg=new JLabel("회원정보관리");
 		add(jlUserMsg);
-		jlLogOut = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/로그아웃이미지.png"));
+		jlLogOut = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/logout.png"));
 		JLabel jlLogOutMsg=new JLabel("로그아웃");
 		add(jlLogOutMsg);
 		jbCoMgmt = new JButton("회사정보 관리");

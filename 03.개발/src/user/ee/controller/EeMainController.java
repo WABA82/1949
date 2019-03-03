@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import user.common.view.ChangeUserInfoView;
@@ -65,8 +66,8 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 	public void mngEe() throws SQLException {
 		uivo=CommonDAO.getInstance().selectUserInfo(emvo.getEeId());
 //		System.out.println(uivo);
-		
-//		new ChangeUserInfoView(emv, uivo);
+		JFrame jf=new JFrame();
+		new ChangeUserInfoView(jf, uivo);
 
 	}//mngEe
 	
