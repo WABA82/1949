@@ -10,14 +10,15 @@ import javax.swing.JPasswordField;
 
 import user.common.controller.RemoveUserController;
 import user.common.controller.SetNewPassController;
+import user.ee.view.EeMainView;
 import user.er.view.ErMainView;
 
 public class RemoveUserView extends JDialog {
 	
 	private JButton jbDelete, jbClose;
 	private JPasswordField jpfPass1, jpfPass2;
-	private JFrame jf;
-	public RemoveUserView(ChangeUserInfoView cuiv,JFrame jf, String id) {
+	
+	public RemoveUserView(ChangeUserInfoView cuiv, JFrame jf, String id) {
 		super(jf, "1949 - È¸¿ø Å»Åð", true);
 		
 		
