@@ -57,10 +57,13 @@ public class RemoveUserView extends JDialog {
 		RemoveUserController ruc = new RemoveUserController(jf, cuiv,this, id);
 		jbDelete.addActionListener(ruc);
 		jbClose.addActionListener(ruc);
+		jpfPass1.addKeyListener(ruc);
+		jpfPass2.addKeyListener(ruc);
 		
 		addWindowListener(ruc);
 		
-		setBounds(500, 200, 400, 280);
+		//setBounds(500, 200, 400, 280);
+		setBounds(jf.getX()+50,jf.getY()+50,400,280);
 		setResizable(false);
 		setVisible(true);
 	}

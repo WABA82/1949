@@ -51,6 +51,8 @@ public class SetNewPassView extends JDialog {
 		SetNewPassController snpc = new SetNewPassController(this, id);
 		jbChange.addActionListener(snpc);
 		jbClose.addActionListener(snpc);
+		jpfPass1.addKeyListener(snpc);
+		jpfPass2.addKeyListener(snpc);
 		
 		addWindowListener(snpc);
 		
