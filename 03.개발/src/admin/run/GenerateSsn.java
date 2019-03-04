@@ -21,12 +21,15 @@ public class GenerateSsn {
 		int[] validVal = new int[12];
 		int sumVal = 0;
 		int j = 2;
+		int[] nineTeen = { 2, 3, 4, 5, 6, 7, 8, 9 };
+		boolean nineTeenFlag = false;
+		
 		for(int i=0; i<12; i++) {
 			// 제대로된 주민번호를 만들도록 제약을 설정
 			// 55년생부터 99 + 00년생까지 
 			// 01~12월
 			// 01~31일
-			// 주민번호 앞자리는 1~4
+			// 주민번호 앞자리는 1~8
 			
 			if(i < 2) { // 년
 				arrSsn[i] = r.nextInt(5)+5;
@@ -51,8 +54,27 @@ public class GenerateSsn {
 					arrSsn[i] = r.nextInt(10);
 				}
 			}
-			if (i == 6) { // 두민번호 뒷 첫자리(1~4)
-				arrSsn[i] = r.nextInt(4)+1;
+			if (i == 6) { // 두민번호 뒷 첫자리(1~4), 1256이면 19, 3478이면 20
+				for(int k=0; k<nineTeen.length; k++) {
+					if (arrSsn[0] == nineTeen[k]) {
+						nineTeenFlag = true; // 앞자리가 19가 붙어야 된다면
+					}
+				}
+				
+				if (nineTeenFlag) { // 1, 2, 5, 6
+					if (r.nextBoolean()) {
+						arrSsn[i] = r.nextInt(2)+5;  
+					} else {
+						arrSsn[i] = r.nextInt(2)+1;  
+					}
+					nineTeenFlag = false;
+				} else {
+					if (r.nextBoolean()) { // 2000년대생(여기선 작동안하게 설계)
+						arrSsn[i] = r.nextInt(2)+7;  
+					} else {
+						arrSsn[i] = r.nextInt(2)+3; // 3, 4, 7, 8
+					}
+				}
 			} 
 			if (i > 6) {
 				arrSsn[i] = r.nextInt(10);
