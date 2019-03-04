@@ -162,14 +162,6 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 	 */
 	public void modifyEe() throws IOException {
 		// 이미지, 이력서파일 변경되었는지 확인 - flag변수
-		String name = emv.getJtfName().getText().trim();
-		
-		if (name.equals("")) {
-			msgCenter("이름을 입력해주세요.");
-			emv.getJtfName().requestFocus();
-			return;
-		}
-
 		String rank = emv.getJcbRank().getSelectedItem().equals("신입") ? "N" : "C";
 		String loc = (String)emv.getJcbLoc().getSelectedItem();
 		String education = (String)emv.getJcbEducation().getSelectedItem();

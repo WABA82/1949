@@ -45,16 +45,19 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 		// 입력값 검증
 		if(emv.getJtfSubject().getText().trim().equals("")) {
 			msgCenter("제목을 입력해주세요.");
+			emv.getJtfSubject().requestFocus();
 			return;
 		}
 		
 		if(emv.getJtfSal().getText().trim().equals("")) {
 			msgCenter("급여를 입력해주세요.");
+			emv.getJtfSal().requestFocus();
 			return;
 		}
 		
 		if(emv.getJtaErDesc().getText().trim().equals("")) {
 			msgCenter("상세정보를 입력해주세요.");
+			emv.getJtaErDesc().requestFocus();
 			return;
 		}
 		
@@ -65,6 +68,8 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 			sal = Integer.parseInt(emv.getJtfSal().getText().trim());
 		} catch (NumberFormatException nfe) {
 			msgCenter("급여는 숫자만 입력해주세요.");
+			emv.getJtfSal().setText("");
+			emv.getJtfSal().requestFocus();
 			return;
 		}
 		

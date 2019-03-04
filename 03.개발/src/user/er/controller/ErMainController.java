@@ -21,6 +21,7 @@ import user.common.vo.UserInfoVO;
 
 import user.dao.CommonDAO;
 import user.dao.ErDAO;
+import user.ee.view.EeMainView;
 import user.er.view.CoInfoModifyView;
 import user.er.view.CoInfoRegView;
 import user.er.view.ErAppView;
@@ -35,17 +36,17 @@ import user.er.vo.ErListVO;
 
 public class ErMainController extends WindowAdapter implements ActionListener, MouseListener {
 	
-	private ErMainView emv;
 	private String erId;
 	private ErMainVO ermvo;
 	private CoInsertVO civo;
 	private CoInfoVO cvo;
 	private ErDAO erdao;
 	private CommonDAO C_dao;
+	private ErMainView ermv;
 	
-	public ErMainController(ErMainView emv, ErMainVO ermvo) {
+	public ErMainController(ErMainView ermv, ErMainVO ermvo) {
 
-		this.emv = emv;
+		this.ermv = ermv;
 		this.ermvo=ermvo;
 		erdao=ErDAO.getInstance();
 		C_dao=CommonDAO.getInstance();
@@ -54,12 +55,12 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 	/**회사정보 등록, 관리 **/
 	public void mngUser() throws SQLException {
 		if(ermvo.getActivation().equals("N")) {
-			new CoInfoRegView(emv, ermvo.getErId());
+			new CoInfoRegView(ermv, ermvo.getErId());
 			System.out.println(ermvo);
 			
 		}else if(ermvo.getActivation().equals("Y")){
 			cvo=erdao.selectCoInfo(ermvo.getErId());
-			new CoInfoModifyView(emv, cvo);
+			new CoInfoModifyView(ermv, cvo);
 		}//end else
 			
 	}//end if
@@ -68,51 +69,50 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 	public void showHiring() {
 		
 		if(ermvo.getActivation().equals("N")) {
-			JOptionPane.showMessageDialog(emv, "회사 정보가 등록되어야 이용하실수 있습니다.");
+			JOptionPane.showMessageDialog(ermv, "회사 정보가 등록되어야 이용하실수 있습니다.");
 		}else if(ermvo.getActivation().equals("Y")){
 			List<ErHiringVO> ehvo=new ArrayList<ErHiringVO>();
-		new ErHiringView(emv, ehvo, ermvo.getErId());
+		new ErHiringView(ermv, ehvo, ermvo.getErId());
 		}//end if
 		
 	}//showHiring
 	
 	/** 회원정보를 수정하는 method**/
 	public void mngEr() throws SQLException {
-		JFrame jf=new JFrame();
 			UserInfoVO uivo=C_dao.selectUserInfo(ermvo.getErId());
-			new ChangeUserInfoView(jf, uivo);
+			new ChangeUserInfoView( ermv,  uivo);
 	}//mngEr
 	
-	/** 관심 구직자를 볼수 있는 method**/
+	/** 지원 현황을 볼수 있는 method**/
 	public void showApp() {
 		
 		if(ermvo.getActivation().equals("N")) {
-			JOptionPane.showMessageDialog(emv, "회사 정보가 등록되어야 이용하실수 있습니다.");
+			JOptionPane.showMessageDialog(ermv, "회사 정보가 등록되어야 이용하실수 있습니다.");
 		}else if(ermvo.getActivation().equals("Y")){
-			new ErAppView(emv, ermvo.getErId());
+			new ErAppView(ermv, ermvo.getErId());
 		}//end id
 		
 	}//showApp
 	
-	/***/
+	/** 관심 구직자를 볼수 있는 Method**/
 	public void showInterestEe() {
 		
 		if(ermvo.getActivation().equals("N")) {
-			JOptionPane.showMessageDialog(emv, "회사 정보가 등록되어야 이용하실수 있습니다.");
+			JOptionPane.showMessageDialog(ermv, "회사 정보가 등록되어야 이용하실수 있습니다.");
 		}else if(ermvo.getActivation().equals("Y")){
-			new ErInterestView(emv, ermvo.getErId());
+			new ErInterestView(ermv, ermvo.getErId());
 		}//end id
 		
 	}//showInteresrEe
 
-	/***/
+	/** 구인 정보 관리를 볼수 있는 Method**/
 	public void ShowErMgMtview() {
 		
 		if(ermvo.getActivation().equals("N")) {
-			JOptionPane.showMessageDialog(emv, "회사 정보가 등록되어야 이용하실수 있습니다.");
+			JOptionPane.showMessageDialog(ermv, "회사 정보가 등록되어야 이용하실수 있습니다.");
 		}else if(ermvo.getActivation().equals("Y")){
 			List<ErListVO> elvo=new ArrayList<ErListVO>();
-			new ErMgMtView(emv, elvo, ermvo.getErId());
+			new ErMgMtView(ermv, elvo, ermvo.getErId());
 		}//end if
 		
 	}//ShowErMgView
@@ -120,7 +120,7 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 	@Override
 	public void mouseClicked(MouseEvent me) {
 		
-		if(me.getSource() == emv.getJlUserInfo()) {
+		if(me.getSource() == ermv.getJlUserInfo()) {
 			try {
 				mngEr();
 			} catch (SQLException e) {
@@ -128,8 +128,8 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 			}//end catch
 		}//end if
 		
-		if(me.getSource() == emv.getJlLogOut()) {
-			emv.dispose();
+		if(me.getSource() == ermv.getJlLogOut()) {
+			ermv.dispose();
 			new LoginView();
 		}//end if
 		
@@ -138,7 +138,7 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		
-		if(ae.getSource() == emv.getJbCoMgmt()) {
+		if(ae.getSource() == ermv.getJbCoMgmt()) {
 			try {
 				mngUser();
 			} catch (SQLException e) {
@@ -146,19 +146,19 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 			}//end catch
 		}//end if
 			
-		if(ae.getSource() == emv.getJbEeInfo()) {
+		if(ae.getSource() == ermv.getJbEeInfo()) {
 			showHiring();
 		}//end if
 		
-		if(ae.getSource() == emv.getJbInterestEe()) {
+		if(ae.getSource() == ermv.getJbInterestEe()) {
 			showInterestEe();
 		}//end if
 		
-		if(ae.getSource() == emv.getJbApp()) {
+		if(ae.getSource() == ermv.getJbApp()) {
 			showApp();
 		}//end if
 		
-		if(ae.getSource() == emv.getJbErMgmt()) {
+		if(ae.getSource() == ermv.getJbErMgmt()) {
 			ShowErMgMtview();
 		}//end if
 		
@@ -166,7 +166,7 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		emv.dispose();
+		ermv.dispose();
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {}
