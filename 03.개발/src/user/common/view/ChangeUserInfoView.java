@@ -141,6 +141,7 @@ public class ChangeUserInfoView extends JDialog {
 		jtfAddr2.addKeyListener(cuic);
 		jtfEmail.addKeyListener(cuic);
 	
+		//setBounds(500,200,390,580);
 		setBounds(jf.getX()+50,jf.getY()+50,390,580);
 		setVisible(true);
 	
