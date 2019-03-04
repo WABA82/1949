@@ -1,6 +1,7 @@
 package user.er.view;
 
 import java.awt.Color;
+import java.awt.Font;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -34,7 +35,12 @@ public class CoInfoModifyView extends JDialog {
 		JLabel jlCoName = new JLabel("회사명");
 		JLabel jlEstDate = new JLabel("설립년도");
 		JLabel jlmemberNum = new JLabel(" 사원수");
-
+		
+		JLabel jlCoImgGuide=new JLabel("※이미지란을 클릭해서 이미지 변경이 가능합니다.");
+		jlCoImgGuide.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
+		jlCoImgGuide.setForeground(new Color(0xFF0000));
+		
+		
 		jtaCoDesc = new JTextArea(cvo.getCoDesc());
 		JScrollPane jspTaDesc = new JScrollPane(jtaCoDesc);
 
@@ -60,13 +66,16 @@ public class CoInfoModifyView extends JDialog {
 		jlImg1.setBounds(35, 25, 170, 170);
 		jlImg1.setBorder(new TitledBorder("회사 이미지"));
 
-		jlImg2.setBounds(33, 208, 50, 50);
-		jlImg3.setBounds(93, 208, 50, 50);
-		jlImg4.setBounds(158, 208, 50, 50);
+		jlImg2.setBounds(33, 203, 50, 50);
+		jlImg3.setBounds(93, 203, 50, 50);
+		jlImg4.setBounds(158, 203, 50, 50);
 
+		jlCoImgGuide.setBounds(30, 215, 300, 100);
+		
 		jlImg2.setBorder(new LineBorder(Color.black));
 		jlImg3.setBorder(new LineBorder(Color.black));
 		jlImg4.setBorder(new LineBorder(Color.black));
+		
 
 		jspTaDesc.setBounds(32, 274, 405, 133);
 		jspTaDesc.setBorder(new TitledBorder("기업 설명"));
@@ -96,6 +105,9 @@ public class CoInfoModifyView extends JDialog {
 		add(jlImg2);
 		add(jlImg3);
 		add(jlImg4);
+		
+		add(jlCoImgGuide);
+		
 
 		add(jspTaDesc);
 
