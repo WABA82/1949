@@ -62,7 +62,8 @@ public class RemoveUserView extends JDialog {
 		
 		addWindowListener(ruc);
 		
-		setBounds(500, 200, 400, 280);
+		//setBounds(500, 200, 400, 280);
+		setBounds(jf.getX()+50,jf.getY()+50,400,280);
 		setResizable(false);
 		setVisible(true);
 	}
