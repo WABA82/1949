@@ -69,6 +69,14 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 			}
 		}
 		
+		if (e.getSource() == emv.getJbDownExt()) {
+			try {
+				downExt();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
 		if (e.getSource() == emv.getJbRemove()) {
 			switch(JOptionPane.showConfirmDialog(emv, "기본정보를 정말 삭제하시겠습니까?")) {
 			case JOptionPane.OK_OPTION:
@@ -93,6 +101,59 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 			changeImg();
 		}
  	}
+	
+	/**
+	 * 외부이력서를 다운로드하는 메소드 0304 추가
+	 * @throws IOException 
+	 */
+	public void downExt() throws IOException {
+		FileDialog fd = new FileDialog(emv, "외부이력서 저장", FileDialog.SAVE);
+		fd.setVisible(true);
+		
+		String dir = fd.getDirectory();
+		String inputName = fd.getFile();
+		
+		if(dir == null || inputName == null) {
+			return;
+		}
+
+		String extName = emv.getJtfExtRsm().getText().trim();
+		String ext = extName.substring(extName.indexOf("."));
+		
+		try {
+			client = new Socket("211.63.89.144", 7002);
+			
+			dos = new DataOutputStream(client.getOutputStream());
+			dis = new DataInputStream(client.getInputStream());
+			
+			dos.writeUTF("ee_ext_request");
+			dos.flush();
+			
+			dos.writeUTF(extName); 
+			dos.flush();
+			
+			int fileSize = dis.readInt();
+			
+			fos = new FileOutputStream(dir+inputName+ext);
+			
+			byte[] readData = new byte[512];
+			int len = 0;
+			while(fileSize > 0) {
+				len = dis.read(readData);
+				fos.write(readData, 0, len);
+				fos.flush();
+				fileSize--;
+			}
+			
+			dos.writeUTF("done");
+			dos.flush();
+			
+			msgCenter("이력서 다운로드를 완료했습니다.");
+			
+		} finally {
+			au.closeStreams(client, dos, dis, fos, fis, null, null);
+		}
+	}
 	
 	
 	/**
@@ -140,7 +201,6 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 				
 				if (changeExtFlag) { // 이력서는 Admin Server에 저장할 필요 없음
 					// 기존 이력서를 FS에서 삭제
-					System.out.println("---"+eivo.getExtResume());
 					if (eivo.getExtResume() != null) {
 						au.deleteFile(eivo.getExtResume(), "ext", client, dos, dis);
 					}
