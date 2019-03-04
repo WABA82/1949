@@ -135,7 +135,7 @@ public class SetNewPassController extends WindowAdapter implements ActionListene
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+		if(e.getKeyCode()==10) {
 			changePass();
 			}
 	}

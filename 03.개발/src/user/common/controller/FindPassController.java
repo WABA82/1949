@@ -88,7 +88,7 @@ public class FindPassController extends WindowAdapter implements ActionListener,
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+		if(e.getKeyCode()==10) {
 			checkUserData();
 			}
 	}
