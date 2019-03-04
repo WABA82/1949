@@ -3,6 +3,8 @@ package user.common.controller;
 import java.awt.event.ActionEvent;
 
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
@@ -23,7 +25,7 @@ import user.dao.CommonDAO;
 import user.ee.view.EeMainView;
 import user.er.view.ErMainView;
 
-public class LoginController extends WindowAdapter implements ActionListener, MouseListener {
+public class LoginController extends WindowAdapter implements ActionListener, MouseListener, KeyListener {
    private LoginView lv;
    private EeMainVO emvo;
    private ErMainVO ermvo;
@@ -35,6 +37,15 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 
    }// »ý¼ºÀÚ
 
+   @Override
+   public void keyPressed(KeyEvent ke) {
+	   if(ke.getKeyCode()==KeyEvent.VK_TAB) {
+		   lv.getJpfPass().requestFocus();
+	   }//end if
+   }//key press
+
+   
+   
    @Override
    public void mouseClicked(MouseEvent me) {
       if (me.getSource() == lv.getJlSignUp()) {
@@ -48,7 +59,7 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 
    @Override
    public void actionPerformed(ActionEvent ae) {
-      if (ae.getSource() == lv.getJbLogin()) {
+      if (ae.getSource() == lv.getJbLogin() || ae.getSource()==lv.getJpfPass()) {
          try {
             login();
          } catch (SQLException e) {
@@ -110,20 +121,22 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
       new FindPassView(lv);
    }// findPass
 
+   
+   
+   
    @Override
-   public void mousePressed(MouseEvent e) {
-   }
+   public void mousePressed(MouseEvent e) {}
+   @Override
+   public void mouseReleased(MouseEvent e) {}
+   @Override
+   public void mouseEntered(MouseEvent e) {}
+   @Override
+   public void mouseExited(MouseEvent e) {}
 
-   @Override
-   public void mouseReleased(MouseEvent e) {
-   }
+@Override
+public void keyTyped(KeyEvent e) {}
 
-   @Override
-   public void mouseEntered(MouseEvent e) {
-   }
-
-   @Override
-   public void mouseExited(MouseEvent e) {
-   }
+@Override
+public void keyReleased(KeyEvent e) {}
 }
 

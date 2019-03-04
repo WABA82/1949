@@ -50,7 +50,7 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
    
    @Override
    public void actionPerformed(ActionEvent ae) {
-      if(ae.getSource()==sav.getJbSearch()) {
+      if(ae.getSource()==sav.getJbSearch() || ae.getSource()==sav.getJtfDong()) {
          String dong = sav.getJtfDong().getText().trim();
          if(dong.equals("")||dong==null) {
             JOptionPane.showMessageDialog(sav, "동을 입력하세요.");
