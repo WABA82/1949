@@ -121,7 +121,7 @@ public class CoModifyView extends JDialog {
 		jbRemove.addActionListener(cmc);
 		jbClose.addActionListener(cmc);
 
-		setBounds(100, 100, 480, 540);
+		setBounds(ammv.getX()+100, ammv.getY()+100, 480, 540);
 		setResizable(false);
 		setVisible(true);
 	}// CoModifyView »ý¼ºÀÚ
