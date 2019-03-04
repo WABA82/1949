@@ -2,6 +2,8 @@ package user.common.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
@@ -18,7 +20,7 @@ import user.common.vo.SetPassVO;
 import user.dao.CommonDAO;
 import user.run.LogTestChangePass;
 
-public class SetNewPassController extends WindowAdapter implements ActionListener {
+public class SetNewPassController extends WindowAdapter implements ActionListener,KeyListener {
 
 	private SetNewPassView snpv;
 	private String id;
@@ -130,4 +132,17 @@ public class SetNewPassController extends WindowAdapter implements ActionListene
 	public void windowClosing(WindowEvent e) {
 		snpv.dispose();
 	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+			changePass();
+			}
+	}
+	@Override
+	public void keyTyped(KeyEvent e) {}
+
+
+	@Override
+	public void keyReleased(KeyEvent e) {}
 }

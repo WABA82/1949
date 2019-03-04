@@ -63,6 +63,9 @@ public class FindPassView extends JDialog {
 		addWindowListener(fpc);
 		jbValidation.addActionListener(fpc);
 		jbClose.addActionListener(fpc);
+		jtfId.addKeyListener(fpc);
+		jcbQuestion.addKeyListener(fpc);
+		jtfAnswer.addKeyListener(fpc);
 		
 		setBounds(500, 200, 400, 310);
 		setResizable(false);

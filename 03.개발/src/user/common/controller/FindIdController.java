@@ -4,6 +4,8 @@ import static javax.swing.JOptionPane.showMessageDialog;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
@@ -15,7 +17,7 @@ import user.common.view.FindIdView;
 import user.common.vo.FindIdVO;
 import user.dao.CommonDAO;
 
-public class FindIdController extends WindowAdapter implements ActionListener {
+public class FindIdController extends WindowAdapter implements ActionListener,KeyListener{
 
 	private FindIdView fiv;
 	
@@ -102,7 +104,7 @@ public class FindIdController extends WindowAdapter implements ActionListener {
 		}//end catch
 		
 
-	}
+	}//checkUser
 	
 	
 	@Override
@@ -120,4 +122,17 @@ public class FindIdController extends WindowAdapter implements ActionListener {
 	public void windowClosing(WindowEvent e) {
 		fiv.dispose();
 	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+		checkUser();
+		}
+	}
+	
+	
+	@Override
+	public void keyTyped(KeyEvent e) {}
+	@Override
+	public void keyReleased(KeyEvent e) {}
 }
