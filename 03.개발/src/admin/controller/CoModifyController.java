@@ -92,6 +92,10 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 	private boolean chkEstDate(String estDate) {
 		boolean flag = false;
 
+		if (estDate.length() < 7 ) { // 0000-00-00
+			return flag;
+		}
+		
 		int yyyy = 0;
 		int mm = 0;
 		int dd = 0;
@@ -104,6 +108,7 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 			mm = Integer.parseInt(number.substring(4,6));
 			dd = Integer.parseInt(number.substring(6,8));
 			
+			flag = true;
 		} catch (NumberFormatException npe) {
 			flag = false;
 		}
@@ -139,12 +144,26 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 			String coName = cmv.getJtfCoName().getText().trim();
 			String estDate = cmv.getJtfEstDate().getText().trim();
 			
-			if(chkEstDate(estDate)) {
+			if ("".equals(coName)) {
+				msgCenter("회사명은 필수 입력항목입니다.");
+				cmv.getJtfCoName().requestFocus();
+				return;
+			}
+			
+			if(!chkEstDate(estDate)) {
 				msgCenter("설립연도 입력값을 확인해주세요.\n입력예)2019-01-01");
+				cmv.getJtfEstDate().setText("");
+				cmv.getJtfEstDate().requestFocus();
 				return;
 			} 
 			
 			String coDesc = cmv.getJtaCoDesc().getText().trim();
+			
+			if ("".equals(coDesc)) {
+				msgCenter("기업설명은 필수 입력항목입니다.");
+				cmv.getJtaCoDesc().requestFocus();
+				return;
+			}
 			
 			String img1,img2,img3,img4 = "";
 			
@@ -171,6 +190,8 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 				memberNum = Integer.parseInt(cmv.getMemberNum().getText().trim());
 			} catch (NumberFormatException npe) {
 				msgCenter("사원수는 숫자만 입력가능합니다.");
+				cmv.getMemberNum().setText("");
+				cmv.getMemberNum().requestFocus();
 				return;
 			}
 			

@@ -134,6 +134,7 @@ public class EeModifyView extends JDialog {
 		
 		jtfName=new JTextField(eivo.getName());
 		add(jtfName);
+		jtfName.setEditable(false);
 		jtfName.setBounds(325, 65, 130, 20);
 		
 		//Combobox
@@ -170,7 +171,7 @@ public class EeModifyView extends JDialog {
 		jtfExtRsm.setBounds(325, 391, 130, 20);
 		
 		//·¹ÀÌ¾Æ¿ô
-		setBounds(ammv.getX()+400, ammv.getY()+100, 500, 540);
+		setBounds(ammv.getX()+500, ammv.getY()+50, 500, 540);
 		
 		EeModifyController emc = new EeModifyController(this, ammv, ammc, eivo);
 		jbRemove.addActionListener(emc);
