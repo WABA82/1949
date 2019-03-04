@@ -6,6 +6,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
@@ -18,14 +19,14 @@ import user.run.LogTestRemoveUser;
 
 public class RemoveUserController extends WindowAdapter implements ActionListener {
 	
-	private ErMainView ermv;
+	private JFrame jf;
 	private ChangeUserInfoView cuiv;
 	private RemoveUserView ruv;
 	private String id;
 	
 
-	public RemoveUserController(ErMainView ermv,ChangeUserInfoView cuiv ,RemoveUserView ruv, String id) {
-		this.ermv=ermv;
+	public RemoveUserController(JFrame jf, ChangeUserInfoView cuiv ,RemoveUserView ruv, String id) {
+		this.jf=jf;
 		this.cuiv=cuiv;
 		this.ruv=ruv;
 		this.id=id;
@@ -57,7 +58,7 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 						JOptionPane.showMessageDialog(ruv, "정상탈퇴처리되었습니다.");
 						ruv.dispose();
 						cuiv.dispose();
-						ermv.dispose();
+						jf.dispose();
 						new LoginView();
 						new LogTestRemoveUser();
 					}//end if

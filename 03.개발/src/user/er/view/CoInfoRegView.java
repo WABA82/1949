@@ -37,12 +37,10 @@ public class CoInfoRegView extends JDialog {
 		jbReg = new JButton("등록");
 		 jbClose = new JButton("닫기");
 		
-//		 ImageIcon ii1=new ImageIcon(location)
-		 
-		jlImg1 = new JLabel( new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/no_co_img1.png"));
-		jlImg2 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/no_co_img2.png"));
-		jlImg3 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/no_co_img3.png"));
-		jlImg4 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/no_co_img4.png"));
+		jlImg1 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/no_co_img1.png"));
+		jlImg2 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/no_co_img2.png"));
+		jlImg3 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/no_co_img3.png"));
+		jlImg4 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/no_co_img4.png"));
 		
 		//배치
 		setLayout(null);
@@ -72,7 +70,7 @@ public class CoInfoRegView extends JDialog {
 		jbClose.setBounds(342, 446, 92, 24);
 		
 		//이벤트 등록 
-		CoInfoRegController crc= new CoInfoRegController(this, erId);
+		CoInfoRegController crc= new CoInfoRegController(this, erId, emv);
 		addWindowListener(crc);
 		jbClose.addActionListener(crc);
 		jbReg.addActionListener(crc);
@@ -80,7 +78,6 @@ public class CoInfoRegView extends JDialog {
 		jlImg2.addMouseListener(crc);
 		jlImg3.addMouseListener(crc);
 		jlImg4.addMouseListener(crc);
-		
 		
 		add(jlCoName);
 		add(jlEstDate);
@@ -101,8 +98,8 @@ public class CoInfoRegView extends JDialog {
 		add(jbClose);
 		
 		setBounds(100, 100, 480, 540);
+		setResizable(false);
 		setVisible(true);
-		
 	}//생성자
 
 	public JButton getJbReg() {
@@ -144,9 +141,4 @@ public class CoInfoRegView extends JDialog {
 	public JTextArea getJtaCoDesc() {
 		return jtaCoDesc;
 	}
-	
-//	public static void main(String[] args) {
-//		new CoInfoRegView(null, "song9912");
-//	}
-	
 }

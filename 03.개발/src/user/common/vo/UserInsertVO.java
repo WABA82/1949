@@ -69,15 +69,11 @@ public class UserInsertVO {
 	public String getUserType() {
 		return userType;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "UserInsertVO [id=" + id + ", pass=" + pass + ", name=" + name + ", ssn=" + ssn + ", tel=" + tel
 				+ ", email=" + email + ", addrSeq=" + addrSeq + ", addrDetail=" + addrDetail + ", questionType="
 				+ questionType + ", answer=" + answer + ", userType=" + userType + "]";
 	}
-
-
-
-	
 }

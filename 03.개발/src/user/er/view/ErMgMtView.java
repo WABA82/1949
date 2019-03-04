@@ -19,8 +19,8 @@ public class ErMgMtView extends JDialog {
 	private DefaultTableModel dtmEr;
 	private JTable jtEr;
 	
-	public ErMgMtView(ErMainView rmv, List<ErListVO> list, String erId) {
-		super(rmv,"구인 정보 관리",true);
+	public ErMgMtView(ErMainView emv, List<ErListVO> list, String erId) {
+		super(emv,"구인 정보 관리",true);
 		
 		String[] eeInfoColumns= {"번호","구인정보번호","제목","직급","근무지역","학력","고용형태","등록일"};
 		dtmEr=new DefaultTableModel(eeInfoColumns, 0) {

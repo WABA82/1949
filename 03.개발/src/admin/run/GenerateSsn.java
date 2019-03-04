@@ -22,7 +22,41 @@ public class GenerateSsn {
 		int sumVal = 0;
 		int j = 2;
 		for(int i=0; i<12; i++) {
-			arrSsn[i] = r.nextInt(10);
+			// 제대로된 주민번호를 만들도록 제약을 설정
+			// 55년생부터 99 + 00년생까지 
+			// 01~12월
+			// 01~31일
+			// 주민번호 앞자리는 1~4
+			
+			if(i < 2) { // 년
+				arrSsn[i] = r.nextInt(5)+5;
+			}
+			if (i == 2) { // 월 첫자리
+				arrSsn[i] = r.nextInt(2);
+			}
+			if (i == 3) { // 월 둘째자리
+				if (arrSsn[i-1] == 1) {
+					arrSsn[i] = r.nextInt(3);
+				} else {
+					arrSsn[i] = r.nextInt(10);
+				}
+			}
+			if (i == 4) { // 일 첫자리
+				arrSsn[i] = r.nextInt(4);
+			}
+			if (i == 5) { // 일 둘째자리
+				if (arrSsn[i-1] == 3) {
+					arrSsn[i] = r.nextInt(2);
+				} else {
+					arrSsn[i] = r.nextInt(10);
+				}
+			}
+			if (i == 6) { // 두민번호 뒷 첫자리(1~4)
+				arrSsn[i] = r.nextInt(4)+1;
+			} 
+			if (i > 6) {
+				arrSsn[i] = r.nextInt(10);
+			}
 			
 			if(j > 9) {
 				j = 2;
