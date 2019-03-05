@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -15,7 +14,6 @@ import user.common.view.SearchAddrView;
 import user.common.view.SignUpView;
 import user.common.vo.UserInsertVO;
 import user.dao.CommonDAO;
-import user.run.LogTestSignUp;
 import user.util.UserLog;
 
 public class SignUpController extends WindowAdapter implements ActionListener {

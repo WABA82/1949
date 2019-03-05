@@ -10,10 +10,10 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 import user.common.view.FindIdView;
 import user.common.view.FindPassView;
@@ -24,15 +24,20 @@ import user.common.vo.ErMainVO;
 import user.dao.CommonDAO;
 import user.ee.view.EeMainView;
 import user.er.view.ErMainView;
+import user.util.UserLog;
 
 public class LoginController extends WindowAdapter implements ActionListener, MouseListener, KeyListener {
    private LoginView lv;
    private EeMainVO emvo;
    private ErMainVO ermvo;
    private CommonDAO C_dao;
+   private UserLog ul;
+   private Map<String, Integer> fail; 
 
    public LoginController(LoginView lv) {
       this.lv = lv;
+      ul=new UserLog();
+      fail = new HashMap<String, Integer>();
       C_dao=CommonDAO.getInstance();
 
    }// 생성자
@@ -74,6 +79,7 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
    }
 
    public void login() throws SQLException {
+	   	
          String id=lv.getJtfId().getText().trim();
          String pass=new String(lv.getJpfPass().getPassword());
          
@@ -88,6 +94,7 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
             return;
          }
          
+         
          String userType="";
          CommonDAO c_dao = CommonDAO.getInstance();
          
@@ -95,18 +102,33 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
          String act = C_dao.selectActivation(id);   //er도 act 필요하기 때문에 86번줄을 여기로 옮겨줌 
          if(userType.equals("E")) {
             emvo = C_dao.selectEeMain(id, act);
+            fail.clear();
             new EeMainView(emvo);
             lv.dispose();
          }else if(userType.equals("R")){
             ermvo = C_dao.selectErMain(id, act);
+            fail.clear();
             new ErMainView(ermvo);
             lv.dispose();
          }else{
-          JOptionPane.showMessageDialog(lv, "아이디와 비밀번호를 확인해주세요");
+        	 //hack ++;
+        	 if(fail.containsKey(id)) {
+        		 fail.put(id, fail.get(id)+1);
+        	 }else {
+        		 fail.put(id, 1);
+        	 }//end else
+          JOptionPane.showMessageDialog(lv, "아이디와 비밀번호를 확인해주세요 5번 중 "+fail.get(id)+"번 로그인 실패");
+          if(fail.get(id)==5) {
+        	  JOptionPane.showMessageDialog(lv, "5회이상 로그인에 실패하였습니다. 프로그램을 종료합니다.");
+        	  ul.sendLog(id, "비정상 접속 시도 : 로그인이 5회이상 실패했습니다.");
+        	  System.exit(-1);
+        	  return;
+          }//hack
            lv.getJtfId().setText("");
            lv.getJpfPass().setText("");
            lv.getJtfId().requestFocus();
-         }
+         }//end else
+         
       }// login
 
    public void signUp() {
