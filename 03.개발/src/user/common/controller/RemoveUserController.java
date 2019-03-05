@@ -8,14 +8,11 @@ import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
 
 import user.common.view.ChangeUserInfoView;
 import user.common.view.LoginView;
 import user.common.view.RemoveUserView;
 import user.dao.CommonDAO;
-import user.ee.view.EeMainView;
-import user.er.view.ErMainView;
 import user.run.LogTestRemoveUser;
 
 public class RemoveUserController extends WindowAdapter implements ActionListener {

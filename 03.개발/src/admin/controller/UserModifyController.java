@@ -7,8 +7,6 @@ import java.awt.event.WindowEvent;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -41,8 +39,6 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 	private Socket client;
 	private DataOutputStream dos;
 	private DataInputStream dis;
-	private FileInputStream fis;
-	private FileOutputStream fos;
 	
 	private boolean userTypeFlag;
 	

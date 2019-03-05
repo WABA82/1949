@@ -31,7 +31,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener 
 
 	private AdminMgMtView ammv;
 	private AdminDAO a_dao;
-	private Thread threadUser, threadEe, threadEr, threadCo;
+	private Thread threadUser, threadEe, threadEr, threadCo; ///////////// 구현예정0306
 	
 	private static final int DBL_CLICK = 2;
 	
@@ -155,10 +155,10 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener 
 				rowData[9] = elvo.getEducation();
 				switch(elvo.getHireType()) {
 				case "N" : 
-					rowData[10] = "비정규";
+					rowData[10] = "계약직";
 					break;
 				case "C" :
-					rowData[10] = "정규";
+					rowData[10] = "정규직";
 					break;
 				case "F" :
 					rowData[10] = "프리";
