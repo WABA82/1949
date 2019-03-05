@@ -8,15 +8,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import user.dao.ErDAO;
-import user.ee.vo.EeInterestAndAppVO;
 import user.er.view.ErMgMtView;
 import user.er.view.ErModifyView;
 import user.er.vo.ErDetailVO;
-import user.er.vo.ErListVO;
 import user.er.vo.ErModifyVO;
 import user.util.UserLog;
 

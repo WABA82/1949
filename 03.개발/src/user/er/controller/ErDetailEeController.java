@@ -1,7 +1,6 @@
 package user.er.controller;
 
 import java.awt.FileDialog;
-import java.awt.GraphicsDevice.WindowTranslucency;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -21,7 +20,6 @@ import javax.swing.JOptionPane;
 
 import user.dao.ErDAO;
 import user.er.view.ErDetailEeView;
-import user.er.vo.DetailAppEeVO;
 import user.er.vo.DetailEeInfoVO;
 import user.er.vo.ErInterestVO;
 import user.util.UserLog;

@@ -12,7 +12,6 @@ import javax.swing.JOptionPane;
 
 import user.dao.ErDAO;
 import user.er.view.ErAddView;
-import user.er.view.ErModifyView;
 import user.er.vo.ErAddVO;
 import user.util.UserLog;
 
