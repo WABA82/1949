@@ -55,7 +55,7 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 		}
 		edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/r_heart.png"));
 		JOptionPane.showMessageDialog(edev, "관심 구직자에 추가되었습니다!");
-		ul.sendLog(erId,"관심 구직자를 추가하였습니다.");
+		ul.sendLog(erId, "["+eeNum+ "]번호 유저를 관심 구직자로 추가하였습니다.");
 		try {
 			devo= erdao.selectDetailEe(eeNum, erId);
 
@@ -77,7 +77,7 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 		}
 		if(deleteFlag) {
 			JOptionPane.showMessageDialog(edev, "관심 구직자를 취소했습니다.");
-			ul.sendLog(erId, "관심 구직자를 취소하였습니다.");
+			ul.sendLog(erId, "["+eeNum+ "]번호 유저를 관심 구직자에서 취소하였습니다.");
 			edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/b_heart.png"));
 		}else {
 			JOptionPane.showMessageDialog(edev, "리스트삭제에 실패했습니다.");

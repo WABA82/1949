@@ -144,21 +144,24 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 			//등록하기
 			if(emv.getJtfSubject().getText().trim()==null||emv.getJtfSubject().getText().trim().equals("")){
 				JOptionPane.showMessageDialog(emv, "제목은 필수 입력입니다.");
+				emv.getJtfSubject().requestFocus();
 				return;
 			}
 			if(emv.getJtfSal().getText().trim()==null||emv.getJtfSal().getText().trim().equals("")){
 				JOptionPane.showMessageDialog(emv, "급여는 필수 입력입니다.");
+				emv.getJtfSal().requestFocus();
 				return;
 			}
 			if(emv.getJtaErDesc().getText().trim()==null||emv.getJtaErDesc().getText().trim().equals("")){
 				JOptionPane.showMessageDialog(emv, "상세설명은 필수 입력입니다.");
+				emv.getJtaErDesc().requestFocus();
 				return;
 			}
 			try {
 				modifyEr();
 			}catch(NumberFormatException nfe) {
 				JOptionPane.showMessageDialog(emv, "급여는 숫자형식으로 입력해야합니다.");
-				nfe.printStackTrace();
+				emv.getJtfSal().requestFocus();
 			}
 			
 		}
