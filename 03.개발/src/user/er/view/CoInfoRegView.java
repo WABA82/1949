@@ -1,6 +1,7 @@
 package user.er.view;
 
 import java.awt.Color;
+import java.awt.Font;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -31,18 +32,20 @@ public class CoInfoRegView extends JDialog {
 		JLabel jlEstDate = new JLabel("설립년도");
 		JLabel jlmemberNum = new JLabel(" 사원수");
 		
+		JLabel jlCoImgGuide=new JLabel("※이미지란을 클릭해서 이미지 등록이 가능합니다.");
+		jlCoImgGuide.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
+		jlCoImgGuide.setForeground(new Color(0xFF0000));
+		
 		jtaCoDesc = new JTextArea();
 		JScrollPane jspTaDesc = new JScrollPane(jtaCoDesc);
 		
 		jbReg = new JButton("등록");
 		 jbClose = new JButton("닫기");
 		
-//		 ImageIcon ii1=new ImageIcon(location)
-		 
-		jlImg1 = new JLabel( new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/no_co_img1.png"));
-		jlImg2 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/no_co_img2.png"));
-		jlImg3 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/no_co_img3.png"));
-		jlImg4 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/coImg/no_co_img4.png"));
+		jlImg1 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/no_co_img1.png"));
+		jlImg2 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/no_co_img2.png"));
+		jlImg3 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/no_co_img3.png"));
+		jlImg4 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/no_co_img4.png"));
 		
 		//배치
 		setLayout(null);
@@ -65,6 +68,9 @@ public class CoInfoRegView extends JDialog {
 		jlImg3.setBorder(new LineBorder(Color.black));
 		jlImg4.setBorder(new LineBorder(Color.black));
 		
+		jlCoImgGuide.setBounds(30, 226, 300, 100);
+		
+		
 		jspTaDesc.setBounds(32, 289, 405, 133);
 		jspTaDesc.setBorder(new TitledBorder("기업 설명"));
 		
@@ -81,7 +87,6 @@ public class CoInfoRegView extends JDialog {
 		jlImg3.addMouseListener(crc);
 		jlImg4.addMouseListener(crc);
 		
-		
 		add(jlCoName);
 		add(jlEstDate);
 		add(jlmemberNum);
@@ -95,14 +100,16 @@ public class CoInfoRegView extends JDialog {
 		add(jlImg3);
 		add(jlImg4);
 		
+		add(jlCoImgGuide);
+		
 		add(jspTaDesc);
 		
 		add(jbReg);
 		add(jbClose);
 		
 		setBounds(100, 100, 480, 540);
+		setResizable(false);
 		setVisible(true);
-		
 	}//생성자
 
 	public JButton getJbReg() {
@@ -144,9 +151,4 @@ public class CoInfoRegView extends JDialog {
 	public JTextArea getJtaCoDesc() {
 		return jtaCoDesc;
 	}
-	
-//	public static void main(String[] args) {
-//		new CoInfoRegView(null, "song9912");
-//	}
-	
 }

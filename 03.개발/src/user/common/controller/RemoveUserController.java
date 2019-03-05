@@ -6,6 +6,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
@@ -13,22 +14,23 @@ import user.common.view.ChangeUserInfoView;
 import user.common.view.LoginView;
 import user.common.view.RemoveUserView;
 import user.dao.CommonDAO;
+import user.ee.view.EeMainView;
 import user.er.view.ErMainView;
 import user.run.LogTestRemoveUser;
 
 public class RemoveUserController extends WindowAdapter implements ActionListener {
 	
-	private ErMainView ermv;
 	private ChangeUserInfoView cuiv;
 	private RemoveUserView ruv;
 	private String id;
 	
-
-	public RemoveUserController(ErMainView ermv,ChangeUserInfoView cuiv ,RemoveUserView ruv, String id) {
-		this.ermv=ermv;
+	private JFrame jf;
+	
+	public RemoveUserController(JFrame jf, ChangeUserInfoView cuiv ,RemoveUserView ruv, String id) {
 		this.cuiv=cuiv;
 		this.ruv=ruv;
 		this.id=id;
+		this.jf=jf;
 	}
 	
 
@@ -50,14 +52,15 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 			
 		try {
 			if(pass1.equals(pass2)) {
-				if(!(CommonDAO.getInstance().login(id, pass1)).equals("R")) {
+				if(!(CommonDAO.getInstance().login(id, pass1)).equals("R") && !(CommonDAO.getInstance().login(id, pass1)).equals("E")) {
 					JOptionPane.showMessageDialog(ruv, "비밀번호가 올바르지 않습니다.");
 				}else {
 					if(CommonDAO.getInstance().deleteUserInfo(id)) {
 						JOptionPane.showMessageDialog(ruv, "정상탈퇴처리되었습니다.");
 						ruv.dispose();
 						cuiv.dispose();
-						ermv.dispose();
+						jf.dispose();
+						
 						new LoginView();
 						new LogTestRemoveUser();
 					}//end if

@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import user.common.view.ChangeUserInfoView;
@@ -27,6 +28,7 @@ import user.ee.view.EeMainView;
 import user.ee.vo.EeHiringVO;
 import user.ee.vo.EeInfoVO;
 import user.ee.vo.EeRegVO;
+import user.er.view.ErMainView;
 
 public class EeMainController extends WindowAdapter implements ActionListener, MouseListener {
 
@@ -36,6 +38,7 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 	private EeRegVO ervo;
 	private EeInfoVO eivo;
 	private UserInfoVO uivo;
+	
 	
 	public EeMainController(EeMainView emv, EeMainVO emvo) {
 		this.emvo = emvo;
@@ -64,9 +67,7 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 	 * @throws SQLException **/
 	public void mngEe() throws SQLException {
 		uivo=CommonDAO.getInstance().selectUserInfo(emvo.getEeId());
-//		System.out.println(uivo);
-		
-//		new ChangeUserInfoView(emv, uivo);
+		new ChangeUserInfoView(emv , uivo);
 
 	}//mngEe
 	

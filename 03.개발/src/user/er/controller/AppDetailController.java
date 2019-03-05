@@ -239,6 +239,7 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 			FileOutputStream fos = null;
 
 			try {
+//				socket = new Socket("localhost", 7002);
 				socket = new Socket("211.63.89.144", 7002);
 				dos = new DataOutputStream(socket.getOutputStream());
 

@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -18,8 +19,8 @@ public class ChangeUserInfoView extends JDialog {
 	private JTextField jtfId, jtfName, jtfTel, jtfZipcode, jtfAddr1, jtfAddr2, jtfEmail;
 	private JPasswordField jpfOriginalPass, jpfNewPass1, jpfNewPass2;
 	private JButton jbModify, jbDelete, jbClose, jbAddr;
-
-	public ChangeUserInfoView(ErMainView ermv, UserInfoVO uivo) {
+	
+	public ChangeUserInfoView( JFrame jf, UserInfoVO uivo) {
 		
 		setTitle("회원 정보 수정");
 		JLabel jlId = new JLabel("아이디");
@@ -125,7 +126,7 @@ public class ChangeUserInfoView extends JDialog {
 		jbClose.setBounds(233, 455, 92, 30);
 		add(jbClose);
 		
-		ChangeUserInfoController cuic=new ChangeUserInfoController(ermv, this, uivo);
+		ChangeUserInfoController cuic=new ChangeUserInfoController(jf, this, uivo);
 		addWindowListener(cuic);
 		jbModify.addActionListener(cuic);
 		jbDelete.addActionListener(cuic);
@@ -133,7 +134,7 @@ public class ChangeUserInfoView extends JDialog {
 		jbAddr.addActionListener(cuic);
 		
 	
-		setBounds(ermv.getX()+50,ermv.getY()+50,390,580);
+		setBounds(jf.getX()+50, jf.getY()+50,390,580);
 		setVisible(true);
 	
 	}

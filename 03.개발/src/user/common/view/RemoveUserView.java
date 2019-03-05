@@ -4,11 +4,13 @@ import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 
 import user.common.controller.RemoveUserController;
 import user.common.controller.SetNewPassController;
+import user.ee.view.EeMainView;
 import user.er.view.ErMainView;
 
 public class RemoveUserView extends JDialog {
@@ -16,8 +18,8 @@ public class RemoveUserView extends JDialog {
 	private JButton jbDelete, jbClose;
 	private JPasswordField jpfPass1, jpfPass2;
 	
-	public RemoveUserView(ChangeUserInfoView cuiv,ErMainView ermv, String id) {
-		super(ermv, "1949 - È¸¿ø Å»Åð", true);
+	public RemoveUserView(ChangeUserInfoView cuiv, JFrame jf, String id) {
+		super(jf, "1949 - È¸¿ø Å»Åð", true);
 		
 		
 		jpfPass1 = new JPasswordField(); 
@@ -53,7 +55,7 @@ public class RemoveUserView extends JDialog {
 		add(jbDelete);
 		add(jbClose);
 		
-		RemoveUserController ruc = new RemoveUserController(ermv,cuiv,this, id);
+		RemoveUserController ruc = new RemoveUserController(jf, cuiv,this, id);
 		jbDelete.addActionListener(ruc);
 		jbClose.addActionListener(ruc);
 		

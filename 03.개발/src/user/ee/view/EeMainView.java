@@ -28,13 +28,13 @@ public class EeMainView extends JFrame {
 		super("1949 - 일반사용자 ["+emvo.getName()+"]");
 		this.emvo=emvo;
 		JLabel jlAct = new JLabel("기본정보 등록여부 : ");
-		jlImg = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/eeImg/"+emvo.getImg()));
+		jlImg = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/ee/"+emvo.getImg()));
 		
 		jlImg.setBorder(new TitledBorder("내 이미지"));
 		jlActivation = new JLabel( emvo.getActivation() );
 			
-		jlUserInfo = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/eeImg/회원정보관리아이콘.png") );
-		jlLogOut = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/file/eeImg/로그아웃이미지.png"));
+		jlUserInfo = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/userInfoMgmt.png") );
+		jlLogOut = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/logout.png"));
 		
 		jbEeInfo = new JButton("기본정보 관리");
 		jbErInfo = new JButton("구인정보 보기");

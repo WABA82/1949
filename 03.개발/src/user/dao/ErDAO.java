@@ -54,6 +54,7 @@ public class ErDAO {
 
 		Connection con = null;
 
+		//String url = "jdbc:oracle:thin:@localhost:1521:orcl"; // 집 개발용
 		String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl";
 		String id = "kanu";
 		String pass = "share";
@@ -1011,7 +1012,7 @@ public class ErDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean updateActivation(Connection con, ActivationVO avo) throws SQLException {
+	public boolean updateActivation(Connection con, String id) throws SQLException {
 		boolean updateFlag = false;
 
 		StringBuilder updateActivation = new StringBuilder();
@@ -1022,7 +1023,7 @@ public class ErDAO {
 
 		coPstmt2=con.prepareStatement(updateActivation.toString());
 		
-		coPstmt2.setString(1, avo.getId());
+		coPstmt2.setString(1, id);
 
 		int cnt = coPstmt2.executeUpdate();
 
@@ -1155,28 +1156,27 @@ public class ErDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean updateErInfo(CoInsertVO civo, ActivationVO avo) throws SQLException {
+	public boolean updateErInfo(CoInsertVO civo) throws SQLException {
 		boolean updateEr = false;
 		
 		try {	
 			con=getConn();
 			con.setAutoCommit(false);
 		
-		try {	
-			boolean insert = insertCoInfo(con, civo);
-				System.out.println("insert는 값은?"+insert);
-			boolean update = updateActivation(con, avo);
-				System.out.println("update의 값은?"+update);
-			if( insert && update) {
-				updateEr=true;
-				con.commit();
-			}else {
-				con.rollback();
-			}//end else
-			
-		}finally {
-			closeAll();
-		}//end finally
+			try {	
+				boolean insert = insertCoInfo(con, civo);
+				boolean update = updateActivation(con, civo.getErId());
+				
+				if( insert && update) {
+					updateEr=true;
+					con.commit();
+				}else {
+					con.rollback();
+				}//end else
+				
+			}finally {
+				closeAll();
+			}//end finally
 		
 		}catch(SQLException e) {
 			try {	
@@ -1186,8 +1186,6 @@ public class ErDAO {
 			}
 			e.printStackTrace();
 		}
-		
-		
 		return updateEr;
 	}
 

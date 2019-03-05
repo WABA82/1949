@@ -265,7 +265,7 @@ public class SignUpController extends WindowAdapter implements ActionListener {
 		} // end else
 
 		if (tel.indexOf("-") != 3 || !tel.substring((tel.length()) - 5, tel.length() - 4).equals("-")) {
-			// System.out.println("첫쨰 하이픈 위치 :"+tel.indexOf("-") +"//둘째 하이픈 인덱스
+			// System.out.println("첫 하이픈 위치 :"+tel.indexOf("-") +"//둘째 하이픈 인덱스
 			// 가져오기/"+tel.substring((tel.length())-5, tel.length()-4)+"tel의 길이 :
 			// "+tel.length());
 			JOptionPane.showMessageDialog(suv, "연락처 형식이 잘못되었습니다.하이픈 - ,- 인덱스로 거르기");
@@ -321,8 +321,6 @@ public class SignUpController extends WindowAdapter implements ActionListener {
 			resultMsg = c_dao.insertUser(uivo);
 			JOptionPane.showMessageDialog(suv, resultMsg);
 			new LogTestSignUp();
-			
-			
 			
 			suv.dispose();
 		} catch (SQLException e) {

@@ -36,7 +36,7 @@ public class EeInfoRegView extends JDialog {
 		this.ervo=ervo;
 		
 		//image
-		ImageIcon ii=new ImageIcon("C:/dev/1949/03.개발/no_img_files/no_ee_img.png");
+		ImageIcon ii=new ImageIcon("C:/dev/1949/03.개발/src/user/img/ee/no_ee_img.png");
 		jlImage=new JLabel(ii);
 		jlImage.setBorder(new TitledBorder("구직자 이미지"));
 		jlImage.setBounds(38, 20, 160, 225);
@@ -151,18 +151,16 @@ public class EeInfoRegView extends JDialog {
 		
 		//이벤트 등록
 		EeInfoRegController eirc=new EeInfoRegController(this, ervo.getEeId(), emv);
+		addWindowListener(eirc);
 		jbRegisterExt.addActionListener(eirc);
 		jbClose.addActionListener(eirc);
 		jbRegisterImg.addActionListener(eirc);
 		jbRegister.addActionListener(eirc);
 //		
 		setLayout(null);
-		setBounds( emv.getX()+450, emv.getY(), 490, 465);
-		
-		setVisible(true);
+		setBounds( emv.getX()+250, emv.getY()+100, 490, 465);
 		setResizable(false);
-//		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
+		setVisible(true);
 	}//EeInfoRegView
 
 	
