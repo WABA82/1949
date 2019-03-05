@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -50,40 +51,45 @@ public class FileServerHelper {
 		String flag = dis.readUTF();
 		System.out.println(flag);
 		
-		switch(flag) {
-		case "coImgs_list_req": // 없는 co 파일목록 전송
-			coImgsListRequest();
-			break;
-		case "eeImgs_list_req": // 없는 ee 파일목록 전송
-			eeImgsListRequest();
-			break;
-		case "coImg_register": // co Img 추가
-			fileReg(CO_IMG);
-			break;
-		case "coImg_delete": // co Img 삭제
-			fileDel(CO_IMG);
-			break;
-		case "coImg_request": // co Img 전송
-			fileReq(CO_IMG);
-			break;
-		case "eeImg_register": // ee Img 등록
-			fileReg(EE_IMG);
-			break;
-		case "eeImg_delete": // ee Img 삭제
-			fileDel(EE_IMG);
-			break;
-		case "eeImg_request": // ee Img 전송
-			fileReq(EE_IMG);
-			break;
-		case "ee_ext_request": // ee 외부이력서 전송
-			fileReq(EE_EXT);
-			break;
-		case "ee_ext_register": // ee 외부이력서 등록
-			fileReg(EE_EXT);
-			break;
-		case "ee_ext_delete": // ee 외부이력서 삭제
-			fileDel(EE_EXT);
-			break;
+		try {
+			switch(flag) {
+			case "coImgs_list_req": // 없는 co 파일목록 전송
+				coImgsListRequest();
+				break;
+			case "eeImgs_list_req": // 없는 ee 파일목록 전송
+				eeImgsListRequest();
+				break;
+			case "coImg_register": // co Img 추가
+				fileReg(CO_IMG);
+				break;
+			case "coImg_delete": // co Img 삭제
+				fileDel(CO_IMG);
+				break;
+			case "coImg_request": // co Img 전송
+				fileReq(CO_IMG);
+				break;
+			case "eeImg_register": // ee Img 등록
+				fileReg(EE_IMG);
+				break;
+			case "eeImg_delete": // ee Img 삭제
+				fileDel(EE_IMG);
+				break;
+			case "eeImg_request": // ee Img 전송
+				fileReq(EE_IMG);
+				break;
+			case "ee_ext_request": // ee 외부이력서 전송
+				fileReq(EE_EXT);
+				break;
+			case "ee_ext_register": // ee 외부이력서 등록
+				fileReg(EE_EXT);
+				break;
+			case "ee_ext_delete": // ee 외부이력서 삭제
+				fileDel(EE_EXT);
+				break;
+			}
+		} catch (FileNotFoundException e) {
+			// File없어도 서버가 죽지 않도록 예외처리 
+			System.err.println("FileServer Error! : "+e.getMessage());
 		}
 		
 		closeAll();
@@ -95,6 +101,7 @@ public class FileServerHelper {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
+	@SuppressWarnings("unchecked")
 	public void coImgsListRequest() throws IOException, ClassNotFoundException {
 		// 현재 파일서버가 가진 파일명들을 리스트로 저장
 		List<String> listImg = new ArrayList<String>();
@@ -137,11 +144,9 @@ public class FileServerHelper {
 			
 			fis.close();
 			fis = new FileInputStream(new File(filePath+"/"+fileName));
-			int cn=0;
 			while((len = fis.read(readData)) != -1) {
 				dos.write(readData, 0, len);
 				dos.flush();
-				cn++;
 			}
 			dis.readUTF();
 			arrCnt=0;
@@ -154,6 +159,7 @@ public class FileServerHelper {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
+	@SuppressWarnings("unchecked")
 	public void eeImgsListRequest() throws IOException, ClassNotFoundException {
 		// 현재 파일서버가 가진 파일명들을 리스트로 저장
 		List<String> listImg = new ArrayList<String>();
@@ -265,7 +271,7 @@ public class FileServerHelper {
 	 * 요청한 file를 전달하는 메소드
 	 * @throws IOException
 	 */
-	public void fileReq(int flag) throws IOException {
+	public void fileReq(int flag) throws IOException,FileNotFoundException {
 		String fileName = dis.readUTF();
 		
 		if (flag == CO_IMG) { // CO_IMG

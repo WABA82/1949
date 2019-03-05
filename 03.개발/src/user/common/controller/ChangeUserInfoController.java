@@ -18,8 +18,6 @@ import user.common.vo.UserInfoVO;
 import user.common.vo.UserModifyVO;
 import user.common.vo.UserModifyWithoutPassVO;
 import user.dao.CommonDAO;
-import user.ee.view.EeMainView;
-import user.er.view.ErMainView;
 import user.run.LogTestChangeUserInfo;
 
 public class ChangeUserInfoController extends WindowAdapter implements ActionListener {
