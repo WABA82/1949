@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -305,7 +307,11 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		String answer = umv.getJtfAnswer().getText().trim();
 		String userType = umv.getJcbUser().getSelectedItem().equals("일반") ? "E" : "R";
 		
-		umvo = new UserModifyVO(id, pass, name, ssn, tel, addrSeq, addrDetail, email, questionType, answer, userType);
+		///////////////////////////////// 수정중
+		int age = getAge(Integer.parseInt(umv.getJtfSsn1().getText().trim().substring(0, 2)));
+		String gender = getGender(Integer.parseInt(umv.getJtfSsn2().getText().trim().substring(0, 1)));
+		
+		umvo = new UserModifyVO(id, pass, name, ssn, gender, tel, addrSeq, addrDetail, email, questionType, answer, userType, age);
 		
 		try {
 			if(AdminDAO.getInstance().updateUser(umvo)) { // 유저타입이 변경되었다면, 이전 등록 정보를 모두 삭제필요
@@ -364,6 +370,53 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		new SearchAddrView(umv, this);
 	}
 	
+	
+	
+	/**
+	 * 주민번호 뒷자리 1자리를 받아와 성별을 반환하는 메서드
+	 * @param genderSsn
+	 * @return
+	 */
+	public String getGender(int genderSsn) {
+		String gender = "F";
+		
+		int[] male = {1,3,5,7};
+		boolean maleFlag = false;
+		
+		for(int i=0; i<male.length; i++) {
+			if (genderSsn == male[i]) {
+				maleFlag = true;
+			}
+		}
+		
+		if (maleFlag) {
+			gender = "M";
+		}
+		
+		return gender;
+	}
+	
+	/**
+	 * 주민번호 앞 두자리를 받아와 나이를 반환하는 메서드
+	 * @param year
+	 * @return
+	 */
+	public int getAge(int year) {
+		int age = 0;
+		
+		if (year < 20) {
+			year += 2000;
+		} else {
+			year += 1900;
+		}
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+		int currentYear = Integer.parseInt(sdf.format(new Date()));
+		
+		age = currentYear - year + 1;
+		
+		return age;
+	}
 	
 	
 	@Override
