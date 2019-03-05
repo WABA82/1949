@@ -49,7 +49,8 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 			
 		try {
 			if(pass1.equals(pass2)) {
-				if(!(CommonDAO.getInstance().login(id, pass1)).equals("R") && !(CommonDAO.getInstance().login(id, pass1)).equals("E")) {
+				if(!(CommonDAO.getInstance().login(id, pass1)).equals("R")&&
+						!(CommonDAO.getInstance().login(id, pass1)).equals("E")) {
 					JOptionPane.showMessageDialog(ruv, "비밀번호가 올바르지 않습니다.");
 				}else {
 					if(CommonDAO.getInstance().deleteUserInfo(id)) {
@@ -70,12 +71,7 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 			e.printStackTrace();
 		}
 	}//removeUser	
-	
-	public void checkPass(String pass1,String pass2) {
 
-		
-	}
-	
 	
 	@Override
 	public void actionPerformed(ActionEvent ae) {
