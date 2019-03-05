@@ -18,7 +18,7 @@ import admin.vo.EeInfoVO;
 
 public class EeModifyView extends JDialog {
 
-	private JButton jbModify, jbChangeExt, jbChangeImg, jbRemove, jbCancel;
+	private JButton jbModify, jbChangeExt, jbChangeImg, jbRemove, jbCancel, jbDownExt;
 	private JComboBox<String>jcbRank, jcbLoc, jcbEducation, jcbPortfolio;
 	private JTextField jtfExtRsm, jtfName;
 	private JLabel jlImg;
@@ -43,6 +43,9 @@ public class EeModifyView extends JDialog {
 		jbChangeExt = new JButton("외부이력서 수정");
 		add(jbChangeExt);
 		jbChangeExt.setBounds(45, 440, 150, 30);
+		
+		jbDownExt = new JButton("외부이력서 다운");
+		jbDownExt.setBounds(45, 400, 150, 30);
 		
 		jbModify = new JButton("수정");
 		add(jbModify);
@@ -131,6 +134,7 @@ public class EeModifyView extends JDialog {
 		
 		jtfName=new JTextField(eivo.getName());
 		add(jtfName);
+		jtfName.setEditable(false);
 		jtfName.setBounds(325, 65, 130, 20);
 		
 		//Combobox
@@ -167,7 +171,7 @@ public class EeModifyView extends JDialog {
 		jtfExtRsm.setBounds(325, 391, 130, 20);
 		
 		//레이아웃
-		setBounds(ammv.getX()+400, ammv.getY()+100, 500, 540);
+		setBounds(ammv.getX()+500, ammv.getY()+50, 500, 540);
 		
 		EeModifyController emc = new EeModifyController(this, ammv, ammc, eivo);
 		jbRemove.addActionListener(emc);
@@ -175,11 +179,21 @@ public class EeModifyView extends JDialog {
 		jbChangeImg.addActionListener(emc);
 		jbChangeExt.addActionListener(emc);
 		jbCancel.addActionListener(emc);
+
+		if (eivo.getExtResume() != null) {
+			add(jbDownExt);
+			jbDownExt.addActionListener(emc);
+		}
+		
 		addWindowListener(emc);
 		
 		setResizable(false);
 		setVisible(true);
 	}//EeInfoRegView
+	
+	public JButton getJbDownExt() {
+		return jbDownExt;
+	}
 	public JButton getJbModify() {
 		return jbModify;
 	}

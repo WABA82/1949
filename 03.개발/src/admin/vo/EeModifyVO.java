@@ -1,7 +1,7 @@
 package admin.vo;
 
 public class EeModifyVO {
-	String eeNum, img, rank, loc, education, portfolio, extResume;
+	String eeNum, img, rank, loc, education, portfolio, extResume, name;
 
 	public EeModifyVO(String eeNum, String img, String rank, String loc, String education, String portfolio,
 			String extResume) {
@@ -17,7 +17,7 @@ public class EeModifyVO {
 	public String getEeNum() {
 		return eeNum;
 	}
-
+	
 	public String getImg() {
 		return img;
 	}
