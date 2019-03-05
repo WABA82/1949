@@ -267,7 +267,7 @@ public class ErModifyView extends JDialog {
 
 		/* 프레임 크기 설정 및 가시화 */
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setBounds(ammv.getX()+400, ammv.getY()+100, 410, 660);
+		setBounds(ammv.getX()+500, ammv.getY()+50, 410, 660);
 		setVisible(true);
 
 	}// 생성자

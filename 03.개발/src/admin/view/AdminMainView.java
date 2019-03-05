@@ -10,6 +10,7 @@ import javax.swing.border.TitledBorder;
 
 import admin.controller.AdminMainController;
 
+@SuppressWarnings("serial")
 public class AdminMainView extends JFrame {
 	
 	private JList<String> jlLog;
@@ -17,7 +18,7 @@ public class AdminMainView extends JFrame {
 	private DefaultListModel<String> dlmLog;
 	private JButton jbMgmt, jbServerOn, jbSaveLog, jbExit;
 
-	public AdminMainView() {
+	public AdminMainView(LoginView lv) {
 		super("1949 - 서버관리자");
 		
 		dlmLog = new DefaultListModel<>();
@@ -67,7 +68,8 @@ public class AdminMainView extends JFrame {
 		addWindowListener(amc);
 		
 		setResizable(false);
-		setBounds(400, 300, 590, 385);
+		setBounds(lv.getX()+lv.getY()+100, 300, 590, 385);
+		lv.dispose();
 		setVisible(true);
 	}
 	

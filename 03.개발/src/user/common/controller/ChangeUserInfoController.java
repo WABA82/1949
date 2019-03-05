@@ -20,6 +20,8 @@ import user.common.vo.UserInfoVO;
 import user.common.vo.UserModifyVO;
 import user.common.vo.UserModifyWithoutPassVO;
 import user.dao.CommonDAO;
+import user.ee.view.EeMainView;
+import user.er.view.ErMainView;
 import user.run.LogTestChangeUserInfo;
 
 public class ChangeUserInfoController extends WindowAdapter implements ActionListener,KeyListener {
@@ -27,14 +29,14 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 	private ChangeUserInfoView cuiv;
 	private UserInfoVO uivo;
 	private String addrSeq;
-	private JFrame jf;
 	
+	private JFrame jf;
 	
 	public ChangeUserInfoController(JFrame jf, ChangeUserInfoView cuiv, UserInfoVO uivo) {
 		this.cuiv=cuiv;
 		this.uivo=uivo;
 		this.addrSeq=uivo.getSeq();
-		this.jf = jf;
+		this.jf=jf;
 	}
 	
 	public boolean checkPass(String pass) { // 비밀번호 검증, 최대 12자리, 대문자 소문자 특수문자 조합

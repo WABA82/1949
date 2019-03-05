@@ -19,8 +19,8 @@ public class ChangeUserInfoView extends JDialog {
 	private JTextField jtfId, jtfName, jtfTel, jtfZipcode, jtfAddr1, jtfAddr2, jtfEmail;
 	private JPasswordField jpfOriginalPass, jpfNewPass1, jpfNewPass2;
 	private JButton jbModify, jbDelete, jbClose, jbAddr;
-
-	public ChangeUserInfoView(JFrame jf, UserInfoVO uivo) {
+	
+	public ChangeUserInfoView( JFrame jf, UserInfoVO uivo) {
 		
 		setTitle("회원 정보 수정");
 		JLabel jlId = new JLabel("아이디");

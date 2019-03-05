@@ -1,10 +1,10 @@
 package admin.run;
 
-import admin.view.AdminMainView;
+import admin.view.LoginView;
 
 public class AdminRun {
 	
 	public static void main(String[] args) {
-		new AdminMainView();
+		new LoginView();
 	}
 }

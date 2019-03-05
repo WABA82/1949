@@ -16,22 +16,23 @@ import user.common.view.ChangeUserInfoView;
 import user.common.view.LoginView;
 import user.common.view.RemoveUserView;
 import user.dao.CommonDAO;
+import user.ee.view.EeMainView;
 import user.er.view.ErMainView;
 import user.run.LogTestRemoveUser;
 
 public class RemoveUserController extends WindowAdapter implements ActionListener,KeyListener {
 	
-	private JFrame jf;
 	private ChangeUserInfoView cuiv;
 	private RemoveUserView ruv;
 	private String id;
 	
-
+	private JFrame jf;
+	
 	public RemoveUserController(JFrame jf, ChangeUserInfoView cuiv ,RemoveUserView ruv, String id) {
-		this.jf=jf;
 		this.cuiv=cuiv;
 		this.ruv=ruv;
 		this.id=id;
+		this.jf=jf;
 	}
 	
 
@@ -62,6 +63,7 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 						ruv.dispose();
 						cuiv.dispose();
 						jf.dispose();
+						
 						new LoginView();
 						new LogTestRemoveUser();
 					}//end if
