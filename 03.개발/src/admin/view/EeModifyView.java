@@ -28,8 +28,8 @@ public class EeModifyView extends JDialog {
 		
 		setLayout(null);
 
-		//image ///////////////////////////////////// 파일서버완성 후 이미지 경로 수정할 것 ////////////////////////////////
-		ImageIcon ii=new ImageIcon("C:/dev/1949/03.개발/src/file/eeImg/"+eivo.getImg());
+		//image 
+		ImageIcon ii=new ImageIcon("C:/dev/1949/03.개발/src/admin/img/ee/"+eivo.getImg());
 		jlImg=new JLabel(ii);
 		jlImg.setBorder(new TitledBorder("구직자 이미지"));
 		jlImg.setBounds(38, 20, 160, 225);
@@ -140,12 +140,15 @@ public class EeModifyView extends JDialog {
 		//Combobox
 		add(jcbRank);
 		jcbRank.setBounds(325,105,130,20);
+		jcbRank.setSelectedItem(eivo.getRank().equals("N") ? "신입" : "경력");
 		
 		add(jcbLoc);
 		jcbLoc.setBounds(325,145,130,20);
+		jcbLoc.setSelectedItem(eivo.getLoc());
 		
 		add(jcbEducation);
 		jcbEducation.setBounds(325,188,130,20);
+		jcbEducation.setSelectedItem(eivo.getEducation());
 		
 		JTextField jtfAge=new JTextField(String.valueOf(eivo.getAge()));
 		add(jtfAge);
@@ -154,6 +157,7 @@ public class EeModifyView extends JDialog {
 		
 		add(jcbPortfolio);
 		jcbPortfolio.setBounds(325,272,130,20);
+		jcbPortfolio.setSelectedItem(eivo.getPortfolio().equals("Y") ? "YES" : "NO");
 		
 		JTextField jtfGender=new JTextField(eivo.getGender().equals("F") ? "여자" : "남자");
 		jtfGender.setEditable(false);

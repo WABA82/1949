@@ -88,7 +88,7 @@ public class ErModifyView extends JDialog {
 		String[] rItem = { "신입", "경력" };
 		jcbRank = new JComboBox<>(rItem);
 		jcbRank.setSelectedItem(eivo.getRank().equals("N") ? "신입" : "경력");
-		String[] eItem = { "고졸", "초대졸", "석사", "박사" };
+		String[] eItem = { "고졸", "초대졸", "대졸", "석사", "박사" };
 		jcbEducation = new JComboBox<>(eItem);
 		jcbEducation.setSelectedItem(eivo.getEducation());
 		String[] lItem = { "서울", "경기", "인천", "대전", "세종", "충남", "충북", "광주", "전남", "전북", "대구", "경북", "부산", "울산", "경남",
