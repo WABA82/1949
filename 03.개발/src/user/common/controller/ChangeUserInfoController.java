@@ -96,8 +96,8 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 		String addrDetail=cuiv.getJtfAddr2().getText().trim();
 		
 		
-		//수정시 비밀번호 필수입력 입력했다면 검증
-		//최대 12자리, 대문자 소문자 특수문자 조합
+	
+		//빈문자열 체크
 		if(InputOriginPass==null||InputOriginPass.equals("")) {
 			JOptionPane.showMessageDialog(cuiv, "비밀번호를 입력해주세요.");
 			cuiv.getJpfOriginalPass().requestFocus();
@@ -120,6 +120,12 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 			return;
 		}//end if
 
+		if(addrDetail==null||addrDetail.equals("")) {
+			JOptionPane.showMessageDialog(cuiv, "상세주소를 입력해주세요.");
+			cuiv.getJtfAddr2().requestFocus();
+			return;
+		}//end if
+		
 		//전화번호 검증 -빼면 11자리(010-0000-0000)
 		try {
 			String tel2=tel.replaceAll("-", "");
@@ -174,14 +180,9 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 		}//end else
 
 
-		//빈문자열 체크
-		if(addrDetail==null||addrDetail.equals("")) {
-			JOptionPane.showMessageDialog(cuiv, "상세주소를 입력해주세요.");
-			cuiv.getJtfAddr2().requestFocus();
-			return;
-		}//end if
 		
-
+		//수정시 비밀번호 필수입력 입력했다면 검증
+		//최대 12자리, 대문자 소문자 특수문자 조합
 		//비밀번호 검증
 		if(newPass1.equals("")) {//비밀번호변경하지않을시
 			UserModifyWithoutPassVO umvo2=new UserModifyWithoutPassVO(id, name, tel, addrSeq, addrDetail, email);

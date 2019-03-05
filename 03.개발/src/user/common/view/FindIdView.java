@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 
 import user.common.controller.FindIdController;
 
+@SuppressWarnings("serial")
 public class FindIdView extends JDialog {
 	
 	private JTextField jtfName, jtfTel;
