@@ -6,14 +6,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import user.ee.controller.EeInfoRegController;
 import user.ee.vo.EeRegVO;
-
+import user.util.JTextFieldLimit;
 /**
  *	 기본 정보 관리 -김건하-
  *	19.02.07
@@ -26,14 +25,13 @@ public class EeInfoRegView extends JDialog {
 	private JComboBox<String>jcbRank, jcbLoc, jcbEducation, jcbPortfolio;
 	private JTextField jtfExtResume;
 	private JLabel jlImage;
-	private String eeId;
 	private JTextField jtfName, jtfAge, jtfGender, jtfId;
-	private  EeRegVO ervo;
+//	private  EeRegVO ervo;
 	
 	
 	public EeInfoRegView(EeMainView emv, EeRegVO ervo) {
 		super(emv, "기본 정보 관리",true);
-		this.ervo=ervo;
+//		this.ervo=ervo;
 		
 		//image
 		ImageIcon ii=new ImageIcon("C:/dev/1949/03.개발/src/user/img/ee/no_ee_img.png");
@@ -116,6 +114,8 @@ public class EeInfoRegView extends JDialog {
 		
 		//JText
 		jtfName=new JTextField(ervo.getName());
+		jtfName.setDocument((new JTextFieldLimit(10)));
+		
 		add(jtfName);
 		jtfName.setBounds(325, 22, 130, 20);
 		jtfName.setEditable(false);

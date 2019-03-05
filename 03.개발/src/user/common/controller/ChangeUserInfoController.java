@@ -174,6 +174,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 
 			try {			
 					if(!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("R") && !(CommonDAO.getInstance().login(id, InputOriginPass)).equals("E")) {//null이면
+						System.out.println(id+" / "+InputOriginPass);
 						JOptionPane.showMessageDialog(cuiv, "비밀번호가 올바르지 않습니다.");
 					}else {//R이라면(아이디와 비밀번호가 맞다면) 수정됨
 						if (CommonDAO.getInstance().updateUserInfoWithoutPass(umvo2)) {
@@ -196,7 +197,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 				JOptionPane.showMessageDialog(cuiv, "비밀번호확인과 비밀번호가 일치하지 않습니다.");
 			}else {//새 비밀번호와 비밀번호 확인이 같다면 
 				if(!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("R") && !(CommonDAO.getInstance().login(id, InputOriginPass)).equals("E")) {//null이면(아이디와비번이다르다면)
-					JOptionPane.showMessageDialog(cuiv, "비밀번호가 올바르지 않습니다.");
+					JOptionPane.showMessageDialog(cuiv, "비밀번호가 올바르지 않습니다.222");
 				}else {//R이라면(아이디와 비밀번호가 맞다면) 수정됨
 								if(!checkPass(newPass1)) {
 									JOptionPane.showMessageDialog(cuiv, "비밀번호를 확인해주세요\n대문자,소문자,특수문자 조합으로 입력해주세요.");
