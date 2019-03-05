@@ -6,6 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+
+import com.sun.glass.events.KeyEvent;
 
 import admin.controller.LoginController;
 
@@ -50,8 +53,10 @@ public class LoginView extends JFrame {
 		jtfId.addActionListener(lc);// 눌리면 로그인 눌려지게
 		jpfPass.addActionListener(lc);// 예외처리 해야함
 		jbLogin.addActionListener(lc);
+		jtfId.addKeyListener(lc);
 		addWindowListener(lc);
 		
+		jtfId.setFocusTraversalKeysEnabled(false);
 		setBounds(200,200,400,330);
 		setResizable(false);
 		setVisible(true);
