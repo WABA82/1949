@@ -88,7 +88,7 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 			hireType = "C";
 		} else if (emv.getJcbHireType().getSelectedItem().equals("계약직")) {
 			hireType = "N";
-		} else if (emv.getJcbHireType().getSelectedItem().equals("프리")) {
+		} else {
 			hireType = "F";
 		}
 		
@@ -125,6 +125,8 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 		
 		ErModifyVO emvo = new ErModifyVO(eivo.getErNum(), subject,
 				education, rank, loc, hireType, portfolio, erDesc, sal, listSkill);
+		
+		System.out.println("---"+emvo);
 				
 		if (AdminDAO.getInstance().updateEr(emvo, eivo.getListSkill().size())) {
 			try {

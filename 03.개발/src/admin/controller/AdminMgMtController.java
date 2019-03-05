@@ -27,11 +27,11 @@ import admin.vo.ErListVO;
 import admin.vo.UserInfoVO;
 import admin.vo.UserListVO;
 
-public class AdminMgMtController extends WindowAdapter implements MouseListener {
+public class AdminMgMtController extends WindowAdapter implements MouseListener, Runnable {
 
 	private AdminMgMtView ammv;
 	private AdminDAO a_dao;
-	private Thread threadUser, threadEe, threadEr, threadCo; ///////////// 구현예정0306
+	private Thread threadRefresh; ///////////// 구현예정0306
 	
 	private static final int DBL_CLICK = 2;
 	
@@ -39,6 +39,9 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener 
 		a_dao = AdminDAO.getInstance();
 		this.ammv = ammv;
 		setUser();
+		
+		threadRefresh = new Thread(this);
+		threadRefresh.start();
 	}
 	
 	private void msgCenter(String msg) {
@@ -338,4 +341,20 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener 
 	public void mouseEntered(MouseEvent e) {}
 	@Override
 	public void mouseExited(MouseEvent e) {}
+
+	@Override
+	public void run() {
+		while(true) {
+			System.out.println("갱신--");
+			try {
+				Thread.sleep(20000);
+				setUser();
+				setEe();
+				setEr();
+				setCo();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
