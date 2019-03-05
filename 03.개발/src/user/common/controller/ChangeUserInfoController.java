@@ -105,6 +105,22 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 			cuiv.getJpfOriginalPass().requestFocus();
 			return;
 		}//end if
+		
+		if(name==null||name.equals("")) {
+			JOptionPane.showMessageDialog(cuiv, "이름을 입력해주세요.");
+			cuiv.getJtfName().requestFocus();
+			return;
+		}//end if
+		if(tel==null||tel.equals("")) {
+			JOptionPane.showMessageDialog(cuiv, "연락처를 입력해주세요.");
+			cuiv.getJtfTel().requestFocus();
+			return;
+		}//end if
+		if(email==null||email.equals("")) {
+			JOptionPane.showMessageDialog(cuiv, "이메일을 입력해주세요.");
+			cuiv.getJtfEmail().requestFocus();
+			return;
+		}//end if
 
 		//전화번호 검증 -빼면 11자리(010-0000-0000)
 		try {
