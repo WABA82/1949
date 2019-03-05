@@ -104,8 +104,8 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 			return;
 		} // end if
 		
-		if(estDate.length()  > 12 ) { //////////////////////// 예외처리 해주세요..
-        	 JOptionPane.showMessageDialog(cimv, "설립년도의 입력형식을 예와 같이 8자리로 해주세요\nex)19910717");
+		if(estDate.length()  < 7 ) { //////////////////////// 예외처리 해주세요..
+        	 JOptionPane.showMessageDialog(cimv, "설립년도의 입력형식을 아래와 같은 형식으로 해주세요\nex)19901217\nex)1990-12-17");
         	 return;
          }//end if
 
