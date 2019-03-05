@@ -31,8 +31,7 @@ public class FindPassController extends WindowAdapter implements ActionListener 
 		JTextField jtfAnswer=fpv.getJtfAnswer();
 		
 		String id=jtfId.getText().trim();
-		String qType=String.valueOf((jcbQ.getSelectedIndex()));///
-		System.out.println(qType);
+		String qType=String.valueOf((jcbQ.getSelectedIndex()));
 		String answer=jtfAnswer.getText().trim();
 		
 		if(id==null||id.equals("")) {
@@ -51,6 +50,7 @@ public class FindPassController extends WindowAdapter implements ActionListener 
 			return;
 		}
 		
+
 		
 		try {
 			FindPassVO fpvo= new FindPassVO(id, qType, answer);

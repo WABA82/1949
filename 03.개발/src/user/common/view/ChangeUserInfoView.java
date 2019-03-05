@@ -11,8 +11,6 @@ import javax.swing.JTextField;
 
 import user.common.controller.ChangeUserInfoController;
 import user.common.vo.UserInfoVO;
-import user.ee.view.EeMainView;
-import user.er.view.ErMainView;
 
 @SuppressWarnings("serial")
 public class ChangeUserInfoView extends JDialog {
