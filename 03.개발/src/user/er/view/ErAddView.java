@@ -40,10 +40,10 @@ public class ErAddView extends JDialog {
 
 	public ErAddView(ErMgMtView emmv, ErMgMtController emmc, ErDefaultVO edfvo, String erId) {
 		super(emmv, "구인 정보 등록", true);/* 창의 제목 */
-
+		
 		/* 컴포넌트 생성하기 */
 		// 이미지아이콘 : 회사로고
-		
+		System.out.println("--"+edfvo.getImg1());
 		// 라벨들
 		File imgFile = new File("C:/dev/1949/03.개발/src/user/img/co/"+edfvo.getImg1());
 		if(!imgFile.exists()) {

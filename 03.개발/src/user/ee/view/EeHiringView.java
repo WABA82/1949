@@ -92,8 +92,8 @@ public class EeHiringView extends JDialog {
 		
 		
 		setBounds(100, 100, 1000, 550);
-		setVisible(true);
 		setResizable(false);
+		setVisible(true);
 		jtfSearch.requestFocus();
 		
 	}//ErHiringView
