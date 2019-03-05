@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import user.dao.EeDAO;
@@ -31,11 +32,13 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 	private EeInterestAndAppVO eiaavo;
 	private EeDAO ee_dao;
 	private UserLog ul;
+	private JDialog SDialog;
 
-	public EeDetailErController(EeDetailErView edev, String erNum, String eeId, boolean flagHeart) {
+	public EeDetailErController(EeDetailErView edev, String erNum, String eeId, boolean flagHeart,JDialog SDialog) {
 		this.edev = edev;
 		this.erNum = erNum;
 		this.eeId = eeId;
+		this.SDialog = SDialog;
 		mouseClickFlag = flagHeart;
 		ee_dao = EeDAO.getInstance();
 		ul = new UserLog();
@@ -125,7 +128,7 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 				ul.sendLog(eeId, "지원을 완료하였습니다.");
 				DetailErInfoVO deivo = ee_dao.selectDetail(erNum,eeId);
 				edev.dispose();
-				new EeDetailErView(edev, deivo, erNum, eeId, "ok");
+				new EeDetailErView(SDialog, deivo, erNum, eeId, "ok");
 			} else {
 				JOptionPane.showMessageDialog(edev, "이미 지원한 공고입니다.");
 			}
