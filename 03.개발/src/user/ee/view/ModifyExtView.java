@@ -4,7 +4,6 @@ import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
@@ -17,6 +16,7 @@ import user.ee.controller.ModifyExtController;
  *	외부파일 가져오는 클래스
  * @author 82102
  */
+@SuppressWarnings("serial")
 public class ModifyExtView extends JDialog {
 
 	private JTextField jtfPath;
