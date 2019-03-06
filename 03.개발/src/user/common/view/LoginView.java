@@ -26,8 +26,8 @@ public class LoginView extends JFrame {
 		JLabel jlId= new JLabel("아이디");
 		JLabel jlPass= new JLabel("비밀번호");
 		JLabel jlSlash = new JLabel("/");
-		jtfId= new JTextField("song9912");
-		jpfPass = new JPasswordField("1234");
+		jtfId= new JTextField("kimmessi");
+		jpfPass = new JPasswordField("Messi1!");
 		jbLogin = new JButton("로그인");
 		jlSignUp = new JLabel("회원가입");
 		jlFindID = new JLabel("아이디 찾기");
@@ -69,6 +69,8 @@ public class LoginView extends JFrame {
 		add(jlFindPass);
 		
 		LoginController lc = new LoginController(this);
+		jtfId.addKeyListener(lc);
+		jtfId.setFocusTraversalKeysEnabled(false);
 		jtfId.addActionListener(lc);// 눌리면 로그인 눌려지게
 		jpfPass.addActionListener(lc);// 예외처리 해야함
 		jbLogin.addActionListener(lc);

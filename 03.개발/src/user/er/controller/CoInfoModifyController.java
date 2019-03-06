@@ -86,13 +86,6 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 		String estDate = cimv.getJtfEstDate().getText().trim();
 		int memberNum = 0;
 		
-		try {
-			memberNum = Integer.parseInt(cimv.getMemberNum().getText().trim()); 
-		} catch (NumberFormatException nfe) {
-			JOptionPane.showMessageDialog(cimv, "사원수는 숫자만 입력가능합니다.");
-			return;
-		} // end catch
-		
 		
 		if (coName.equals("")) {
 			JOptionPane.showMessageDialog(cimv, "회사명을 입력해주세요.");
@@ -109,10 +102,18 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
         	 return;
          }//end if
 
+		try {
+			memberNum = Integer.parseInt(cimv.getMemberNum().getText().trim()); 
+		} catch (NumberFormatException nfe) {
+			JOptionPane.showMessageDialog(cimv, "사원수는 숫자만 입력가능합니다.");
+			return;
+		} // end catch
+		
 		if (memberNum == 0) {
 			JOptionPane.showMessageDialog(cimv, "사원수를 입력해주세요.");
 			return;
 		} // end if
+		
 		
 
 		String imgName1 = "";

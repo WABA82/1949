@@ -92,8 +92,8 @@ public class EeHiringView extends JDialog {
 		
 		
 		setBounds(100, 100, 1000, 550);
-		setVisible(true);
 		setResizable(false);
+		setVisible(true);
 		jtfSearch.requestFocus();
 		
 	}//ErHiringView
@@ -129,10 +129,10 @@ public class EeHiringView extends JDialog {
 		return jcbSort;
 	}
 
-/*	public static void main(String[] args) {
+	public static void main(String[] args) {
 		
-		new EeHiringView(null,null,"gong1");
-	}*/
+		new EeHiringView(null,null,"hihi55");
+	}
 	
 	
 }//class

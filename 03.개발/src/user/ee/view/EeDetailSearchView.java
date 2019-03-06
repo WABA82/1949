@@ -1,7 +1,6 @@
 package user.ee.view;
 
 import java.awt.Font;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -10,7 +9,6 @@ import javax.swing.JLabel;
 
 import user.ee.controller.EeDetailSearchController;
 import user.ee.controller.EeHiringController;
-import user.ee.vo.EeHiringVO;
 
 @SuppressWarnings("serial")
 public class EeDetailSearchView extends JDialog {
