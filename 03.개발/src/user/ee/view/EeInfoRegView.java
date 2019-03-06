@@ -113,8 +113,9 @@ public class EeInfoRegView extends JDialog {
 		jlResume.setBounds(235, 295, 100, 30);
 		
 		//JText
-		jtfName=new JTextField(ervo.getName());
+		jtfName=new JTextField();
 		jtfName.setDocument((new JTextFieldLimit(10)));
+		jtfName.setText(ervo.getName());
 		
 		add(jtfName);
 		jtfName.setBounds(325, 22, 130, 20);
