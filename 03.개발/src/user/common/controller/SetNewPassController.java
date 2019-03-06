@@ -10,12 +10,8 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 
-import user.common.view.FindPassView;
-import user.common.view.LoginView;
 import user.common.view.SetNewPassView;
-import user.common.vo.FindPassVO;
 import user.common.vo.SetPassVO;
 import user.dao.CommonDAO;
 import user.run.LogTestChangePass;

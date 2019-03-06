@@ -10,6 +10,7 @@ import javax.swing.JTextField;
 
 import user.common.controller.FindPassController;
 
+@SuppressWarnings("serial")
 public class FindPassView extends JDialog {
 
 	private JTextField jtfId, jtfAnswer;

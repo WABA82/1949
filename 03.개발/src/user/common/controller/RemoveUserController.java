@@ -10,14 +10,11 @@ import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
 
 import user.common.view.ChangeUserInfoView;
 import user.common.view.LoginView;
 import user.common.view.RemoveUserView;
 import user.dao.CommonDAO;
-import user.ee.view.EeMainView;
-import user.er.view.ErMainView;
 import user.run.LogTestRemoveUser;
 
 public class RemoveUserController extends WindowAdapter implements ActionListener,KeyListener {
@@ -42,12 +39,12 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 		String pass2=new  String(ruv.getJpfPass2().getPassword()).trim();
 		
 		if(pass1==null||pass1.equals("")) {
-			JOptionPane.showMessageDialog(ruv, "ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä");
+			JOptionPane.showMessageDialog(ruv, "ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”");
 			ruv.getJpfPass1().requestFocus();
 			return;
 		}
 			if(pass2==null||pass2.equals("")) {
-				JOptionPane.showMessageDialog(ruv, "ºñ¹Ğ¹øÈ£ È®ÀÎÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä");
+				JOptionPane.showMessageDialog(ruv, "ë¹„ë°€ë²ˆí˜¸ í™•ì¸ì„ ì…ë ¥í•´ì£¼ì„¸ìš”");
 			ruv.getJpfPass2().requestFocus();
 			return;
 			}//end if
@@ -55,11 +52,11 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 		try {
 			if(pass1.equals(pass2)) {
 				if(!(CommonDAO.getInstance().login(id, pass1)).equals("R")&&
-				  !(CommonDAO.getInstance().login(id, pass1)).equals("E")) {
-					JOptionPane.showMessageDialog(ruv, "ºñ¹Ğ¹øÈ£°¡ ¿Ã¹Ù¸£Áö ¾Ê½À´Ï´Ù.");
+						!(CommonDAO.getInstance().login(id, pass1)).equals("E")) {
+					JOptionPane.showMessageDialog(ruv, "ë¹„ë°€ë²ˆí˜¸ê°€ ì˜¬ë°”ë¥´ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 				}else {
 					if(CommonDAO.getInstance().deleteUserInfo(id)) {
-						JOptionPane.showMessageDialog(ruv, "Á¤»óÅ»ÅğÃ³¸®µÇ¾ú½À´Ï´Ù.");
+						JOptionPane.showMessageDialog(ruv, "ì •ìƒíƒˆí‡´ì²˜ë¦¬ë˜ì—ˆìŠµë‹ˆë‹¤.");
 						ruv.dispose();
 						cuiv.dispose();
 						jf.dispose();
@@ -69,14 +66,13 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 					}//end if
 				}//end else
 			}else {
-				JOptionPane.showMessageDialog(ruv, "ºñ¹Ğ¹øÈ£È®ÀÎ°ú ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù.");
+				JOptionPane.showMessageDialog(ruv, "ë¹„ë°€ë²ˆí˜¸í™•ì¸ê³¼ ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 			}//end else
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(ruv, "DB¿¡¼­ ¹®Á¦°¡ ¹ß»ıÇß½À´Ï´Ù.");
+			JOptionPane.showMessageDialog(ruv, "DBì—ì„œ ë¬¸ì œê°€ ë°œìƒí–ˆìŠµë‹ˆë‹¤.");
 			e.printStackTrace();
 		}
 	}//removeUser	
-	
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
