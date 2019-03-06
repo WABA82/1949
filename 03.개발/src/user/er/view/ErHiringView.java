@@ -103,9 +103,9 @@ public class ErHiringView extends JDialog {
 		return jbSelectAll;
 	}
 
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		new ErHiringView(null, null, "moonlight");
-	}
+	}*/
 	
 	
 }//class

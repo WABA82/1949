@@ -111,7 +111,7 @@ public class ErModifyView extends JDialog {
 			jcbRank.setSelectedIndex(0);
 		}	
 			
-		String[] eItem = { "ฐํมน", "รสด๋มน", "ผฎป็", "นฺป็" };
+		String[] eItem = { "ฐํมน", "รสด๋มน","ด๋มน", "ผฎป็", "นฺป็" };
 		jcbEducation = new JComboBox<String>(eItem);
 		for(int i=0; i<eItem.length;i++) {
 			if(edvo.getEducation().equals(eItem[i])) {
