@@ -19,7 +19,6 @@ import javax.swing.JOptionPane;
 
 import user.dao.ErDAO;
 import user.er.view.AppDetailView;
-import user.er.view.AppListView;
 import user.er.vo.DetailAppEeVO;
 import user.er.vo.ErAppStatusVO;
 import user.util.UserUtil;
@@ -43,14 +42,14 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 	private ErDAO er_dao;
 	private String app_num;
 	private DetailAppEeVO daevo = null;
+	private String er_num;
 	private AppListController ac;
-	private AppListView alv;
 
-	public AppDetailController(AppDetailView adv, AppListView alv, String app_num, AppListController ac) {
+	public AppDetailController(AppDetailView adv, String app_num, AppListController ac, String er_num) {
 		this.adv = adv;
 		this.app_num = app_num;
 		this.ac = ac;
-		this.alv = alv;
+		this.er_num = er_num;
 		er_dao = ErDAO.getInstance();
 		setInfo(app_num);
 	}// 생성자
@@ -131,21 +130,16 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == adv.getJbAccept()) { // 지원수락 버튼 이벤트 처리
-//			if (!appStatusFlag) {
 			switch (JOptionPane.showConfirmDialog(adv, "이 지원자의 지원을 수락 하시겠습니까?\n 한번 수락 하면 되돌릴 수 없습니다.")) {
 			case JOptionPane.OK_OPTION:
 				changeStatusAccept();
-		
 			}// end switch
-//			} // end if
 		} // end if
 
 		if (e.getSource() == adv.getJbRefuse()) {// 지원거절 버튼 이벤트 처리
 			switch (JOptionPane.showConfirmDialog(adv, "이 지원자의 지원을 거절 하시겠습니까?\n 한번 거절 하면 되돌릴 수 없습니다.")) {
 			case JOptionPane.OK_OPTION:
 				changeStatusRefuse();
-				adv.dispose();
-				//new AppDetailView(alv, app_num);
 			}// end switch
 		} // end if
 
@@ -178,16 +172,10 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 	public void changeStatusAccept() {
 		try {
 			if (!er_dao.updateAppSatus(new ErAppStatusVO(app_num, "A"))) { // 정상작동 했을 경우.
+				setInfo(app_num);
+				ac.setDTM(er_num);
 				JOptionPane.showMessageDialog(adv, "이 지원자의 지원을 수락 하였습니다.");
 			} // end if
-			
-//			System.out.println("수락");
-			//alv.getJtEeInfo().setValueAt(aValue, row, column);
-			
-			ac.setDTM();
-			adv.dispose();
-			new AppDetailView(alv, app_num,ac);
-			
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(adv, "DB에서 문제가 발생했습니다. 잠시 후 다시 이용해 주세요.");
 			e.printStackTrace();
@@ -200,6 +188,8 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 	public void changeStatusRefuse() {
 		try {
 			if (!er_dao.updateAppSatus(new ErAppStatusVO(app_num, "D"))) {// 정상작동 했을 경우.
+				setInfo(app_num);
+				ac.setDTM(er_num);
 				JOptionPane.showMessageDialog(adv, "이 지원자의 지원을 거절 하였습니다.");
 			} // end if
 		} catch (SQLException e) {

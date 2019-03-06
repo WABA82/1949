@@ -23,8 +23,8 @@ public class AppDetailView extends JDialog {
 	private JLabel jlImage;
 	private JTextField jtfName, jtfTel, jtfEmail, jtfRank, jtfLoc, jtfEdu, jtfAge, jtfPort, jtfGender;
 	private JButton jbExtRsm, jbAccept, jbRefuse, jbClose;
-	
-	public AppDetailView(AppListView alv, String app_num, AppListController ac) {
+
+	public AppDetailView(AppListView alv, String app_num, AppListController ac, String er_num) {
 		super(alv, "지원자 상세 정보", true);
 		jlImage = new JLabel();
 		jlImage.setBorder(new TitledBorder("구직자 이미지"));
@@ -150,7 +150,7 @@ public class AppDetailView extends JDialog {
 		jtfGender.setBounds(315, 342, 130, 20);
 
 		/* 이벤트 등록 */
-		AppDetailController adc = new AppDetailController(this, alv, app_num,ac);
+		AppDetailController adc = new AppDetailController(this, app_num, ac, er_num);
 		addWindowListener(adc);
 		jbExtRsm.addActionListener(adc); // 외부이력서 다운 버튼 이벤트 등록
 		jbAccept.addActionListener(adc); // 지원 수락 버튼 이벤트 등록
