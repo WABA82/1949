@@ -42,7 +42,7 @@ public class CoInfoRegController extends WindowAdapter implements MouseListener,
 
 	private String path, name;
 	private ErDAO erdao;
-	private CoInsertVO civo;
+//	private CoInsertVO civo;
 	private ErMainView emv;
 
 	public CoInfoRegController(CoInfoRegView cirv, String erId, ErMainView emv) {
@@ -97,7 +97,7 @@ public class CoInfoRegController extends WindowAdapter implements MouseListener,
 	}// mouseClicked
 
 	public void register() throws SQLException, IOException {
-		boolean insertFlag = false;
+//		boolean insertFlag = false;
 		
 		if (uploadImg1 == null) {
 			JOptionPane.showMessageDialog(cirv, "회사로고는 필수 사항입니다.");

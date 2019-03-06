@@ -13,6 +13,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import user.common.controller.SignUpController;
+import user.util.JTextFieldLimit;
 
 @SuppressWarnings("serial")
 public class SignUpView extends JDialog {
@@ -44,22 +45,41 @@ public class SignUpView extends JDialog {
 		JLabel jlSlash = new JLabel("-");
 		
 		jtfId = new JTextField();
+		jtfId.setDocument(new JTextFieldLimit(10));
+		
 		jpfPass1 = new JPasswordField();
+		jpfPass1.setDocument(new JTextFieldLimit(15));
+		
 		jpfPass2 = new JPasswordField();
+		jpfPass2.setDocument(new JTextFieldLimit(15));
+		
 		jtfName = new JTextField();
+		jtfName.setDocument(new JTextFieldLimit(6));
+		
 		jtfSsn1 = new JTextField();
+		jtfSsn1.setDocument(new JTextFieldLimit(6));
+		
 		jpfSsn2 = new JPasswordField();
+		jpfSsn2.setDocument(new JTextFieldLimit(7));
+		
 		jtfTel = new JTextField(); 
+		jtfTel.setDocument(new JTextFieldLimit(13));
+		
 		jtfZip = new JTextField();
+		jtfZip.setDocument(new JTextFieldLimit(6));
 		jtfZip.setEditable(false);
 		jtfZip.setBackground(Color.white);
-		jtfAddr1 = new JTextField();
+		
 		jtfAddr1 = new JTextField();
         jtfAddr1.setEditable(false);
         jtfAddr1.setBackground(Color.white);
 		jtfAddr2 = new JTextField();
+		
 		jtfEmail = new JTextField();
+		jtfEmail.setDocument(new JTextFieldLimit(25));
+		
 		jtfAnswer = new JTextField();
+		jtfAnswer.setDocument(new JTextFieldLimit(5));
 		
 		jbAddr = new JButton("주소검색");
 		jbSignUp = new JButton("회원가입");

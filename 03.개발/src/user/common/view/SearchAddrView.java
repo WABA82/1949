@@ -35,6 +35,7 @@ public class SearchAddrView extends JDialog {
 			}//isCellEditable
 		};
 		jtZip = new JTable(dtmZip);
+		jtZip.getTableHeader().setReorderingAllowed(false);
 		JScrollPane jspZip = new JScrollPane(jtZip);
 		
 		jbSearch = new JButton("°Ë»ö");
