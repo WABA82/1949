@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import user.er.controller.AppDetailController;
+import user.er.controller.AppListController;
 
 /**
  * 김건하 19.02.08 : 지원현황 - 상세 지원 현황 - 지원자 상세 정보
@@ -22,10 +23,9 @@ public class AppDetailView extends JDialog {
 	private JLabel jlImage;
 	private JTextField jtfName, jtfTel, jtfEmail, jtfRank, jtfLoc, jtfEdu, jtfAge, jtfPort, jtfGender;
 	private JButton jbExtRsm, jbAccept, jbRefuse, jbClose;
-
-	public AppDetailView(AppListView alv, String app_num) {
+	
+	public AppDetailView(AppListView alv, String app_num, AppListController ac) {
 		super(alv, "지원자 상세 정보", true);
-
 		jlImage = new JLabel();
 		jlImage.setBorder(new TitledBorder("구직자 이미지"));
 		jlImage.setBounds(38, 20, 160, 225);
@@ -42,6 +42,7 @@ public class AppDetailView extends JDialog {
 		jbRefuse = new JButton("지원거절");
 		add(jbRefuse);
 		jbRefuse.setBounds(255, 430, 90, 27);
+
 		jbClose = new JButton("닫기");
 		add(jbClose);
 		jbClose.setBounds(360, 430, 90, 27);
@@ -149,7 +150,7 @@ public class AppDetailView extends JDialog {
 		jtfGender.setBounds(315, 342, 130, 20);
 
 		/* 이벤트 등록 */
-		AppDetailController adc = new AppDetailController(this, app_num);
+		AppDetailController adc = new AppDetailController(this, alv, app_num,ac);
 		addWindowListener(adc);
 		jbExtRsm.addActionListener(adc); // 외부이력서 다운 버튼 이벤트 등록
 		jbAccept.addActionListener(adc); // 지원 수락 버튼 이벤트 등록
@@ -157,7 +158,7 @@ public class AppDetailView extends JDialog {
 		jbClose.addActionListener(adc); // 닫기 버튼 이벤트 등록
 
 		/* 프레임 크기 설정 및 가시화 */
-		setBounds(/*(alv.getX() + 100)*/ 150, /*(alv.getY() + 100)*/150, 490, 520);
+		setBounds(/* (alv.getX() + 100) */ 150, /* (alv.getY() + 100) */150, 490, 520);
 		setResizable(false);
 		setVisible(true);
 
@@ -223,8 +224,8 @@ public class AppDetailView extends JDialog {
 
 	/****** getter 메서드 끝 ******/
 
-	public static void main(String[] args) {
-		new AppDetailView(null, "app_000062");
-	}// main
+//	public static void main(String[] args) {
+//		new AppDetailView(null, "app_000062");
+//	}// main
 
 }// class
