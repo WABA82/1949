@@ -133,7 +133,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 			String tel2=tel.replaceAll("-", "");
 		
 		if(tel2.length()!=11) {
-			JOptionPane.showMessageDialog(cuiv, "올바른 전화번호 형식이 아닙니다\n예) 010-0000-0000");
+			JOptionPane.showMessageDialog(cuiv, "올바른 전화번호 형식이 아닙니다 \n예) 010-0000-0000");
 			return;
 			
 		}else {//11자리라면  :-있는지 확인하고, - - 사이 번호 자릿수 검증
@@ -151,7 +151,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 			
 			
 			//010-0000-0000
-			//첫-전까지자릿수3자리 , --사이 4자리, 나머지4자리(첫번째검증으로..)
+			// 첫-전까지자릿수3자리 , --사이 4자리, 나머지4자리(첫번째검증으로..)
 			if(!(tel.substring(0, tel.indexOf("-")).length()==3)
 				||!(tel.substring(tel.indexOf("-")+1, tel.lastIndexOf("-")).length()==4)) {
 					 
