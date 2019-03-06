@@ -25,6 +25,7 @@ import user.dao.CommonDAO;
 import user.ee.view.EeMainView;
 import user.er.view.ErMainView;
 import user.util.UserLog;
+import user.util.UserUtil;
 
 public class LoginController extends WindowAdapter implements ActionListener, MouseListener, KeyListener {
    private LoginView lv;
@@ -108,7 +109,6 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
             // 따라서 imgName변수를 이용해서 FileServer에 파일을 요청, 다운받아 user.img.ee 폴더에 저장
             /////////////////////////////////////////////////////////////////////////////////////////
             String imgName = emvo.getImg();
-            
             new EeMainView(emvo);
             lv.dispose();
          }else if(userType.equals("R")){
