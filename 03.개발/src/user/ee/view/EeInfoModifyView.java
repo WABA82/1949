@@ -6,28 +6,24 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import user.ee.controller.EeInfoModifyController;
 import user.ee.vo.EeInfoVO;
-import user.ee.vo.EeRegVO;
 
+@SuppressWarnings("serial")
 public class EeInfoModifyView extends JDialog {
 
 	private JButton jbModify, jbModifyExt, jbModifyImg, jbClose;
 	private JComboBox<String> jcbRank, jcbLoc, jcbEducation, jcbPortfolio;
 	private JTextField jtfExtResume;
 	private JLabel jlImag;
-	private EeInfoVO eivo;
 	private EeMainView emv;
 
 	public EeInfoModifyView(EeMainView emv, EeInfoVO eivo) {
 		super(emv, "기본 정보 관리 수정", true);
-		this.eivo=eivo;
 		
 		// image
 		ImageIcon ii = new ImageIcon("C:/dev/1949/03.개발/src/user/img/ee/" + eivo.getImg());

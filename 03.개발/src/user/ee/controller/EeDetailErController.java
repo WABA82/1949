@@ -23,7 +23,6 @@ import user.ee.vo.EeAppVO;
 import user.ee.vo.EeInterestAndAppVO;
 import user.util.UserLog;
 
-////////////0210 다음할것 : 지원하기 구현(창을 닫고 다시 켯을때 하트가 리셋), 관심눌렀을때 값 보내는 방법///////////
 public class EeDetailErController extends WindowAdapter implements ActionListener, MouseListener {
 	private EeDetailErView edev;
 	private String erNum;
@@ -54,8 +53,8 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 			JOptionPane.showMessageDialog(edev, "추가에 실패했습니다.");
 			return;
 		}
-		edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/r_heart.png"));
 		JOptionPane.showMessageDialog(edev, "관심 구인글에 추가되었습니다!");
+		edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/r_heart.png"));
 		ul.sendLog(eeId, "["+erNum+"]번호 글을 관심 구인글로 추가했습니다.");
 /*		try {
 			DetailErInfoVO devo = ee_dao.selectDetail(erNum, eeId);
@@ -79,8 +78,8 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 		}
 		if (deleteFlag) {
 			JOptionPane.showMessageDialog(edev, "관심 구인글을 취소했습니다.");
-			ul.sendLog(eeId, "["+erNum+"]번호 글을 관심 구인글에서 취소했습니다.");
 			edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/b_heart.png"));
+			ul.sendLog(eeId, "["+erNum+"]번호 글을 관심 구인글에서 취소했습니다.");
 		} else {
 			JOptionPane.showMessageDialog(edev, "리스트삭제에 실패했습니다.");
 		}
@@ -125,7 +124,7 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 			if (appFlag) {
 				ee_dao.insertApplication(eiaavo);
 				JOptionPane.showMessageDialog(edev, "지원이 완료되었습니다!");
-				ul.sendLog(eeId, "지원을 완료하였습니다.");
+				ul.sendLog(eeId, "["+erNum+"]글에 지원을 완료하였습니다.");
 				DetailErInfoVO deivo = ee_dao.selectDetail(erNum,eeId);
 				edev.dispose();
 				new EeDetailErView(SDialog, deivo, erNum, eeId, "ok");

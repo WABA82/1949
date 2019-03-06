@@ -34,8 +34,9 @@ import user.er.vo.ErListVO;
 public class ErMainController extends WindowAdapter implements ActionListener, MouseListener {
 
 	private String erId;
+
 	private ErMainVO ermvo;
-	private CoInsertVO civo;
+//	private CoInsertVO civo;
 	private CoInfoVO cvo;
 	private ErDAO erdao;
 	private CommonDAO C_dao;
@@ -47,9 +48,9 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 		this.ermvo = ermvo;
 		erdao = ErDAO.getInstance();
 		C_dao = CommonDAO.getInstance();
-	}// »ı¼ºÀÚ
+	}// ìƒì„±ì
 
-	/** È¸»çÁ¤º¸ µî·Ï, °ü¸® **/
+	/** íšŒì‚¬ì •ë³´ ë“±ë¡, ê´€ë¦¬ **/
 	public void mngUser() throws SQLException {
 		if (ermvo.getActivation().equals("N")) {
 			new CoInfoRegView(ermv, ermvo.getErId());
@@ -62,11 +63,11 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 
 	}// end if
 
-	/** ±¸Á÷ÀÚÀÇ ¸ñ·ÏÀ» º¸´Â method **/
+	/** êµ¬ì§ìì˜ ëª©ë¡ì„ ë³´ëŠ” method **/
 	public void showHiring() {
 
 		if (ermvo.getActivation().equals("N")) {
-			JOptionPane.showMessageDialog(ermv, "È¸»ç Á¤º¸°¡ µî·ÏµÇ¾î¾ß ÀÌ¿ëÇÏ½Ç¼ö ÀÖ½À´Ï´Ù.");
+			JOptionPane.showMessageDialog(ermv, "íšŒì‚¬ ì •ë³´ê°€ ë“±ë¡ë˜ì–´ì•¼ ì´ìš©í•˜ì‹¤ìˆ˜ ìˆìŠµë‹ˆë‹¤.");
 		} else if (ermvo.getActivation().equals("Y")) {
 			List<ErHiringVO> ehvo = new ArrayList<ErHiringVO>();
 			new ErHiringView(ermv, ehvo, ermvo.getErId());
@@ -74,40 +75,40 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 
 	}// showHiring
 
-	/** È¸¿øÁ¤º¸¸¦ ¼öÁ¤ÇÏ´Â method **/
+	/** íšŒì›ì •ë³´ë¥¼ ìˆ˜ì •í•˜ëŠ” method **/
 	public void mngEr() throws SQLException {
 		UserInfoVO uivo = C_dao.selectUserInfo(ermvo.getErId());
 		new ChangeUserInfoView(ermv, uivo);
 	}// mngEr
 
-	/** Áö¿ø ÇöÈ²À» º¼¼ö ÀÖ´Â method **/
+	/** ì§€ì› í˜„í™©ì„ ë³¼ìˆ˜ ìˆëŠ” method **/
 	public void showApp() {
 
 		if (ermvo.getActivation().equals("N")) {
-			JOptionPane.showMessageDialog(ermv, "È¸»ç Á¤º¸°¡ µî·ÏµÇ¾î¾ß ÀÌ¿ëÇÏ½Ç¼ö ÀÖ½À´Ï´Ù.");
+			JOptionPane.showMessageDialog(ermv, "íšŒì‚¬ ì •ë³´ê°€ ë“±ë¡ë˜ì–´ì•¼ ì´ìš©í•˜ì‹¤ìˆ˜ ìˆìŠµë‹ˆë‹¤.");
 		} else if (ermvo.getActivation().equals("Y")) {
 
 			List<ErListVO> list = null;
 			try {
 				list = erdao.selectErList(erId);
 				if (list.isEmpty()) {
-					JOptionPane.showMessageDialog(ermv, "ÇöÀç µî·ÏÇÑ ±¸ÀÎ°ø°í°¡ ¾ø½À´Ï´Ù. ¸ÕÀú ±¸ÀÎ°ø°í¸¦ µî·ÏÇØ ÁÖ¼¼¿ä.");
+					JOptionPane.showMessageDialog(ermv, "í˜„ì¬ ë“±ë¡í•œ êµ¬ì¸ê³µê³ ê°€ ì—†ìŠµë‹ˆë‹¤. ë¨¼ì € êµ¬ì¸ê³µê³ ë¥¼ ë“±ë¡í•´ ì£¼ì„¸ìš”.");
 					return;
 				} // end if
 				new ErAppView(ermv, ermvo.getErId());
 			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(ermv, "DB¿¡¼­ Á¶È¸ Áß ¹®Á¦°¡ ¹ß»ıÇß½À´Ï´Ù.");
+				JOptionPane.showMessageDialog(ermv, "DBì—ì„œ ì¡°íšŒ ì¤‘ ë¬¸ì œê°€ ë°œìƒí–ˆìŠµë‹ˆë‹¤.");
 				e.printStackTrace();
 			}
 		} // end id
 
 	}// showApp
 
-	/** °ü½É ±¸Á÷ÀÚ¸¦ º¼¼ö ÀÖ´Â Method **/
+	/** ê´€ì‹¬ êµ¬ì§ìë¥¼ ë³¼ìˆ˜ ìˆëŠ” Method **/
 	public void showInterestEe() {
 
 		if (ermvo.getActivation().equals("N")) {
-			JOptionPane.showMessageDialog(ermv, "È¸»ç Á¤º¸°¡ µî·ÏµÇ¾î¾ß ÀÌ¿ëÇÏ½Ç¼ö ÀÖ½À´Ï´Ù.");
+			JOptionPane.showMessageDialog(ermv, "íšŒì‚¬ ì •ë³´ê°€ ë“±ë¡ë˜ì–´ì•¼ ì´ìš©í•˜ì‹¤ìˆ˜ ìˆìŠµë‹ˆë‹¤.");
 		} else if (ermvo.getActivation().equals("Y")) {
 			
 			List<ErHiringForInterestVO> list = null;
@@ -115,14 +116,14 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 			try {
 				list = erdao.selectInterestEEInfoList(erId);
 				if (list.isEmpty()) {
-					JOptionPane.showMessageDialog(ermv, "°ü½É±¸ÀÎÁ¤º¸°¡ ¾ø½À´Ï´Ù. ¸ÕÀú ±¸ÀÎÁ¤º¸¿¡¼­ ÇÏÆ®¸¦ ´­·¯ÁÖ¼¼¿ä.");
+					JOptionPane.showMessageDialog(ermv, "ê´€ì‹¬êµ¬ì¸ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤. ë¨¼ì € êµ¬ì¸ì •ë³´ì—ì„œ í•˜íŠ¸ë¥¼ ëˆŒëŸ¬ì£¼ì„¸ìš”.");
 					return;
 				} // end if
 
 				new ErInterestView(ermv, ermvo.getErId());
 
 			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(ermv, "DB¿¡¼­ Á¶È¸ Áß ¹®Á¦°¡ ¹ß»ıÇß½À´Ï´Ù.");
+				JOptionPane.showMessageDialog(ermv, "DBì—ì„œ ì¡°íšŒ ì¤‘ ë¬¸ì œê°€ ë°œìƒí–ˆìŠµë‹ˆë‹¤.");
 				e.printStackTrace();
 			}
 
@@ -130,11 +131,11 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 
 	}// showInteresrEe
 
-	/** ±¸ÀÎ Á¤º¸ °ü¸®¸¦ º¼¼ö ÀÖ´Â Method **/
+	/** êµ¬ì¸ ì •ë³´ ê´€ë¦¬ë¥¼ ë³¼ìˆ˜ ìˆëŠ” Method **/
 	public void ShowErMgMtview() {
 
 		if (ermvo.getActivation().equals("N")) {
-			JOptionPane.showMessageDialog(ermv, "È¸»ç Á¤º¸°¡ µî·ÏµÇ¾î¾ß ÀÌ¿ëÇÏ½Ç¼ö ÀÖ½À´Ï´Ù.");
+			JOptionPane.showMessageDialog(ermv, "íšŒì‚¬ ì •ë³´ê°€ ë“±ë¡ë˜ì–´ì•¼ ì´ìš©í•˜ì‹¤ìˆ˜ ìˆìŠµë‹ˆë‹¤.");
 		} else if (ermvo.getActivation().equals("Y")) {
 			List<ErListVO> elvo = new ArrayList<ErListVO>();
 			new ErMgMtView(ermv, elvo, ermvo.getErId());
