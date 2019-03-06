@@ -10,6 +10,7 @@ import javax.swing.JTextField;
 
 import user.common.controller.FindPassController;
 
+@SuppressWarnings("serial")
 public class FindPassView extends JDialog {
 
 	private JTextField jtfId, jtfAnswer;
@@ -63,6 +64,9 @@ public class FindPassView extends JDialog {
 		addWindowListener(fpc);
 		jbValidation.addActionListener(fpc);
 		jbClose.addActionListener(fpc);
+		jtfId.addKeyListener(fpc);
+		jcbQuestion.addKeyListener(fpc);
+		jtfAnswer.addKeyListener(fpc);
 		
 		setBounds(500, 200, 400, 310);
 		setResizable(false);

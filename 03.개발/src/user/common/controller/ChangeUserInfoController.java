@@ -4,6 +4,8 @@ import static javax.swing.JOptionPane.showMessageDialog;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
@@ -18,11 +20,9 @@ import user.common.vo.UserInfoVO;
 import user.common.vo.UserModifyVO;
 import user.common.vo.UserModifyWithoutPassVO;
 import user.dao.CommonDAO;
-import user.ee.view.EeMainView;
-import user.er.view.ErMainView;
 import user.run.LogTestChangeUserInfo;
 
-public class ChangeUserInfoController extends WindowAdapter implements ActionListener {
+public class ChangeUserInfoController extends WindowAdapter implements ActionListener,KeyListener {
 
 	private ChangeUserInfoView cuiv;
 	private UserInfoVO uivo;
@@ -98,14 +98,36 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 		String addrDetail=cuiv.getJtfAddr2().getText().trim();
 		
 		
-		//수정시 비밀번호 필수입력 입력했다면 검증
-		//최대 12자리, 대문자 소문자 특수문자 조합
+	
+		//빈문자열 체크
 		if(InputOriginPass==null||InputOriginPass.equals("")) {
 			JOptionPane.showMessageDialog(cuiv, "비밀번호를 입력해주세요.");
 			cuiv.getJpfOriginalPass().requestFocus();
 			return;
 		}//end if
+		
+		if(name==null||name.equals("")) {
+			JOptionPane.showMessageDialog(cuiv, "이름을 입력해주세요.");
+			cuiv.getJtfName().requestFocus();
+			return;
+		}//end if
+		if(tel==null||tel.equals("")) {
+			JOptionPane.showMessageDialog(cuiv, "연락처를 입력해주세요.");
+			cuiv.getJtfTel().requestFocus();
+			return;
+		}//end if
+		if(email==null||email.equals("")) {
+			JOptionPane.showMessageDialog(cuiv, "이메일을 입력해주세요.");
+			cuiv.getJtfEmail().requestFocus();
+			return;
+		}//end if
 
+		if(addrDetail==null||addrDetail.equals("")) {
+			JOptionPane.showMessageDialog(cuiv, "상세주소를 입력해주세요.");
+			cuiv.getJtfAddr2().requestFocus();
+			return;
+		}//end if
+		
 		//전화번호 검증 -빼면 11자리(010-0000-0000)
 		try {
 			String tel2=tel.replaceAll("-", "");
@@ -160,21 +182,16 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 		}//end else
 
 
-		//빈문자열 체크
-		if(addrDetail==null||addrDetail.equals("")) {
-			JOptionPane.showMessageDialog(cuiv, "상세주소를 입력해주세요.");
-			cuiv.getJtfAddr2().requestFocus();
-			return;
-		}//end if
 		
-
+		//수정시 비밀번호 필수입력 입력했다면 검증
+		//최대 12자리, 대문자 소문자 특수문자 조합
 		//비밀번호 검증
 		if(newPass1.equals("")) {//비밀번호변경하지않을시
 			UserModifyWithoutPassVO umvo2=new UserModifyWithoutPassVO(id, name, tel, addrSeq, addrDetail, email);
 
 			try {			
-					if(!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("R") && !(CommonDAO.getInstance().login(id, InputOriginPass)).equals("E")) {//null이면
-						System.out.println(id+" / "+InputOriginPass);
+					if(!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("R")
+							&&!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("E")) {//null이면
 						JOptionPane.showMessageDialog(cuiv, "비밀번호가 올바르지 않습니다.");
 					}else {//R이라면(아이디와 비밀번호가 맞다면) 수정됨
 						if (CommonDAO.getInstance().updateUserInfoWithoutPass(umvo2)) {
@@ -196,8 +213,9 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 			if(!newPass1.equals(newPass2)) {//새비밀번호확인이 다를때
 				JOptionPane.showMessageDialog(cuiv, "비밀번호확인과 비밀번호가 일치하지 않습니다.");
 			}else {//새 비밀번호와 비밀번호 확인이 같다면 
-				if(!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("R") && !(CommonDAO.getInstance().login(id, InputOriginPass)).equals("E")) {//null이면(아이디와비번이다르다면)
-					JOptionPane.showMessageDialog(cuiv, "비밀번호가 올바르지 않습니다.222");
+				if(!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("R")
+						&&!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("E")) {//null이면(아이디와비번이다르다면)
+					JOptionPane.showMessageDialog(cuiv, "비밀번호가 올바르지 않습니다.");
 				}else {//R이라면(아이디와 비밀번호가 맞다면) 수정됨
 								if(!checkPass(newPass1)) {
 									JOptionPane.showMessageDialog(cuiv, "비밀번호를 확인해주세요\n대문자,소문자,특수문자 조합으로 입력해주세요.");
@@ -260,5 +278,19 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 	public ChangeUserInfoView getCuiv() {
 		return cuiv;
 	}
+
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode()==10) {
+			modifyUser();
+			}
+	}
+	
+	@Override
+	public void keyTyped(KeyEvent e) {}
+
+	@Override
+	public void keyReleased(KeyEvent e) {}
 	
 }

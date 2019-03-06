@@ -7,22 +7,15 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -179,8 +172,6 @@ public class AdminMainController extends WindowAdapter implements ActionListener
 					threadCheckNewFiles.start();
 				
 				} catch (UnknownHostException e1) {
-					e1.printStackTrace();
-				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
 			} else {

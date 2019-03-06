@@ -2,6 +2,8 @@ package user.common.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
@@ -16,7 +18,7 @@ import user.common.view.SetNewPassView;
 import user.common.vo.FindPassVO;
 import user.dao.CommonDAO;
 
-public class FindPassController extends WindowAdapter implements ActionListener {
+public class FindPassController extends WindowAdapter implements ActionListener,KeyListener {
 	
 	private FindPassView fpv;
 	private LoginView lv;
@@ -31,8 +33,7 @@ public class FindPassController extends WindowAdapter implements ActionListener 
 		JTextField jtfAnswer=fpv.getJtfAnswer();
 		
 		String id=jtfId.getText().trim();
-		String qType=String.valueOf((jcbQ.getSelectedIndex()));///
-		System.out.println(qType);
+		String qType=String.valueOf((jcbQ.getSelectedIndex()));
 		String answer=jtfAnswer.getText().trim();
 		
 		if(id==null||id.equals("")) {
@@ -51,6 +52,7 @@ public class FindPassController extends WindowAdapter implements ActionListener 
 			return;
 		}
 		
+
 		
 		try {
 			FindPassVO fpvo= new FindPassVO(id, qType, answer);
@@ -66,7 +68,7 @@ public class FindPassController extends WindowAdapter implements ActionListener 
 			JOptionPane.showMessageDialog(fpv, "DB에서 문제가 발생했습니다.");
 			e.printStackTrace();
 		}
-	}
+	}//checkUserData
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
@@ -83,4 +85,17 @@ public class FindPassController extends WindowAdapter implements ActionListener 
 	public void windowClosing(WindowEvent e) {
 		fpv.dispose();
 	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode()==10) {
+			checkUserData();
+			}
+	}
+	@Override
+	public void keyTyped(KeyEvent e) {}
+
+
+	@Override
+	public void keyReleased(KeyEvent e) {}
 }

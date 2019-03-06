@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -15,15 +14,17 @@ import user.common.view.SearchAddrView;
 import user.common.view.SignUpView;
 import user.common.vo.UserInsertVO;
 import user.dao.CommonDAO;
-import user.run.LogTestSignUp;
+import user.util.UserLog;
 
 public class SignUpController extends WindowAdapter implements ActionListener {
 	private SignUpView suv;
 	private String addrSeq;
 	private CommonDAO c_dao;
+	private UserLog ul;
 
 	public SignUpController(SignUpView suv) {
 		this.suv = suv;
+		ul=new UserLog();
 		c_dao = CommonDAO.getInstance();
 	}// 생성자
 
@@ -254,13 +255,14 @@ public class SignUpController extends WindowAdapter implements ActionListener {
 		
 		String chkTel = tel.replaceAll("-", "");
 		try {
-			Integer.parseInt(chkTel);
-		} catch (NumberFormatException npe) {
-			JOptionPane.showMessageDialog(suv, "연락처는 숫자만 입력 가능합니다.\n형식)000-0000-0000");
+			Long.parseLong(chkTel);
+		 }catch (NumberFormatException npe) {
+			JOptionPane.showMessageDialog(suv, "연락처는 숫자만 입력 가능합니다.형식)000-0000-0000");
+			System.out.println(chkTel   + " tel : " + tel);
 			return;
 		}
 		if (chkTel.length() < 10) {
-			JOptionPane.showMessageDialog(suv, "전화번호 숫자 안맞음 전화번호 형식이 잘못되었습니다.\n" + " 형식)000-0000-0000");
+			JOptionPane.showMessageDialog(suv, "전화번호 숫자 안맞음 전화번호 형식이 잘못되었습니다.  형식)000-0000-0000");
 			return;
 		} // end else
 
@@ -268,10 +270,9 @@ public class SignUpController extends WindowAdapter implements ActionListener {
 			// System.out.println("첫 하이픈 위치 :"+tel.indexOf("-") +"//둘째 하이픈 인덱스
 			// 가져오기/"+tel.substring((tel.length())-5, tel.length()-4)+"tel의 길이 :
 			// "+tel.length());
-			JOptionPane.showMessageDialog(suv, "연락처 형식이 잘못되었습니다.하이픈 - ,- 인덱스로 거르기");
+			JOptionPane.showMessageDialog(suv, "연락처 형식이 잘못되었습니다.");//하이픈 - ,- 인덱스로 거르기
 			return;
-		}
-		;
+		};
 
 		int cnt = 0;
 		for (int i = 0; i < tel.length(); i++) {
@@ -281,7 +282,7 @@ public class SignUpController extends WindowAdapter implements ActionListener {
 			;// end if
 		} // end for
 		if (cnt != 2) {
-			JOptionPane.showMessageDialog(suv, "하이픈2개이상 전화번호 형식이 잘못되었습니다.\n" + " 형식)000-0000-0000");
+			JOptionPane.showMessageDialog(suv, "전화번호 형식이 잘못되었습니다.\n" + " 형식)000-0000-0000");//하이픈2개이상 
 			return;
 		}
 		;// 하이픈 2개인지 검사 끝
@@ -320,7 +321,7 @@ public class SignUpController extends WindowAdapter implements ActionListener {
 		try {
 			resultMsg = c_dao.insertUser(uivo);
 			JOptionPane.showMessageDialog(suv, resultMsg);
-			new LogTestSignUp();
+			ul.sendLog(id, "회원가입이 완료되었습니다.");
 			
 			suv.dispose();
 		} catch (SQLException e) {
