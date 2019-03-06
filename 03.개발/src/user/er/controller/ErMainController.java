@@ -32,9 +32,7 @@ import user.er.vo.ErListVO;
 
 public class ErMainController extends WindowAdapter implements ActionListener, MouseListener {
 
-	private String erId;
 	private ErMainVO ermvo;
-//	private CoInsertVO civo;
 	private CoInfoVO cvo;
 	private ErDAO erdao;
 	private CommonDAO C_dao;
@@ -113,6 +111,7 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 			
 			try {
 				list = erdao.selectInterestEEInfoList(ermvo.getErId());
+				
 				if (list.isEmpty()) {
 					JOptionPane.showMessageDialog(ermv, "관심구인정보가 없습니다. 먼저 구인정보에서 하트를 눌러주세요.");
 					return;
