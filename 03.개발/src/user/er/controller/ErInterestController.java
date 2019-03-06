@@ -79,7 +79,7 @@ public class ErInterestController extends WindowAdapter implements MouseListener
 
 				File imgFile = new File(imgPath + erhForInterest.getImg());
 				// user.img.co패키지에 이미지 파일이 없다면 실행.
-				System.out.println(imgFile.exists());
+				// System.out.println(imgFile.exists());
 				if (!imgFile.exists()) {
 					Socket client = null; // "211.63.89.144", 7002 : 영근컴퓨터IP, 파일서버의 포트
 					DataInputStream dis = null;
@@ -106,10 +106,6 @@ public class ErInterestController extends WindowAdapter implements MouseListener
 				// DTM에 추가
 				dtm.addRow(rowData);
 			} // end for
-
-			if (list.isEmpty()) {
-				JOptionPane.showMessageDialog(eriv, "관심구인정보가 없습니다. 먼저 구인정보에서 하트를 눌러주세요.");
-			} // end if
 
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(eriv, "DB에서 데이터를 받아오는 중 문제 발생...");
