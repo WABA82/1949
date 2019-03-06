@@ -10,18 +10,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import user.common.view.ChangeUserInfoView;
 import user.common.view.LoginView;
 import user.common.vo.ErMainVO;
-
 import user.common.vo.UserInfoVO;
-
 import user.dao.CommonDAO;
 import user.dao.ErDAO;
-import user.ee.view.EeMainView;
 import user.er.view.CoInfoModifyView;
 import user.er.view.CoInfoRegView;
 import user.er.view.ErAppView;
@@ -30,15 +26,14 @@ import user.er.view.ErInterestView;
 import user.er.view.ErMainView;
 import user.er.view.ErMgMtView;
 import user.er.vo.CoInfoVO;
-import user.er.vo.CoInsertVO;
 import user.er.vo.ErHiringVO;
 import user.er.vo.ErListVO;
 
 public class ErMainController extends WindowAdapter implements ActionListener, MouseListener {
 	
-	private String erId;
+//	private String erId;
 	private ErMainVO ermvo;
-	private CoInsertVO civo;
+//	private CoInsertVO civo;
 	private CoInfoVO cvo;
 	private ErDAO erdao;
 	private CommonDAO C_dao;

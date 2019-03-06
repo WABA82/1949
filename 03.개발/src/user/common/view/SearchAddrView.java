@@ -27,8 +27,14 @@ public class SearchAddrView extends JDialog {
 		
 		jtfDong = new JTextField(20);
 		String[] columnNames = { "우편번호", "시도", "구군", "동", "번지", /*"sqe"*/ };
-		dtmZip = new DefaultTableModel(columnNames, 3);
+		dtmZip = new DefaultTableModel(columnNames, 3) {//수정 못하게 설정
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		
 		jtZip = new JTable(dtmZip);
+		jtZip.getTableHeader().setReorderingAllowed(false);//컬럼 이동막기
 		JScrollPane jspZip = new JScrollPane(jtZip);
 		
 		jbSearch = new JButton("검색");
