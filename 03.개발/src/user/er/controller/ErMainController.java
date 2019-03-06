@@ -88,7 +88,7 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 
 			List<ErListVO> list = null;
 			try {
-				list = erdao.selectErList(erId);
+				list = erdao.selectErList(ermvo.getErId());
 				if (list.isEmpty()) {
 					JOptionPane.showMessageDialog(ermv, "현재 등록한 구인공고가 없습니다. 먼저 구인공고를 등록해 주세요.");
 					return;
