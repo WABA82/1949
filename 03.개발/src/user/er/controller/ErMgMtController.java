@@ -15,9 +15,6 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import user.dao.ErDAO;
-import user.ee.view.EeDetailErView;
-import user.ee.vo.DetailErInfoVO;
-import user.ee.vo.EeHiringVO;
 import user.er.view.ErAddView;
 import user.er.view.ErMgMtView;
 import user.er.view.ErModifyView;

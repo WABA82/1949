@@ -4,13 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.List;
-
-import javax.swing.JOptionPane;
-
 import user.ee.dto.EeHiringCdtDTO;
 import user.ee.view.EeDetailSearchView;
-import user.ee.vo.EeHiringVO;
 
 public class EeDetailSearchController extends WindowAdapter implements ActionListener {
 	
@@ -21,7 +16,6 @@ public class EeDetailSearchController extends WindowAdapter implements ActionLis
 	private String loc;
 	private String hireType;
 	private EeHiringCdtDTO ehc_dto;
-	private List<EeHiringVO> list;
 	
 	
 	public EeDetailSearchController(EeDetailSearchView esv, EeHiringController ehc) {

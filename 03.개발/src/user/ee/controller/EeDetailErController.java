@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import user.dao.EeDAO;
@@ -31,11 +32,13 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 	private EeInterestAndAppVO eiaavo;
 	private EeDAO ee_dao;
 	private UserLog ul;
+	private JDialog SDialog;
 
-	public EeDetailErController(EeDetailErView edev, String erNum, String eeId, boolean flagHeart) {
+	public EeDetailErController(EeDetailErView edev, String erNum, String eeId, boolean flagHeart,JDialog SDialog) {
 		this.edev = edev;
 		this.erNum = erNum;
 		this.eeId = eeId;
+		this.SDialog = SDialog;
 		mouseClickFlag = flagHeart;
 		ee_dao = EeDAO.getInstance();
 		ul = new UserLog();
@@ -53,13 +56,13 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 		}
 		edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/r_heart.png"));
 		JOptionPane.showMessageDialog(edev, "관심 구인글에 추가되었습니다!");
-		ul.sendLog(eeId, "관심 구인글을 추가했습니다.");
-		try {
+		ul.sendLog(eeId, "["+erNum+"]번호 글을 관심 구인글로 추가했습니다.");
+/*		try {
 			DetailErInfoVO devo = ee_dao.selectDetail(erNum, eeId);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+		}*/
 
 	}// addUInterestEr
 
@@ -76,7 +79,7 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 		}
 		if (deleteFlag) {
 			JOptionPane.showMessageDialog(edev, "관심 구인글을 취소했습니다.");
-			ul.sendLog(eeId, "관심 구인글을 취소했습니다.");
+			ul.sendLog(eeId, "["+erNum+"]번호 글을 관심 구인글에서 취소했습니다.");
 			edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/b_heart.png"));
 		} else {
 			JOptionPane.showMessageDialog(edev, "리스트삭제에 실패했습니다.");
@@ -125,7 +128,7 @@ public class EeDetailErController extends WindowAdapter implements ActionListene
 				ul.sendLog(eeId, "지원을 완료하였습니다.");
 				DetailErInfoVO deivo = ee_dao.selectDetail(erNum,eeId);
 				edev.dispose();
-				new EeDetailErView(edev, deivo, erNum, eeId, "ok");
+				new EeDetailErView(SDialog, deivo, erNum, eeId, "ok");
 			} else {
 				JOptionPane.showMessageDialog(edev, "이미 지원한 공고입니다.");
 			}
