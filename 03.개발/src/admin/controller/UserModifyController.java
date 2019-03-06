@@ -7,8 +7,6 @@ import java.awt.event.WindowEvent;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -41,8 +39,6 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 	private Socket client;
 	private DataOutputStream dos;
 	private DataInputStream dis;
-	private FileInputStream fis;
-	private FileOutputStream fos;
 	
 	private boolean userTypeFlag;
 	
@@ -269,6 +265,8 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		
 		if(!checkPass(pass)) { // 비밀번호 검증
 			msgCenter("비밀번호를 확인해주세요.\n 최대 12자리, 대소문자, 특수문자 조합으로 만들어주세요.");
+			umv.getJpfPass().setText("");
+			umv.getJpfPass().requestFocus();
 			return;
 		}
 		
@@ -278,6 +276,9 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		
 		if(!checkSsn(ssn)) { // ssn 검증
 			msgCenter("올바른 주민번호가 아닙니다.\n다시 입력해주세요.");
+			umv.getJtfSsn1().setText("");
+			umv.getJtfSsn2().setText("");
+			umv.getJtfSsn1().requestFocus();
 			return;
 		}
 		
@@ -285,6 +286,8 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		
 		if(!checkTel(tel)) { // tel 검증
 			msgCenter("올바른 연락처가 아닙니다.\n예)010-0000-0000\n다시 입력해주세요.");
+			umv.getJtfTel().setText("");
+			umv.getJtfTel().requestFocus();
 			return;
 		}
 		
@@ -292,6 +295,7 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		
 		if (addrDetail.trim().length() == 0) {
 			msgCenter("상세주소는 필수입력사항입니다.");
+			umv.getJtfAddr2().requestFocus();
 			return;
 		}
 		
@@ -300,6 +304,8 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		
 		if(!checkEmail(email)) { // email 검증
 			msgCenter("올바른 이메일이 아닙니다. \n예)someid@domain.com\n다시 입력해주세요.");
+			umv.getJtfEmail().setText("");
+			umv.getJtfEmail().requestFocus();
 			return;
 		}
 		

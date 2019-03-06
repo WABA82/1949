@@ -9,6 +9,7 @@ import javax.swing.JPasswordField;
 
 import user.common.controller.SetNewPassController;
 
+@SuppressWarnings("serial")
 public class SetNewPassView extends JDialog {
 	
 	private JPasswordField jpfPass1, jpfPass2;
