@@ -103,11 +103,22 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
          if(userType.equals("E")) {
             emvo = C_dao.selectEeMain(id, act);
             fail.clear();
+            
+            // 메인창을 띄울 때 이미지파일이 없으면 이미지가 안뜸
+            // 따라서 imgName변수를 이용해서 FileServer에 파일을 요청, 다운받아 user.img.ee 폴더에 저장
+            /////////////////////////////////////////////////////////////////////////////////////////
+            String imgName = emvo.getImg();
+            
             new EeMainView(emvo);
             lv.dispose();
          }else if(userType.equals("R")){
             ermvo = C_dao.selectErMain(id, act);
             fail.clear();
+            
+            //////////////////////////////////////////////////////////////////////////////////////////
+            // 따라서 imgName변수를 이용해서 FileServer에 파일을 요청, 다운받아 user.img.co 폴더에 저장
+            String imgName = ermvo.getImg1();
+            
             new ErMainView(ermvo);
             lv.dispose();
          }else{
