@@ -25,6 +25,7 @@ import user.dao.CommonDAO;
 import user.ee.view.EeMainView;
 import user.er.view.ErMainView;
 import user.util.UserLog;
+import user.util.UserUtil;
 
 public class LoginController extends WindowAdapter implements ActionListener, MouseListener, KeyListener {
    private LoginView lv;
@@ -33,11 +34,13 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
    private CommonDAO C_dao;
    private UserLog ul;
    private Map<String, Integer> fail; 
+   private UserUtil uu;
 
    public LoginController(LoginView lv) {
       this.lv = lv;
       ul=new UserLog();
       fail = new HashMap<String, Integer>();
+      uu = new UserUtil();
       C_dao=CommonDAO.getInstance();
 
    }// »ý¼ºÀÚ
