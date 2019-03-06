@@ -100,7 +100,7 @@ public class ErAddView extends JDialog {
 		jchSpring = new JCheckBox("Spring");
 		jchOracle = new JCheckBox("Oracle");
 		jchHTML = new JCheckBox("HTML");
-		jchCSS = new JCheckBox("HTML");
+		jchCSS = new JCheckBox("CSS");
 		jchLinux = new JCheckBox("Linux");
 		jchJS = new JCheckBox("JavaScript");
 

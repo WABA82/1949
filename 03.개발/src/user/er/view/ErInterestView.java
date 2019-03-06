@@ -89,7 +89,7 @@ public class ErInterestView extends JDialog {
 	}
 
 	public static void main(String[] args) {
-		new ErInterestView(null, "tndhd");
+		new ErInterestView(null, "memoaa");
 	}
 
 }// class
