@@ -30,9 +30,8 @@ public class FileServer extends Thread {
 				dis = new DataInputStream(client.getInputStream());
 				dos = new DataOutputStream(client.getOutputStream());
 
-				FileServerHelper fsh = new FileServerHelper(listHelper, client, dis, dos);
+				new FileServerHelper(listHelper, client, dis, dos);
 			}
-			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

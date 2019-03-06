@@ -20,8 +20,6 @@ import user.common.vo.UserInfoVO;
 import user.common.vo.UserInsertVO;
 import user.common.vo.UserModifyVO;
 import user.common.vo.UserModifyWithoutPassVO;
-import user.ee.view.EeMainView;
-import user.er.view.ErMainView;
 
 public class CommonDAO {
     private static CommonDAO C_dao;

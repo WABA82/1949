@@ -1,7 +1,5 @@
 package user.common.view;
 
-import java.awt.Font;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -9,10 +7,8 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 
 import user.common.controller.RemoveUserController;
-import user.common.controller.SetNewPassController;
-import user.ee.view.EeMainView;
-import user.er.view.ErMainView;
 
+@SuppressWarnings("serial")
 public class RemoveUserView extends JDialog {
 	
 	private JButton jbDelete, jbClose;
@@ -58,10 +54,13 @@ public class RemoveUserView extends JDialog {
 		RemoveUserController ruc = new RemoveUserController(jf, cuiv,this, id);
 		jbDelete.addActionListener(ruc);
 		jbClose.addActionListener(ruc);
+		jpfPass1.addKeyListener(ruc);
+		jpfPass2.addKeyListener(ruc);
 		
 		addWindowListener(ruc);
 		
-		setBounds(500, 200, 400, 280);
+		//setBounds(500, 200, 400, 280);
+		setBounds(jf.getX()+50,jf.getY()+50,400,280);
 		setResizable(false);
 		setVisible(true);
 	}
