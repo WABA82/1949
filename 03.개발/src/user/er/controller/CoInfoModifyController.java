@@ -121,6 +121,7 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 		
 		
 		
+		
 		if (!imgFlag1) { // 변경되지 않았으면 기존 이미지 그대로
 			imgName1 = cvo.getImg1();
 		} else {
