@@ -14,7 +14,6 @@ public class EeMainView extends JFrame {
 
 	/* 임시로 쓰는 데이터입니다. */
 //	public static final String EE_ID = "";
-//	private EeMainVO emvo;
 	private JButton jbEeInfo, jbErInfo, jbInterestEr, jbApp;
 	private JLabel jlUserInfo, jlLogOut, jlActivation, jlImg;
 //	private JTextField jtfName;
@@ -24,7 +23,6 @@ public class EeMainView extends JFrame {
 	public EeMainView(EeMainVO emvo) {
 		//로그인컨트롤에서 매개변수로 emvo받아서 이름과, 이미지, activation를 표시
 		super("1949 - 일반사용자 ["+emvo.getName()+"]");
-//		this.emvo=emvo;
 		JLabel jlAct = new JLabel("기본정보 등록여부 : ");
 		jlImg = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/ee/"+emvo.getImg()));
 		

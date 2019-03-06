@@ -35,7 +35,7 @@ public class SearchAddrView extends JDialog {
 			}//isCellEditable
 		};
 		jtZip = new JTable(dtmZip);
-		jtZip.getTableHeader().setReorderingAllowed(false);
+		jtZip.getTableHeader().setReorderingAllowed(false);//컬럼 이동막기
 		JScrollPane jspZip = new JScrollPane(jtZip);
 		
 		jbSearch = new JButton("검색");

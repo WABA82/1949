@@ -98,7 +98,6 @@ public class CoInfoRegController extends WindowAdapter implements MouseListener,
 
 	public void register() throws SQLException, IOException {
 //		boolean insertFlag = false;
-		
 		if (uploadImg1 == null) {
 			JOptionPane.showMessageDialog(cirv, "회사로고는 필수 사항입니다.");
 			return;

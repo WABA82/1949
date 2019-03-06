@@ -20,12 +20,10 @@ public class EeInfoModifyView extends JDialog {
 	private JComboBox<String> jcbRank, jcbLoc, jcbEducation, jcbPortfolio;
 	private JTextField jtfExtResume;
 	private JLabel jlImag;
-//	private EeInfoVO eivo;
 	private EeMainView emv;
 
 	public EeInfoModifyView(EeMainView emv, EeInfoVO eivo) {
 		super(emv, "기본 정보 관리 수정", true);
-//		this.eivo=eivo;
 		
 		// image
 		ImageIcon ii = new ImageIcon("C:/dev/1949/03.개발/src/user/img/ee/" + eivo.getImg());
