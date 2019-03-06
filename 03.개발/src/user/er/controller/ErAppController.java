@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 import user.dao.ErDAO;
 import user.er.view.AppListView;
 import user.er.view.ErAppView;
+import user.er.vo.DetailAppListVO;
 import user.er.vo.ErListVO;
 
 public class ErAppController extends WindowAdapter implements MouseListener {
@@ -43,11 +44,10 @@ public class ErAppController extends WindowAdapter implements MouseListener {
 			// DB에서 관심회사를 조회.
 			List<ErListVO> list = er_dao.selectErList(er_Id);
 
-			
 			StringBuffer erCnt = new StringBuffer("내 구인정보 수 : ");
 			erCnt.append(String.valueOf(list.size())).append(" 개");
 			erav.getJlEeInfo().setText(erCnt.toString());
-			
+
 			// JTable에 조회한 정보를 출력.
 			ErListVO eivo = null;
 
@@ -82,10 +82,6 @@ public class ErAppController extends WindowAdapter implements MouseListener {
 				dtm.addRow(rowData);
 			} // end for
 
-			if (list.isEmpty()) {// 등록한 메뉴가 없을 때 : 도시락 추가 버튼을 통해 메뉴를 추가 할 수 있다.
-				JOptionPane.showMessageDialog(erav, "현재 등록한 구인공고가 없습니다. 먼저 구인공고를 등록해 주세요.");
-			} // end if
-
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(erav, "DB에서 데이터를 받아오는 중 문제 발생...");
 			e.printStackTrace();
@@ -113,18 +109,37 @@ public class ErAppController extends WindowAdapter implements MouseListener {
 
 	}// mouseClicked
 
-	
 	private void showAppList() {
 		JTable jt = erav.getJtEeInfo();
 		String er_num = (String) (jt.getValueAt(jt.getSelectedRow(), 1));
-		AppListView alv = new AppListView(erav, er_num);
 
-		// AppListView객체가 동작을 멈추면 true반환
-		if (alv.isActive()) {
-			setDTM(er_id);
-		} // end if
-	}// showAppList 
-	
+		List<DetailAppListVO> list = null;
+
+		try {
+			
+			list = er_dao.selectDetailApplist(er_num);
+			if (list.isEmpty()) {
+				JOptionPane.showMessageDialog(erav, "등록한 구인공고에 아직 지원한 구직자가 없습니다.");
+				return;
+			} // end if
+			
+			AppListView alv = new AppListView(erav, er_num);
+			
+			// AppListView객체가 동작을 멈추면 true반환.
+			// System.out.println(alv.isActive());
+			if (alv.isActive()) {
+				// System.out.println("슈퍼 갱신");
+				setDTM(er_id);
+			} // end if
+			
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(erav, "DB에서 조회 중 문제가 발생했습니다.");
+			e.printStackTrace();
+		}// end catch
+
+		
+	}// showAppList
+
 	/////////// 안쓰는 메소드 ///////////
 	@Override
 	public void mousePressed(MouseEvent e) {

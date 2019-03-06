@@ -1,7 +1,5 @@
 package user.ee.view;
 
-import java.sql.SQLException;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -9,9 +7,9 @@ import javax.swing.JLabel;
 import javax.swing.border.TitledBorder;
 
 import user.common.vo.EeMainVO;
-import user.dao.CommonDAO;
 import user.ee.controller.EeMainController;
 
+@SuppressWarnings("serial")
 public class EeMainView extends JFrame {
 
 	/* 임시로 쓰는 데이터입니다. */

@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import user.common.view.ChangeUserInfoView;
@@ -25,10 +24,11 @@ import user.ee.view.EeInfoModifyView;
 import user.ee.view.EeInfoRegView;
 import user.ee.view.EeInterestView;
 import user.ee.view.EeMainView;
+import user.ee.vo.EeAppVO;
 import user.ee.vo.EeHiringVO;
 import user.ee.vo.EeInfoVO;
+import user.ee.vo.EeInterestVO;
 import user.ee.vo.EeRegVO;
-import user.er.view.ErMainView;
 
 public class EeMainController extends WindowAdapter implements ActionListener, MouseListener {
 
@@ -38,73 +38,90 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 	private EeRegVO ervo;
 	private EeInfoVO eivo;
 	private UserInfoVO uivo;
-	
-	
+
 	public EeMainController(EeMainView emv, EeMainVO emvo) {
 		this.emvo = emvo;
 		this.emv = emv;
 		eedao = EeDAO.getInstance();
-	}//생성자
+	}// 생성자
 
-	//첫번째 버튼 회원정보를 보여준다
+	// 첫번째 버튼 회원정보를 보여준다
 	public void mngUser() throws SQLException {
 
 		if (emvo.getActivation().equals("N")) {
 			JOptionPane.showMessageDialog(emv, "개인정보가 등록되지 않았습니다.!");
 			ervo = eedao.selectEeReg(emvo.getEeId());
-			
+
 			System.out.println(ervo);
 			new EeInfoRegView(emv, ervo);
-			
-		} else if(emvo.getActivation().equals("Y")){
-			 eivo = eedao.selectEeInfo(emvo.getEeId());
+
+		} else if (emvo.getActivation().equals("Y")) {
+			eivo = eedao.selectEeInfo(emvo.getEeId());
 			new EeInfoModifyView(emv, eivo);
 		} // end if
-		
+
 	}// checkActivation()
 
-	/** 개인 정보 수정을 할수있는 method
-	 * @throws SQLException **/
+	/**
+	 * 개인 정보 수정을 할수있는 method
+	 * 
+	 * @throws SQLException
+	 **/
 	public void mngEe() throws SQLException {
-		uivo=CommonDAO.getInstance().selectUserInfo(emvo.getEeId());
-		new ChangeUserInfoView(emv , uivo);
+		uivo = CommonDAO.getInstance().selectUserInfo(emvo.getEeId());
+		new ChangeUserInfoView(emv, uivo);
 
-	}//mngEe
-	
-	
-	/** 회사 정보를 볼수 있는 method**/
+	}// mngEe
+
+	/** 회사 정보를 볼수 있는 method **/
 	public void showHiring() throws SQLException {
-		
-		if(emvo.getActivation().equals("N")) {
+
+		if (emvo.getActivation().equals("N")) {
 			JOptionPane.showMessageDialog(emv, "개인정보가 등록되어야 이용하실수 있습니다.");
-		}else if(emvo.getActivation().equals("Y")) {
+		} else if (emvo.getActivation().equals("Y")) {
 			List<EeHiringVO> ehvo = new ArrayList<EeHiringVO>();
-		new EeHiringView(emv, ehvo, emvo.getEeId());
-		}//end if
-		
-	}//showHiring
-	
-	/** 관심구인정보를 볼수있는 method**/
+			new EeHiringView(emv, ehvo, emvo.getEeId());
+		} // end if
+
+	}// showHiring
+
+	/** 관심구인정보를 볼수있는 method **/
 	public void showInterestEr() throws SQLException {
-		
-		if(emvo.getActivation().equals("N")) {
+
+		if (emvo.getActivation().equals("N")) {
 			JOptionPane.showMessageDialog(emv, "개인정보가 등록되어야 이용하실수 있습니다.");
-		}else if(emvo.getActivation().equals("Y")) {
+		} else if (emvo.getActivation().equals("Y")) {
+
+			List<EeInterestVO> list = eedao.selectInterestErInfoList(emvo.getEeId());
+
+			if (list.isEmpty()) {// 등록한 메뉴가 없을 때 : 도시락 추가 버튼을 통해 메뉴를 추가 할 수 있다.
+				JOptionPane.showMessageDialog(emv, "관심구인정보가 없습니다. 먼저 구인정보에서 하트를 눌러주세요.");
+				return;
+			} // end if
+
 			new EeInterestView(emv, emvo.getEeId());
-		}//end if
-		
+		} // end if
+
 	}// showInterestEr
 
-	/** 지원한 회사정보를 볼수 있는 method**/
+	/** 지원한 회사정보를 볼수 있는 method **/
 	public void showApp() throws SQLException {
-		
-		if(emvo.getActivation().equals("N")) {
+
+		if (emvo.getActivation().equals("N")) {
 			JOptionPane.showMessageDialog(emv, "개인정보가 등록되어야 이용하실수 있습니다.");
-		}else if(emvo.getActivation().equals("Y")) {
+		} else if (emvo.getActivation().equals("Y")) {
+
+			List<EeAppVO> list = eedao.selectAppList(emvo.getEeId());
+
+			if (list.isEmpty()) {// 등록한 메뉴가 없을 때 : 도시락 추가 버튼을 통해 메뉴를 추가 할 수 있다.
+				JOptionPane.showMessageDialog(emv, "관심구인정보가 없습니다. 먼저 구인정보에서 하트를 눌러주세요.");
+				return;
+			} // end if
+
 			new EeAppView(emv, emvo.getEeId());
-		}//end else
-		
-	}//showApp
+		} // end else
+
+	}// showApp
 
 	@Override
 	public void mouseClicked(MouseEvent me) {
@@ -113,23 +130,24 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 			emv.dispose();
 		} // end if
 
-		if(me.getSource() == emv.getJlUserInfo()) {
+		if (me.getSource() == emv.getJlUserInfo()) {
 			try {
 				mngEe();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}//end if
-		
+		} // end if
+
 	}// mouseClicked
 
 	@Override
-	public void actionPerformed(ActionEvent ae)  {
+	public void actionPerformed(ActionEvent ae) {
 
 		if (ae.getSource() == emv.getJbEeInfo()) {
 			try {
 				mngUser();
 			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(emv, "DB에서 조회 중 문제가 발생했습니다.");
 				e.printStackTrace();
 			}
 		} // end if
@@ -138,6 +156,7 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 			try {
 				showHiring();
 			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(emv, "DB에서 조회 중 문제가 발생했습니다.");
 				e.printStackTrace();
 			}
 		} // end if
@@ -146,18 +165,20 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 			try {
 				showInterestEr();
 			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(emv, "DB에서 조회 중 문제가 발생했습니다.");
 				e.printStackTrace();
 			}
 		} // end if
 
-		if(ae.getSource() == emv.getJbApp()) {
+		if (ae.getSource() == emv.getJbApp()) {
 			try {
 				showApp();
 			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(emv, "DB에서 조회 중 문제가 발생했습니다.");
 				e.printStackTrace();
 			}
 		}
-		
+
 	}// actionPerformed
 
 	@Override
