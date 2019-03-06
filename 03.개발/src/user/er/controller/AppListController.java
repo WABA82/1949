@@ -44,7 +44,7 @@ public class AppListController extends WindowAdapter implements MouseListener {
 	 * 
 	 * @param er_num
 	 */
-	private void setDTM(String er_num) {
+	public void setDTM(String er_num) {
 
 		DefaultTableModel dtm = alv.getDtmEeInfo();
 		dtm.setRowCount(0); // DTM 0으로 초기화.
@@ -74,7 +74,7 @@ public class AppListController extends WindowAdapter implements MouseListener {
 
 				File imgFile = new File(imgPath + dalvo.getImg());
 				// user.img.co패키지에 이미지 파일이 없다면 실행.
-				System.out.println(imgFile.exists());
+				// System.out.println(imgFile.exists());
 				if (!imgFile.exists()) {
 					try {
 						Socket client = null; // "211.63.89.144", 7002 : 영근컴퓨터IP, 파일서버의 포트
@@ -142,12 +142,13 @@ public class AppListController extends WindowAdapter implements MouseListener {
 		}// end switch
 	}// mouseClicked
 
-	private void showAppDetailInfo() {
+	public void showAppDetailInfo() {
 		JTable jt = alv.getJtEeInfo();
 		String app_num = (String) jt.getValueAt(jt.getSelectedRow(), 1);
-		AppDetailView adv = new AppDetailView(alv, app_num);
+		AppDetailView adv = new AppDetailView(alv, app_num, this, er_num);
 
 		// AppDetailView객체가 동작을 멈추면 true반환
+		//System.out.println(adv.isActive());
 		if (adv.isActive()) {
 			setDTM(er_num);
 		} // end if

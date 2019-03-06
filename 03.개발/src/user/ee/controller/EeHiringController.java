@@ -20,7 +20,6 @@ import user.ee.view.EeDetailSearchView;
 import user.ee.view.EeHiringView;
 import user.ee.vo.DetailErInfoVO;
 import user.ee.vo.EeHiringVO;
-import user.ee.vo.EeInterestAndAppVO;
 
 public class EeHiringController extends WindowAdapter implements ActionListener, MouseListener {
 	private EeHiringView ehv;
@@ -138,6 +137,7 @@ public class EeHiringController extends WindowAdapter implements ActionListener,
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if(ae.getSource()==ehv.getJbDetailSearch()) {
+			@SuppressWarnings("unused")
 			EeDetailSearchView edsv = new EeDetailSearchView(ehv, this);
 		}
 		
