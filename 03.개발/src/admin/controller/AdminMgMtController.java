@@ -31,7 +31,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 
 	private AdminMgMtView ammv;
 	private AdminDAO a_dao;
-	private Thread threadRefresh; ///////////// 구현예정0306
+	private Thread threadRefresh; 
 	
 	private static final int DBL_CLICK = 2;
 	
@@ -344,8 +344,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 
 	@Override
 	public void run() {
-		while(true) {
-			System.out.println("갱신--");
+		while(true) { // 20초마다 AdminMgMtView의 리스트를 갱신 
 			try {
 				Thread.sleep(20000);
 				setUser();
