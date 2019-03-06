@@ -23,12 +23,10 @@ import javax.swing.JOptionPane;
 
 import user.common.vo.ErMainVO;
 import user.dao.CommonDAO;
-import user.dao.EeDAO;
 import user.dao.ErDAO;
 import user.er.view.CoInfoModifyView;
 import user.er.view.ErMainView;
 import user.er.vo.CoInfoVO;
-import user.er.vo.CoInsertVO;
 import user.util.UserLog;
 import user.util.UserUtil;
 
