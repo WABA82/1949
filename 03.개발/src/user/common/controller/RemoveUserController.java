@@ -73,7 +73,7 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 			e.printStackTrace();
 		}
 	}//removeUser	
-	
+
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if(ae.getSource()==ruv.getJbDelete()) {
