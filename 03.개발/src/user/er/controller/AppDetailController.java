@@ -41,16 +41,15 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 	private AppDetailView adv;
 	private ErDAO er_dao;
 	private String app_num;
+	private String er_num;
+	private AppListController ac;
 	private DetailAppEeVO daevo = null;
 
-	// appStatusFlag는 이미 응답을 했는지 안했는지를 판단하는 flag입니다.
-	// false - 아직 응답하지 않았을 경우
-	// true - 이미 응답을 한 경우
-	private boolean appStatusFlag = false;
-
-	public AppDetailController(AppDetailView adv, String app_num) {
+	public AppDetailController(AppDetailView adv, String app_num, AppListController ac, String er_num) {
 		this.adv = adv;
 		this.app_num = app_num;
+		this.er_num = er_num;
+		this.ac = ac;
 		er_dao = ErDAO.getInstance();
 		setInfo(app_num);
 	}// 생성자
@@ -68,7 +67,7 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 				String imgPath = "C:/dev/1949/03.개발/src/user/img/ee/";
 				File imgFile = new File(imgPath + daevo.getImg());
 				// user.img.co패키지에 이미지 파일이 없다면 실행.
-				System.out.println(imgFile.exists());
+				// System.out.println(imgFile.exists());
 				if (!imgFile.exists()) {
 					try {
 						Socket client = null; // "211.63.89.144", 7002 : 영근컴퓨터IP, 파일서버의 포트
@@ -99,10 +98,12 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 					er_dao.updateAppSatus(new ErAppStatusVO(app_num, "R"));
 					break;
 				case "A": // 이전에 지원상태를 응답한 경우.
-					appStatusFlag = true;
+					adv.getJbAccept().setVisible(false);
+					adv.getJbRefuse().setVisible(false);
 					break;
 				case "D": // 이전에 지원상태를 응답한 경우.
-					appStatusFlag = true;
+					adv.getJbAccept().setVisible(false);
+					adv.getJbRefuse().setVisible(false);
 					break;
 				}// end if
 
@@ -129,33 +130,22 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == adv.getJbAccept()) { // 지원수락 버튼 이벤트 처리
-			if (appStatusFlag) { // 이미 응답을 했을 경우.
-				JOptionPane.showMessageDialog(adv, "이미 지원자에게 응답을 했습니다.");
-				return;
-			} // end if
-
-			if (!appStatusFlag) {
-				switch (JOptionPane.showConfirmDialog(adv, "이 지원자의 지원을 수락 하시겠습니까?\n 한번 수락 하면 되돌릴 수 없습니다.")) {
-				case JOptionPane.OK_OPTION:
-					changeStatusAccept();
-				}// end switch
-			} // end if
+			switch (JOptionPane.showConfirmDialog(adv, "이 지원자의 지원을 수락 하시겠습니까?\n 한번 수락 하면 되돌릴 수 없습니다.")) {
+			case JOptionPane.OK_OPTION:
+				changeStatusAccept();
+				setInfo(app_num);
+			}// end switch
 		} // end if
 
 		if (e.getSource() == adv.getJbRefuse()) {// 지원거절 버튼 이벤트 처리
-			if (appStatusFlag) { // 이미 응답을 했을 경우.
-				JOptionPane.showMessageDialog(adv, "이미 지원자에게 응답을 했습니다.");
-				return;
-			} // end if
-
 			switch (JOptionPane.showConfirmDialog(adv, "이 지원자의 지원을 거절 하시겠습니까?\n 한번 거절 하면 되돌릴 수 없습니다.")) {
 			case JOptionPane.OK_OPTION:
 				changeStatusRefuse();
+				setInfo(app_num);
 			}// end switch
 		} // end if
 
 		if (e.getSource() == adv.getJbExtRsm()) { // 외부이력서 버튼 이벤트 처리
-
 			try {
 				switch (JOptionPane.showConfirmDialog(adv, "지원자의 이력서를 다운로드 하시겠습니까?")) {
 				case JOptionPane.OK_OPTION:
@@ -169,7 +159,6 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 				JOptionPane.showMessageDialog(adv, "연결 실패");
 				e1.printStackTrace();
 			} // end catch
-
 		} // end if
 
 		if (e.getSource() == adv.getJbClose()) { // 닫기 버튼 이벤트 처리
@@ -184,7 +173,7 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 		try {
 			if (!er_dao.updateAppSatus(new ErAppStatusVO(app_num, "A"))) { // 정상작동 했을 경우.
 				JOptionPane.showMessageDialog(adv, "이 지원자의 지원을 수락 하였습니다.");
-				appStatusFlag = true;
+				ac.setDTM(er_num);
 			} // end if
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(adv, "DB에서 문제가 발생했습니다. 잠시 후 다시 이용해 주세요.");
@@ -199,7 +188,7 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 		try {
 			if (!er_dao.updateAppSatus(new ErAppStatusVO(app_num, "D"))) {// 정상작동 했을 경우.
 				JOptionPane.showMessageDialog(adv, "이 지원자의 지원을 거절 하였습니다.");
-				appStatusFlag = true;
+				ac.setDTM(er_num);
 			} // end if
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(adv, "DB에서 문제가 발생했습니다. 잠시 후 다시 이용해 주세요.");
@@ -239,7 +228,6 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 			FileOutputStream fos = null;
 
 			try {
-//				socket = new Socket("localhost", 7002);
 				socket = new Socket("211.63.89.144", 7002);
 				dos = new DataOutputStream(socket.getOutputStream());
 
@@ -252,19 +240,19 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 				dos.flush();
 
 				dis = new DataInputStream(socket.getInputStream());
-			
+
 				byte[] readData = new byte[512]; // 데이터가 담길 배열.
-				
-				int dataLen = 0; 	// readData배열 한 줄의 길이.
-				int dataArrCnt = 0;	// readData배열의 총 갯수.
-				
+
+				int dataLen = 0; // readData배열 한 줄의 길이.
+				int dataArrCnt = 0; // readData배열의 총 갯수.
+
 				dataArrCnt = dis.readInt(); // 서버에서 보내오는 파일의 readData배열의 총 갯수 받기.
 
-				fos = new FileOutputStream(path + "/" + name + "." + ext); 
-				
+				fos = new FileOutputStream(path + "/" + name + "." + ext);
+
 				// 배열의 갯수가 0이 아닌 동안 데이터 내보내기
-				while (dataArrCnt > 0) { 
-					dataLen = dis.read(readData); 
+				while (dataArrCnt > 0) {
+					dataLen = dis.read(readData);
 					fos.write(readData, 0, dataLen);
 					fos.flush();
 					dataArrCnt--;
