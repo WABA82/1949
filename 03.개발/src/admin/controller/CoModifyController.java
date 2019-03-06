@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -92,7 +94,9 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 	private boolean chkEstDate(String estDate) {
 		boolean flag = false;
 
-		if (estDate.length() < 7 ) { // 0000-00-00
+		String number = estDate.replaceAll("-", "");
+
+		if (number.length() != 8 ) { // 0000-00-00
 			return flag;
 		}
 		
@@ -100,13 +104,26 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 		int mm = 0;
 		int dd = 0;
 		
-		String number = estDate.replaceAll("-", "");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+		int currYear = Integer.parseInt(sdf.format(new Date()));
 		
 		try {
 			Integer.parseInt(number);
 			yyyy = Integer.parseInt(number.substring(0, 4));
 			mm = Integer.parseInt(number.substring(4,6));
 			dd = Integer.parseInt(number.substring(6,8));
+			
+			if (yyyy > currYear) { // 설립년도가 올해보다 클 수 없음
+				return flag;
+			}
+			
+			if (mm > 12 || mm < 1) { // 월은 0보다 작거나 12보다 클 수 없음
+				return flag;
+			}
+
+			if (dd > 31 || dd < 1) { // 일은 0보다 작거나 31보다 클 수 없으
+				return flag;
+			}
 			
 			flag = true;
 		} catch (NumberFormatException npe) {

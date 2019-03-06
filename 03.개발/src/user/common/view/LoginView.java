@@ -69,6 +69,8 @@ public class LoginView extends JFrame {
 		add(jlFindPass);
 		
 		LoginController lc = new LoginController(this);
+		jtfId.addKeyListener(lc);
+		jtfId.setFocusTraversalKeysEnabled(false);
 		jtfId.addActionListener(lc);// 눌리면 로그인 눌려지게
 		jpfPass.addActionListener(lc);// 예외처리 해야함
 		jbLogin.addActionListener(lc);

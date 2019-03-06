@@ -47,6 +47,7 @@ public class CheckNewFiles extends Thread {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
+	@SuppressWarnings("unchecked")
 	public void getEeImgs() throws UnknownHostException, IOException, ClassNotFoundException { 
 		// 파일서버에 접속해서 없는 ee이미지를 내려받는 메소드
 		try {
@@ -107,6 +108,7 @@ public class CheckNewFiles extends Thread {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
+	@SuppressWarnings("unchecked")
 	public void getCoImgs() throws UnknownHostException, IOException, ClassNotFoundException { 
 		// 파일서버에 접속해서 없는 co이미지를 내려받는 메소드
 		
