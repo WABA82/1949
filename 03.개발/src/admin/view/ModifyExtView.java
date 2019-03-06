@@ -55,6 +55,7 @@ public class ModifyExtView extends JDialog {
 		jbCancel.addActionListener(mec);
 		jbChange.addActionListener(mec);
 		jbChoose.addActionListener(mec);
+		jtfPath.addActionListener(mec);
 		addWindowListener(mec);
 
 		setResizable(false);
