@@ -48,13 +48,13 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 			erdao.insertInterestEe(eivo);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(edev, "ì¶”ê°€ì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.");
+			JOptionPane.showMessageDialog(edev, "Ãß°¡¿¡ ½ÇÆĞÇß½À´Ï´Ù.");
 			return;
 		}
 
-		JOptionPane.showMessageDialog(edev, "ê´€ì‹¬ êµ¬ì§ìì— ì¶”ê°€ë˜ì—ˆìŠµë‹ˆë‹¤!");
-		edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.ê°œë°œ/src/user/img/r_heart.png"));
-		ul.sendLog(erId, "["+eeNum+ "]ë²ˆí˜¸ ìœ ì €ë¥¼ ê´€ì‹¬ êµ¬ì§ìë¡œ ì¶”ê°€í•˜ì˜€ìŠµë‹ˆë‹¤.");
+		edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.°³¹ß/src/user/img/r_heart.png"));
+		JOptionPane.showMessageDialog(edev, "°ü½É ±¸Á÷ÀÚ¿¡ Ãß°¡µÇ¾ú½À´Ï´Ù!");
+		ul.sendLog(erId, "["+eeNum+ "]¹øÈ£ À¯Àú¸¦ °ü½É ±¸Á÷ÀÚ·Î Ãß°¡ÇÏ¿´½À´Ï´Ù.");
 		try {
 			devo= erdao.selectDetailEe(eeNum, erId);
 
@@ -71,35 +71,35 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 			deleteFlag = erdao.deleteInterestEe(eivo);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(edev, "ë¦¬ìŠ¤íŠ¸ì‚­ì œì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.");
+			JOptionPane.showMessageDialog(edev, "¸®½ºÆ®»èÁ¦¿¡ ½ÇÆĞÇß½À´Ï´Ù.");
 			
 		}
 		if(deleteFlag) {
-			JOptionPane.showMessageDialog(edev, "ê´€ì‹¬ êµ¬ì§ìë¥¼ ì·¨ì†Œí–ˆìŠµë‹ˆë‹¤.");
-			edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.ê°œë°œ/src/user/img/b_heart.png"));
-			ul.sendLog(erId, "["+eeNum+ "]ë²ˆí˜¸ ìœ ì €ë¥¼ ê´€ì‹¬ êµ¬ì§ìì—ì„œ ì·¨ì†Œí•˜ì˜€ìŠµë‹ˆë‹¤.");
+			JOptionPane.showMessageDialog(edev, "°ü½É ±¸Á÷ÀÚ¸¦ Ãë¼ÒÇß½À´Ï´Ù.");
+			ul.sendLog(erId, "["+eeNum+ "]¹øÈ£ À¯Àú¸¦ °ü½É ±¸Á÷ÀÚ¿¡¼­ Ãë¼ÒÇÏ¿´½À´Ï´Ù.");
+			edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.°³¹ß/src/user/img/b_heart.png"));
 		}else {
-			JOptionPane.showMessageDialog(edev, "ë¦¬ìŠ¤íŠ¸ì‚­ì œì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.");
+			JOptionPane.showMessageDialog(edev, "¸®½ºÆ®»èÁ¦¿¡ ½ÇÆĞÇß½À´Ï´Ù.");
 		}
 	}//removeInterestEr
 	
 	public void extRsmDown() throws UnknownHostException, IOException{
-		//ee_infoì—ì„œ  erNumìœ¼ë¡œ ì¡°íšŒí•´ì„œ ìˆëŠ”ì§€ ì—†ëŠ”ì§€ ì¡°íšŒí•´ì„œ ì´ë ¥ì„œ ì´ë¦„ë°›ê¸°
+		//ee_info¿¡¼­  erNumÀ¸·Î Á¶È¸ÇØ¼­ ÀÖ´ÂÁö ¾ø´ÂÁö Á¶È¸ÇØ¼­ ÀÌ·Â¼­ ÀÌ¸§¹Ş±â
 		try {
 			devo= erdao.selectDetailEe(eeNum, erId);
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(edev, "DBì—ëŸ¬!!");
+			JOptionPane.showMessageDialog(edev, "DB¿¡·¯!!");
 			e.printStackTrace();
 		}
 		if (devo.getExtResume() == null) {
-			JOptionPane.showMessageDialog(edev, "ì´ ì§€ì›ìê°€ ë“±ë¡í•œ ì™¸ë¶€ì´ë ¥ì„œê°€ ì—†ìŠµë‹ˆë‹¤.");
+			JOptionPane.showMessageDialog(edev, "ÀÌ Áö¿øÀÚ°¡ µî·ÏÇÑ ¿ÜºÎÀÌ·Â¼­°¡ ¾ø½À´Ï´Ù.");
 			return;
 		} // end if
 
 		if (devo.getExtResume() != null) {
 			
-			// FileDialogë¡œ ì´ë ¥ì„œ ì €ì¥ì¥ì†Œ, íŒŒì¼ëª…ì„ êµ¬í•˜ê³  ê·¸ ì¥ì†Œ,íŒŒì¼ë¡œ fosë¡œ write
-			FileDialog fdSave = new FileDialog(edev, "ë°›ì„ ê²½ë¡œ ì„ íƒ", FileDialog.SAVE);
+			// FileDialog·Î ÀÌ·Â¼­ ÀúÀåÀå¼Ò, ÆÄÀÏ¸íÀ» ±¸ÇÏ°í ±× Àå¼Ò,ÆÄÀÏ·Î fos·Î write
+			FileDialog fdSave = new FileDialog(edev, "¹ŞÀ» °æ·Î ¼±ÅÃ", FileDialog.SAVE);
 			fdSave.setVisible(true);
 			
 			String path = fdSave.getDirectory();
@@ -107,7 +107,7 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 			String resumeName=devo.getExtResume();
 			String ext ="";
 			
-			//í™•ì¥ì ë§Œë“¤ê¸°
+			//È®ÀåÀÚ ¸¸µé±â
 			ext = resumeName.substring(resumeName.lastIndexOf("."));
 			
 			Socket socket = null;
@@ -116,24 +116,28 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 			FileOutputStream fos = null;
 
 			try {
-				socket = new Socket("211.63.89.144", 7002);
+				System.out.println("111");
+				socket = new Socket("localhost", 7002);
 				// socket = new Socket("211.63.89.144", 7002);
+				System.out.println("--"+socket);
 				dos = new DataOutputStream(socket.getOutputStream());
 
-				// ì„œë²„ì—ê²Œ ì´ë ¥ì„œíŒŒì¼ ì „ì†¡ ìš”ì²­ ë³´ë‚´ê¸°.
+				// ¼­¹ö¿¡°Ô ÀÌ·Â¼­ÆÄÀÏ Àü¼Û ¿äÃ» º¸³»±â.
 				dos.writeUTF("ee_ext_request");
 				dos.flush();
+				System.out.println("222");
 
-				// ì„œë²„ì—ê²Œ ìš”ì²­í•  íŒŒì¼ëª… ë³´ë‚´ê¸°.
+				// ¼­¹ö¿¡°Ô ¿äÃ»ÇÒ ÆÄÀÏ¸í º¸³»±â.
 				dos.writeUTF(devo.getExtResume().trim());
 				dos.flush();
+				System.out.println("333");
 
 				dis = new DataInputStream(socket.getInputStream());
 
-				int fileCnt = 0; // ì„œë²„ì—ì„œ ë³´ë‚´ì˜¤ëŠ” íŒŒì¼ ì¡°ê°ì˜ ê°¯ìˆ˜.
-				int data = 0; // ì„œë²„ì—ì„œ ë³´ë‚´ì˜¤ëŠ” ë°ì´í„°
+				int fileCnt = 0; // ¼­¹ö¿¡¼­ º¸³»¿À´Â ÆÄÀÏ Á¶°¢ÀÇ °¹¼ö.
+				int data = 0; // ¼­¹ö¿¡¼­ º¸³»¿À´Â µ¥ÀÌÅÍ
 
-				// ì „ë‹¬ë°›ì„ íŒŒì¼ ì¡°ê°ì˜ ê°¯ìˆ˜
+				// Àü´Ş¹ŞÀ» ÆÄÀÏ Á¶°¢ÀÇ °¹¼ö
 				fileCnt = dis.readInt();
 				
 				fos = new FileOutputStream(path+name+ext);
@@ -141,15 +145,15 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 
 				byte[] readData = new byte[512];
 				while (fileCnt > 0) {
-					data = dis.read(readData); // ì„œë²„ì—ì„œ ì „ì†¡í•œ íŒŒì¼ì¡°ê°ì„ ì½ì–´ë“¤ì—¬
-					fos.write(readData, 0, data);// ìƒì„±í•œ íŒŒì¼ë¡œ ê¸°ë¡
+					data = dis.read(readData); // ¼­¹ö¿¡¼­ Àü¼ÛÇÑ ÆÄÀÏÁ¶°¢À» ÀĞ¾îµé¿©
+					fos.write(readData, 0, data);// »ı¼ºÇÑ ÆÄÀÏ·Î ±â·Ï
 					fos.flush();
 					fileCnt--;
 				} // end while
 				
-				dos.writeUTF("ì¢…ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.");
+				dos.writeUTF("Á¾·áµÇ¾ú½À´Ï´Ù.");
 				dos.flush();
-				JOptionPane.showMessageDialog(edev, "íŒŒì¼ ë‹¤ìš´ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤!");
+				JOptionPane.showMessageDialog(edev, "ÆÄÀÏ ´Ù¿îÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù!");
 				
 			} finally {
 				if(fos != null) {
@@ -185,10 +189,10 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 				
 				extRsmDown();
 			} catch (UnknownHostException e) {
-				JOptionPane.showMessageDialog(edev, "DBì˜¤ë¥˜!");
+				JOptionPane.showMessageDialog(edev, "DB¿À·ù!");
 				e.printStackTrace();
 			} catch (IOException e) {
-				JOptionPane.showMessageDialog(edev, "DBì˜¤ë¥˜!");
+				JOptionPane.showMessageDialog(edev, "DB¿À·ù!");
 				e.printStackTrace();
 			}
 		}
