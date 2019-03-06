@@ -140,11 +140,11 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 			switch (JOptionPane.showConfirmDialog(adv, "이 지원자의 지원을 거절 하시겠습니까?\n 한번 거절 하면 되돌릴 수 없습니다.")) {
 			case JOptionPane.OK_OPTION:
 				changeStatusRefuse();
+				setInfo(app_num);
 			}// end switch
 		} // end if
 
 		if (e.getSource() == adv.getJbExtRsm()) { // 외부이력서 버튼 이벤트 처리
-
 			try {
 				switch (JOptionPane.showConfirmDialog(adv, "지원자의 이력서를 다운로드 하시겠습니까?")) {
 				case JOptionPane.OK_OPTION:
@@ -158,7 +158,6 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 				JOptionPane.showMessageDialog(adv, "연결 실패");
 				e1.printStackTrace();
 			} // end catch
-
 		} // end if
 
 		if (e.getSource() == adv.getJbClose()) { // 닫기 버튼 이벤트 처리
@@ -175,6 +174,7 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 				setInfo(app_num);
 				ac.setDTM(er_num);
 				JOptionPane.showMessageDialog(adv, "이 지원자의 지원을 수락 하였습니다.");
+				ac.setDTM(er_num);
 			} // end if
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(adv, "DB에서 문제가 발생했습니다. 잠시 후 다시 이용해 주세요.");
@@ -191,6 +191,7 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 				setInfo(app_num);
 				ac.setDTM(er_num);
 				JOptionPane.showMessageDialog(adv, "이 지원자의 지원을 거절 하였습니다.");
+				ac.setDTM(er_num);
 			} // end if
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(adv, "DB에서 문제가 발생했습니다. 잠시 후 다시 이용해 주세요.");
@@ -230,7 +231,6 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 			FileOutputStream fos = null;
 
 			try {
-//				socket = new Socket("localhost", 7002);
 				socket = new Socket("211.63.89.144", 7002);
 				dos = new DataOutputStream(socket.getOutputStream());
 

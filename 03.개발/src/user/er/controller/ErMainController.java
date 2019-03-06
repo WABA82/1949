@@ -26,149 +26,188 @@ import user.er.view.ErInterestView;
 import user.er.view.ErMainView;
 import user.er.view.ErMgMtView;
 import user.er.vo.CoInfoVO;
+import user.er.vo.CoInsertVO;
+import user.er.vo.ErHiringForInterestVO;
 import user.er.vo.ErHiringVO;
 import user.er.vo.ErListVO;
 
 public class ErMainController extends WindowAdapter implements ActionListener, MouseListener {
-	
-//	private String erId;
+
+	private String erId;
+
 	private ErMainVO ermvo;
 //	private CoInsertVO civo;
 	private CoInfoVO cvo;
 	private ErDAO erdao;
 	private CommonDAO C_dao;
 	private ErMainView ermv;
-	
+
 	public ErMainController(ErMainView ermv, ErMainVO ermvo) {
 
 		this.ermv = ermv;
-		this.ermvo=ermvo;
-		erdao=ErDAO.getInstance();
-		C_dao=CommonDAO.getInstance();
-	}//»ı¼ºÀÚ
-	
-	/**È¸»çÁ¤º¸ µî·Ï, °ü¸® **/
+		this.ermvo = ermvo;
+		erdao = ErDAO.getInstance();
+		C_dao = CommonDAO.getInstance();
+	}// ìƒì„±ì
+
+	/** íšŒì‚¬ì •ë³´ ë“±ë¡, ê´€ë¦¬ **/
 	public void mngUser() throws SQLException {
-		if(ermvo.getActivation().equals("N")) {
+		if (ermvo.getActivation().equals("N")) {
 			new CoInfoRegView(ermv, ermvo.getErId());
 			System.out.println(ermvo);
-			
-		}else if(ermvo.getActivation().equals("Y")){
-			cvo=erdao.selectCoInfo(ermvo.getErId());
-			new CoInfoModifyView(ermv, cvo);
-		}//end else
-			
-	}//end if
-	
-	/** ±¸Á÷ÀÚÀÇ ¸ñ·ÏÀ» º¸´Â method**/
-	public void showHiring() {
-		
-		if(ermvo.getActivation().equals("N")) {
-			JOptionPane.showMessageDialog(ermv, "È¸»ç Á¤º¸°¡ µî·ÏµÇ¾î¾ß ÀÌ¿ëÇÏ½Ç¼ö ÀÖ½À´Ï´Ù.");
-		}else if(ermvo.getActivation().equals("Y")){
-			List<ErHiringVO> ehvo=new ArrayList<ErHiringVO>();
-		new ErHiringView(ermv, ehvo, ermvo.getErId());
-		}//end if
-		
-	}//showHiring
-	
-	/** È¸¿øÁ¤º¸¸¦ ¼öÁ¤ÇÏ´Â method**/
-	public void mngEr() throws SQLException {
-			UserInfoVO uivo=C_dao.selectUserInfo(ermvo.getErId());
-			new ChangeUserInfoView( ermv,  uivo);
-	}//mngEr
-	
-	/** Áö¿ø ÇöÈ²À» º¼¼ö ÀÖ´Â method**/
-	public void showApp() {
-		
-		if(ermvo.getActivation().equals("N")) {
-			JOptionPane.showMessageDialog(ermv, "È¸»ç Á¤º¸°¡ µî·ÏµÇ¾î¾ß ÀÌ¿ëÇÏ½Ç¼ö ÀÖ½À´Ï´Ù.");
-		}else if(ermvo.getActivation().equals("Y")){
-			new ErAppView(ermv, ermvo.getErId());
-		}//end id
-		
-	}//showApp
-	
-	/** °ü½É ±¸Á÷ÀÚ¸¦ º¼¼ö ÀÖ´Â Method**/
-	public void showInterestEe() {
-		
-		if(ermvo.getActivation().equals("N")) {
-			JOptionPane.showMessageDialog(ermv, "È¸»ç Á¤º¸°¡ µî·ÏµÇ¾î¾ß ÀÌ¿ëÇÏ½Ç¼ö ÀÖ½À´Ï´Ù.");
-		}else if(ermvo.getActivation().equals("Y")){
-			new ErInterestView(ermv, ermvo.getErId());
-		}//end id
-		
-	}//showInteresrEe
 
-	/** ±¸ÀÎ Á¤º¸ °ü¸®¸¦ º¼¼ö ÀÖ´Â Method**/
+		} else if (ermvo.getActivation().equals("Y")) {
+			cvo = erdao.selectCoInfo(ermvo.getErId());
+			new CoInfoModifyView(ermv, cvo);
+		} // end else
+
+	}// end if
+
+	/** êµ¬ì§ìì˜ ëª©ë¡ì„ ë³´ëŠ” method **/
+	public void showHiring() {
+
+		if (ermvo.getActivation().equals("N")) {
+			JOptionPane.showMessageDialog(ermv, "íšŒì‚¬ ì •ë³´ê°€ ë“±ë¡ë˜ì–´ì•¼ ì´ìš©í•˜ì‹¤ìˆ˜ ìˆìŠµë‹ˆë‹¤.");
+		} else if (ermvo.getActivation().equals("Y")) {
+			List<ErHiringVO> ehvo = new ArrayList<ErHiringVO>();
+			new ErHiringView(ermv, ehvo, ermvo.getErId());
+		} // end if
+
+	}// showHiring
+
+	/** íšŒì›ì •ë³´ë¥¼ ìˆ˜ì •í•˜ëŠ” method **/
+	public void mngEr() throws SQLException {
+		UserInfoVO uivo = C_dao.selectUserInfo(ermvo.getErId());
+		new ChangeUserInfoView(ermv, uivo);
+	}// mngEr
+
+	/** ì§€ì› í˜„í™©ì„ ë³¼ìˆ˜ ìˆëŠ” method **/
+	public void showApp() {
+
+		if (ermvo.getActivation().equals("N")) {
+			JOptionPane.showMessageDialog(ermv, "íšŒì‚¬ ì •ë³´ê°€ ë“±ë¡ë˜ì–´ì•¼ ì´ìš©í•˜ì‹¤ìˆ˜ ìˆìŠµë‹ˆë‹¤.");
+		} else if (ermvo.getActivation().equals("Y")) {
+
+			List<ErListVO> list = null;
+			try {
+				list = erdao.selectErList(erId);
+				if (list.isEmpty()) {
+					JOptionPane.showMessageDialog(ermv, "í˜„ì¬ ë“±ë¡í•œ êµ¬ì¸ê³µê³ ê°€ ì—†ìŠµë‹ˆë‹¤. ë¨¼ì € êµ¬ì¸ê³µê³ ë¥¼ ë“±ë¡í•´ ì£¼ì„¸ìš”.");
+					return;
+				} // end if
+				new ErAppView(ermv, ermvo.getErId());
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(ermv, "DBì—ì„œ ì¡°íšŒ ì¤‘ ë¬¸ì œê°€ ë°œìƒí–ˆìŠµë‹ˆë‹¤.");
+				e.printStackTrace();
+			}
+		} // end id
+
+	}// showApp
+
+	/** ê´€ì‹¬ êµ¬ì§ìë¥¼ ë³¼ìˆ˜ ìˆëŠ” Method **/
+	public void showInterestEe() {
+
+		if (ermvo.getActivation().equals("N")) {
+			JOptionPane.showMessageDialog(ermv, "íšŒì‚¬ ì •ë³´ê°€ ë“±ë¡ë˜ì–´ì•¼ ì´ìš©í•˜ì‹¤ìˆ˜ ìˆìŠµë‹ˆë‹¤.");
+		} else if (ermvo.getActivation().equals("Y")) {
+			
+			List<ErHiringForInterestVO> list = null;
+			
+			try {
+				list = erdao.selectInterestEEInfoList(erId);
+				if (list.isEmpty()) {
+					JOptionPane.showMessageDialog(ermv, "ê´€ì‹¬êµ¬ì¸ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤. ë¨¼ì € êµ¬ì¸ì •ë³´ì—ì„œ í•˜íŠ¸ë¥¼ ëˆŒëŸ¬ì£¼ì„¸ìš”.");
+					return;
+				} // end if
+
+				new ErInterestView(ermv, ermvo.getErId());
+
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(ermv, "DBì—ì„œ ì¡°íšŒ ì¤‘ ë¬¸ì œê°€ ë°œìƒí–ˆìŠµë‹ˆë‹¤.");
+				e.printStackTrace();
+			}
+
+		} // end id
+
+	}// showInteresrEe
+
+	/** êµ¬ì¸ ì •ë³´ ê´€ë¦¬ë¥¼ ë³¼ìˆ˜ ìˆëŠ” Method **/
 	public void ShowErMgMtview() {
-		
-		if(ermvo.getActivation().equals("N")) {
-			JOptionPane.showMessageDialog(ermv, "È¸»ç Á¤º¸°¡ µî·ÏµÇ¾î¾ß ÀÌ¿ëÇÏ½Ç¼ö ÀÖ½À´Ï´Ù.");
-		}else if(ermvo.getActivation().equals("Y")){
-			List<ErListVO> elvo=new ArrayList<ErListVO>();
+
+		if (ermvo.getActivation().equals("N")) {
+			JOptionPane.showMessageDialog(ermv, "íšŒì‚¬ ì •ë³´ê°€ ë“±ë¡ë˜ì–´ì•¼ ì´ìš©í•˜ì‹¤ìˆ˜ ìˆìŠµë‹ˆë‹¤.");
+		} else if (ermvo.getActivation().equals("Y")) {
+			List<ErListVO> elvo = new ArrayList<ErListVO>();
 			new ErMgMtView(ermv, elvo, ermvo.getErId());
-		}//end if
-		
-	}//ShowErMgView
-	
+		} // end if
+
+	}// ShowErMgView
+
 	@Override
 	public void mouseClicked(MouseEvent me) {
-		
-		if(me.getSource() == ermv.getJlUserInfo()) {
+
+		if (me.getSource() == ermv.getJlUserInfo()) {
 			try {
 				mngEr();
 			} catch (SQLException e) {
 				e.printStackTrace();
-			}//end catch
-		}//end if
-		
-		if(me.getSource() == ermv.getJlLogOut()) {
+			} // end catch
+		} // end if
+
+		if (me.getSource() == ermv.getJlLogOut()) {
 			ermv.dispose();
 			new LoginView();
-		}//end if
-		
-	}//mouseClicked
-	
+		} // end if
+
+	}// mouseClicked
+
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		
-		if(ae.getSource() == ermv.getJbCoMgmt()) {
+
+		if (ae.getSource() == ermv.getJbCoMgmt()) {
 			try {
 				mngUser();
 			} catch (SQLException e) {
 				e.printStackTrace();
-			}//end catch
-		}//end if
-			
-		if(ae.getSource() == ermv.getJbEeInfo()) {
+			} // end catch
+		} // end if
+
+		if (ae.getSource() == ermv.getJbEeInfo()) {
 			showHiring();
-		}//end if
-		
-		if(ae.getSource() == ermv.getJbInterestEe()) {
+		} // end if
+
+		if (ae.getSource() == ermv.getJbInterestEe()) {
 			showInterestEe();
-		}//end if
-		
-		if(ae.getSource() == ermv.getJbApp()) {
+		} // end if
+
+		if (ae.getSource() == ermv.getJbApp()) {
 			showApp();
-		}//end if
-		
-		if(ae.getSource() == ermv.getJbErMgmt()) {
+		} // end if
+
+		if (ae.getSource() == ermv.getJbErMgmt()) {
 			ShowErMgMtview();
-		}//end if
-		
-	}//actionPerformed
+		} // end if
+
+	}// actionPerformed
 
 	@Override
 	public void windowClosing(WindowEvent e) {
 		ermv.dispose();
 	}
+
 	@Override
-	public void mousePressed(MouseEvent e) {}
+	public void mousePressed(MouseEvent e) {
+	}
+
 	@Override
-	public void mouseReleased(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {
+	}
+
 	@Override
-	public void mouseEntered(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {
+	}
+
 	@Override
-	public void mouseExited(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {
+	}
 }
