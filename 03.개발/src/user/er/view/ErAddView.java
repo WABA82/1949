@@ -40,10 +40,10 @@ public class ErAddView extends JDialog {
 
 	public ErAddView(ErMgMtView emmv, ErMgMtController emmc, ErDefaultVO edfvo, String erId) {
 		super(emmv, "구인 정보 등록", true);/* 창의 제목 */
-
+		
 		/* 컴포넌트 생성하기 */
 		// 이미지아이콘 : 회사로고
-		
+		System.out.println("--"+edfvo.getImg1());
 		// 라벨들
 		File imgFile = new File("C:/dev/1949/03.개발/src/user/img/co/"+edfvo.getImg1());
 		if(!imgFile.exists()) {
@@ -107,7 +107,7 @@ public class ErAddView extends JDialog {
 		// 구인정보 콤보박스
 		String[] rItem = { "신입", "경력" };
 		jcbRank = new JComboBox<>(rItem);
-		String[] eItem = { "고졸", "초대졸", "석사", "박사" };
+		String[] eItem = { "고졸", "초대졸","대졸","석사", "박사" };
 		jcbEducation = new JComboBox<>(eItem);
 		String[] lItem = { "서울", "경기", "인천", "대전", "세종", "충남", "충북", "광주", "전남", "전북", "대구", "경북", "부산", "울산", "경남",
 				"강원", "제주", "전국" };

@@ -15,23 +15,33 @@ import javax.swing.border.TitledBorder;
 
 import user.er.controller.CoInfoModifyController;
 import user.er.vo.CoInfoVO;
+import user.util.JTextFieldLimit;
 
 @SuppressWarnings("serial")
 public class CoInfoModifyView extends JDialog {
 	private JButton jbModify, jbClose;
 	private JLabel jlImg1, jlImg2, jlImg3, jlImg4;
-	private JTextField jtfCoName, jtfEstDate, memberNum;
+	private JTextField jtfCoName;
+	private JTextField jtfEstDate, memberNum;
 	private JTextArea jtaCoDesc;
-	private CoInfoVO cvo;
+//	private CoInfoVO cvo;
 
 	public CoInfoModifyView(ErMainView emv, CoInfoVO cvo) {
 		super(emv, "회사정보수정", true);
-		this.cvo = cvo;
+//		this.cvo = cvo;
 
-		jtfCoName = new JTextField(cvo.getCoName());
-		jtfEstDate = new JTextField(cvo.getEstDate());
-		memberNum = new JTextField(String.valueOf(cvo.getMemberNum()));
-
+		jtfCoName = new JTextField();
+		jtfCoName.setDocument(new JTextFieldLimit(10));
+		jtfCoName.setText(cvo.getCoName());
+		
+		jtfEstDate = new JTextField();
+		jtfEstDate.setDocument((new JTextFieldLimit(10)));
+		jtfEstDate.setText(cvo.getEstDate());
+		
+		memberNum = new JTextField();
+		memberNum.setDocument((new JTextFieldLimit(5)));
+		memberNum.setText(String.valueOf(cvo.getMemberNum()));
+		
 		JLabel jlCoName = new JLabel("회사명");
 		JLabel jlEstDate = new JLabel("설립년도");
 		JLabel jlmemberNum = new JLabel(" 사원수");

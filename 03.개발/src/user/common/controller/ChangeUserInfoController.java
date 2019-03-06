@@ -37,7 +37,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 		this.jf=jf;
 	}
 	
-	public boolean checkPass(String pass) { // ºñ¹Ğ¹øÈ£ °ËÁõ, ÃÖ´ë 12ÀÚ¸®, ´ë¹®ÀÚ ¼Ò¹®ÀÚ Æ¯¼ö¹®ÀÚ Á¶ÇÕ
+	public boolean checkPass(String pass) { // ë¹„ë°€ë²ˆí˜¸ ê²€ì¦, ìµœëŒ€ 12ìë¦¬, ëŒ€ë¬¸ì ì†Œë¬¸ì íŠ¹ìˆ˜ë¬¸ì ì¡°í•©
 		boolean resultFlag = false;
 		
 		boolean lowerCaseFlag = false;
@@ -84,10 +84,10 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 	}
 
 	/**
-	 *  »ç¿ëÀÚ Á¤º¸ ¼öÁ¤
+	 *  ì‚¬ìš©ì ì •ë³´ ìˆ˜ì •
 	 */
 	public void modifyUser() {
-		//ÁÖ¼Òº¯°æ¸øÇÏ°Ô¸·¾ÆÁÖ±â
+		//ì£¼ì†Œë³€ê²½ëª»í•˜ê²Œë§‰ì•„ì£¼ê¸°
 		String id=cuiv.getJtfId().getText().trim();
 		String name= cuiv.getJtfName().getText().trim();
 		String InputOriginPass=new String(cuiv.getJpfOriginalPass().getPassword()).trim();		
@@ -99,83 +99,83 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 		
 		
 	
-		//ºó¹®ÀÚ¿­ Ã¼Å©
+		//ë¹ˆë¬¸ìì—´ ì²´í¬
 		if(InputOriginPass==null||InputOriginPass.equals("")) {
-			JOptionPane.showMessageDialog(cuiv, "ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+			JOptionPane.showMessageDialog(cuiv, "ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.");
 			cuiv.getJpfOriginalPass().requestFocus();
 			return;
 		}//end if
 		
 		if(name==null||name.equals("")) {
-			JOptionPane.showMessageDialog(cuiv, "ÀÌ¸§À» ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+			JOptionPane.showMessageDialog(cuiv, "ì´ë¦„ì„ ì…ë ¥í•´ì£¼ì„¸ìš”.");
 			cuiv.getJtfName().requestFocus();
 			return;
 		}//end if
 		if(tel==null||tel.equals("")) {
-			JOptionPane.showMessageDialog(cuiv, "¿¬¶ôÃ³¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+			JOptionPane.showMessageDialog(cuiv, "ì—°ë½ì²˜ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.");
 			cuiv.getJtfTel().requestFocus();
 			return;
 		}//end if
 		if(email==null||email.equals("")) {
-			JOptionPane.showMessageDialog(cuiv, "ÀÌ¸ŞÀÏÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+			JOptionPane.showMessageDialog(cuiv, "ì´ë©”ì¼ì„ ì…ë ¥í•´ì£¼ì„¸ìš”.");
 			cuiv.getJtfEmail().requestFocus();
 			return;
 		}//end if
 
 		if(addrDetail==null||addrDetail.equals("")) {
-			JOptionPane.showMessageDialog(cuiv, "»ó¼¼ÁÖ¼Ò¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+			JOptionPane.showMessageDialog(cuiv, "ìƒì„¸ì£¼ì†Œë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.");
 			cuiv.getJtfAddr2().requestFocus();
 			return;
 		}//end if
 		
-		//ÀüÈ­¹øÈ£ °ËÁõ -»©¸é 11ÀÚ¸®(010-0000-0000)
+		//ì „í™”ë²ˆí˜¸ ê²€ì¦ -ë¹¼ë©´ 11ìë¦¬(010-0000-0000)
 		try {
 			String tel2=tel.replaceAll("-", "");
 		
 		if(tel2.length()!=11) {
-			JOptionPane.showMessageDialog(cuiv, "¿Ã¹Ù¸¥ ÀüÈ­¹øÈ£ Çü½ÄÀÌ ¾Æ´Õ´Ï´Ù\n¿¹) 010-0000-0000");
+			JOptionPane.showMessageDialog(cuiv, "ì˜¬ë°”ë¥¸ ì „í™”ë²ˆí˜¸ í˜•ì‹ì´ ì•„ë‹™ë‹ˆë‹¤\nì˜ˆ) 010-0000-0000");
 			return;
 			
-		}else {//11ÀÚ¸®¶ó¸é  :-ÀÖ´ÂÁö È®ÀÎÇÏ°í, - - »çÀÌ ¹øÈ£ ÀÚ¸´¼ö °ËÁõ
-			//-ÇÊ¼öÀÔ·Â
+		}else {//11ìë¦¬ë¼ë©´  :-ìˆëŠ”ì§€ í™•ì¸í•˜ê³ , - - ì‚¬ì´ ë²ˆí˜¸ ìë¦¿ìˆ˜ ê²€ì¦
+			//-í•„ìˆ˜ì…ë ¥
 			if(!(tel.contains("-"))) {
-				JOptionPane.showMessageDialog(cuiv, "¿Ã¹Ù¸¥ ÀüÈ­¹øÈ£ Çü½ÄÀÌ ¾Æ´Õ´Ï´Ù\n¿¹) 010-0000-0000");
+				JOptionPane.showMessageDialog(cuiv, "ì˜¬ë°”ë¥¸ ì „í™”ë²ˆí˜¸ í˜•ì‹ì´ ì•„ë‹™ë‹ˆë‹¤\nì˜ˆ) 010-0000-0000");
 				return;
 			}//end if
 			
-			//010¿Ü¿¡´Â µÇÁö ¾Êµµ·Ï
+			//010ì™¸ì—ëŠ” ë˜ì§€ ì•Šë„ë¡
 			if(!(tel.substring(0, tel.indexOf("-")).equals("010"))) {
-				JOptionPane.showMessageDialog(cuiv, "¿Ã¹Ù¸¥ ÀüÈ­¹øÈ£ Çü½ÄÀÌ ¾Æ´Õ´Ï´Ù\n¿¹) 010-0000-0000");
+				JOptionPane.showMessageDialog(cuiv, "ì˜¬ë°”ë¥¸ ì „í™”ë²ˆí˜¸ í˜•ì‹ì´ ì•„ë‹™ë‹ˆë‹¤\nì˜ˆ) 010-0000-0000");
 				return;
 			}//end if
 			
 			
 			//010-0000-0000
-			//Ã¹-Àü±îÁöÀÚ¸´¼ö3ÀÚ¸® , --»çÀÌ 4ÀÚ¸®, ³ª¸ÓÁö4ÀÚ¸®(Ã¹¹øÂ°°ËÁõÀ¸·Î..)
+			//ì²«-ì „ê¹Œì§€ìë¦¿ìˆ˜3ìë¦¬ , --ì‚¬ì´ 4ìë¦¬, ë‚˜ë¨¸ì§€4ìë¦¬(ì²«ë²ˆì§¸ê²€ì¦ìœ¼ë¡œ..)
 			if(!(tel.substring(0, tel.indexOf("-")).length()==3)
 				||!(tel.substring(tel.indexOf("-")+1, tel.lastIndexOf("-")).length()==4)) {
 					 
-					JOptionPane.showMessageDialog(cuiv, "¿Ã¹Ù¸¥ ÀüÈ­¹øÈ£ Çü½ÄÀÌ ¾Æ´Õ´Ï´Ù\n¿¹) 010-0000-0000");
+					JOptionPane.showMessageDialog(cuiv, "ì˜¬ë°”ë¥¸ ì „í™”ë²ˆí˜¸ í˜•ì‹ì´ ì•„ë‹™ë‹ˆë‹¤\nì˜ˆ) 010-0000-0000");
 					return;
 			}//end if
 			
 				Integer.parseInt(tel2);
 			}//end else
 		} catch (NumberFormatException nfe) {
-			showMessageDialog(cuiv, "ÀüÈ­¹øÈ£¿¡ ¹®ÀÚ¿­ÀÌ µé¾îÀÖ½À´Ï´Ù.");
+			showMessageDialog(cuiv, "ì „í™”ë²ˆí˜¸ì— ë¬¸ìì—´ì´ ë“¤ì–´ìˆìŠµë‹ˆë‹¤.");
 			return;
 		} //end catch	
 		
 		
 		
-		//ÀÌ¸ŞÀÏ °ËÁõ
-		if(email.length() <14) {//@. Æ÷ÇÔ ÃÖ¼Ò 14ÀÚ¸® ÀÌ»ó
-			JOptionPane.showMessageDialog(cuiv, "ÀÌ¸ŞÀÏÀº 14ÀÚ¸® ÀÌ»óÀÌ¾î¾ßÇÕ´Ï´Ù.");
+		//ì´ë©”ì¼ ê²€ì¦
+		if(email.length() <14) {//@. í¬í•¨ ìµœì†Œ 14ìë¦¬ ì´ìƒ
+			JOptionPane.showMessageDialog(cuiv, "ì´ë©”ì¼ì€ 14ìë¦¬ ì´ìƒì´ì–´ì•¼í•©ë‹ˆë‹¤.");
 			return;
-		}else {//14ÀÚ¸®ÀÌ»óÀÌ¶ó¸é
+		}else {//14ìë¦¬ì´ìƒì´ë¼ë©´
 	
 		if(!(email.contains("@")&& email.contains("."))) {
-			JOptionPane.showMessageDialog(cuiv, "¿Ã¹Ù¸¥ ÀÌ¸ŞÀÏ Çü½ÄÀÌ ¾Æ´Õ´Ï´Ù. \n¿¹)won111@naver.com");
+			JOptionPane.showMessageDialog(cuiv, "ì˜¬ë°”ë¥¸ ì´ë©”ì¼ í˜•ì‹ì´ ì•„ë‹™ë‹ˆë‹¤. \nì˜ˆ)won111@naver.com");
 			return;
 		
 		}//end if
@@ -183,46 +183,46 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 
 
 		
-		//¼öÁ¤½Ã ºñ¹Ğ¹øÈ£ ÇÊ¼öÀÔ·Â ÀÔ·ÂÇß´Ù¸é °ËÁõ
-		//ÃÖ´ë 12ÀÚ¸®, ´ë¹®ÀÚ ¼Ò¹®ÀÚ Æ¯¼ö¹®ÀÚ Á¶ÇÕ
-		//ºñ¹Ğ¹øÈ£ °ËÁõ
-		if(newPass1.equals("")) {//ºñ¹Ğ¹øÈ£º¯°æÇÏÁö¾ÊÀ»½Ã
+		//ìˆ˜ì •ì‹œ ë¹„ë°€ë²ˆí˜¸ í•„ìˆ˜ì…ë ¥ ì…ë ¥í–ˆë‹¤ë©´ ê²€ì¦
+		//ìµœëŒ€ 12ìë¦¬, ëŒ€ë¬¸ì ì†Œë¬¸ì íŠ¹ìˆ˜ë¬¸ì ì¡°í•©
+		//ë¹„ë°€ë²ˆí˜¸ ê²€ì¦
+		if(newPass1.equals("")) {//ë¹„ë°€ë²ˆí˜¸ë³€ê²½í•˜ì§€ì•Šì„ì‹œ
 			UserModifyWithoutPassVO umvo2=new UserModifyWithoutPassVO(id, name, tel, addrSeq, addrDetail, email);
 
 			try {			
 					if(!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("R")
-							&&!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("E")) {//nullÀÌ¸é
-						JOptionPane.showMessageDialog(cuiv, "ºñ¹Ğ¹øÈ£°¡ ¿Ã¹Ù¸£Áö ¾Ê½À´Ï´Ù.");
-					}else {//RÀÌ¶ó¸é(¾ÆÀÌµğ¿Í ºñ¹Ğ¹øÈ£°¡ ¸Â´Ù¸é) ¼öÁ¤µÊ
+							&&!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("E")) {//nullì´ë©´
+						JOptionPane.showMessageDialog(cuiv, "ë¹„ë°€ë²ˆí˜¸ê°€ ì˜¬ë°”ë¥´ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+					}else {//Rì´ë¼ë©´(ì•„ì´ë””ì™€ ë¹„ë°€ë²ˆí˜¸ê°€ ë§ë‹¤ë©´) ìˆ˜ì •ë¨
 						if (CommonDAO.getInstance().updateUserInfoWithoutPass(umvo2)) {
-							JOptionPane.showMessageDialog(cuiv, "È¸¿øÁ¤º¸°¡ ¼öÁ¤µÇ¾ú½À´Ï´Ù.");
+							JOptionPane.showMessageDialog(cuiv, "íšŒì›ì •ë³´ê°€ ìˆ˜ì •ë˜ì—ˆìŠµë‹ˆë‹¤.");
 							cuiv.dispose();
 							new LogTestChangeUserInfo();
 						}//end if
 					}//end else
 			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(cuiv, "DB¿¡¼­ ¹®Á¦°¡ ¹ß»ıÇß½À´Ï´Ù.");
+				JOptionPane.showMessageDialog(cuiv, "DBì—ì„œ ë¬¸ì œê°€ ë°œìƒí–ˆìŠµë‹ˆë‹¤.");
 				e.printStackTrace();
 			}
-		}else {//»õºñ¹Ğ¹øÈ£ÀÔ·Â½Ã//////////////////////////////////////////////////
+		}else {//ìƒˆë¹„ë°€ë²ˆí˜¸ì…ë ¥ì‹œ//////////////////////////////////////////////////
 		
 			UserModifyVO umvo=new UserModifyVO(id, name, newPass1, tel, addrSeq, addrDetail, email);
 
-		try {//ºñ¹Ğ¹øÈ£ °ËÁõ
+		try {//ë¹„ë°€ë²ˆí˜¸ ê²€ì¦
 			
-			if(!newPass1.equals(newPass2)) {//»õºñ¹Ğ¹øÈ£È®ÀÎÀÌ ´Ù¸¦¶§
-				JOptionPane.showMessageDialog(cuiv, "ºñ¹Ğ¹øÈ£È®ÀÎ°ú ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù.");
-			}else {//»õ ºñ¹Ğ¹øÈ£¿Í ºñ¹Ğ¹øÈ£ È®ÀÎÀÌ °°´Ù¸é 
+			if(!newPass1.equals(newPass2)) {//ìƒˆë¹„ë°€ë²ˆí˜¸í™•ì¸ì´ ë‹¤ë¥¼ë•Œ
+				JOptionPane.showMessageDialog(cuiv, "ë¹„ë°€ë²ˆí˜¸í™•ì¸ê³¼ ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+			}else {//ìƒˆ ë¹„ë°€ë²ˆí˜¸ì™€ ë¹„ë°€ë²ˆí˜¸ í™•ì¸ì´ ê°™ë‹¤ë©´ 
 				if(!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("R")
-						&&!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("E")) {//nullÀÌ¸é(¾ÆÀÌµğ¿Íºñ¹øÀÌ´Ù¸£´Ù¸é)
-					JOptionPane.showMessageDialog(cuiv, "ºñ¹Ğ¹øÈ£°¡ ¿Ã¹Ù¸£Áö ¾Ê½À´Ï´Ù.");
-				}else {//RÀÌ¶ó¸é(¾ÆÀÌµğ¿Í ºñ¹Ğ¹øÈ£°¡ ¸Â´Ù¸é) ¼öÁ¤µÊ
+						&&!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("E")) {//nullì´ë©´(ì•„ì´ë””ì™€ë¹„ë²ˆì´ë‹¤ë¥´ë‹¤ë©´)
+					JOptionPane.showMessageDialog(cuiv, "ë¹„ë°€ë²ˆí˜¸ê°€ ì˜¬ë°”ë¥´ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+				}else {//Rì´ë¼ë©´(ì•„ì´ë””ì™€ ë¹„ë°€ë²ˆí˜¸ê°€ ë§ë‹¤ë©´) ìˆ˜ì •ë¨
 								if(!checkPass(newPass1)) {
-									JOptionPane.showMessageDialog(cuiv, "ºñ¹Ğ¹øÈ£¸¦ È®ÀÎÇØÁÖ¼¼¿ä\n´ë¹®ÀÚ,¼Ò¹®ÀÚ,Æ¯¼ö¹®ÀÚ Á¶ÇÕÀ¸·Î ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+									JOptionPane.showMessageDialog(cuiv, "ë¹„ë°€ë²ˆí˜¸ë¥¼ í™•ì¸í•´ì£¼ì„¸ìš”\nëŒ€ë¬¸ì,ì†Œë¬¸ì,íŠ¹ìˆ˜ë¬¸ì ì¡°í•©ìœ¼ë¡œ ì…ë ¥í•´ì£¼ì„¸ìš”.");
 									return;
 								}else {
 									if (CommonDAO.getInstance().updateUserInfo(umvo)) {
-								JOptionPane.showMessageDialog(cuiv, "È¸¿øÁ¤º¸°¡ ¼öÁ¤µÇ¾ú½À´Ï´Ù.");
+								JOptionPane.showMessageDialog(cuiv, "íšŒì›ì •ë³´ê°€ ìˆ˜ì •ë˜ì—ˆìŠµë‹ˆë‹¤.");
 								cuiv.dispose();
 								new LogTestChangeUserInfo();
 								}//end if
@@ -232,7 +232,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 		
 			}//end else
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(cuiv, "DB¿¡¼­ ¹®Á¦°¡ ¹ß»ıÇß½À´Ï´Ù.");
+			JOptionPane.showMessageDialog(cuiv, "DBì—ì„œ ë¬¸ì œê°€ ë°œìƒí–ˆìŠµë‹ˆë‹¤.");
 			e.printStackTrace();
 			}//end catch
 		
