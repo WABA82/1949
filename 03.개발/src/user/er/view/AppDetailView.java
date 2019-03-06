@@ -26,7 +26,6 @@ public class AppDetailView extends JDialog {
 
 	public AppDetailView(AppListView alv, String app_num, AppListController ac, String er_num) {
 		super(alv, "지원자 상세 정보", true);
-
 		jlImage = new JLabel();
 		jlImage.setBorder(new TitledBorder("구직자 이미지"));
 		jlImage.setBounds(38, 20, 160, 225);
@@ -43,6 +42,7 @@ public class AppDetailView extends JDialog {
 		jbRefuse = new JButton("지원거절");
 		add(jbRefuse);
 		jbRefuse.setBounds(255, 430, 90, 27);
+
 		jbClose = new JButton("닫기");
 		add(jbClose);
 		jbClose.setBounds(360, 430, 90, 27);

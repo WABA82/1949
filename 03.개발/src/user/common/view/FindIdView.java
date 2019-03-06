@@ -50,6 +50,9 @@ public class FindIdView extends JDialog {
 		FindIdController fic = new FindIdController(this);
 		jbValidate.addActionListener(fic);
 		jbClose.addActionListener(fic);
+		jtfName.addKeyListener(fic);
+		jtfTel.addKeyListener(fic);
+		
 		
 		addWindowListener(fic);
 		

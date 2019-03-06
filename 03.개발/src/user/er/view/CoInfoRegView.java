@@ -12,8 +12,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-
 import user.er.controller.CoInfoRegController;
+import user.util.JTextFieldLimit;
 
 @SuppressWarnings("serial")
 public class CoInfoRegView extends JDialog {
@@ -25,8 +25,13 @@ public class CoInfoRegView extends JDialog {
 	public CoInfoRegView(ErMainView emv, String erId) {
 		super(emv, "회사상세정보",true);
 		jtfCoName = new JTextField();
+		jtfCoName.setDocument((new JTextFieldLimit(10)));
+		
 		jtfEstDate = new JTextField();
+		jtfEstDate.setDocument((new JTextFieldLimit(10)));
+		
 		memberNum = new JTextField();
+		memberNum.setDocument((new JTextFieldLimit(5)));
 		
 		JLabel jlCoName = new JLabel("회사명");
 		JLabel jlEstDate = new JLabel("설립년도");

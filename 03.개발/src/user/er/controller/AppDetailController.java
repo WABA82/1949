@@ -41,15 +41,15 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 	private AppDetailView adv;
 	private ErDAO er_dao;
 	private String app_num;
+	private DetailAppEeVO daevo = null;
 	private String er_num;
 	private AppListController ac;
-	private DetailAppEeVO daevo = null;
 
 	public AppDetailController(AppDetailView adv, String app_num, AppListController ac, String er_num) {
 		this.adv = adv;
 		this.app_num = app_num;
-		this.er_num = er_num;
 		this.ac = ac;
+		this.er_num = er_num;
 		er_dao = ErDAO.getInstance();
 		setInfo(app_num);
 	}// 생성자
@@ -67,7 +67,7 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 				String imgPath = "C:/dev/1949/03.개발/src/user/img/ee/";
 				File imgFile = new File(imgPath + daevo.getImg());
 				// user.img.co패키지에 이미지 파일이 없다면 실행.
-				// System.out.println(imgFile.exists());
+				//System.out.println(imgFile.exists());
 				if (!imgFile.exists()) {
 					try {
 						Socket client = null; // "211.63.89.144", 7002 : 영근컴퓨터IP, 파일서버의 포트
@@ -133,7 +133,6 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 			switch (JOptionPane.showConfirmDialog(adv, "이 지원자의 지원을 수락 하시겠습니까?\n 한번 수락 하면 되돌릴 수 없습니다.")) {
 			case JOptionPane.OK_OPTION:
 				changeStatusAccept();
-				setInfo(app_num);
 			}// end switch
 		} // end if
 
@@ -172,6 +171,8 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 	public void changeStatusAccept() {
 		try {
 			if (!er_dao.updateAppSatus(new ErAppStatusVO(app_num, "A"))) { // 정상작동 했을 경우.
+				setInfo(app_num);
+				ac.setDTM(er_num);
 				JOptionPane.showMessageDialog(adv, "이 지원자의 지원을 수락 하였습니다.");
 				ac.setDTM(er_num);
 			} // end if
@@ -187,6 +188,8 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 	public void changeStatusRefuse() {
 		try {
 			if (!er_dao.updateAppSatus(new ErAppStatusVO(app_num, "D"))) {// 정상작동 했을 경우.
+				setInfo(app_num);
+				ac.setDTM(er_num);
 				JOptionPane.showMessageDialog(adv, "이 지원자의 지원을 거절 하였습니다.");
 				ac.setDTM(er_num);
 			} // end if

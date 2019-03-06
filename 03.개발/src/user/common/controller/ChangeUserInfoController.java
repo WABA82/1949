@@ -4,6 +4,8 @@ import static javax.swing.JOptionPane.showMessageDialog;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
@@ -20,7 +22,7 @@ import user.common.vo.UserModifyWithoutPassVO;
 import user.dao.CommonDAO;
 import user.run.LogTestChangeUserInfo;
 
-public class ChangeUserInfoController extends WindowAdapter implements ActionListener {
+public class ChangeUserInfoController extends WindowAdapter implements ActionListener,KeyListener {
 
 	private ChangeUserInfoView cuiv;
 	private UserInfoVO uivo;
@@ -131,7 +133,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 			String tel2=tel.replaceAll("-", "");
 		
 		if(tel2.length()!=11) {
-			JOptionPane.showMessageDialog(cuiv, "올바른 전화번호 형식이 아닙니다\n예) 010-0000-0000");
+			JOptionPane.showMessageDialog(cuiv, "올바른 전화번호 형식이 아닙니다 \n예) 010-0000-0000");
 			return;
 			
 		}else {//11자리라면  :-있는지 확인하고, - - 사이 번호 자릿수 검증
@@ -149,7 +151,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 			
 			
 			//010-0000-0000
-			//첫-전까지자릿수3자리 , --사이 4자리, 나머지4자리(첫번째검증으로..)
+			// 첫-전까지자릿수3자리 , --사이 4자리, 나머지4자리(첫번째검증으로..)
 			if(!(tel.substring(0, tel.indexOf("-")).length()==3)
 				||!(tel.substring(tel.indexOf("-")+1, tel.lastIndexOf("-")).length()==4)) {
 					 
@@ -188,7 +190,8 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 			UserModifyWithoutPassVO umvo2=new UserModifyWithoutPassVO(id, name, tel, addrSeq, addrDetail, email);
 
 			try {			
-					if(!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("R") && !(CommonDAO.getInstance().login(id, InputOriginPass)).equals("E")) {//null이면
+					if(!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("R")
+							&&!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("E")) {//null이면
 						JOptionPane.showMessageDialog(cuiv, "비밀번호가 올바르지 않습니다.");
 					}else {//R이라면(아이디와 비밀번호가 맞다면) 수정됨
 						if (CommonDAO.getInstance().updateUserInfoWithoutPass(umvo2)) {
@@ -210,7 +213,8 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 			if(!newPass1.equals(newPass2)) {//새비밀번호확인이 다를때
 				JOptionPane.showMessageDialog(cuiv, "비밀번호확인과 비밀번호가 일치하지 않습니다.");
 			}else {//새 비밀번호와 비밀번호 확인이 같다면 
-				if(!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("R") && !(CommonDAO.getInstance().login(id, InputOriginPass)).equals("E")) {//null이면(아이디와비번이다르다면)
+				if(!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("R")
+						&&!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("E")) {//null이면(아이디와비번이다르다면)
 					JOptionPane.showMessageDialog(cuiv, "비밀번호가 올바르지 않습니다.");
 				}else {//R이라면(아이디와 비밀번호가 맞다면) 수정됨
 								if(!checkPass(newPass1)) {
@@ -274,5 +278,19 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 	public ChangeUserInfoView getCuiv() {
 		return cuiv;
 	}
+
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode()==10) {
+			modifyUser();
+			}
+	}
+	
+	@Override
+	public void keyTyped(KeyEvent e) {}
+
+	@Override
+	public void keyReleased(KeyEvent e) {}
 	
 }

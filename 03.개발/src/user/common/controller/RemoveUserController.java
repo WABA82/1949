@@ -2,6 +2,8 @@ package user.common.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
@@ -15,7 +17,7 @@ import user.common.view.RemoveUserView;
 import user.dao.CommonDAO;
 import user.run.LogTestRemoveUser;
 
-public class RemoveUserController extends WindowAdapter implements ActionListener {
+public class RemoveUserController extends WindowAdapter implements ActionListener,KeyListener {
 	
 	private ChangeUserInfoView cuiv;
 	private RemoveUserView ruv;
@@ -72,7 +74,6 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 		}
 	}//removeUser	
 
-	
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if(ae.getSource()==ruv.getJbDelete()) {
@@ -86,5 +87,21 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 	public void windowClosing(WindowEvent e) {
 		ruv.dispose();
 	}
+
+
+
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode()==10) {
+			removeUser(id);
+			}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {}
+
+	@Override
+	public void keyReleased(KeyEvent e) {}
 
 }

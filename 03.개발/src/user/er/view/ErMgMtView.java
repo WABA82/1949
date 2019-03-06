@@ -75,8 +75,8 @@ public class ErMgMtView extends JDialog {
 	}
 
 
-	public static void main(String[] args) {
-		new ErMgMtView(null, null, "moonlight");
-	}
+/*	public static void main(String[] args) {
+		new ErMgMtView(null, null, "hihi55");
+	}*/
 	
 }

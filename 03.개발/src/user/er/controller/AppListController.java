@@ -138,12 +138,13 @@ public class AppListController extends WindowAdapter implements MouseListener {
 		}// end switch
 	}// mouseClicked
 
-	private void showAppDetailInfo() {
+	public void showAppDetailInfo() {
 		JTable jt = alv.getJtEeInfo();
 		String app_num = (String) jt.getValueAt(jt.getSelectedRow(), 1);
 		AppDetailView adv = new AppDetailView(alv, app_num, this, er_num);
 
 		// AppDetailView객체가 동작을 멈추면 true반환
+		//System.out.println(adv.isActive());
 		if (adv.isActive()) {
 			setDTM(er_num);
 		} // end if
