@@ -12,7 +12,6 @@ import javax.swing.JOptionPane;
 
 import user.dao.ErDAO;
 import user.er.view.ErAddView;
-import user.er.view.ErModifyView;
 import user.er.vo.ErAddVO;
 import user.util.UserLog;
 
@@ -113,21 +112,24 @@ public class ErAddController extends WindowAdapter implements ActionListener {
 		if(ae.getSource()==eav.getJbReg()) {
 			if(eav.getJtfSubject().getText().trim()==null||eav.getJtfSubject().getText().trim().equals("")){
 				JOptionPane.showMessageDialog(eav, "제목은 필수 입력입니다.");
+				eav.getJtfSubject().requestFocus();
 				return;
 			}
 			if(eav.getJtfSal().getText().trim()==null||eav.getJtfSal().getText().trim().equals("")){
 				JOptionPane.showMessageDialog(eav, "급여는 필수 입력입니다.");
+				eav.getJtfSal().requestFocus();
 				return;
 			}
 			if(eav.getJtaErDesc().getText().trim()==null||eav.getJtaErDesc().getText().trim().equals("")){
 				JOptionPane.showMessageDialog(eav, "상세설명은 필수 입력입니다.");
+				eav.getJtaErDesc().requestFocus();
 				return;
 			}
 			try {
 				register();
 			}catch(NumberFormatException nfe) {
 				JOptionPane.showMessageDialog(eav, "급여는 숫자형식으로 입력해야합니다.");
-				nfe.printStackTrace();
+				eav.getJtfSal().requestFocus();
 			}
 		}
 		if(ae.getSource()==eav.getJbCancel()) {

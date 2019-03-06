@@ -1,7 +1,6 @@
 package user.er.controller;
 
 import java.awt.FileDialog;
-import java.awt.GraphicsDevice.WindowTranslucency;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -21,7 +20,6 @@ import javax.swing.JOptionPane;
 
 import user.dao.ErDAO;
 import user.er.view.ErDetailEeView;
-import user.er.vo.DetailAppEeVO;
 import user.er.vo.DetailEeInfoVO;
 import user.er.vo.ErInterestVO;
 import user.util.UserLog;
@@ -53,9 +51,9 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 			JOptionPane.showMessageDialog(edev, "추가에 실패했습니다.");
 			return;
 		}
-		edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/r_heart.png"));
+		edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/r_heart.png"));
 		JOptionPane.showMessageDialog(edev, "관심 구직자에 추가되었습니다!");
-		ul.sendLog(erId,"관심 구직자를 추가하였습니다.");
+		ul.sendLog(erId, "["+eeNum+ "]번호 유저를 관심 구직자로 추가하였습니다.");
 		try {
 			devo= erdao.selectDetailEe(eeNum, erId);
 
@@ -77,8 +75,8 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 		}
 		if(deleteFlag) {
 			JOptionPane.showMessageDialog(edev, "관심 구직자를 취소했습니다.");
-			ul.sendLog(erId, "관심 구직자를 취소하였습니다.");
-			edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.개발/가데이터/하트/b_heart.png"));
+			ul.sendLog(erId, "["+eeNum+ "]번호 유저를 관심 구직자에서 취소하였습니다.");
+			edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/b_heart.png"));
 		}else {
 			JOptionPane.showMessageDialog(edev, "리스트삭제에 실패했습니다.");
 		}

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import user.er.dto.ErHiringCdtDTO;
-import user.er.vo.ActivationVO;
 import user.er.vo.CoInfoVO;
 import user.er.vo.CoInsertVO;
 import user.er.vo.DetailAppEeVO;
@@ -32,7 +31,6 @@ public class ErDAO {
 	private PreparedStatement pstmt2;
 	private PreparedStatement pstmt3;
 	private Connection con;
-	private int insertSkillcnt;
 	private PreparedStatement coPstmt1, coPstmt2;
 
 	public ErDAO() {
@@ -454,7 +452,7 @@ public class ErDAO {
 			pstmt1 = con.prepareStatement(insertSkillAdd.toString());
 			pstmt1.setString(1, erNum);
 			pstmt1.setString(2, skill);
-			insertSkillcnt += pstmt1.executeUpdate();
+			pstmt1.executeUpdate();
 
 		} finally {
 			if (pstmt != null) {

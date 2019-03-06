@@ -7,12 +7,10 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
-import user.ee.controller.EeDetailSearchController;
-import user.ee.controller.EeHiringController;
-import user.ee.view.EeHiringView;
 import user.er.controller.ErDetailSearchController;
 import user.er.controller.ErHiringController;
 
+@SuppressWarnings("serial")
 public class ErDetailSearchView extends JDialog {
 	
 	private JButton jbSearch, jbCancel;
