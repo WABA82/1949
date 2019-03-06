@@ -803,6 +803,8 @@ public class ErDAO {
 			} // end if
 		} // end finally
 
+		
+		
 		return list;
 	}// selectInterestEEInfoList
 

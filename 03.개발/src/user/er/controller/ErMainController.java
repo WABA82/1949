@@ -26,16 +26,13 @@ import user.er.view.ErInterestView;
 import user.er.view.ErMainView;
 import user.er.view.ErMgMtView;
 import user.er.vo.CoInfoVO;
-import user.er.vo.CoInsertVO;
 import user.er.vo.ErHiringForInterestVO;
 import user.er.vo.ErHiringVO;
 import user.er.vo.ErListVO;
 
 public class ErMainController extends WindowAdapter implements ActionListener, MouseListener {
 
-	private String erId;
 	private ErMainVO ermvo;
-	private CoInsertVO civo;
 	private CoInfoVO cvo;
 	private ErDAO erdao;
 	private CommonDAO C_dao;
@@ -89,7 +86,7 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 
 			List<ErListVO> list = null;
 			try {
-				list = erdao.selectErList(erId);
+				list = erdao.selectErList(ermvo.getErId());
 				if (list.isEmpty()) {
 					JOptionPane.showMessageDialog(ermv, "현재 등록한 구인공고가 없습니다. 먼저 구인공고를 등록해 주세요.");
 					return;
@@ -113,7 +110,8 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 			List<ErHiringForInterestVO> list = null;
 			
 			try {
-				list = erdao.selectInterestEEInfoList(erId);
+				list = erdao.selectInterestEEInfoList(ermvo.getErId());
+				
 				if (list.isEmpty()) {
 					JOptionPane.showMessageDialog(ermv, "관심구인정보가 없습니다. 먼저 구인정보에서 하트를 눌러주세요.");
 					return;
