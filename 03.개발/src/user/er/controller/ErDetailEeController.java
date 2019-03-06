@@ -51,6 +51,7 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 			JOptionPane.showMessageDialog(edev, "추가에 실패했습니다.");
 			return;
 		}
+
 		JOptionPane.showMessageDialog(edev, "관심 구직자에 추가되었습니다!");
 		edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/r_heart.png"));
 		ul.sendLog(erId, "["+eeNum+ "]번호 유저를 관심 구직자로 추가하였습니다.");
