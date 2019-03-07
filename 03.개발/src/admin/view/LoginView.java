@@ -21,7 +21,7 @@ public class LoginView extends JFrame {
 	public LoginView() {
 		super("1949 - 관리자 로그인");
 		
-		ImageIcon logoImg = new ImageIcon("C:/Users/owner/Desktop/1949logo2.png");
+		ImageIcon logoImg = new ImageIcon("C:/dev/1949/03.개발/src/admin/img/admin_logo.png");
 		JLabel jlLogo = new JLabel(logoImg);
 		JLabel jlId= new JLabel("아이디");
 		JLabel jlPass= new JLabel("비밀번호");
@@ -31,7 +31,7 @@ public class LoginView extends JFrame {
 		
 		setLayout(null);
 		
-		jlLogo.setBounds(16, 10, 350, 180);
+		jlLogo.setBounds(23, 15, 350, 180);
 		add(jlLogo);
 		
 		jlId.setBounds(12,209,40,30);
