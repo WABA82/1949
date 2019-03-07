@@ -2,6 +2,7 @@ package user.er.view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Robot;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -65,42 +66,10 @@ public class CoInfoModifyView extends JDialog {
 		jbModify = new JButton("수정");
 		jbClose = new JButton("닫기");
 		
-		
-		///////////////////선의 0306 수정중/////////////////////////////////
-		File imgFile =new File("C:/dev/1949/03.개발/src/user/img/ee/"+cvo.getImg1());
-		File imgFile1 =new File("C:/dev/1949/03.개발/src/user/img/ee/"+cvo.getImg2());
-		File imgFile2 =new File("C:/dev/1949/03.개발/src/user/img/ee/"+cvo.getImg3());
-		File imgFile3 =new File("C:/dev/1949/03.개발/src/user/img/ee/"+cvo.getImg4());
-		
-		File[] imgFileArr = {imgFile,imgFile1,imgFile2,imgFile3};
-		String[] imgArr = {cvo.getImg1(),cvo.getImg2(),cvo.getImg3(),cvo.getImg4()};
-		boolean[] flag = {false,false,false,false};
-		
-		for(int i=0;i<4;i++) {
-			if(!imgFileArr[i].exists()) {
-				Socket client = null;
-				DataInputStream dis =null;
-				DataOutputStream dos = null;
-				FileOutputStream fos = null;
-				try {
-					UserUtil uu = new UserUtil();
-					uu.reqFile(imgArr[i], "co", client, dos, dis, fos);
-					flag[i]=true;
-				} catch (IOException e) {
-					e.printStackTrace();
-					//JOptionPane.showMessageDialog(emv, "이미지를 받아오는데 실패했습니다.");
-				}
-			}
-		}
-		if(!(flag[0]&&flag[1]&&flag[2]&&flag[3])) {
-			JOptionPane.showMessageDialog(emv, "이미지를 받아오는데 실패했습니다.");
-		}
-		//////////////////////////////////선의 수정 중끝///////////////////////////////////
-
-		jlImg1 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/"+cvo.getImg1()));
-		jlImg2 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/"+cvo.getImg2()));
-		jlImg3 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/"+cvo.getImg3()));
-		jlImg4 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/"+cvo.getImg4()));
+		jlImg1 = new JLabel();
+		jlImg2 = new JLabel();
+		jlImg3 = new JLabel();
+		jlImg4 = new JLabel();
 		System.out.println(cvo);
 		// 배치
 		setLayout(null);
@@ -167,6 +136,32 @@ public class CoInfoModifyView extends JDialog {
 		setBounds(100, 100, 480, 530);
 		setVisible(true);
 	}// 생성자
+	
+	
+
+	public void setJlImg1(JLabel jlImg1) {
+		this.jlImg1 = jlImg1;
+	}
+
+
+
+	public void setJlImg2(JLabel jlImg2) {
+		this.jlImg2 = jlImg2;
+	}
+
+
+
+	public void setJlImg3(JLabel jlImg3) {
+		this.jlImg3 = jlImg3;
+	}
+
+
+
+	public void setJlImg4(JLabel jlImg4) {
+		this.jlImg4 = jlImg4;
+	}
+
+
 
 	public JButton getJbModify() {
 		return jbModify;
