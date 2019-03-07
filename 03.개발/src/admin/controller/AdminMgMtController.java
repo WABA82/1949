@@ -498,7 +498,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 ////////팝업 조건검색 기능 추가 0307 ////////////
 		if (me.getSource() == ammv.getJtUser() && me.getButton() == MouseEvent.BUTTON3) {
 			JPopupMenu jp = ammv.getJpUser();
-			jp.show(ammv.getJtb(), me.getX(), me.getY());
+			jp.show(ammv.getJtb(), me.getXOnScreen()-103, me.getYOnScreen()-125);
 			jp.setVisible(true);
 		} else {
 			JPopupMenu jp = ammv.getJpUser();
@@ -506,7 +506,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 		}
 		if (me.getSource() == ammv.getJtEr() && me.getButton() == MouseEvent.BUTTON3) {
 			JPopupMenu jp = ammv.getJpEr();
-			jp.show(ammv.getJtb(), me.getX(), me.getY());
+			jp.show(ammv.getJtb(), me.getXOnScreen()-103, me.getYOnScreen()-125);
 			jp.setVisible(true);
 		} else {
 			JPopupMenu jp = ammv.getJpEr();
@@ -514,7 +514,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 		}
 		if (me.getSource() == ammv.getJtEe() && me.getButton() == MouseEvent.BUTTON3) {
 			JPopupMenu jp = ammv.getJpEe();
-			jp.show(ammv.getJtb(), me.getX(), me.getY());
+			jp.show(ammv.getJtb(), me.getXOnScreen()-103, me.getYOnScreen()-125);
 			jp.setVisible(true);
 		} else {
 			JPopupMenu jp = ammv.getJpEe();
@@ -522,7 +522,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 		}
 		if (me.getSource() == ammv.getJtCo() && me.getButton() == MouseEvent.BUTTON3) {
 			JPopupMenu jp = ammv.getJpCo();
-			jp.show(ammv.getJtb(), me.getX(), me.getY());
+			jp.show(ammv.getJtb(), me.getXOnScreen()-103, me.getYOnScreen()-125);
 			jp.setVisible(true);
 		} else {
 			JPopupMenu jp = ammv.getJpCo();
