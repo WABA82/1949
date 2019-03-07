@@ -111,6 +111,116 @@ public class AdminDAO {
 	}
 	
 	/**
+	 * 이름 또는 ID로 검색 후 유저 정보를 조회하는 메소드 
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<UserListVO> selectUserWithNameCondition(String input, String flag) throws SQLException {
+		List<UserListVO> list = new ArrayList<UserListVO>();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null; 
+		
+		try {
+			con = getConn();
+			
+			StringBuilder selectAllUser = new StringBuilder();
+			
+			if (flag.equals("id")) {
+				selectAllUser
+				.append(" select id, name, ssn, tel, ")
+				.append(" (select sido||gugun||dong||bunji from zipcode where seq = addr_seq) addr, ")
+				.append(" email, user_type, TO_CHAR(input_date, 'yyyy-mm-dd') input_date ")
+				.append(" from user_table where id LIKE '%'||?||'%' order by input_date desc ");
+				
+			} else { // name
+				selectAllUser
+				.append(" select id, name, ssn, tel, ")
+				.append(" (select sido||gugun||dong||bunji from zipcode where seq = addr_seq) addr, ")
+				.append(" email, user_type, TO_CHAR(input_date, 'yyyy-mm-dd') input_date ")
+				.append(" from user_table where name LIKE '%'||?||'%' order by input_date desc ");
+			}
+			
+			pstmt = con.prepareStatement(selectAllUser.toString());
+			pstmt.setString(1, input);
+			
+			rs = pstmt.executeQuery();
+			
+			UserListVO ulvo = null;
+			while(rs.next()) {
+				ulvo = new UserListVO(rs.getString("id"), rs.getString("name"),
+						rs.getString("ssn"), rs.getString("tel"), 
+						rs.getString("addr"), rs.getString("email"), 
+						rs.getString("user_type"), rs.getString("input_date"));
+				list.add(ulvo);
+			}
+			
+		} finally {
+			if (rs != null) { rs.close(); }
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		return list;
+	}
+	
+	
+	
+	/**
+	 * 이름 또는 id 조건에 따라 구직자 기본정보를 조회하는 메소드 
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<EeListVO> selectEeWithNameCondition(String input, String flag) throws SQLException {
+		List<EeListVO> list = new ArrayList<EeListVO>();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null; 
+		
+		try {
+			con = getConn();
+			
+			StringBuilder selectAllEe = new StringBuilder();
+			
+			if (flag.equals("id")) {
+				selectAllEe
+				.append(" select ee_num, img, ee_id, name, rank, loc, education, age, portfolio, gender, ext_resume, TO_CHAR(ei.input_date, 'yyyy-mm-dd') input_date ")
+				.append(" from ee_info ei, user_table u ")
+				.append(" where ei.ee_id = u.id AND id LIKE '%'||?||'%' order by ee_num desc  ");
+			} else { // name
+				selectAllEe
+				.append(" select ee_num, img, ee_id, name, rank, loc, education, age, portfolio, gender, ext_resume, TO_CHAR(ei.input_date, 'yyyy-mm-dd') input_date ")
+				.append(" from ee_info ei, user_table u ")
+				.append(" where ei.ee_id = u.id AND name LIKE '%'||?||'%' order by ee_num desc  ");
+			}
+			
+			pstmt = con.prepareStatement(selectAllEe.toString());
+			pstmt.setString(1, input);
+			
+			rs = pstmt.executeQuery();
+			
+			EeListVO elvo = null;
+			while(rs.next()) {
+				elvo = new EeListVO(rs.getString("ee_num"), rs.getString("img"),
+						rs.getString("ee_id"), rs.getString("name"), rs.getString("rank"),
+						rs.getString("loc"), rs.getString("education"), rs.getString("portfolio"),
+						rs.getString("gender"), rs.getString("ext_resume"), rs.getString("input_date"),
+						rs.getInt("age"));
+				list.add(elvo);
+			}
+			
+		} finally {
+			if (rs != null) { rs.close(); }
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		return list;
+	}
+	
+	/**
 	 * 모든 구직자 기본정보를 조회하는 메소드 
 	 * @return
 	 * @throws SQLException
@@ -198,6 +308,59 @@ public class AdminDAO {
 		return list;
 	}
 	
+	/**
+	 * 회사명 또는 id로 기업 사용자의 구인글 정보를 조회하는 메소드
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<ErListVO> selectErWithCondition(String input, String flag) throws SQLException {
+		List<ErListVO> list = new ArrayList<ErListVO>();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null; 
+		
+		try {
+			con = getConn();
+			
+			StringBuilder selectEr = new StringBuilder();
+			
+			if (flag.equals("coName")) {
+				selectEr
+				.append(" select er_num, subject, co_name, er_id, name, tel, rank, loc, education, hire_type, sal, TO_CHAR(ei.input_date, 'yyyy-mm-dd') input_date ")
+				.append(" from company c, er_info ei, user_table u ")
+				.append(" where c.co_num = ei.co_num AND c.er_id = u.id AND co_name LIKE '%'||?||'%' order by er_num desc ");
+			} else { // id
+				selectEr
+				.append(" select er_num, subject, co_name, er_id, name, tel, rank, loc, education, hire_type, sal, TO_CHAR(ei.input_date, 'yyyy-mm-dd') input_date ")
+				.append(" from company c, er_info ei, user_table u ")
+				.append(" where c.co_num = ei.co_num AND c.er_id = u.id AND er_id LIKE '%'||?||'%' order by er_num desc ");
+			}
+			
+			pstmt = con.prepareStatement(selectEr.toString());
+			pstmt.setString(1, input);
+			
+			rs = pstmt.executeQuery();
+			
+			ErListVO elvo = null;
+			while(rs.next()) {
+				elvo = new ErListVO(rs.getString("er_num"), 
+						rs.getString("subject"), rs.getString("co_name"),
+						rs.getString("er_id"), rs.getString("name"), rs.getString("tel"),
+						rs.getString("rank"), rs.getString("loc"), rs.getString("education"),
+						rs.getString("hire_type"), rs.getString("input_date"), rs.getInt("sal"));
+				list.add(elvo);
+			}
+			
+		} finally {
+			if (rs != null) { rs.close(); }
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		return list;
+	}
+	
 	
 	/**
 	 * 모든 기업 정보를 조회하는 메소드
@@ -220,6 +383,55 @@ public class AdminDAO {
 			.append(" from company order by co_num desc ");
 			
 			pstmt = con.prepareStatement(selectAllCo.toString());
+			
+			rs = pstmt.executeQuery();
+			
+			CoListVO clvo = null;
+			while(rs.next()) {
+				clvo = new CoListVO(rs.getString("co_num"), rs.getString("img1"),
+						rs.getString("co_name"), rs.getString("er_id"), rs.getString("est_date"), 
+						rs.getString("input_date"), rs.getInt("member_num"));
+				list.add(clvo);
+			}
+			
+		} finally {
+			if (rs != null) { rs.close(); }
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		return list;
+	}
+	
+	/**
+	 * 회사명 또는 id로 기업 정보를 조회하는 메소드
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<CoListVO> selectCoWithCondition(String input, String flag) throws SQLException {
+		List<CoListVO> list = new ArrayList<CoListVO>();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null; 
+		
+		try {
+			con = getConn();
+			
+			StringBuilder selectAllCo = new StringBuilder();
+			
+			if (flag.equals("coName")) {
+				selectAllCo
+				.append(" select co_num, img1, co_name, er_id, est_date, member_num, TO_CHAR(input_date, 'yyyy-mm-dd') input_date ")
+				.append(" from company where co_name LIKE '%'||?||'%' order by co_num desc ");
+			} else { // id
+				selectAllCo
+				.append(" select co_num, img1, co_name, er_id, est_date, member_num, TO_CHAR(input_date, 'yyyy-mm-dd') input_date ")
+				.append(" from company where er_id LIKE '%'||?||'%'  order by co_num desc ");
+			}
+			
+			pstmt = con.prepareStatement(selectAllCo.toString());
+			pstmt.setString(1, input);
 			
 			rs = pstmt.executeQuery();
 			
