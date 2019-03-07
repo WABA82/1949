@@ -284,7 +284,7 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 				
 				
 				msgCenter("회사정보가 수정되었습니다.");
-				au.sendLog(civo.getCoNum()+" 회사 정보 수정");
+				au.sendLog("["+civo.getCoNum()+"] 회사 정보 수정");
 				cmv.dispose();
 				
 				CoInfoVO newCivo = AdminDAO.getInstance().selectOneCo(coNum);
@@ -338,7 +338,7 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 					}
 					
 					msgCenter("회사 정보가 삭제되었습니다.");
-					au.sendLog(civo.getCoNum()+" 회사 정보 삭제");
+					au.sendLog("["+civo.getCoNum()+"] 회사 정보 삭제");
 					cmv.dispose();
 					ammc.setCo();
 				}

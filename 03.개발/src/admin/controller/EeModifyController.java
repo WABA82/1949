@@ -201,7 +201,7 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 				}
 				
 				msgCenter("기본정보를 수정했습니다.");
-				au.sendLog(eivo.getEeNum()+" 기본 정보 수정");
+				au.sendLog("["+eivo.getEeNum()+"] 기본 정보 수정");
 				emv.dispose();
 				
 				EeInfoVO newEivo = AdminDAO.getInstance().selectOneEe(eivo.getEeNum(), "eeNum");
@@ -235,7 +235,7 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 			au.deleteFile(eivo.getImg(), "ee", client, dos, dis);
 			
 			msgCenter(eivo.getEeNum()+"기본정보가 삭제되었습니다.");
-			au.sendLog(eivo.getEeNum()+" 기본 정보 삭제");
+			au.sendLog("["+eivo.getEeNum()+"] 기본 정보 삭제");
 			emv.dispose();
 			ammc.setEe();
 		}

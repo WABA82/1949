@@ -214,4 +214,5 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
    public void mouseEntered(MouseEvent e) {}
    @Override
    public void mouseExited(MouseEvent e) {}
+
 }

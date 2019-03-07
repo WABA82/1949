@@ -87,7 +87,6 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 			JOptionPane.showMessageDialog(emv, "일부 이미지를 받아오는데 실패했습니다.");
 		}
 		
-		
 		cimv.getJlImg1().setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/"+cvo.getImg1()));
 		cimv.getJlImg2().setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/"+cvo.getImg2()));
 		cimv.getJlImg3().setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/"+cvo.getImg3()));
