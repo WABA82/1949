@@ -11,7 +11,6 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import oracle.net.aso.e;
 import user.ee.view.EeInfoModifyView;
 import user.ee.view.EeInfoRegView;
 import user.ee.view.ModifyExtView;

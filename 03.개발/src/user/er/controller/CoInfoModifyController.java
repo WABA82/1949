@@ -23,12 +23,10 @@ import javax.swing.JOptionPane;
 
 import user.common.vo.ErMainVO;
 import user.dao.CommonDAO;
-import user.dao.EeDAO;
 import user.dao.ErDAO;
 import user.er.view.CoInfoModifyView;
 import user.er.view.ErMainView;
 import user.er.vo.CoInfoVO;
-import user.er.vo.CoInsertVO;
 import user.util.UserLog;
 import user.util.UserUtil;
 
@@ -208,7 +206,7 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 						
 						JOptionPane.showMessageDialog(cimv, "회사 정보가 수정 되었습니다");
 						ErMainVO updateEmvo=CommonDAO.getInstance().selectErMain(erId, "Y");
-						ul.sendLog(erId, "기업정보 수정");
+						ul.sendLog(erId, "["+coNum+"]기업정보 수정");
 						new ErMainView(updateEmvo);
 						cimv.dispose();
 						emv.dispose();

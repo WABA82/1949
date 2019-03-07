@@ -116,10 +116,6 @@ public class AppListController extends WindowAdapter implements MouseListener {
 				dtm.addRow(rowData);
 			} // end for
 
-			if (list.isEmpty()) {// 등록한 메뉴가 없을 때 : 도시락 추가 버튼을 통해 메뉴를 추가 할 수 있다.
-				JOptionPane.showMessageDialog(alv, "등록한 구인공고에 아직 지원한 구직자가 없습니다.");
-			} // end if
-
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(alv, "DB에서 데이터를 받아오는 중 문제 발생...");
 			e.printStackTrace();

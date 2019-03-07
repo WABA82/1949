@@ -73,7 +73,7 @@ public class ModifyExtController extends WindowAdapter implements ActionListener
 			mev.dispose();
 		}//end if
 		
-		if(ae.getSource() == mev.getJbChoose()) {
+		if(ae.getSource() == mev.getJbChoose() || ae.getSource() == mev.getJtfPath()) {
 			chooseFile();
 		}//end if
 		

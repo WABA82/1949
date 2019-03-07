@@ -13,6 +13,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import user.common.controller.SignUpController;
+import user.util.JTextFieldLimit;
 
 @SuppressWarnings("serial")
 public class SignUpView extends JDialog {
@@ -44,26 +45,57 @@ public class SignUpView extends JDialog {
 		JLabel jlSlash = new JLabel("-");
 		
 		jtfId = new JTextField();
+		jtfId.setDocument(new JTextFieldLimit(15));
+		
 		jpfPass1 = new JPasswordField();
+		jpfPass1.setDocument(new JTextFieldLimit(13));
+		
 		jpfPass2 = new JPasswordField();
+		jpfPass2.setDocument(new JTextFieldLimit(13));
+		
 		jtfName = new JTextField();
+		jtfName.setDocument(new JTextFieldLimit(7));
+		
 		jtfSsn1 = new JTextField();
+		jtfSsn1.setDocument(new JTextFieldLimit(6));
+		
 		jpfSsn2 = new JPasswordField();
+		jpfSsn2.setDocument(new JTextFieldLimit(7));
+		
 		jtfTel = new JTextField(); 
+		jtfTel.setDocument(new JTextFieldLimit(13));
+		
 		jtfZip = new JTextField();
+		jtfZip.setDocument(new JTextFieldLimit(10));
 		jtfZip.setEditable(false);
 		jtfZip.setBackground(Color.white);
+		
+		
+		
 		jtfAddr1 = new JTextField();
-		jtfAddr1 = new JTextField();
-        jtfAddr1.setEditable(false);
-        jtfAddr1.setBackground(Color.white);
-		jtfAddr2 = new JTextField();
+		jtfAddr1.setEditable(false);
+		jtfAddr1.setBackground(Color.white);
+		jtfAddr1.setDocument(new JTextFieldLimit(30));
+
+        jtfAddr2 = new JTextField();
+        jtfAddr2.setDocument(new JTextFieldLimit(30));
+		
+		
 		jtfEmail = new JTextField();
+		jtfEmail.setDocument(new JTextFieldLimit(20));
+		
 		jtfAnswer = new JTextField();
+		jtfAnswer.setDocument(new JTextFieldLimit(6));
+		
 		
 		jbAddr = new JButton("주소검색");
+		jtfId.setDocument(new JTextFieldLimit(15));
+		
 		jbSignUp = new JButton("회원가입");
+		jtfId.setDocument(new JTextFieldLimit(15));
+		
 		jbCancel = new JButton("닫기");
+		jtfId.setDocument(new JTextFieldLimit(15));
 		
 		jcbQuestion = new JComboBox<String>();
 

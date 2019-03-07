@@ -100,13 +100,14 @@ public class ErAddView extends JDialog {
 		jchSpring = new JCheckBox("Spring");
 		jchOracle = new JCheckBox("Oracle");
 		jchHTML = new JCheckBox("HTML");
-		jchCSS = new JCheckBox("HTML");
+		jchCSS = new JCheckBox("CSS");
 		jchLinux = new JCheckBox("Linux");
 		jchJS = new JCheckBox("JavaScript");
 
 		// 구인정보 콤보박스
 		String[] rItem = { "신입", "경력" };
 		jcbRank = new JComboBox<>(rItem);
+
 		String[] eItem = { "고졸", "초대졸","대졸","석사", "박사" };
 		jcbEducation = new JComboBox<>(eItem);
 		String[] lItem = { "서울", "경기", "인천", "대전", "세종", "충남", "충북", "광주", "전남", "전북", "대구", "경북", "부산", "울산", "경남",

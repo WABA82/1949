@@ -97,7 +97,7 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 
 				umv.dispose();
 				msgCenter("회원정보가 삭제되었습니다.");
-				au.sendLog(umv.getJtfId().getText()+" 회원 정보 삭제");
+				au.sendLog("["+umv.getJtfId().getText()+"] 회원 정보 삭제");
 				ammc.setUser();
 			} catch (SQLException e) {
 				msgCenter("DB에 문제가 발생했습니다.");
@@ -357,7 +357,7 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 				}
 				
 				msgCenter("회원정보가 수정되었습니다.");
-				au.sendLog(umv.getJtfId().getText()+" 회원 정보 수정");
+				au.sendLog("["+umv.getJtfId().getText()+"] 회원 정보 수정");
 				umv.dispose();
 				UserInfoVO ulvo = AdminDAO.getInstance().selectOneUser(id);
 				ammc.setUser();

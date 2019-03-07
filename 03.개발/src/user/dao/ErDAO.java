@@ -105,6 +105,7 @@ public class ErDAO {
 				con.close();
 			}
 		}
+		
 		return list;
 
 	}// selectErList
@@ -802,6 +803,8 @@ public class ErDAO {
 			} // end if
 		} // end finally
 
+		
+		
 		return list;
 	}// selectInterestEEInfoList
 
@@ -953,8 +956,7 @@ public class ErDAO {
 	/* 재현 : 단위 테스트용 main메서드. */
 //	public static void main(String[] args) {
 //		try {
-//			System.out.println(ErDAO.getInstance().updateAppSatus(new ErAppStatusVO("app_000001", "u")));
-////			System.out.println(ErDAO.getInstance().selectDetailAppEe("app_000001"));
+//			System.out.println(ErDAO.getInstance().selectErList("metro777"));
 //		} catch (SQLException e) {
 //			e.printStackTrace();
 //		}

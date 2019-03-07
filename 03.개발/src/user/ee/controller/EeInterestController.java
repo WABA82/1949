@@ -104,10 +104,6 @@ public class EeInterestController extends WindowAdapter implements ActionListene
 				dtmErInfo.addRow(rowData);
 			} // end for
 
-			if (list.isEmpty()) {// 등록한 메뉴가 없을 때 : 도시락 추가 버튼을 통해 메뉴를 추가 할 수 있다.
-				JOptionPane.showMessageDialog(eiv, "관심구인정보가 없습니다. 먼저 구인정보에서 하트를 눌러주세요.");
-			} // end if
-
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(eiv, "DB에서 데이터를 받아오는 중 문제 발생...");
 			e.printStackTrace();
