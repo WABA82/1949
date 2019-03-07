@@ -9,6 +9,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +32,7 @@ import user.dao.CommonDAO;
 import user.ee.view.EeMainView;
 import user.er.view.ErMainView;
 import user.util.UserLog;
+import user.util.UserUtil;
 
 public class LoginController extends WindowAdapter implements ActionListener, MouseListener, KeyListener {
    private LoginView lv;
@@ -33,11 +41,13 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
    private CommonDAO C_dao;
    private UserLog ul;
    private Map<String, Integer> fail; 
+   private UserUtil uu;
 
    public LoginController(LoginView lv) {
       this.lv = lv;
       ul=new UserLog();
       fail = new HashMap<String, Integer>();
+      uu = new UserUtil();
       C_dao=CommonDAO.getInstance();
 
    }// 생성자
@@ -67,7 +77,7 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
       if (ae.getSource() == lv.getJbLogin() || ae.getSource()==lv.getJpfPass()) {
          try {
             login();
-         } catch (SQLException e) {
+         } catch (SQLException | IOException e) {
             e.printStackTrace();
          }
       } // end if
@@ -78,7 +88,7 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
       lv.dispose();
    }
 
-   public void login() throws SQLException {
+   public void login() throws SQLException, IOException {
 	   	
          String id=lv.getJtfId().getText().trim();
          String pass=new String(lv.getJpfPass().getPassword());
@@ -103,11 +113,42 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
          if(userType.equals("E")) {
             emvo = C_dao.selectEeMain(id, act);
             fail.clear();
+            
+            // 메인창을 띄울 때 이미지파일이 없으면 이미지가 안뜸
+            // 따라서 imgName변수를 이용해서 FileServer에 파일을 요청, 다운받아 user.img.ee 폴더에 저장
+            /////////////////////////////////////////////////////////////////////////////////////////
+            String imgName = emvo.getImg();
+            File imgFileEe = new File("C:/dev/1949/03.개발/src/user/img/ee/"+imgName);
+            
+            if(!imgFileEe.exists()) {
+            	Socket client = null;
+            	DataOutputStream dos = null;
+            	DataInputStream dis =null;
+            	FileOutputStream fos =null;
+            	
+            	uu.reqFile(imgName, "ee", client, dos, dis, fos);
+            }//end if
+            
             new EeMainView(emvo);
             lv.dispose();
          }else if(userType.equals("R")){
             ermvo = C_dao.selectErMain(id, act);
             fail.clear();
+            
+            //////////////////////////////////////////////////////////////////////////////////////////
+            // 따라서 imgName변수를 이용해서 FileServer에 파일을 요청, 다운받아 user.img.co 폴더에 저장
+            String imgName = ermvo.getImg1();
+            File imgFileCo = new File("C:/dev/1949/03.개발/src/user/img/ee/"+imgName);
+            
+            if(!imgFileCo.exists()) {
+            	Socket client = null;
+            	DataOutputStream dos = null;
+            	DataInputStream dis =null;
+            	FileOutputStream fos =null;
+            	
+            	uu.reqFile(imgName, "co", client, dos, dis, fos);
+            }//end if 
+            
             new ErMainView(ermvo);
             lv.dispose();
          }else{
