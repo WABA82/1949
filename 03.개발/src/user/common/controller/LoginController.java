@@ -9,6 +9,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +50,7 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
       uu = new UserUtil();
       C_dao=CommonDAO.getInstance();
 
-   }// »ı¼ºÀÚ
+   }// ìƒì„±ì
 
    @Override
    public void keyPressed(KeyEvent ke) {
@@ -70,29 +77,29 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
       if (ae.getSource() == lv.getJbLogin() || ae.getSource()==lv.getJpfPass()) {
          try {
             login();
-         } catch (SQLException e) {
+         } catch (SQLException | IOException e) {
             e.printStackTrace();
          }
       } // end if
-   }// ¹öÆ°
+   }// ë²„íŠ¼
 
    @Override
    public void windowClosing(WindowEvent we) {
       lv.dispose();
    }
 
-   public void login() throws SQLException {
+   public void login() throws SQLException, IOException {
 	   	
          String id=lv.getJtfId().getText().trim();
          String pass=new String(lv.getJpfPass().getPassword());
          
          if(id==null||id.equals("")) {
-            JOptionPane.showMessageDialog(lv,"¾ÆÀÌµğ¸¦ ÀÔ·ÂÇÏ¼¼¿ä");
+            JOptionPane.showMessageDialog(lv,"ì•„ì´ë””ë¥¼ ì…ë ¥í•˜ì„¸ìš”");
             lv.getJtfId().requestFocus();
             return;
          } // end if
          if (pass == null || pass.equals("")) {
-            JOptionPane.showMessageDialog(lv, "ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä");
+            JOptionPane.showMessageDialog(lv, "ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”");
             lv.getJpfPass().requestFocus();
             return;
          }
@@ -102,15 +109,28 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
          CommonDAO c_dao = CommonDAO.getInstance();
          
          userType=c_dao.login(id, pass);
-         String act = C_dao.selectActivation(id);   //erµµ act ÇÊ¿äÇÏ±â ¶§¹®¿¡ 86¹øÁÙÀ» ¿©±â·Î ¿Å°ÜÁÜ 
+         String act = C_dao.selectActivation(id);   //erë„ act í•„ìš”í•˜ê¸° ë•Œë¬¸ì— 86ë²ˆì¤„ì„ ì—¬ê¸°ë¡œ ì˜®ê²¨ì¤Œ 
          if(userType.equals("E")) {
             emvo = C_dao.selectEeMain(id, act);
             fail.clear();
             
-            // ¸ŞÀÎÃ¢À» ¶ç¿ï ¶§ ÀÌ¹ÌÁöÆÄÀÏÀÌ ¾øÀ¸¸é ÀÌ¹ÌÁö°¡ ¾È¶ä
-            // µû¶ó¼­ imgNameº¯¼ö¸¦ ÀÌ¿ëÇØ¼­ FileServer¿¡ ÆÄÀÏÀ» ¿äÃ», ´Ù¿î¹Ş¾Æ user.img.ee Æú´õ¿¡ ÀúÀå
+            // ë©”ì¸ì°½ì„ ë„ìš¸ ë•Œ ì´ë¯¸ì§€íŒŒì¼ì´ ì—†ìœ¼ë©´ ì´ë¯¸ì§€ê°€ ì•ˆëœ¸
+            // ë”°ë¼ì„œ imgNameë³€ìˆ˜ë¥¼ ì´ìš©í•´ì„œ FileServerì— íŒŒì¼ì„ ìš”ì²­, ë‹¤ìš´ë°›ì•„ user.img.ee í´ë”ì— ì €ì¥
             /////////////////////////////////////////////////////////////////////////////////////////
             String imgName = emvo.getImg();
+
+            File imgFileEe = new File("C:/dev/1949/03.ê°œë°œ/src/user/img/ee/"+imgName);
+            
+            if(!imgFileEe.exists()) {
+            	Socket client = null;
+            	DataOutputStream dos = null;
+            	DataInputStream dis =null;
+            	FileOutputStream fos =null;
+            	
+            	uu.reqFile(imgName, "ee", client, dos, dis, fos);
+            }//end if
+            
+
             new EeMainView(emvo);
             lv.dispose();
          }else if(userType.equals("R")){
@@ -118,8 +138,20 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
             fail.clear();
             
             //////////////////////////////////////////////////////////////////////////////////////////
-            // µû¶ó¼­ imgNameº¯¼ö¸¦ ÀÌ¿ëÇØ¼­ FileServer¿¡ ÆÄÀÏÀ» ¿äÃ», ´Ù¿î¹Ş¾Æ user.img.co Æú´õ¿¡ ÀúÀå
+            // ë”°ë¼ì„œ imgNameë³€ìˆ˜ë¥¼ ì´ìš©í•´ì„œ FileServerì— íŒŒì¼ì„ ìš”ì²­, ë‹¤ìš´ë°›ì•„ user.img.co í´ë”ì— ì €ì¥
             String imgName = ermvo.getImg1();
+
+            File imgFileCo = new File("C:/dev/1949/03.ê°œë°œ/src/user/img/ee/"+imgName);
+            
+            if(!imgFileCo.exists()) {
+            	Socket client = null;
+            	DataOutputStream dos = null;
+            	DataInputStream dis =null;
+            	FileOutputStream fos =null;
+            	
+            	uu.reqFile(imgName, "co", client, dos, dis, fos);
+            }//end if 
+
             
             new ErMainView(ermvo);
             lv.dispose();
@@ -130,10 +162,10 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
         	 }else {
         		 fail.put(id, 1);
         	 }//end else
-          JOptionPane.showMessageDialog(lv, "¾ÆÀÌµğ¿Í ºñ¹Ğ¹øÈ£¸¦ È®ÀÎÇØÁÖ¼¼¿ä 5¹ø Áß "+fail.get(id)+"¹ø ·Î±×ÀÎ ½ÇÆĞ");
+          JOptionPane.showMessageDialog(lv, "ì•„ì´ë””ì™€ ë¹„ë°€ë²ˆí˜¸ë¥¼ í™•ì¸í•´ì£¼ì„¸ìš” 5ë²ˆ ì¤‘ "+fail.get(id)+"ë²ˆ ë¡œê·¸ì¸ ì‹¤íŒ¨");
           if(fail.get(id)==5) {
-        	  JOptionPane.showMessageDialog(lv, "5È¸ÀÌ»ó ·Î±×ÀÎ¿¡ ½ÇÆĞÇÏ¿´½À´Ï´Ù. ÇÁ·Î±×·¥À» Á¾·áÇÕ´Ï´Ù.");
-        	  ul.sendLog(id, "ºñÁ¤»ó Á¢¼Ó ½Ãµµ : ·Î±×ÀÎÀÌ 5È¸ÀÌ»ó ½ÇÆĞÇß½À´Ï´Ù.");
+        	  JOptionPane.showMessageDialog(lv, "5íšŒì´ìƒ ë¡œê·¸ì¸ì— ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤. í”„ë¡œê·¸ë¨ì„ ì¢…ë£Œí•©ë‹ˆë‹¤.");
+        	  ul.sendLog(id, "ë¹„ì •ìƒ ì ‘ì† ì‹œë„ : ë¡œê·¸ì¸ì´ 5íšŒì´ìƒ ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.");
         	  System.exit(-1);
         	  return;
           }//hack
