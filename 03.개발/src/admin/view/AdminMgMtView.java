@@ -2,6 +2,8 @@ package admin.view;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
@@ -16,6 +18,11 @@ public class AdminMgMtView extends JDialog {
 	private JTable jtUser, jtEe, jtEr, jtCo; // 새로 추가한 인스턴스변수들(클릭이벤트 처리를 위해)
 	private JTabbedPane jtb;
 	private DefaultTableModel dtmUser, dtmEe, dtmEr, dtmCo;
+	
+	private JPopupMenu jpUser, jpEe, jpEr, jpCo;
+	private JMenuItem jmUserId, jmUserName, jmEeNum, jmEeName, 
+		jmEeId, jmErNum, jmErCo, jmErId, jmCoNum, jmCoName, jmCoId,
+		jmUserReset, jmEeReset, jmErReset, jmCoReset; 
 
 	public AdminMgMtView(AdminMainView amv) {
 		super(amv, "1949-전체관리", true);
@@ -138,12 +145,79 @@ public class AdminMgMtView extends JDialog {
 		
 		add("Center",jtb);
 		
+		////////팝업 조건검색 기능 추가 0307 ////////////
+		// 유저 - id, 이름 검색
+		// 구직자 - 구인정보번호, 회사명, id 검색
+		// 구인자 - 기본정보번호, 이름, id 검색
+		//회사 - 회사번호, 회사명, id 검색
+		jmUserId = new JMenuItem("ID로 검색");
+		jmUserName = new JMenuItem("이름으로 검색");
+		jmUserReset = new JMenuItem("검색설정 초기화");
+		jpUser = new JPopupMenu();
+		jpUser.add(jmUserReset);
+		jpUser.addSeparator();
+		jpUser.add(jmUserId);
+		jpUser.add(jmUserName);
+		
+		jmEeNum = new JMenuItem("기본정보번호로 검색");
+		jmEeName = new JMenuItem("이름으로 검색");
+		jmEeId = new JMenuItem("ID로 검색");
+		jmEeReset = new JMenuItem("검색설정 초기화");
+		jpEe = new JPopupMenu();
+		jpEe.add(jmEeReset);
+		jpEe.addSeparator();
+		jpEe.add(jmEeNum);
+		jpEe.add(jmEeName);
+		jpEe.add(jmEeId);
+		
+		jmErNum = new JMenuItem("구인정보번호로 검색"); 
+		jmErCo = new JMenuItem("회사명으로 검색");
+		jmErId = new JMenuItem("작성자 ID로 검색");
+		jmErReset = new JMenuItem("검색설정 초기화");
+		jpEr = new JPopupMenu();
+		jpEr.add(jmErReset);
+		jpEr.addSeparator();
+		jpEr.add(jmErNum);
+		jpEr.add(jmErCo);
+		jpEr.add(jmErId);
+		
+		jmCoNum = new JMenuItem("회사번호로 검색");
+		jmCoName = new JMenuItem("회사명으로 검색");
+		jmCoId = new JMenuItem("등록자 ID로 검색");
+		jmCoReset = new JMenuItem("검색설정 초기화");
+		jpCo = new JPopupMenu();
+		jpCo.add(jmCoReset);
+		jpCo.addSeparator();
+		jpCo.add(jmCoNum);
+		jpCo.add(jmCoName);
+		jpCo.add(jmCoId);
+		
 		AdminMgMtController ammc = new AdminMgMtController(this);
 		jtb.addMouseListener(ammc);
 		jtUser.addMouseListener(ammc);
 		jtEr.addMouseListener(ammc);
 		jtEe.addMouseListener(ammc);
 		jtCo.addMouseListener(ammc);
+		
+		jmUserId.addMouseListener(ammc);
+		jmUserName.addMouseListener(ammc);
+		jmUserReset.addMouseListener(ammc);
+		
+		jmEeId.addMouseListener(ammc);
+		jmEeName.addMouseListener(ammc);
+		jmEeNum.addMouseListener(ammc);
+		jmEeReset.addMouseListener(ammc);
+		
+		jmErCo.addMouseListener(ammc);
+		jmErId.addMouseListener(ammc);
+		jmErNum.addMouseListener(ammc);
+		jmErReset.addMouseListener(ammc);
+		
+		jmCoId.addMouseListener(ammc);
+		jmCoName.addMouseListener(ammc);
+		jmCoNum.addMouseListener(ammc);
+		jmCoReset.addMouseListener(ammc);
+		
 		addWindowListener(ammc);
 		
 		setBounds(100, 100, 1500, 700);
@@ -185,6 +259,82 @@ public class AdminMgMtView extends JDialog {
 
 	public JTable getJtCo() {
 		return jtCo;
+	}
+
+	public JPopupMenu getJpUser() {
+		return jpUser;
+	}
+
+	public JPopupMenu getJpEe() {
+		return jpEe;
+	}
+
+	public JPopupMenu getJpEr() {
+		return jpEr;
+	}
+
+	public JPopupMenu getJpCo() {
+		return jpCo;
+	}
+
+	public JMenuItem getJmUserId() {
+		return jmUserId;
+	}
+
+	public JMenuItem getJmUserName() {
+		return jmUserName;
+	}
+
+	public JMenuItem getJmEeNum() {
+		return jmEeNum;
+	}
+
+	public JMenuItem getJmEeName() {
+		return jmEeName;
+	}
+
+	public JMenuItem getJmEeId() {
+		return jmEeId;
+	}
+
+	public JMenuItem getJmErNum() {
+		return jmErNum;
+	}
+
+	public JMenuItem getJmErCo() {
+		return jmErCo;
+	}
+
+	public JMenuItem getJmErId() {
+		return jmErId;
+	}
+
+	public JMenuItem getJmCoNum() {
+		return jmCoNum;
+	}
+
+	public JMenuItem getJmCoName() {
+		return jmCoName;
+	}
+
+	public JMenuItem getJmCoId() {
+		return jmCoId;
+	}
+
+	public JMenuItem getJmUserReset() {
+		return jmUserReset;
+	}
+
+	public JMenuItem getJmEeReset() {
+		return jmEeReset;
+	}
+
+	public JMenuItem getJmErReset() {
+		return jmErReset;
+	}
+
+	public JMenuItem getJmCoReset() {
+		return jmCoReset;
 	}
 }//class
 
