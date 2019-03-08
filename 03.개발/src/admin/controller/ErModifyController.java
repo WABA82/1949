@@ -129,7 +129,7 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 		if (AdminDAO.getInstance().updateEr(emvo, eivo.getListSkill().size())) {
 			try {
 				msgCenter("구인 정보가 수정되었습니다.");
-				au.sendLog("["+eivo.getErNum()+"] 구인 정보 수정");
+				au.sendLog("["+eivo.getErNum()+"] 수정");
 				emv.dispose();
 				eivo = AdminDAO.getInstance().selectOneEr(eivo.getErNum());
 				ammc.setEr();
@@ -151,7 +151,7 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 			try {
 				if(AdminDAO.getInstance().deleteEr(eivo.getErNum())) {
 					msgCenter(eivo.getErNum()+"구인 정보가 삭제되었습니다.");
-					au.sendLog("["+eivo.getErNum()+"] 구인 정보 삭제");
+					au.sendLog("["+eivo.getErNum()+"] 삭제");
 					emv.dispose();
 					ammc.setEr();
 				} else {
