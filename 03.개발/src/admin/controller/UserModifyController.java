@@ -26,6 +26,7 @@ import admin.vo.EeDeleteVO;
 import admin.vo.EeInfoVO;
 import admin.vo.UserInfoVO;
 import admin.vo.UserModifyVO;
+import admin.vo.UserModifyVOWithOutSsn;
 
 public class UserModifyController extends WindowAdapter implements ActionListener {
 
@@ -258,7 +259,7 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 	 * @throws IOException
 	 */
 	public void modify() throws UnknownHostException, IOException {
-		UserModifyVO umvo = null;
+		boolean ssnFlag = false;
 		
 		String id = umv.getJtfId().getText().trim();
 		String pass = new String(umv.getJpfPass().getPassword()).trim();
@@ -272,14 +273,8 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		
 		String name = umv.getJtfName().getText().trim();
 		
-		String ssn = umv.getJtfSsn1().getText().trim()+"-"+umv.getJtfSsn2().getText().trim();
-		
-		if(!checkSsn(ssn)) { // ssn 검증
-			msgCenter("올바른 주민번호가 아닙니다.\n다시 입력해주세요.");
-			umv.getJtfSsn1().setText("");
-			umv.getJtfSsn2().setText("");
-			umv.getJtfSsn1().requestFocus();
-			return;
+		if (!"".equals(umv.getJtfSsn1().getText().trim()) && !"".equals(umv.getJtfSsn2().getText().trim())) {
+			ssnFlag = true;
 		}
 		
 		String tel = umv.getJtfTel().getText().trim();
@@ -313,59 +308,141 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		String answer = umv.getJtfAnswer().getText().trim();
 		String userType = umv.getJcbUser().getSelectedItem().equals("일반") ? "E" : "R";
 		
-		///////////////////////////////// 수정중
-		int age = getAge(Integer.parseInt(umv.getJtfSsn1().getText().trim().substring(0, 2)));
-		String gender = getGender(Integer.parseInt(umv.getJtfSsn2().getText().trim().substring(0, 1)));
-		
-		umvo = new UserModifyVO(id, au.shaEncoding(pass), name, au.shaEncoding(ssn), gender, tel, addrSeq, addrDetail, email, questionType, answer, userType, age);
-		
-		try {
-			if(AdminDAO.getInstance().updateUser(umvo)) { // 유저타입이 변경되었다면, 이전 등록 정보를 모두 삭제필요
-				
-				// 일반 사용자 - 기본 정보(이력서 사진, 이력서 파일)
-				// 기업 사용자 - 기업 정보(기업 사진*4)
-				if (userTypeFlag) {
-					if(uivo.getUserType().equals("E")) { // E->R
-						// 우선 유저의 파일이름을 조회해야 함 
-						EeInfoVO eivo = AdminDAO.getInstance().selectOneEe(id, "id");
-						
-						// 이미지, 이력서 먼저 삭제처리 
-						File imgFile = new File("C:/dev/1949/03.개발/src/admin/img/ee/"+eivo.getImg());
-						imgFile.delete();
-						
-						au.deleteFile(eivo.getImg(), "ee", client, dos, dis);
-						
-						if (eivo.getExtResume() != null) {
-							au.deleteFile(eivo.getExtResume(), "ext", client, dos, dis);
-						}
-						
-						EeDeleteVO edvo = AdminDAO.getInstance().selectEDVO(id);
-						// 일반 사용자였을 때 기본 정보를 삭제처리
-						AdminDAO.getInstance().deleteEe(edvo);
-					} else if (uivo.getUserType().equals("R")) { // R->E
-						
-						// 이미지 삭제 처리
-						List<String> listCoImgs = AdminDAO.getInstance().selectUserImgs(id, "기업");
-						
-						for(String imgName : listCoImgs) {
-							au.deleteFile(imgName, "co", client, dos, dis);
-						}
-						
-						// 기업 사용자였을 때 회사 정보에 올렸던 데이터를 삭제처리
-						AdminDAO.getInstance().deleteCo(id);
-					}
-				}
-				
-				msgCenter("회원정보가 수정되었습니다.");
-				au.sendLog("["+umv.getJtfId().getText()+"] 회원 정보 수정");
-				umv.dispose();
-				UserInfoVO ulvo = AdminDAO.getInstance().selectOneUser(id);
-				ammc.setUser();
-				new UserModifyView(ammv, ulvo, ammc);
+		if (ssnFlag) { // ssn 변경 시 
+			String ssn = umv.getJtfSsn1().getText().trim()+"-"+umv.getJtfSsn2().getText().trim();
+			
+			int age = 0;
+			String gender = "";
+			try {
+				age = getAge(Integer.parseInt(umv.getJtfSsn1().getText().trim().substring(0, 2)));
+				gender = getGender(Integer.parseInt(umv.getJtfSsn2().getText().trim().substring(0, 1)));
+			} catch (NumberFormatException nfe) {
+				msgCenter("주민번호는 숫자만 입력가능합니다.");
+				umv.getJtfSsn1().setText("");
+				umv.getJtfSsn2().setText("");
+				umv.getJtfSsn1().requestFocus();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+			
+			String encSsn = au.shaEncoding(ssn);
+			
+			// 업데이트 전에 주민번호 중복을 확인하는 메소드 필요
+			try {
+				if(AdminDAO.getInstance().selectSsn(encSsn)) {
+					msgCenter("입력하신 주민번호로 가입한 유저가 존재합니다.");
+					umv.getJtfSsn1().setText("");
+					umv.getJtfSsn2().setText("");
+					umv.getJtfSsn1().requestFocus();
+					return;
+				}
+			} catch (SQLException e1) {
+				msgCenter("DB에 문제발생");
+				e1.printStackTrace();
+			}
+			
+			UserModifyVO umvo = new UserModifyVO(id, au.shaEncoding(pass), name, encSsn, gender, tel, addrSeq, addrDetail, email, questionType, answer, userType, age);
+			
+			try {
+				if(AdminDAO.getInstance().updateUser(umvo)) { // 유저타입이 변경되었다면, 이전 등록 정보를 모두 삭제필요
+					
+					// 일반 사용자 - 기본 정보(이력서 사진, 이력서 파일)
+					// 기업 사용자 - 기업 정보(기업 사진*4)
+					if (userTypeFlag) {
+						if(uivo.getUserType().equals("E")) { // E->R
+							// 우선 유저의 파일이름을 조회해야 함 
+							EeInfoVO eivo = AdminDAO.getInstance().selectOneEe(id, "id");
+							
+							// 이미지, 이력서 먼저 삭제처리 
+							File imgFile = new File("C:/dev/1949/03.개발/src/admin/img/ee/"+eivo.getImg());
+							imgFile.delete();
+							
+							au.deleteFile(eivo.getImg(), "ee", client, dos, dis);
+							
+							if (eivo.getExtResume() != null) {
+								au.deleteFile(eivo.getExtResume(), "ext", client, dos, dis);
+							}
+							
+							EeDeleteVO edvo = AdminDAO.getInstance().selectEDVO(id);
+							// 일반 사용자였을 때 기본 정보를 삭제처리
+							AdminDAO.getInstance().deleteEe(edvo);
+						} else if (uivo.getUserType().equals("R")) { // R->E
+							
+							// 이미지 삭제 처리
+							List<String> listCoImgs = AdminDAO.getInstance().selectUserImgs(id, "기업");
+							
+							for(String imgName : listCoImgs) {
+								au.deleteFile(imgName, "co", client, dos, dis);
+							}
+							
+							// 기업 사용자였을 때 회사 정보에 올렸던 데이터를 삭제처리
+							AdminDAO.getInstance().deleteCo(id);
+						}
+					}
+					
+					msgCenter("회원정보가 수정되었습니다.");
+					au.sendLog("["+umv.getJtfId().getText()+"] 회원 정보 수정");
+					umv.dispose();
+					UserInfoVO ulvo = AdminDAO.getInstance().selectOneUser(id);
+					ammc.setUser();
+					new UserModifyView(ammv, ulvo, ammc);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+		} else { // ssn 변경 안할 시
+			
+			UserModifyVOWithOutSsn umvo = new UserModifyVOWithOutSsn(id, au.shaEncoding(pass), name, tel, addrSeq, addrDetail, email, questionType, answer, userType);
+			
+			try {
+				if(AdminDAO.getInstance().updateUser(umvo)) { // 유저타입이 변경되었다면, 이전 등록 정보를 모두 삭제필요
+					
+					// 일반 사용자 - 기본 정보(이력서 사진, 이력서 파일)
+					// 기업 사용자 - 기업 정보(기업 사진*4)
+					if (userTypeFlag) {
+						if(uivo.getUserType().equals("E")) { // E->R
+							// 우선 유저의 파일이름을 조회해야 함 
+							EeInfoVO eivo = AdminDAO.getInstance().selectOneEe(id, "id");
+							
+							// 이미지, 이력서 먼저 삭제처리 
+							File imgFile = new File("C:/dev/1949/03.개발/src/admin/img/ee/"+eivo.getImg());
+							imgFile.delete();
+							
+							au.deleteFile(eivo.getImg(), "ee", client, dos, dis);
+							
+							if (eivo.getExtResume() != null) {
+								au.deleteFile(eivo.getExtResume(), "ext", client, dos, dis);
+							}
+							
+							EeDeleteVO edvo = AdminDAO.getInstance().selectEDVO(id);
+							// 일반 사용자였을 때 기본 정보를 삭제처리
+							AdminDAO.getInstance().deleteEe(edvo);
+						} else if (uivo.getUserType().equals("R")) { // R->E
+							
+							// 이미지 삭제 처리
+							List<String> listCoImgs = AdminDAO.getInstance().selectUserImgs(id, "기업");
+							
+							for(String imgName : listCoImgs) {
+								au.deleteFile(imgName, "co", client, dos, dis);
+							}
+							
+							// 기업 사용자였을 때 회사 정보에 올렸던 데이터를 삭제처리
+							AdminDAO.getInstance().deleteCo(id);
+						}
+					}
+					
+					msgCenter("회원정보가 수정되었습니다.");
+					au.sendLog("["+umv.getJtfId().getText()+"] 회원 정보 수정");
+					umv.dispose();
+					UserInfoVO ulvo = AdminDAO.getInstance().selectOneUser(id);
+					ammc.setUser();
+					new UserModifyView(ammv, ulvo, ammc);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
+		
+		
 	}
 	
 	/**

@@ -198,16 +198,16 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 			UserModifyWithoutPassVO umvo2=new UserModifyWithoutPassVO(id, name, tel, addrSeq, addrDetail, email);
 
 			try {			
-					if(!(CommonDAO.getInstance().login(id, inputOriginPass)).equals("R")
-							&&!(CommonDAO.getInstance().login(id, inputOriginPass)).equals("E")) {//null이면
-						JOptionPane.showMessageDialog(cuiv, "비밀번호가 올바르지 않습니다.");
-					}else {//R이라면(아이디와 비밀번호가 맞다면) 수정됨
-						if (CommonDAO.getInstance().updateUserInfoWithoutPass(umvo2)) {
-							JOptionPane.showMessageDialog(cuiv, "회원정보가 수정되었습니다.");
-							cuiv.dispose();
-							new UserLog().sendLog(id, "회원정보를 수정하였습니다.");
-						}//end if
-					}//end else
+				if(!(CommonDAO.getInstance().login(id, inputOriginPass)).equals("R")
+						&&!(CommonDAO.getInstance().login(id, inputOriginPass)).equals("E")) {//null이면
+					JOptionPane.showMessageDialog(cuiv, "비밀번호가 올바르지 않습니다.");
+				}else {//R이라면(아이디와 비밀번호가 맞다면) 수정됨
+					if (CommonDAO.getInstance().updateUserInfoWithoutPass(umvo2)) {
+						JOptionPane.showMessageDialog(cuiv, "회원정보가 수정되었습니다.");
+						cuiv.dispose();
+						new UserLog().sendLog(id, "회원정보를 수정하였습니다.");
+					}//end if
+				}//end else
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(cuiv, "DB에서 문제가 발생했습니다.");
 				e.printStackTrace();

@@ -16,6 +16,7 @@ import user.common.view.LoginView;
 import user.common.view.RemoveUserView;
 import user.dao.CommonDAO;
 import user.util.UserLog;
+import user.util.UserUtil;
 
 public class RemoveUserController extends WindowAdapter implements ActionListener,KeyListener {
 	
@@ -25,11 +26,15 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 	
 	private JFrame jf;
 	
+	private UserUtil uu;
+	
 	public RemoveUserController(JFrame jf, ChangeUserInfoView cuiv ,RemoveUserView ruv, String id) {
 		this.cuiv=cuiv;
 		this.ruv=ruv;
 		this.id=id;
 		this.jf=jf;
+		
+		uu = new UserUtil();
 	}
 	
 
@@ -49,8 +54,10 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 			return;
 			}//end if
 			
+			
 		try {
 			if(pass1.equals(pass2)) {
+				pass1 = uu.shaEncoding(pass1);
 				if(!(CommonDAO.getInstance().login(id, pass1)).equals("R")&&
 						!(CommonDAO.getInstance().login(id, pass1)).equals("E")) {
 					JOptionPane.showMessageDialog(ruv, "비밀번호가 올바르지 않습니다.");
