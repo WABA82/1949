@@ -41,7 +41,6 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 	private ErDAO erdao;
 	private CoInfoVO cvo;
 	private ErMainView emv;
-
 	private UserUtil uu;
 	private UserLog ul;
 
@@ -232,7 +231,7 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 
 					JOptionPane.showMessageDialog(cimv, "회사 정보가 수정 되었습니다");
 					ErMainVO updateEmvo = CommonDAO.getInstance().selectErMain(erId, "Y");
-					ul.sendLog(erId, "기업정보 수정");
+					ul.sendLog("["+erId+"]", "["+cvo.getCoNum()+"] 수정");
 					new ErMainView(updateEmvo);
 					cimv.dispose();
 					emv.dispose();

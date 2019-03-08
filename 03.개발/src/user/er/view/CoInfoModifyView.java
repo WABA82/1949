@@ -23,11 +23,9 @@ public class CoInfoModifyView extends JDialog {
 	private JTextField jtfCoName;
 	private JTextField jtfEstDate, memberNum;
 	private JTextArea jtaCoDesc;
-//	private CoInfoVO cvo;
 
 	public CoInfoModifyView(ErMainView emv, CoInfoVO cvo) {
 		super(emv, "회사정보수정", true);
-//		this.cvo = cvo;
 
 		jtfCoName = new JTextField();
 		jtfCoName.setDocument(new JTextFieldLimit(10));
@@ -127,7 +125,6 @@ public class CoInfoModifyView extends JDialog {
 	}// 생성자
 	
 	
-
 	public void setJlImg1(JLabel jlImg1) {
 		this.jlImg1 = jlImg1;
 	}

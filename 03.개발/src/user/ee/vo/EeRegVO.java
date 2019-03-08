@@ -1,11 +1,5 @@
 package user.ee.vo;
 
-/**
- * 19.02.11 ±è°ÇÇÏ
- * 
- * @author owner
- *
- */
 public class EeRegVO {
 
 	private String eeId, name, gender;
@@ -39,6 +33,4 @@ public class EeRegVO {
 		return "EeRegVO [eeId=" + eeId + ", name=" + name + ", gender=" + gender + ", age=" + age + "]";
 	}
 
-
-	
 }//class

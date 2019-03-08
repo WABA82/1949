@@ -13,11 +13,6 @@ import javax.swing.border.TitledBorder;
 import user.ee.controller.EeInfoRegController;
 import user.ee.vo.EeRegVO;
 import user.util.JTextFieldLimit;
-/**
- *	 기본 정보 관리 -김건하-
- *	19.02.07
- * @author owner
- */
 @SuppressWarnings("serial")
 public class EeInfoRegView extends JDialog {
 
@@ -26,14 +21,11 @@ public class EeInfoRegView extends JDialog {
 	private JTextField jtfExtResume;
 	private JLabel jlImage;
 	private JTextField jtfName, jtfAge, jtfGender, jtfId;
-//	private  EeRegVO ervo;
 	
 	
 	public EeInfoRegView(EeMainView emv, EeRegVO ervo) {
 		super(emv, "기본 정보 관리",true);
-//		this.ervo=ervo;
 		
-		//image
 		ImageIcon ii=new ImageIcon("C:/dev/1949/03.개발/src/user/img/ee/no_ee_img.png");
 		jlImage=new JLabel(ii);
 		jlImage.setBorder(new TitledBorder("구직자 이미지"));
@@ -83,7 +75,6 @@ public class EeInfoRegView extends JDialog {
 		jlResume.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
 		
 		
-		//Combobox  jcbRank, jcbLoc, jcbEducation, jcbPortfolio;
 		String[] rank= {"신입", "경력"};
 		jcbRank =new JComboBox<>(rank);
 		String[] loc= {"서울", "경기", "인천", "대전", "세종", "충남", "충북", "광주", "전남", "전북", "대구", "경북", "부산", "울산", "경남",
@@ -140,7 +131,6 @@ public class EeInfoRegView extends JDialog {
 		jtfExtResume.setBounds(325, 302, 130, 20);
 		jtfExtResume.setEditable(false);
 		
-		//Combobox
 		add(jcbRank);
 		jcbRank.setBounds(325,62,130,20);
 		add(jcbLoc);
@@ -150,7 +140,6 @@ public class EeInfoRegView extends JDialog {
 		add(jcbPortfolio);
 		jcbPortfolio.setBounds(325,222,130,20);
 		
-		//이벤트 등록
 		EeInfoRegController eirc=new EeInfoRegController(this, ervo.getEeId(), emv);
 		addWindowListener(eirc);
 		jbRegisterExt.addActionListener(eirc);
@@ -205,17 +194,13 @@ public class EeInfoRegView extends JDialog {
 		return jlImage;
 	}
 
-	
-
 	public JTextField getJtfName() {
 		return jtfName;
 	}
 
-
 	public JTextField getJtfAge() {
 		return jtfAge;
 	}
-
 
 	public JTextField getJtfGender() {
 		return jtfGender;

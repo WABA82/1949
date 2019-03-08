@@ -1150,6 +1150,34 @@ public class ErDAO {
 		return updateEr;
 	}
 
+	public String selectCoNum(String erid) throws SQLException {
+		String coNum="";
+		
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		
+		try {
+		con=getConn();
+		String selectCoNum="select co_num from company where er_id=? ";
+		pstmt=con.prepareStatement(selectCoNum);
+		pstmt.setString(1, erid);
+		
+		rs=pstmt.executeQuery();
+		
+		if(rs.next()) {
+			coNum=rs.getString("co_num");
+		}//end if
+		
+		}finally {
+			if( rs !=null ) { rs.close(); }
+			if( pstmt !=null ) { pstmt.close(); }
+			if( con !=null ) { con.close(); }
+		}//end if
+		return coNum;
+	}//selectcoNum
+	
+	
 //////////////////////////////////////////±è°ÇÇÏ ³¡ ///////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 

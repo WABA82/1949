@@ -1,10 +1,5 @@
 package user.ee.vo;
 
-/**
- *	19.02.09 ±Ë∞««œ
- *	VO ¿€º∫
- * @author 82102
- */
 public class EeInfoVO {
 
 	private String  eeId, eeNum, img, name, rank, loc, education, portfolio, gender, extResume;

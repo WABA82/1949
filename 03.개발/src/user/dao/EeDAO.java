@@ -542,6 +542,8 @@ public class EeDAO {
 
 	//////////////// 김건하 시작////////////////
 
+
+
 	/**
 	 * 19.02.10김건하 회원정보 입력
 	 * 
@@ -573,6 +575,35 @@ public class EeDAO {
 		return insertFlag;
 	}// insertEeinfo
 
+	//회원 번호
+	public String selectUserNum(String eeId) throws SQLException {
+		String userNum="";
+		
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		
+		try {
+		con=getConn();
+		String userCo="select ee_num from ee_info where ee_id=? ";
+		pstmt=con.prepareStatement(userCo);
+		pstmt.setString(1, eeId);
+		
+		rs=pstmt.executeQuery();
+		
+		if(rs.next()) {
+			userNum=rs.getString("ee_num");
+		}//end if
+		
+		}finally {
+			if( rs != null) { rs.close(); }
+			if( pstmt != null) { pstmt.close(); }
+			if( con != null) { con.close(); }
+		}//end finally
+		
+		return userNum;
+	}
+	
 	/**
 	 * 김건하 activation 처리 메소드 0302 ActivationVO 불필요해서 수정처리 - 영근
 	 * 
