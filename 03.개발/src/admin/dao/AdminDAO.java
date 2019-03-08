@@ -22,6 +22,7 @@ import admin.vo.ErModifyVO;
 import admin.vo.UserInfoVO;
 import admin.vo.UserListVO;
 import admin.vo.UserModifyVO;
+import admin.vo.UserModifyVOWithOutSsn;
 
 /**
  * @author owner
@@ -65,6 +66,42 @@ public class AdminDAO {
 		
 		con.setAutoCommit(true);
 		return con;
+	}
+	
+	public boolean selectSsn(String ssn) throws SQLException {
+		boolean flag = false;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = getConn();
+			
+			StringBuilder selectSsn = new StringBuilder();
+			
+			selectSsn
+			.append(" select count(*) cnt ")
+			.append(" from user_table where ssn=? ");
+			
+			pstmt = con.prepareStatement(selectSsn.toString());
+			pstmt.setString(1, ssn);
+			
+			rs  = pstmt.executeQuery();
+
+			if (rs.next()) {
+				if(rs.getInt("cnt") == 1) {
+					flag = true;
+				}
+			}
+			
+		} finally {
+			if (rs != null) { rs.close(); }
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		return flag;
 	}
 	
 	/**
@@ -538,6 +575,54 @@ public class AdminDAO {
 			pstmt.setString(10, umvo.getGender());
 			pstmt.setInt(11, umvo.getAge());
 			pstmt.setString(12, umvo.getId());
+			
+			int cnt = pstmt.executeUpdate();
+			
+			if (cnt == 1) {
+				flag = true;
+			}
+			
+			
+		} finally {
+			if (pstmt != null) { pstmt.close(); }
+			if (con != null) { con.close(); }
+		}
+		
+		return flag;
+	}
+	
+	/**
+	 * 한 유저의 정보를 업데이트하는 메소드
+	 * @param umvo
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean updateUser(UserModifyVOWithOutSsn umvo) throws SQLException {
+		boolean flag = false;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = getConn();
+			StringBuilder updateUser = new StringBuilder();
+			updateUser
+			.append(" update user_table ")
+			.append(" set pass=?, name=?, tel=?, addr_seq=?,  ")
+			.append(" addr_detail=?, email=?, question_type=?, user_type=? ")
+			.append(" where id = ? ");
+			
+			pstmt = con.prepareStatement(updateUser.toString());
+			
+			pstmt.setString(1, umvo.getPass());
+			pstmt.setString(2, umvo.getName());
+			pstmt.setString(3, umvo.getTel());
+			pstmt.setString(4, umvo.getAddrSeq());
+			pstmt.setString(5, umvo.getAddrDetail());
+			pstmt.setString(6, umvo.getEmail());
+			pstmt.setString(7, umvo.getQuestionType());
+			pstmt.setString(8, umvo.getUserType());
+			pstmt.setString(9, umvo.getId());
 			
 			int cnt = pstmt.executeUpdate();
 			
