@@ -32,6 +32,7 @@ public class CoInfoRegView extends JDialog {
 		
 		memberNum = new JTextField();
 		memberNum.setDocument((new JTextFieldLimit(5)));
+		memberNum.setText(String.valueOf(0));
 		
 		JLabel jlCoName = new JLabel("회사명");
 		JLabel jlEstDate = new JLabel("설립년도");
