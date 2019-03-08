@@ -141,7 +141,7 @@ public class EeInfoModifyController extends WindowAdapter implements ActionListe
 						System.out.println("--- 이력서 파일 수정");
 					}
 					
-					ul.sendLog(eivo.getEeId(), "기본정보 수정");
+					ul.sendLog(eivo.getEeId(), "["+eivo.getEeId()+"] 기본정보 수정");
 					
 					//메인창 종료휴 업데이트로 띄우기
 					EeMainVO updateEmvo=CommonDAO.getInstance().selectEeMain(eivo.getEeId(), "Y");
