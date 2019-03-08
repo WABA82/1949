@@ -67,7 +67,6 @@ public class AppDetailController extends WindowAdapter implements ActionListener
 				String imgPath = "C:/dev/1949/03.개발/src/user/img/ee/";
 				File imgFile = new File(imgPath + daevo.getImg());
 				// user.img.co패키지에 이미지 파일이 없다면 실행.
-				//System.out.println(imgFile.exists());
 				if (!imgFile.exists()) {
 					try {
 						Socket client = null; // "211.63.89.144", 7002 : 영근컴퓨터IP, 파일서버의 포트

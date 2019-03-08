@@ -52,7 +52,7 @@ public class ErDAO {
 
 		Connection con = null;
 
-		//String url = "jdbc:oracle:thin:@localhost:1521:orcl"; // 집 개발용
+		// String url = "jdbc:oracle:thin:@localhost:1521:orcl"; // 집 개발용
 		String url = "jdbc:oracle:thin:@211.63.89.144:1521:orcl";
 		String id = "kanu";
 		String pass = "share";
@@ -78,11 +78,10 @@ public class ErDAO {
 
 			StringBuilder selectErList = new StringBuilder();
 			selectErList.append(
-					
-			" select ei.er_num,ei.subject,ei.rank,ei.loc,ei.education,ei.hire_type,to_char(ei.input_date,'yyyy-mm-dd hh:mi') input_date ")
-			.append(" from er_info ei, company c ").append(" where (ei.co_num = c.co_num)and(c.er_id=?) ")
-			.append(" order by input_date desc ");
 
+					" select ei.er_num,ei.subject,ei.rank,ei.loc,ei.education,ei.hire_type,to_char(ei.input_date,'yyyy-mm-dd hh:mi') input_date ")
+					.append(" from er_info ei, company c ").append(" where (ei.co_num = c.co_num)and(c.er_id=?) ")
+					.append(" order by input_date desc ");
 
 			pstmt = con.prepareStatement(selectErList.toString());
 			pstmt.setString(1, erId);
@@ -105,7 +104,7 @@ public class ErDAO {
 				con.close();
 			}
 		}
-		
+
 		return list;
 
 	}// selectErList
@@ -568,6 +567,7 @@ public class ErDAO {
 
 		return flag;
 	}
+
 	/**
 	 * 선의 구인글 트랜잭션3 선택된스킬 다시 추가
 	 * 
@@ -603,7 +603,6 @@ public class ErDAO {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		System.out.println(erNum);
 		try {
 			con = getConn();
 			String deleteQuery = " delete from er_info where er_num=? ";
@@ -611,7 +610,6 @@ public class ErDAO {
 			pstmt.setString(1, erNum);
 
 			int cnt = pstmt.executeUpdate();
-			System.out.println("333");
 			if (cnt == 1) {
 				deleteFlag = true;
 			} // end if
@@ -747,7 +745,7 @@ public class ErDAO {
 
 		return list;
 	}
-	
+
 	////////////////////////////////////////// 선의끝///////////////////////////////////////////////
 
 	/***************************** 이하 재현 *****************************/
@@ -803,8 +801,6 @@ public class ErDAO {
 			} // end if
 		} // end finally
 
-		
-		
 		return list;
 	}// selectInterestEEInfoList
 
@@ -953,15 +949,6 @@ public class ErDAO {
 		return flag;
 	}// updateAppSatusAccept()
 
-	/* 재현 : 단위 테스트용 main메서드. */
-//	public static void main(String[] args) {
-//		try {
-//			System.out.println(ErDAO.getInstance().selectErList("metro777"));
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}// main
-
 	/***************************** 재현 끝 *****************************/
 
 //////////////////////////////////////////김건하 시작 //////////////////////////////////////
@@ -982,7 +969,6 @@ public class ErDAO {
 				" 	insert into company( co_num, er_id, img1, img2, img3, img4, co_name, est_date, co_desc, member_num )	")
 				.append(" 	values(  co_code, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ");
 
-		
 		coPstmt1 = con.prepareStatement(insertCo.toString());
 
 		coPstmt1.setString(1, civo.getErId());
@@ -1003,7 +989,6 @@ public class ErDAO {
 		return insertFlag;
 	}// insertCoInfo
 
-
 	/**
 	 * 회사 등록시 activation을 Y로 바꿔주는 메소드
 	 * 
@@ -1016,13 +1001,10 @@ public class ErDAO {
 		boolean updateFlag = false;
 
 		StringBuilder updateActivation = new StringBuilder();
-		updateActivation
-		.append("  update user_table  ")
-		.append("  set activation='Y'  ")
-		.append("  where id=?  ");
+		updateActivation.append("  update user_table  ").append("  set activation='Y'  ").append("  where id=?  ");
 
-		coPstmt2=con.prepareStatement(updateActivation.toString());
-		
+		coPstmt2 = con.prepareStatement(updateActivation.toString());
+
 		coPstmt2.setString(1, id);
 
 		int cnt = coPstmt2.executeUpdate();
@@ -1034,15 +1016,6 @@ public class ErDAO {
 		return updateFlag;
 	}// end if
 
-//	public static void main(String[] args) throws SQLException {
-//		Connection con=ErDAO.getInstance().getConn();
-//		ActivationVO avo=new ActivationVO("song9912");
-//		System.out.println(avo);
-//		System.out.println(ErDAO.getInstance().updateActivation(con, avo));
-//	}//main
-	
-	
-	
 	/**
 	 * 19.02.17 회사의 정보를 가져오는 method
 	 * 
@@ -1061,7 +1034,8 @@ public class ErDAO {
 		try {
 			con = getConn();
 			StringBuilder selectInfo = new StringBuilder();
-			selectInfo.append(" 	select er_id, co_num, co_name, img1, img2, img3, img4, to_char(est_date,'yyyy-mm-dd') est_date, co_desc, member_num	 ")
+			selectInfo.append(
+					" 	select er_id, co_num, co_name, img1, img2, img3, img4, to_char(est_date,'yyyy-mm-dd') est_date, co_desc, member_num	 ")
 					.append(" 	from company 	").append(" 	where er_id = ? 	");
 			pstmt = con.prepareStatement(selectInfo.toString());
 
@@ -1070,9 +1044,9 @@ public class ErDAO {
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
-				civo = new CoInfoVO(rs.getString("er_id"), rs.getString("co_num"), rs.getString("co_name"), rs.getString("img1"),
-						rs.getString("img2"), rs.getString("img3"), rs.getString("img4"), rs.getString("est_date"),
-						rs.getString("co_desc"), rs.getInt("member_num"));
+				civo = new CoInfoVO(rs.getString("er_id"), rs.getString("co_num"), rs.getString("co_name"),
+						rs.getString("img1"), rs.getString("img2"), rs.getString("img3"), rs.getString("img4"),
+						rs.getString("est_date"), rs.getString("co_desc"), rs.getInt("member_num"));
 			} // end if
 
 		} finally {
@@ -1090,11 +1064,6 @@ public class ErDAO {
 		return civo;
 	}// selectCoInfo
 
-//단위 테스트 성공
-//public static void main(String[] args)  throws SQLException{
-//System.out.println(ErDAO.getInstance().selectCoInfo("song9912"));
-//}
-
 	public boolean updateCoInfo(CoInfoVO cvo) throws SQLException {
 		boolean flag = false;
 
@@ -1105,9 +1074,9 @@ public class ErDAO {
 			con = getConn();
 //co_num, co_name, img1, img2, img3,img4, est_date, co_desc, member_num
 			StringBuilder updateInfo = new StringBuilder();
-			updateInfo.append(" update company ")
-			.append(" set er_id =?, co_name = ?, img1 = ?, img2 = ?, img3 = ?, img4 = ?, est_date = ? , co_desc = ?, member_num = ? ")
-			.append(" where co_num = ? ");
+			updateInfo.append(" update company ").append(
+					" set er_id =?, co_name = ?, img1 = ?, img2 = ?, img3 = ?, img4 = ?, est_date = ? , co_desc = ?, member_num = ? ")
+					.append(" where co_num = ? ");
 
 			pstmt = con.prepareStatement(updateInfo.toString());
 
@@ -1140,17 +1109,9 @@ public class ErDAO {
 		return flag;
 	}// updateCoInfo
 
-//	public static void main(String[] args) {
-//		CoInfoVO civo=new CoInfoVO("co_000013", "주윤발", "123.jpg", "23.jpg", "d3.jpg", "d32.jpg", "1990-12-12", "회사소개.", 30);
-//		try {
-//			System.out.println(ErDAO.getInstance().updateCoInfo(civo));
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}
-
 	/**
 	 * activation를 Y로 바꿔주는 트랜잭션
+	 * 
 	 * @param civo
 	 * @param avo
 	 * @return
@@ -1158,28 +1119,28 @@ public class ErDAO {
 	 */
 	public boolean updateErInfo(CoInsertVO civo) throws SQLException {
 		boolean updateEr = false;
-		
-		try {	
-			con=getConn();
+
+		try {
+			con = getConn();
 			con.setAutoCommit(false);
-		
-			try {	
+
+			try {
 				boolean insert = insertCoInfo(con, civo);
 				boolean update = updateActivation(con, civo.getErId());
-				
-				if( insert && update) {
-					updateEr=true;
+
+				if (insert && update) {
+					updateEr = true;
 					con.commit();
-				}else {
+				} else {
 					con.rollback();
-				}//end else
-				
-			}finally {
+				} // end else
+
+			} finally {
 				closeAll();
-			}//end finally
-		
-		}catch(SQLException e) {
-			try {	
+			} // end finally
+
+		} catch (SQLException e) {
+			try {
 				con.rollback();
 			} catch (SQLException e1) {
 				e1.printStackTrace();
@@ -1189,17 +1150,6 @@ public class ErDAO {
 		return updateEr;
 	}
 
-	//트랜잭션을 사용한 단위 테스트
-//	public static void main(String[] args) throws SQLException{
-//		CoInsertVO civo=new CoInsertVO("song9912", "sd.img", "sd.img", "se.img", "sdf.img", "건하회사", "2019-02-12", "안녕하세요", 15);
-//		ActivationVO avo=new ActivationVO("song9912");		
-//		Connection con=ErDAO.getInstance().getConn();
-//		System.out.println(ErDAO.getInstance().updateErInfo(civo, avo));
-//		
-//	}//main
-	
-	
-	
 //////////////////////////////////////////김건하 끝 ///////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 

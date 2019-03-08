@@ -82,8 +82,4 @@ public class EeAppView extends JDialog {
 		return dtmApp;
 	}
 
-	public static void main(String[] args) {
-		new EeAppView(null, "gong1");
-	}// main
-
 }// class

@@ -24,7 +24,7 @@ public class EeDAO {
 	private static EeDAO Ee_dao;
 	private Connection con;
 	private PreparedStatement pstmt1, pstmt2;
-	
+
 	public EeDAO() {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
@@ -85,6 +85,7 @@ public class EeDAO {
 
 	/**
 	 * 기업정보를 모두 조회
+	 * 
 	 * @param eh_dto
 	 * @return
 	 * @throws SQLException
@@ -102,7 +103,6 @@ public class EeDAO {
 			selectEeHiring.append("select ei.er_num, ei.subject, ei.education, ei.rank, ei.loc, ei.hire_type,")
 					.append("to_char(ei.input_date,'yyyy-mm-dd hh:mi') input_date, ei.sal, c.co_name	 ")
 					.append("	from er_info ei ,company c	 ").append("	where (ei.co_num=c.co_num) ");
-			System.out.println(eh_dto.getCoName());
 			if (!(eh_dto.getCoName().trim() == null || eh_dto.getCoName().trim().equals(""))) {
 				selectEeHiring.append("and (c.co_name like '%").append(eh_dto.getCoName()).append("%' ) ");
 			}
@@ -287,46 +287,51 @@ public class EeDAO {
 		return flag;
 	}
 
-
 	/**
 	 * 지원상태만 조회하는 클래스
+	 * 
 	 * @param eeId
 	 * @param erNum
 	 * @return
 	 * @throws SQLException
 	 */
-	public String selectApplication(String eeId,String erNum )throws SQLException{
+	public String selectApplication(String eeId, String erNum) throws SQLException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String appStatus ="";
+		String appStatus = "";
 		try {
 			con = getConn();
 			StringBuilder selectAppStatus = new StringBuilder();
-			
+
 			selectAppStatus.append("select app_status from application where er_num=? and ee_id=?");
 
 			pstmt = con.prepareStatement(selectAppStatus.toString());
-			pstmt.setString(1,erNum );
+			pstmt.setString(1, erNum);
 			pstmt.setString(2, eeId);
 			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				appStatus= rs.getString("app_status");
+
+			if (rs.next()) {
+				appStatus = rs.getString("app_status");
 			}
 
 		} finally { // finally : 연결끊기.
-			if (rs != null) {rs.close();} // end if
-			if (pstmt != null) {pstmt.close();} // end if
-			if (con != null) {con.close();} // end if
+			if (rs != null) {
+				rs.close();
+			} // end if
+			if (pstmt != null) {
+				pstmt.close();
+			} // end if
+			if (con != null) {
+				con.close();
+			} // end if
 		} // end finally
-		
+
 		return appStatus;
 	}
 
 //	////////////////////////////////////////// 선의 소스
 //	////////////////////////////////////////// 끝//////////////////////////////////////////////////////////
-
 
 	//////////// 재현코드 ////////////
 
@@ -533,19 +538,9 @@ public class EeDAO {
 		return cdvo;
 	}// selectCompany()
 
-	/* 단위 테스트용 main */
-/*	public static void main(String[] args) {
-		EeDAO ee_dao = EeDAO.getInstance();
-		try {
-			System.out.println(ee_dao.selectCompany("er_000033"));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} // end catch
-	}// main
 	////////////////////////// 재현 끝 //////////////////////////
 
-///////////////////////////////////////////////////////////////////////////////////////// 김건하 VO정리 시작///////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////// 김건하 시작////////////////
 
 	/**
 	 * 19.02.10김건하 회원정보 입력
@@ -557,9 +552,8 @@ public class EeDAO {
 		boolean insertFlag = false; //
 
 		StringBuilder insertInfo = new StringBuilder();
-		insertInfo
-		.append("  insert into ee_info(ee_num, ee_id, img, rank, loc, education, portfolio, ext_resume)  ")
-		.append("  values( ee_code, ?, ?, ?, ?, ?, ?, ? )" );
+		insertInfo.append("  insert into ee_info(ee_num, ee_id, img, rank, loc, education, portfolio, ext_resume)  ")
+				.append("  values( ee_code, ?, ?, ?, ?, ?, ?, ? )");
 		pstmt1 = con.prepareStatement(insertInfo.toString());
 
 		pstmt1.setString(1, eivo.getEeId());
@@ -571,120 +565,100 @@ public class EeDAO {
 		pstmt1.setString(7, eivo.getExtResume());
 
 		int cnt = pstmt1.executeUpdate();
-		
+
 		if (cnt == 1) {
 			insertFlag = true;
 		} // end if
 
 		return insertFlag;
 	}// insertEeinfo
-	
-//	public static void main(String[] args) throws SQLException {
-//		Connection con=EeDAO.getInstance().getConn();
-//		EeInsertVO eivo = new EeInsertVO("root", "123.jpg", "C", "서울", "고졸", "N", "test.txt");
-//		System.out.println(Ee_dao.insertEeinfo(con, eivo));
-//		System.out.println(eivo);
-//	}// main
 
 	/**
-	 * 	김건하 activation 처리 메소드
-	 * 0302 ActivationVO 불필요해서 수정처리 - 영근
-	 * @throws SQLException 
+	 * 김건하 activation 처리 메소드 0302 ActivationVO 불필요해서 수정처리 - 영근
+	 * 
+	 * @throws SQLException
 	 */
 	public boolean updateActivation(Connection con, String id) throws SQLException {
-		boolean updateFlag=false;
-		
-		StringBuilder updateActivation=new StringBuilder();
-		
-		updateActivation
-		.append("  update user_table  ")
-		.append("  set activation='Y'  ")
-		.append("  where id=?  ");
-		
-		pstmt2=con.prepareStatement(updateActivation.toString());
-		
+		boolean updateFlag = false;
+
+		StringBuilder updateActivation = new StringBuilder();
+
+		updateActivation.append("  update user_table  ").append("  set activation='Y'  ").append("  where id=?  ");
+
+		pstmt2 = con.prepareStatement(updateActivation.toString());
+
 		pstmt2.setString(1, id);
-		
-		int cnt=pstmt2.executeUpdate();
-		
-		if( cnt==1) {
-			updateFlag=true;
-		}//end if
-		
+
+		int cnt = pstmt2.executeUpdate();
+
+		if (cnt == 1) {
+			updateFlag = true;
+		} // end if
+
 		return updateFlag;
-	}//updateActivation
-	
-	//트랜잭션 업데이트 단위 테스트용
-//	public static void main(String[] args) throws SQLException {
-//		ActivationVO avo=new ActivationVO("oh99");
-//		Connection con=EeDAO.getInstance().getConn();
-//		System.out.println(EeDAO.getInstance().updateActivation(con, avo));
-//		System.out.println(avo);
-//	}
-	
+	}// updateActivation
+
 	/**
-	 *  트랜잭션 메소드
-	 *  	김건하
-	 *  기본정보 등록과 유저 activation Y로 변경하는 트랜잭션
+	 * 트랜잭션 메소드 김건하 기본정보 등록과 유저 activation Y로 변경하는 트랜잭션
+	 * 
 	 * @param eeid
 	 * @throws SQLException
 	 */
 	public boolean updateUserInfo(EeInsertVO eivo) throws SQLException {
-	
+
 		boolean updateFlag = false;
-		
+
 		try {
-			con=getConn();
+			con = getConn();
 			con.setAutoCommit(false);
-			
+
 			try {
 				boolean insert = insertEeinfo(con, eivo);
 				boolean update = updateActivation(con, eivo.getEeId());
-				
-				if(insert && update) {
+
+				if (insert && update) {
 					updateFlag = true;
 					con.commit();
-				}else {
+				} else {
 					con.rollback();
-				}//end else
-			
-			}finally {
+				} // end else
+
+			} finally {
 				closeAll();
-			}//end finally
-		
-		}catch(SQLException e) {
-			try {	
+			} // end finally
+
+		} catch (SQLException e) {
+			try {
 				con.rollback();
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
 			e.printStackTrace();
 		}
-		
+
 		return updateFlag;
-	}//updateUserinfo
+	}// updateUserinfo
 
 	/**
-	 * 	연결끊어주는 메소드
+	 * 연결끊어주는 메소드
+	 * 
 	 * @throws SQLException
 	 */
 	public void closeAll() throws SQLException {
-		if(pstmt2 != null) {
+		if (pstmt2 != null) {
 			pstmt2.close();
-		}//end if
-		
-		if(pstmt1 != null) {
+		} // end if
+
+		if (pstmt1 != null) {
 			pstmt1.close();
-		}//end if
-		
-		if(con != null) {
+		} // end if
+
+		if (con != null) {
 			con.close();
-		}//end if
-		
-	}//closeall
-	
-	
-	
+		} // end if
+
+	}// closeall
+
 	/**
 	 * 19.02.11 김건하 EeRegVO
 	 * 
@@ -703,23 +677,19 @@ public class EeDAO {
 			// 커넥션 얻기.
 			con = getConn();
 
-			//쿼리문 수정해야 됨!!!!!!
-			
-			
+			// 쿼리문 수정해야 됨!!!!!!
+
 			// 쿼리문생성
 			StringBuilder selectMyInfo = new StringBuilder();
 //			if() {//조건을 노이미지로 할까?
-				selectMyInfo
-				.append("		select id, name, gender, age ")
-				.append("		from user_table ")
-				.append("		where id = ? 	");
-				
-				
+			selectMyInfo.append("		select id, name, gender, age ").append("		from user_table ")
+					.append("		where id = ? 	");
+
 //				selectMyInfo
 //				.append("		select ei.ee_id, ut.name, ut.gender, ut.age")
 //				.append("		from ee_info ei, user_table ut")
 //				.append("		where (ei.ee_id = ut.id) and ei.ee_id = ? 	");
-				
+
 //			}else {
 //				
 //			}
@@ -730,8 +700,7 @@ public class EeDAO {
 			// DB에서 조회하기s
 			rs = pstmt.executeQuery(); // 쿼리실행
 			if (rs.next()) {
-				ervo = new EeRegVO(rs.getString("id"), rs.getString("name"), rs.getString("gender"),
-						rs.getInt("age"));
+				ervo = new EeRegVO(rs.getString("id"), rs.getString("name"), rs.getString("gender"), rs.getInt("age"));
 			} // end if
 
 		} finally {
@@ -748,7 +717,6 @@ public class EeDAO {
 		return ervo;
 
 	}//
-
 
 	/**
 	 * 19.02.16 모든 정보가져오는 VO
@@ -775,9 +743,10 @@ public class EeDAO {
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
-				eivo = new EeInfoVO(rs.getString("EE_ID"), rs.getString("EE_NUM"), rs.getString("IMG"), rs.getString("NAME"),
-						rs.getString("RANK"), rs.getString("LOC"), rs.getString("EDUCATION"), rs.getString("PORTFOLIO"),
-						rs.getString("GENDER"), rs.getString("EXT_RESUME"), rs.getInt("AGE"));
+				eivo = new EeInfoVO(rs.getString("EE_ID"), rs.getString("EE_NUM"), rs.getString("IMG"),
+						rs.getString("NAME"), rs.getString("RANK"), rs.getString("LOC"), rs.getString("EDUCATION"),
+						rs.getString("PORTFOLIO"), rs.getString("GENDER"), rs.getString("EXT_RESUME"),
+						rs.getInt("AGE"));
 
 			} // end if
 
@@ -797,15 +766,6 @@ public class EeDAO {
 
 	}// selectEeInfo
 
-	// 단위 테스트 성공
-//	public static void main(String[] args) {
-//		try {
-//			System.out.println(EeDAO.getInstance().selectEeInfo("kun90"));
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}//main
-
 //	String eeNum, img, rank, loc, education, portfolio, extResume;
 	public boolean updateEeInfo(EeModifyVO emvo) throws SQLException {
 		boolean flag = false;
@@ -817,10 +777,9 @@ public class EeDAO {
 			con = getConn();
 
 			StringBuilder updateEeInfo = new StringBuilder();
-			updateEeInfo
-			.append("	  update ee_info	")
-			.append("  set  ee_num =? , img = ? , rank = ?, loc = ? , education = ? , portfolio = ? ,	ext_resume = ? ")
-			.append("	  where ee_num = ?	");
+			updateEeInfo.append("	  update ee_info	").append(
+					"  set  ee_num =? , img = ? , rank = ?, loc = ? , education = ? , portfolio = ? ,	ext_resume = ? ")
+					.append("	  where ee_num = ?	");
 
 			pstmt = con.prepareStatement(updateEeInfo.toString());
 
@@ -848,27 +807,8 @@ public class EeDAO {
 		}
 
 		return flag;
-	}//UpdateEeinfo
+	}// UpdateEeinfo
 
-	//단위 테스트 UpdateEeinfo
-	public static void main(String[] args) {
-		EeModifyVO emvo=new EeModifyVO("ee_000121", "ee11,jpg", "Y", "서울", "고졸", "N", "테스트");
-			try {
-				EeDAO.getInstance().updateEeInfo(emvo);
-			} catch (SQLException e) {
-				System.out.println(emvo);
-				e.printStackTrace();
-			}
-	}
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////////// 김건하
-	//////////////////////////////////////////////////////////////////////////////////////////////////////// VO정리
-	//////////////////////////////////////////////////////////////////////////////////////////////////////// 끝///////////////////////////////////////////////////////////////////////////////////////////////
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////////// 김건하
-	//////////////////////////////////////////////////////////////////////////////////////////////////////// VO정리
-	//////////////////////////////////////////////////////////////////////////////////////////////////////// 끝///////////////////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////// 김건하 끝 ///////////////
 
 }// class

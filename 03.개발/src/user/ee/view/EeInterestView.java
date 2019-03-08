@@ -93,8 +93,4 @@ public class EeInterestView extends JDialog {
 	}
 	///////////////////// getter/////////////////////
 
-	public static void main(String[] args) {
-		new EeInterestView(null, "gong1");
-	}// main
-
 }// class
