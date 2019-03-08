@@ -126,8 +126,6 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 		ErModifyVO emvo = new ErModifyVO(eivo.getErNum(), subject,
 				education, rank, loc, hireType, portfolio, erDesc, sal, listSkill);
 		
-		System.out.println("---"+emvo);
-				
 		if (AdminDAO.getInstance().updateEr(emvo, eivo.getListSkill().size())) {
 			try {
 				msgCenter("구인 정보가 수정되었습니다.");
