@@ -390,8 +390,4 @@ public class ErModifyView extends JDialog {
 
 	/******** getter ********/
 
-/*	public static void main(String[] args) {
-		new ErModifyView(null, null, null);
-	}// main
-*/
 }// class

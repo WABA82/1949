@@ -414,7 +414,6 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 	public void mouseClicked(MouseEvent me) {
 		if (ammv.getJtb().getSelectedIndex() == 0 && me.getSource() != ammv.getJtUser()) { 
 			setUser();
-			System.out.println("???");////////////////////// 한번 클릭하면 초기화시켜버림..
 		}
 		if (ammv.getJtb().getSelectedIndex() == 1 && me.getSource() != ammv.getJtEr()) {
 			setEr();

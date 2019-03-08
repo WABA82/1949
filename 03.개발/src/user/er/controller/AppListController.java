@@ -74,7 +74,6 @@ public class AppListController extends WindowAdapter implements MouseListener {
 
 				File imgFile = new File(imgPath + dalvo.getImg());
 				// user.img.co패키지에 이미지 파일이 없다면 실행.
-				// System.out.println(imgFile.exists());
 				if (!imgFile.exists()) {
 					try {
 						Socket client = null; // "211.63.89.144", 7002 : 영근컴퓨터IP, 파일서버의 포트
@@ -144,7 +143,6 @@ public class AppListController extends WindowAdapter implements MouseListener {
 		AppDetailView adv = new AppDetailView(alv, app_num, this, er_num);
 
 		// AppDetailView객체가 동작을 멈추면 true반환
-		//System.out.println(adv.isActive());
 		if (adv.isActive()) {
 			setDTM(er_num);
 		} // end if

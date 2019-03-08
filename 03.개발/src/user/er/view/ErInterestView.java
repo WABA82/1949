@@ -88,8 +88,4 @@ public class ErInterestView extends JDialog {
 		return dtmEeInfo;
 	}
 
-	public static void main(String[] args) {
-		new ErInterestView(null, "memoaa");
-	}
-
 }// class

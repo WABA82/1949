@@ -126,9 +126,7 @@ public class ErAppController extends WindowAdapter implements MouseListener {
 			AppListView alv = new AppListView(erav, er_num);
 			
 			// AppListView∞¥√º∞° µø¿€¿ª ∏ÿ√ﬂ∏È trueπ›»Ø.
-			// System.out.println(alv.isActive());
 			if (alv.isActive()) {
-				// System.out.println("Ω¥∆€ ∞ªΩ≈");
 				setDTM(er_id);
 			} // end if
 			

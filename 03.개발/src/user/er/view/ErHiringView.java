@@ -69,7 +69,6 @@ public class ErHiringView extends JDialog {
 		add(jbDetailSearch);
 		add(jbSelectAll);
 		/////¿Ã∫•∆Æ//////
-		System.out.println(erId);
 		ErHiringController ehc = new ErHiringController(this,erId);
 		jbDetailSearch.addActionListener(ehc);
 		jcbSort.addActionListener(ehc);
@@ -102,10 +101,6 @@ public class ErHiringView extends JDialog {
 	public JButton getJbSelectAll() {
 		return jbSelectAll;
 	}
-
-/*	public static void main(String[] args) {
-		new ErHiringView(null, null, "moonlight");
-	}*/
 	
 	
 }//class

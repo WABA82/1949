@@ -58,7 +58,6 @@ public class CoInfoModifyView extends JDialog {
 		jlImg2 = new JLabel();
 		jlImg3 = new JLabel();
 		jlImg4 = new JLabel();
-		System.out.println(cvo);
 		// ¹èÄ¡
 		setLayout(null);
 
@@ -190,4 +189,4 @@ public class CoInfoModifyView extends JDialog {
 		return jtaCoDesc;
 	}
 
-}//class
+}

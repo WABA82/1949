@@ -74,8 +74,4 @@ public class ErAppView extends JDialog {
 		return dtmEr;
 	}
 
-	public static void main(String[] args) {
-		new ErAppView(null, "ooo123"); //ooo123, metro777
-	}// main
-
 }// class

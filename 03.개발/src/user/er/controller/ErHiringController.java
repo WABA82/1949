@@ -60,7 +60,6 @@ public class ErHiringController extends WindowAdapter implements ActionListener,
 				
 				//서버에서 없는 이미지 파일받아오기
 				File imgFile = new File("C:/dev/1949/03.개발/src/user/img/ee/"+erhvo.getImg());
-				System.out.println(erhvo.getImg()+"---"+imgFile.exists());
 				if(!imgFile.exists()) {
 					Socket client = null;
 					DataInputStream dis =null;
@@ -74,7 +73,6 @@ public class ErHiringController extends WindowAdapter implements ActionListener,
 						JOptionPane.showMessageDialog(ehv, "이미지를 받아오는데 실패했습니다.");
 					}
 				}
-				//System.out.println("confirm");
 				rowData[2]= new ImageIcon("C:/dev/1949/03.개발/src/user/img/ee/"+erhvo.getImg());
 				rowData[3]= erhvo.getName();
 				if(erhvo.getRank().equals("N")) {

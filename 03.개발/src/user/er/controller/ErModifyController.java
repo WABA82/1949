@@ -103,9 +103,8 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 			updateflag = erdao.updateErModify(emvo,preSkill);
 			if(updateflag) {
 				JOptionPane.showMessageDialog(emv, "구인 정보가 수정되었습니다.");
-				ul.sendLog(erId, "구인 정보를 수정했습니다.");
+				ul.sendLog(erId, "["+erNum+"] 수정");
 				emv.dispose();
-				//ErMgMtView emmv, ErDetailVO edvo, String erNum, String erId, ErMgMtController emmc
 				ErDetailVO edvo = erdao.selectErDetail(erNum);
 				emmc.setDtm();
 				new ErModifyView(emmv, edvo, erNum, erId, emmc);
@@ -127,7 +126,7 @@ public class ErModifyController extends WindowAdapter implements ActionListener 
 		}
 		if(deleteFlag) {
 			JOptionPane.showMessageDialog(emv, "구인 정보가 삭제되었습니다. ");
-			ul.sendLog(erId, "구인 정보를 삭제했습니다.");
+			ul.sendLog(erId, "["+erNum+"] 삭제");
 			emmc.setDtm();
 			emv.dispose();
 		}else {

@@ -167,7 +167,6 @@ public class ErDetailEeView extends JDialog {
 		jtfGender.setBounds(315, 342, 130, 20);
 		jtfGender.setEditable(false);
 
-		System.out.println(flagHeart);
 		ErDetailEeController edec = new ErDetailEeController(this, eeNum, erId, flagHeart);
 
 		jlHeart.addMouseListener(edec);

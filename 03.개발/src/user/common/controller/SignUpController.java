@@ -163,10 +163,6 @@ public class SignUpController extends WindowAdapter implements ActionListener {
 
 		if (!pass2.equals(pass1)) {
 			JOptionPane.showMessageDialog(suv, "비밀번호가 일치하지 않습니다");
-			/*
-			 * System.out.println(pass1+"/"+pass2);
-			 * System.out.println(!pass2.equals(pass1)); System.out.println(pass2!=pass1);
-			 */
 			suv.getJpfPass1().setText("");
 			suv.getJpfPass2().setText("");
 			suv.getJpfPass1().requestFocus();
@@ -235,9 +231,6 @@ public class SignUpController extends WindowAdapter implements ActionListener {
 		for (int i = 0; i < flagNum.length; i++) {
 
 			sum += ((int) ssn.charAt(i) - 48) * ((flagNum[i]));
-			// System.out.println("ssn.charat :"+ssn.charAt(i));
-			// System.out.println("flag num :"+flagNum[i]);
-			// System.out.println("sum :"+sum);
 		} // end for
 		sum = (11 - (sum % 11)) % 10;
 		if (!(sum == ssn.charAt(12) - 48)) {
@@ -261,7 +254,6 @@ public class SignUpController extends WindowAdapter implements ActionListener {
 			Long.parseLong(chkTel);
 		 }catch (NumberFormatException npe) {
 			JOptionPane.showMessageDialog(suv, "연락처는 숫자만 입력 가능합니다.형식)000-0000-0000");
-			System.out.println(chkTel   + " tel : " + tel);
 			return;
 		}
 		if (chkTel.length() < 10) {
@@ -270,8 +262,6 @@ public class SignUpController extends WindowAdapter implements ActionListener {
 		} // end else
 
 		if (tel.indexOf("-") != 3 || !tel.substring((tel.length()) - 5, tel.length() - 4).equals("-")) {
-			// System.out.println("첫 하이픈 위치 :"+tel.indexOf("-") +"//둘째 하이픈 인덱스
-			// 가져오기/"+tel.substring((tel.length())-5, tel.length()-4)+"tel의 길이 :
 			// "+tel.length());
 			JOptionPane.showMessageDialog(suv, "연락처 형식이 잘못되었습니다.");//하이픈 - ,- 인덱스로 거르기
 			return;
@@ -324,7 +314,7 @@ public class SignUpController extends WindowAdapter implements ActionListener {
 		try {
 			resultMsg = c_dao.insertUser(uivo);
 			JOptionPane.showMessageDialog(suv, resultMsg);
-			ul.sendLog(id, "회원가입이 완료되었습니다.");
+			ul.sendLog(id, "["+id+"]"+" 회원가입");
 			
 			suv.dispose();
 		} catch (SQLException e) {
