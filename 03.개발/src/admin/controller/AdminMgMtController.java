@@ -495,7 +495,7 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 	
 	@Override
 	public void mousePressed(MouseEvent me) {
-////////팝업 조건검색 기능 추가 0307 ////////////
+		////////팝업 조건검색 기능 추가 0307 ////////////
 		if (me.getSource() == ammv.getJtUser() && me.getButton() == MouseEvent.BUTTON3) {
 			JPopupMenu jp = ammv.getJpUser();
 			jp.show(ammv.getJtb(), me.getXOnScreen()-103, me.getYOnScreen()-125);
