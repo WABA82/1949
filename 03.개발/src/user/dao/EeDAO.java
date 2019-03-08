@@ -749,33 +749,6 @@ public class EeDAO {
 
 	}//
 
-	/**
-	 *	transaction 해보자. 
-	 * activation을 n에서 y로 변경하는 메서드.
-	 * @param eeid
-	 * @throws SQLException
-	 */
-
-	public void transactionActivation(String eeid) throws SQLException {
-		Connection con=null;
-		PreparedStatement pstmt=null;
-		
-		try {
-			con.setAutoCommit(false);
-		
-			pstmt.executeUpdate();
-			pstmt.executeUpdate();
-
-			
-			con.commit(); //커밋
-			
-			
-		}catch(SQLException sql) {
-			
-		}
-	
-	
-	}//transactionActivation
 
 	/**
 	 * 19.02.16 모든 정보가져오는 VO

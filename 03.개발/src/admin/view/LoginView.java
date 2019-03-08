@@ -6,9 +6,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
-
-import com.sun.glass.events.KeyEvent;
 
 import admin.controller.LoginController;
 

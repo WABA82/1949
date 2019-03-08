@@ -1,12 +1,11 @@
 package admin.view;
 
-import javax.swing.JDialog;
 import java.awt.Font;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
@@ -16,6 +15,7 @@ import admin.controller.EeModifyController;
 import admin.vo.EeInfoVO;
 
 
+@SuppressWarnings("serial")
 public class EeModifyView extends JDialog {
 
 	private JButton jbModify, jbChangeExt, jbChangeImg, jbRemove, jbCancel, jbDownExt;

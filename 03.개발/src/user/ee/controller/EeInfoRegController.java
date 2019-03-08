@@ -12,7 +12,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
@@ -25,7 +24,6 @@ import user.ee.view.EeInfoRegView;
 import user.ee.view.EeMainView;
 import user.ee.view.ModifyExtView;
 import user.ee.vo.EeInsertVO;
-import user.ee.vo.EeRegVO;
 import user.util.UserLog;
 import user.util.UserUtil;
 
@@ -38,10 +36,7 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 	private File uploadExt;
 	
 	private EeDAO eedao;
-	private Connection con;
 	private String eeId;// 내 아이디.
-	private EeRegVO ervo;
-	private EeMainVO emvo;
 	private EeMainView emv;
 	private UserUtil uu;
 	private UserLog ul;
@@ -112,7 +107,6 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 					
 					ul.sendLog(eeId, "신규 기본정보 등록");
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}//end catch
 				
@@ -170,7 +164,6 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 			try {
 				changeImg();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} // end if
