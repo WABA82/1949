@@ -162,7 +162,7 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
           JOptionPane.showMessageDialog(lv, "아이디와 비밀번호를 확인해주세요 5번 중 "+fail.get(id)+"번 로그인 실패");
           if(fail.get(id)==5) {
         	  JOptionPane.showMessageDialog(lv, "5회이상 로그인에 실패하였습니다. 프로그램을 종료합니다.");
-        	  ul.sendLog(id, "비정상 접속 시도 : 로그인이 5회이상 실패했습니다.");
+        	  ul.sendLog(id, "["+id+"]"+"비정상 접속 시도");
         	  System.exit(-1);
         	  return;
           }//hack
