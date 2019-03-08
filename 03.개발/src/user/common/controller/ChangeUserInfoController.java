@@ -20,8 +20,8 @@ import user.common.vo.UserInfoVO;
 import user.common.vo.UserModifyVO;
 import user.common.vo.UserModifyWithoutPassVO;
 import user.dao.CommonDAO;
-import user.run.LogTestChangeUserInfo;
 import user.util.UserUtil;
+import user.util.UserLog;
 
 public class ChangeUserInfoController extends WindowAdapter implements ActionListener,KeyListener {
 
@@ -32,6 +32,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 	private JFrame jf;
 	
 	private UserUtil uu;
+	private UserLog ul;
 	
 	public ChangeUserInfoController(JFrame jf, ChangeUserInfoView cuiv, UserInfoVO uivo) {
 		this.cuiv=cuiv;
@@ -39,6 +40,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 		this.addrSeq=uivo.getSeq();
 		this.jf=jf;
 		uu = new UserUtil();
+		ul = new UserLog();
 	}
 	
 	public boolean checkPass(String pass) { // 비밀번호 검증, 최대 12자리, 대문자 소문자 특수문자 조합
@@ -203,7 +205,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 						if (CommonDAO.getInstance().updateUserInfoWithoutPass(umvo2)) {
 							JOptionPane.showMessageDialog(cuiv, "회원정보가 수정되었습니다.");
 							cuiv.dispose();
-							new LogTestChangeUserInfo();
+							new UserLog().sendLog(id, "회원정보를 수정하였습니다.");
 						}//end if
 					}//end else
 			} catch (SQLException e) {
@@ -230,7 +232,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 						if (CommonDAO.getInstance().updateUserInfo(umvo)) {
 							JOptionPane.showMessageDialog(cuiv, "회원정보가 수정되었습니다.");
 							cuiv.dispose();
-							new LogTestChangeUserInfo();
+							ul.sendLog(id, "["+id+"]님이 정보를 변경했습니다.");
 						}//end if
 					}//end else
 			}//end else

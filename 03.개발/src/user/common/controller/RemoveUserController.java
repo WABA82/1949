@@ -15,7 +15,7 @@ import user.common.view.ChangeUserInfoView;
 import user.common.view.LoginView;
 import user.common.view.RemoveUserView;
 import user.dao.CommonDAO;
-import user.run.LogTestRemoveUser;
+import user.util.UserLog;
 
 public class RemoveUserController extends WindowAdapter implements ActionListener,KeyListener {
 	
@@ -62,7 +62,7 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 						jf.dispose();
 						
 						new LoginView();
-						new LogTestRemoveUser();
+						new UserLog().sendLog(id, "È¸¿øÅ»ÅðÇß½À´Ï´Ù.");
 					}//end if
 				}//end else
 			}else {

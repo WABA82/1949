@@ -14,19 +14,21 @@ import javax.swing.JPasswordField;
 import user.common.view.SetNewPassView;
 import user.common.vo.SetPassVO;
 import user.dao.CommonDAO;
-import user.run.LogTestChangePass;
 import user.util.UserUtil;
+import user.util.UserLog;
 
 public class SetNewPassController extends WindowAdapter implements ActionListener,KeyListener {
 
 	private SetNewPassView snpv;
 	private String id;
 	private UserUtil uu;
+	private UserLog ul;
 
 	public SetNewPassController(SetNewPassView snpv, String id) {
 		this.snpv = snpv;
 		this.id = id;
 		uu = new UserUtil();
+		ul = new UserLog();
 	}
 
 	public boolean checkPass(String pass) { // 비밀번호 검증, 최대 12자리, 대문자 소문자 특수문자 조합
@@ -102,8 +104,9 @@ public class SetNewPassController extends WindowAdapter implements ActionListene
 						
 						if (CommonDAO.getInstance().updatePass(spvo)) {
 							JOptionPane.showMessageDialog(snpv, "비밀번호가 수정되었습니다.");
+							ul.sendLog(id, "["+id+"]의 비밀번호가 변경되었습니다.");
 							snpv.dispose();
-							new LogTestChangePass();
+							new UserLog().sendLog(id, "회원 비밀번호를 수정하였습니다.");
 						return;
 						} // end if
 				}//end else
