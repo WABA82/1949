@@ -2,11 +2,19 @@ package user.er.view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Robot;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -16,6 +24,7 @@ import javax.swing.border.TitledBorder;
 import user.er.controller.CoInfoModifyController;
 import user.er.vo.CoInfoVO;
 import user.util.JTextFieldLimit;
+import user.util.UserUtil;
 
 @SuppressWarnings("serial")
 public class CoInfoModifyView extends JDialog {
@@ -56,11 +65,11 @@ public class CoInfoModifyView extends JDialog {
 
 		jbModify = new JButton("수정");
 		jbClose = new JButton("닫기");
-
-		jlImg1 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/"+cvo.getImg1()));
-		jlImg2 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/"+cvo.getImg2()));
-		jlImg3 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/"+cvo.getImg3()));
-		jlImg4 = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/"+cvo.getImg4()));
+		
+		jlImg1 = new JLabel();
+		jlImg2 = new JLabel();
+		jlImg3 = new JLabel();
+		jlImg4 = new JLabel();
 		System.out.println(cvo);
 		// 배치
 		setLayout(null);
@@ -127,6 +136,32 @@ public class CoInfoModifyView extends JDialog {
 		setBounds(100, 100, 480, 530);
 		setVisible(true);
 	}// 생성자
+	
+	
+
+	public void setJlImg1(JLabel jlImg1) {
+		this.jlImg1 = jlImg1;
+	}
+
+
+
+	public void setJlImg2(JLabel jlImg2) {
+		this.jlImg2 = jlImg2;
+	}
+
+
+
+	public void setJlImg3(JLabel jlImg3) {
+		this.jlImg3 = jlImg3;
+	}
+
+
+
+	public void setJlImg4(JLabel jlImg4) {
+		this.jlImg4 = jlImg4;
+	}
+
+
 
 	public JButton getJbModify() {
 		return jbModify;
