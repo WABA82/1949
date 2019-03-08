@@ -49,7 +49,6 @@ public class FileServerHelper {
 		this.dos = dos;
 		
 		String flag = dis.readUTF();
-		System.out.println(flag);
 		
 		try {
 			switch(flag) {
@@ -130,7 +129,6 @@ public class FileServerHelper {
 		for(int i=0; i<listImg.size(); i++) { // 없는 파일의 수만큼 반복전송
 			fileName = listImg.get(i);
 			
-			System.out.println("init fsName : "+fileName);
 			dos.writeUTF(fileName); // 파일명 전송
 			dos.flush();
 
@@ -178,7 +176,6 @@ public class FileServerHelper {
 		
 		// Admin이 없는 파일명 리스트를 전송받음
 		listImg = (List<String>)ois.readObject(); 
-		System.out.println(listImg);
 		
 		String filePath = dir.getAbsolutePath();
 		byte[] readData = new byte[512];
@@ -189,7 +186,6 @@ public class FileServerHelper {
 		for(int i=0; i<listImg.size(); i++) { // 없는 파일의 수만큼 반복전송
 			fileName = listImg.get(i);
 			
-			System.out.println("fsName : "+fileName);
 			dos.writeUTF(fileName); // 파일명 전송
 			dos.flush();
 			

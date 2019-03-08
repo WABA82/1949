@@ -14,6 +14,7 @@ import admin.controller.ModifyExtController;
  * 19.02.14 이력서수정 기능구현
  * @author 영근
  */
+@SuppressWarnings("serial")
 public class ModifyExtView extends JDialog { 
 
 	private JTextField jtfPath;

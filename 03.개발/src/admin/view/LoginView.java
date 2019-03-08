@@ -6,9 +6,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
-
-import com.sun.glass.events.KeyEvent;
 
 import admin.controller.LoginController;
 
@@ -25,8 +22,8 @@ public class LoginView extends JFrame {
 		JLabel jlLogo = new JLabel(logoImg);
 		JLabel jlId= new JLabel("아이디");
 		JLabel jlPass= new JLabel("비밀번호");
-		jtfId= new JTextField("admin");
-		jpfPass = new JPasswordField("4321");
+		jtfId= new JTextField();
+		jpfPass = new JPasswordField();
 		jbLogin = new JButton("로그인");
 		
 		setLayout(null);

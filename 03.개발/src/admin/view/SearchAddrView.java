@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 import admin.controller.SearchAddrController;
 import admin.controller.UserModifyController;
 
+@SuppressWarnings("serial")
 public class SearchAddrView extends JDialog {
 	
 	private JTextField jtfDong;
