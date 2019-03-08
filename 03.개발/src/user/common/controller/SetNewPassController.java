@@ -104,9 +104,8 @@ public class SetNewPassController extends WindowAdapter implements ActionListene
 						
 						if (CommonDAO.getInstance().updatePass(spvo)) {
 							JOptionPane.showMessageDialog(snpv, "비밀번호가 수정되었습니다.");
-							ul.sendLog(id, "["+id+"]의 비밀번호가 변경되었습니다.");
+							ul.sendLog(id, "["+id+"] 비밀번호 수정");
 							snpv.dispose();
-							new UserLog().sendLog(id, "회원 비밀번호를 수정하였습니다.");
 						return;
 						} // end if
 				}//end else

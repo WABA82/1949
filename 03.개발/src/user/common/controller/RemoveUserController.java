@@ -69,7 +69,7 @@ public class RemoveUserController extends WindowAdapter implements ActionListene
 						jf.dispose();
 						
 						new LoginView();
-						new UserLog().sendLog(id, "È¸¿øÅ»ÅðÇß½À´Ï´Ù.");
+						new UserLog().sendLog(id,  "["+id+"] È¸¿øÅ»Åð");
 					}//end if
 				}//end else
 			}else {
