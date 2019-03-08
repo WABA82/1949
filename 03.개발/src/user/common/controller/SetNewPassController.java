@@ -14,7 +14,7 @@ import javax.swing.JPasswordField;
 import user.common.view.SetNewPassView;
 import user.common.vo.SetPassVO;
 import user.dao.CommonDAO;
-import user.run.LogTestChangePass;
+import user.util.UserLog;
 
 public class SetNewPassController extends WindowAdapter implements ActionListener,KeyListener {
 
@@ -100,7 +100,7 @@ public class SetNewPassController extends WindowAdapter implements ActionListene
 						if (CommonDAO.getInstance().updatePass(spvo)) {
 							JOptionPane.showMessageDialog(snpv, "비밀번호가 수정되었습니다.");
 							snpv.dispose();
-							new LogTestChangePass();
+							new UserLog().sendLog(id, "회원 비밀번호를 수정하였습니다.");
 						return;
 						} // end if
 				}//end else

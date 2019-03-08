@@ -20,7 +20,7 @@ import user.common.vo.UserInfoVO;
 import user.common.vo.UserModifyVO;
 import user.common.vo.UserModifyWithoutPassVO;
 import user.dao.CommonDAO;
-import user.run.LogTestChangeUserInfo;
+import user.util.UserLog;
 
 public class ChangeUserInfoController extends WindowAdapter implements ActionListener,KeyListener {
 
@@ -197,7 +197,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 						if (CommonDAO.getInstance().updateUserInfoWithoutPass(umvo2)) {
 							JOptionPane.showMessageDialog(cuiv, "회원정보가 수정되었습니다.");
 							cuiv.dispose();
-							new LogTestChangeUserInfo();
+							new UserLog().sendLog(id, "회원정보를 수정하였습니다.");
 						}//end if
 					}//end else
 			} catch (SQLException e) {
@@ -224,7 +224,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 									if (CommonDAO.getInstance().updateUserInfo(umvo)) {
 								JOptionPane.showMessageDialog(cuiv, "회원정보가 수정되었습니다.");
 								cuiv.dispose();
-								new LogTestChangeUserInfo();
+								new UserLog().sendLog(id, "회원정보를 수정하였습니다.");
 								}//end if
 						}//end else
 					

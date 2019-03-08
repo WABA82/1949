@@ -36,7 +36,7 @@ public class LogTestSignUp {
 	}
 	
 	public static void main(String[] args) {
-		new LogTestChangePass();
+		new LogTestSignUp();
 	}
 }
 
