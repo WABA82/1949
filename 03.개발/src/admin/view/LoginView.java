@@ -25,8 +25,8 @@ public class LoginView extends JFrame {
 		JLabel jlLogo = new JLabel(logoImg);
 		JLabel jlId= new JLabel("아이디");
 		JLabel jlPass= new JLabel("비밀번호");
-		jtfId= new JTextField("admin");
-		jpfPass = new JPasswordField("4321");
+		jtfId= new JTextField();
+		jpfPass = new JPasswordField();
 		jbLogin = new JButton("로그인");
 		
 		setLayout(null);
