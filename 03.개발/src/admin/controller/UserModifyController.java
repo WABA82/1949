@@ -317,7 +317,7 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		int age = getAge(Integer.parseInt(umv.getJtfSsn1().getText().trim().substring(0, 2)));
 		String gender = getGender(Integer.parseInt(umv.getJtfSsn2().getText().trim().substring(0, 1)));
 		
-		umvo = new UserModifyVO(id, pass, name, ssn, gender, tel, addrSeq, addrDetail, email, questionType, answer, userType, age);
+		umvo = new UserModifyVO(id, au.shaEncoding(pass), name, au.shaEncoding(ssn), gender, tel, addrSeq, addrDetail, email, questionType, answer, userType, age);
 		
 		try {
 			if(AdminDAO.getInstance().updateUser(umvo)) { // 유저타입이 변경되었다면, 이전 등록 정보를 모두 삭제필요

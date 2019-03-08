@@ -15,16 +15,19 @@ import user.common.view.SignUpView;
 import user.common.vo.UserInsertVO;
 import user.dao.CommonDAO;
 import user.util.UserLog;
+import user.util.UserUtil;
 
 public class SignUpController extends WindowAdapter implements ActionListener {
 	private SignUpView suv;
 	private String addrSeq;
 	private CommonDAO c_dao;
 	private UserLog ul;
+	private UserUtil uu;
 
 	public SignUpController(SignUpView suv) {
 		this.suv = suv;
-		ul=new UserLog();
+		ul = new UserLog();
+		uu = new UserUtil();
 		c_dao = CommonDAO.getInstance();
 	}// 생성자
 
@@ -316,8 +319,8 @@ public class SignUpController extends WindowAdapter implements ActionListener {
 		} // QT 받기 끝
 
 		String resultMsg = "";
-		UserInsertVO uivo = new UserInsertVO(id, pass1, name, ssn, tel, email, addrSeq, detailAddr, questionType,
-				answer, userType);
+		UserInsertVO uivo = new UserInsertVO(id, uu.shaEncoding(pass1), name, ssn, tel, email, addrSeq, detailAddr, questionType,
+				answer, userType, uu.shaEncoding(ssn));
 		try {
 			resultMsg = c_dao.insertUser(uivo);
 			JOptionPane.showMessageDialog(suv, resultMsg);

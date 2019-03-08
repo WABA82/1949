@@ -48,7 +48,7 @@ public class LoginController extends WindowAdapter implements ActionListener, Ke
 	
 	public void login() {
 		String id = lv.getJtfId().getText().trim();
-		String pass = au.shaEncoding(new String(lv.getJpfPass().getPassword()).trim());
+		String pass = new String(lv.getJpfPass().getPassword()).trim();
 		
 		
 		if ("".equals(id)) {
@@ -61,6 +61,8 @@ public class LoginController extends WindowAdapter implements ActionListener, Ke
 			lv.getJpfPass().requestFocus();
 			return;
 		}
+		
+		pass = au.shaEncoding(pass);
 		
 		if ("admin".equals(id) && "1fEuU6GCwGK2vzDBRFFT+v8SJpo=".equals(pass)) {
 			user.clear();

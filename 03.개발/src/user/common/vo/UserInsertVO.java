@@ -2,15 +2,10 @@ package user.common.vo;
 
 public class UserInsertVO {
 
-	private String id, pass, name, ssn, tel, email, addrSeq, addrDetail, questionType, answer, userType;
-	
-	
-	public UserInsertVO() {
-		super();
-	}
+	private String id, pass, name, ssn, tel, email, addrSeq, addrDetail, questionType, answer, userType, encSsn;
 
 	public UserInsertVO(String id, String pass, String name, String ssn, String tel, String email, String addrSeq,
-			String addrDetail, String questionType, String answer, String userType) {
+			String addrDetail, String questionType, String answer, String userType, String encSsn) {
 		super();
 		this.id = id;
 		this.pass = pass;
@@ -23,7 +18,7 @@ public class UserInsertVO {
 		this.questionType = questionType;
 		this.answer = answer;
 		this.userType = userType;
-
+		this.encSsn = encSsn;
 	}
 
 	public String getId() {
@@ -65,15 +60,19 @@ public class UserInsertVO {
 	public String getAnswer() {
 		return answer;
 	}
-	
+
 	public String getUserType() {
 		return userType;
 	}
-	
+
+	public String getEncSsn() {
+		return encSsn;
+	}
+
 	@Override
 	public String toString() {
 		return "UserInsertVO [id=" + id + ", pass=" + pass + ", name=" + name + ", ssn=" + ssn + ", tel=" + tel
 				+ ", email=" + email + ", addrSeq=" + addrSeq + ", addrDetail=" + addrDetail + ", questionType="
-				+ questionType + ", answer=" + answer + ", userType=" + userType + "]";
+				+ questionType + ", answer=" + answer + ", userType=" + userType + ", encSsn=" + encSsn + "]";
 	}
 }

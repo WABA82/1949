@@ -10,6 +10,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import org.apache.tomcat.util.codec.binary.Base64;
 
 public class UserUtil {
 
@@ -112,6 +116,31 @@ public class UserUtil {
 		dis.readUTF(); // 저장완료 응답 받은 후 연결 종료
 		closeStreams(client, dos, dis, null, fis, null, null);
 
+	}
+	
+	/**
+	 * 평문을 암호문으로 암호화시키는 method
+	 * @param plainText
+	 * @return
+	 */
+	public String shaEncoding(String plainText) {
+		String cipherText = "";
+		
+		Base64 base64 = new Base64();
+		
+		if (plainText != null || !"".equals(plainText)) {
+			
+			try {
+				MessageDigest md = MessageDigest.getInstance("SHA-1");
+				md.update(plainText.getBytes());
+				cipherText = new String(base64.encode(md.digest()));
+				
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return cipherText;
 	}
 
 	/**

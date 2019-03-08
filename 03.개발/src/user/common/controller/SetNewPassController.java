@@ -15,15 +15,18 @@ import user.common.view.SetNewPassView;
 import user.common.vo.SetPassVO;
 import user.dao.CommonDAO;
 import user.run.LogTestChangePass;
+import user.util.UserUtil;
 
 public class SetNewPassController extends WindowAdapter implements ActionListener,KeyListener {
 
 	private SetNewPassView snpv;
 	private String id;
+	private UserUtil uu;
 
 	public SetNewPassController(SetNewPassView snpv, String id) {
 		this.snpv = snpv;
 		this.id = id;
+		uu = new UserUtil();
 	}
 
 	public boolean checkPass(String pass) { // 비밀번호 검증, 최대 12자리, 대문자 소문자 특수문자 조합
@@ -85,11 +88,8 @@ public class SetNewPassController extends WindowAdapter implements ActionListene
 			jtfPass2.requestFocus();
 			return;
 		}//end if
-
-		SetPassVO spvo = new SetPassVO(id, changePass1);
-
+		
 		try {// 비밀번호 검증
-
 			if (!changePass1.equals(changePass2)) {// 새비밀번호확인이 다를때
 				JOptionPane.showMessageDialog(snpv, "비밀번호확인과 비밀번호가 일치하지 않습니다.");
 			} else {// 새비밀번호와 확인이 같다면 검증
@@ -97,6 +97,9 @@ public class SetNewPassController extends WindowAdapter implements ActionListene
 						JOptionPane.showMessageDialog(snpv, "비밀번호를 확인해주세요\n대문자,소문자,특수문자 조합으로 입력해주세요.");
 						return;
 					} else {//포함된 문자가 있다면
+						changePass1 = uu.shaEncoding(changePass1); // 암호화
+						SetPassVO spvo = new SetPassVO(id, changePass1);
+						
 						if (CommonDAO.getInstance().updatePass(spvo)) {
 							JOptionPane.showMessageDialog(snpv, "비밀번호가 수정되었습니다.");
 							snpv.dispose();
