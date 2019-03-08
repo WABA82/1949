@@ -638,6 +638,10 @@ ALTER TABLE interest_ee DROP CONSTRAINT fk_user_table_to_interest_ee;
 ALTER TABLE interest_ee ADD CONSTRAINT fk_user_table_to_interest_ee
 FOREIGN KEY (er_id)
 REFERENCES user_table(id)
-ON DELETE CASCADE;
+ON DELETE CASCADE;        
+
+-- 암호화 처리를 위해 길이 변경
+ALTER TABLE user_table MODIFY pass VARCHAR2(60);
+ALTER TABLE user_table MODIFY ssn VARCHAR2(60);   
 
 COMMIT;
