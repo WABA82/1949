@@ -83,7 +83,7 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
       }
    }//removeInterestEr
    
-   public void extRsmDown() throws UnknownHostException, IOException{
+   public void ㄴ() throws UnknownHostException, IOException{
       //ee_info에서  erNum으로 조회해서 있는지 없는지 조회해서 이력서 이름받기
       try {
          devo= erdao.selectDetailEe(eeNum, erId);
@@ -116,8 +116,8 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
          FileOutputStream fos = null;
 
          try {
-            socket = new Socket("localhost", 7002);
-            // socket = new Socket("211.63.89.144", 7002);
+            // socket = new Socket("localhost", 7002);
+            socket = new Socket("211.63.89.144", 7002);
             dos = new DataOutputStream(socket.getOutputStream());
 
             // 서버에게 이력서파일 전송 요청 보내기.
