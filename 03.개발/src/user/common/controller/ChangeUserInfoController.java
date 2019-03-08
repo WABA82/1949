@@ -205,7 +205,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 					if (CommonDAO.getInstance().updateUserInfoWithoutPass(umvo2)) {
 						JOptionPane.showMessageDialog(cuiv, "회원정보가 수정되었습니다.");
 						cuiv.dispose();
-						new UserLog().sendLog(id, "회원정보를 수정하였습니다.");
+						new UserLog().sendLog(id, "["+id+"] 회원정보 수정");
 					}//end if
 				}//end else
 			} catch (SQLException e) {
@@ -232,7 +232,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 						if (CommonDAO.getInstance().updateUserInfo(umvo)) {
 							JOptionPane.showMessageDialog(cuiv, "회원정보가 수정되었습니다.");
 							cuiv.dispose();
-							ul.sendLog(id, "["+id+"]님이 정보를 변경했습니다.");
+							ul.sendLog(id, "["+id+"] 회원정보 수정");
 						}//end if
 					}//end else
 			}//end else
