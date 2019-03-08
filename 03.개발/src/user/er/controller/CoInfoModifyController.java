@@ -20,7 +20,6 @@ import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.border.TitledBorder;
 
 import user.common.vo.ErMainVO;
 import user.dao.CommonDAO;
@@ -57,7 +56,6 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 		getAndInsertImg();
 	}// 생성자
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 	public void getAndInsertImg() {
 		File imgFile1 = new File("C:/dev/1949/03.개발/src/user/img/co/" + cvo.getImg1());
 		File imgFile2 = new File("C:/dev/1949/03.개발/src/user/img/co/" + cvo.getImg2());
@@ -92,7 +90,6 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 		cimv.getJlImg3().setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/"+cvo.getImg3()));
 		cimv.getJlImg4().setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/"+cvo.getImg4()));
 		
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	}
 
 	@Override
@@ -201,14 +198,12 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 					// 변경된 이미지 기존 파일은 삭제(유저, 파일서버), 파일서버에 추가, 요청
 					File originFile = null;
 					if (imgFlag1) {
-						System.out.println("==== 기존파일 : " + cvo.getImg1());
 						originFile = new File("C:/dev/1949/03.개발/src/user/img/co/" + cvo.getImg1());
 						originFile.delete();
 
 						uu.deleteFile(cvo.getImg1(), "co", client, dos, dis);
 						uu.addNewFile(imgName1, uploadImg1, "co", client, dos, dis, fis);
 						uu.reqFile(imgName1, "co", client, dos, dis, fos);
-						System.out.println("이미지1 수정");
 					}
 					if (imgFlag2) {
 						originFile = new File("C:/dev/1949/03.개발/src/user/img/co/" + cvo.getImg2());
@@ -217,7 +212,6 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 						uu.deleteFile(cvo.getImg2(), "co", client, dos, dis);
 						uu.addNewFile(imgName2, uploadImg2, "co", client, dos, dis, fis);
 						uu.reqFile(imgName2, "co", client, dos, dis, fos);
-						System.out.println("이미지2 수정");
 					}
 					if (imgFlag3) {
 						originFile = new File("C:/dev/1949/03.개발/src/user/img/co/" + cvo.getImg3());
@@ -226,7 +220,6 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 						uu.deleteFile(cvo.getImg3(), "co", client, dos, dis);
 						uu.addNewFile(imgName3, uploadImg3, "co", client, dos, dis, fis);
 						uu.reqFile(imgName3, "co", client, dos, dis, fos);
-						System.out.println("이미지3 수정");
 					}
 					if (imgFlag4) {
 						originFile = new File("C:/dev/1949/03.개발/src/user/img/co/" + cvo.getImg4());
@@ -235,7 +228,6 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 						uu.deleteFile(cvo.getImg4(), "co", client, dos, dis);
 						uu.addNewFile(imgName4, uploadImg4, "co", client, dos, dis, fis);
 						uu.reqFile(imgName4, "co", client, dos, dis, fos);
-						System.out.println("이미지4 수정");
 					}
 
 					JOptionPane.showMessageDialog(cimv, "회사 정보가 수정 되었습니다");

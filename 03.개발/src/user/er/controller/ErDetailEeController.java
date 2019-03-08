@@ -54,7 +54,7 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
 
       edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/r_heart.png"));
       JOptionPane.showMessageDialog(edev, "관심 구직자에 추가되었습니다!");
-      ul.sendLog(erId, "["+eeNum+ "]번호 유저를 관심 구직자로 추가하였습니다.");
+      ul.sendLog(erId, "["+eeNum+ "] 관심정보 추가");
       try {
          devo= erdao.selectDetailEe(eeNum, erId);
 
@@ -76,7 +76,7 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
       }
       if(deleteFlag) {
          JOptionPane.showMessageDialog(edev, "관심 구직자를 취소했습니다.");
-         ul.sendLog(erId, "["+eeNum+ "]번호 유저를 관심 구직자에서 취소하였습니다.");
+         ul.sendLog(erId, "["+eeNum+ "] 관심정보 삭제");
          edev.getJlHeart().setIcon(new ImageIcon("C:/dev/1949/03.개발/src/user/img/b_heart.png"));
       }else {
          JOptionPane.showMessageDialog(edev, "리스트삭제에 실패했습니다.");
@@ -116,21 +116,17 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
          FileOutputStream fos = null;
 
          try {
-            System.out.println("111");
             socket = new Socket("localhost", 7002);
             // socket = new Socket("211.63.89.144", 7002);
-            System.out.println("--"+socket);
             dos = new DataOutputStream(socket.getOutputStream());
 
             // 서버에게 이력서파일 전송 요청 보내기.
             dos.writeUTF("ee_ext_request");
             dos.flush();
-            System.out.println("222");
 
             // 서버에게 요청할 파일명 보내기.
             dos.writeUTF(devo.getExtResume().trim());
             dos.flush();
-            System.out.println("333");
 
             dis = new DataInputStream(socket.getInputStream());
 
@@ -141,7 +137,6 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
             fileCnt = dis.readInt();
             
             fos = new FileOutputStream(path+name+ext);
-            System.out.println("----"+path+name+ext);
 
             byte[] readData = new byte[512];
             while (fileCnt > 0) {

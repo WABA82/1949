@@ -93,13 +93,14 @@ public class ErAddController extends WindowAdapter implements ActionListener {
 			addFlag = er_dao.insertErAdd(eavo);
 			if(addFlag) {
 				JOptionPane.showMessageDialog(eav, "구인 정보가 등록되었습니다.");
-				ul.sendLog(erId, "구인 정보를 등록하였습니다.");
+				String erNum = er_dao.selectAddErNum(eavo);
+				ul.sendLog(erId, "["+erNum+"] 등록");
 				refreshList();
 				eav.dispose();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("DB문제");
+			JOptionPane.showMessageDialog(eav, "DB문제");
 		}
 	}
 	public void refreshList() {

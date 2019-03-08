@@ -129,11 +129,6 @@ public class EeHiringView extends JDialog {
 		return jcbSort;
 	}
 
-	public static void main(String[] args) {
-		
-		new EeHiringView(null,null,"hihi55");
-	}
-	
 	
 }//class
 

@@ -316,10 +316,6 @@ public class EeDetailErView extends JDialog {
 
 	}// 생성자
 
-	// 단위테스용.
-//	public static void main(String[] args) {
-//		new EeDetailErView(null, null, null, null, null);
-//	}
 
 	public JLabel getJlHeart() {
 		return jlHeart;
