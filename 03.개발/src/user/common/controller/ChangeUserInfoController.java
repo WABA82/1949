@@ -20,7 +20,8 @@ import user.common.vo.UserInfoVO;
 import user.common.vo.UserModifyVO;
 import user.common.vo.UserModifyWithoutPassVO;
 import user.dao.CommonDAO;
-import user.run.LogTestChangeUserInfo;
+import user.util.UserUtil;
+import user.util.UserLog;
 
 public class ChangeUserInfoController extends WindowAdapter implements ActionListener,KeyListener {
 
@@ -30,11 +31,16 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 	
 	private JFrame jf;
 	
+	private UserUtil uu;
+	private UserLog ul;
+	
 	public ChangeUserInfoController(JFrame jf, ChangeUserInfoView cuiv, UserInfoVO uivo) {
 		this.cuiv=cuiv;
 		this.uivo=uivo;
 		this.addrSeq=uivo.getSeq();
 		this.jf=jf;
+		uu = new UserUtil();
+		ul = new UserLog();
 	}
 	
 	public boolean checkPass(String pass) { // 비밀번호 검증, 최대 12자리, 대문자 소문자 특수문자 조합
@@ -90,7 +96,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 		//주소변경못하게막아주기
 		String id=cuiv.getJtfId().getText().trim();
 		String name= cuiv.getJtfName().getText().trim();
-		String InputOriginPass=new String(cuiv.getJpfOriginalPass().getPassword()).trim();		
+		String inputOriginPass=new String(cuiv.getJpfOriginalPass().getPassword()).trim();		
 		String newPass1=new String(cuiv.getJpfNewPass1().getPassword()).trim();
 		String newPass2=new String(cuiv.getJpfNewPass2().getPassword()).trim();
 		String tel=cuiv.getJtfTel().getText().trim();
@@ -100,11 +106,13 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 		
 	
 		//빈문자열 체크
-		if(InputOriginPass==null||InputOriginPass.equals("")) {
+		if(inputOriginPass==null||inputOriginPass.equals("")) {
 			JOptionPane.showMessageDialog(cuiv, "비밀번호를 입력해주세요.");
 			cuiv.getJpfOriginalPass().requestFocus();
 			return;
 		}//end if
+		
+		inputOriginPass = uu.shaEncoding(inputOriginPass);
 		
 		if(name==null||name.equals("")) {
 			JOptionPane.showMessageDialog(cuiv, "이름을 입력해주세요.");
@@ -190,14 +198,14 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 			UserModifyWithoutPassVO umvo2=new UserModifyWithoutPassVO(id, name, tel, addrSeq, addrDetail, email);
 
 			try {			
-					if(!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("R")
-							&&!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("E")) {//null이면
+					if(!(CommonDAO.getInstance().login(id, inputOriginPass)).equals("R")
+							&&!(CommonDAO.getInstance().login(id, inputOriginPass)).equals("E")) {//null이면
 						JOptionPane.showMessageDialog(cuiv, "비밀번호가 올바르지 않습니다.");
 					}else {//R이라면(아이디와 비밀번호가 맞다면) 수정됨
 						if (CommonDAO.getInstance().updateUserInfoWithoutPass(umvo2)) {
 							JOptionPane.showMessageDialog(cuiv, "회원정보가 수정되었습니다.");
 							cuiv.dispose();
-							new LogTestChangeUserInfo();
+							new UserLog().sendLog(id, "회원정보를 수정하였습니다.");
 						}//end if
 					}//end else
 			} catch (SQLException e) {
@@ -206,29 +214,28 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 			}
 		}else {//새비밀번호입력시//////////////////////////////////////////////////
 		
-			UserModifyVO umvo=new UserModifyVO(id, name, newPass1, tel, addrSeq, addrDetail, email);
+			UserModifyVO umvo=new UserModifyVO(id, name, uu.shaEncoding(newPass1), tel, addrSeq, addrDetail, email);
 
-		try {//비밀번호 검증
+			try {//비밀번호 검증
 			
 			if(!newPass1.equals(newPass2)) {//새비밀번호확인이 다를때
 				JOptionPane.showMessageDialog(cuiv, "비밀번호확인과 비밀번호가 일치하지 않습니다.");
 			}else {//새 비밀번호와 비밀번호 확인이 같다면 
-				if(!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("R")
-						&&!(CommonDAO.getInstance().login(id, InputOriginPass)).equals("E")) {//null이면(아이디와비번이다르다면)
+				if(!(CommonDAO.getInstance().login(id, inputOriginPass)).equals("R")
+						&&!(CommonDAO.getInstance().login(id, inputOriginPass)).equals("E")) {//null이면(아이디와비번이다르다면)
 					JOptionPane.showMessageDialog(cuiv, "비밀번호가 올바르지 않습니다.");
 				}else {//R이라면(아이디와 비밀번호가 맞다면) 수정됨
-								if(!checkPass(newPass1)) {
-									JOptionPane.showMessageDialog(cuiv, "비밀번호를 확인해주세요\n대문자,소문자,특수문자 조합으로 입력해주세요.");
-									return;
-								}else {
-									if (CommonDAO.getInstance().updateUserInfo(umvo)) {
-								JOptionPane.showMessageDialog(cuiv, "회원정보가 수정되었습니다.");
-								cuiv.dispose();
-								new LogTestChangeUserInfo();
-								}//end if
-						}//end else
-					
+					if(!checkPass(newPass1)) {
+						JOptionPane.showMessageDialog(cuiv, "비밀번호를 확인해주세요\n대문자,소문자,특수문자 조합으로 입력해주세요.");
+						return;
+					}else {
+						if (CommonDAO.getInstance().updateUserInfo(umvo)) {
+							JOptionPane.showMessageDialog(cuiv, "회원정보가 수정되었습니다.");
+							cuiv.dispose();
+							ul.sendLog(id, "["+id+"]님이 정보를 변경했습니다.");
+						}//end if
 					}//end else
+			}//end else
 		
 			}//end else
 		} catch (SQLException e) {
@@ -284,7 +291,7 @@ public class ChangeUserInfoController extends WindowAdapter implements ActionLis
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode()==10) {
 			modifyUser();
-			}
+		}
 	}
 	
 	@Override

@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.swing.JOptionPane;
 
+import admin.util.AdminUtil;
 import admin.view.AdminMainView;
 import admin.view.LoginView;
 
@@ -18,9 +19,11 @@ public class LoginController extends WindowAdapter implements ActionListener, Ke
 	
 	private LoginView lv;
 	private Map<String, Integer> user;
+	private AdminUtil au;
 
 	public LoginController(LoginView lv) {
 		this.lv = lv;
+		au = new AdminUtil();
 		user = new HashMap<String, Integer>();
 	}
 	
@@ -44,9 +47,9 @@ public class LoginController extends WindowAdapter implements ActionListener, Ke
 	}
 	
 	public void login() {
-		
 		String id = lv.getJtfId().getText().trim();
 		String pass = new String(lv.getJpfPass().getPassword()).trim();
+		
 		
 		if ("".equals(id)) {
 			msgCenter("아이디를 입력해주세요.");
@@ -59,7 +62,9 @@ public class LoginController extends WindowAdapter implements ActionListener, Ke
 			return;
 		}
 		
-		if ("admin".equals(id) && "4321".equals(pass)) {
+		pass = au.shaEncoding(pass);
+		
+		if ("admin".equals(id) && "1fEuU6GCwGK2vzDBRFFT+v8SJpo=".equals(pass)) {
 			user.clear();
 			new AdminMainView(lv);
 		} else {

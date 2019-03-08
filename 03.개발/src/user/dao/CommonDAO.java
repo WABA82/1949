@@ -142,7 +142,7 @@ public class CommonDAO {
        con = getConn();
        
        //3. 프로시저 실행 객체 얻기
-       cstmt = con.prepareCall("{ call insert_sign_up_proc(?,?,?,?,?,?,?,?,?,?,?,?) }");
+       cstmt = con.prepareCall("{ call insert_sign_up_proc(?,?,?,?,?,?,?,?,?,?,?,?,?) }");
 /*i_id IN VARCHAR2, i_pass IN VARCHAR2, i_name IN VARCHAR2,
        i_ssn IN CHAR, i_tel IN VARCHAR2, i_email IN VARCHAR2,
        i_seq IN NUMBER, i_addr_detail IN VARCHAR2, i_q_type IN CHAR,
@@ -159,8 +159,8 @@ public class CommonDAO {
        cstmt.setString(9,uivo.getQuestionType());
        cstmt.setString(10,uivo.getAnswer());
        cstmt.setString(11,uivo.getUserType());
-       
        cstmt.registerOutParameter(12, Types.VARCHAR);
+       cstmt.setString(13, uivo.getEncSsn());
        
        cstmt.execute();
        resultMsg = cstmt.getString(12);
