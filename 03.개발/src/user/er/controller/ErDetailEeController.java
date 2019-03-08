@@ -83,7 +83,7 @@ public class ErDetailEeController extends WindowAdapter implements ActionListene
       }
    }//removeInterestEr
    
-   public void ㄴ() throws UnknownHostException, IOException{
+   public void extRsmDown() throws UnknownHostException, IOException{
       //ee_info에서  erNum으로 조회해서 있는지 없는지 조회해서 이력서 이름받기
       try {
          devo= erdao.selectDetailEe(eeNum, erId);
