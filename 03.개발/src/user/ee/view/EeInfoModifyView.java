@@ -25,7 +25,6 @@ public class EeInfoModifyView extends JDialog {
 	public EeInfoModifyView(EeMainView emv, EeInfoVO eivo) {
 		super(emv, "기본 정보 관리 수정", true);
 		
-		// image
 		ImageIcon ii = new ImageIcon("C:/dev/1949/03.개발/src/user/img/ee/" + eivo.getImg());
 		jlImag = new JLabel(ii);
 		jlImag.setBorder(new TitledBorder("구직자 이미지"));
@@ -48,7 +47,6 @@ public class EeInfoModifyView extends JDialog {
 		add(jbClose);
 		jbClose.setBounds(355, 360, 100, 30);
 
-		// Label
 		JLabel jlName = new JLabel("이름");
 		jlName.setFont(new Font(Font.DIALOG, Font.BOLD, 12));
 
@@ -73,7 +71,6 @@ public class EeInfoModifyView extends JDialog {
 		JLabel jlResume = new JLabel("외부이력서");
 		jlResume.setFont(new Font(Font.DIALOG, Font.BOLD, 12));
 
-		// Combobox jcbRank, jcbLoc, jcbEducation, jcbPortfolio;
 		String[] rank = { "신입", "경력" };
 		jcbRank = new JComboBox<>(rank);
 		
@@ -110,7 +107,6 @@ public class EeInfoModifyView extends JDialog {
 		String[] port = { "YES", "NO" };
 		jcbPortfolio = new JComboBox<>(port);
 
-		
 		if(eivo.getPortfolio().equals("Y")) {
 			jcbPortfolio.setSelectedIndex(0);
 		}else {

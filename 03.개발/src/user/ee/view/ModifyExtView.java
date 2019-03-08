@@ -11,11 +11,6 @@ import user.ee.controller.EeInfoModifyController;
 import user.ee.controller.EeInfoRegController;
 import user.ee.controller.ModifyExtController;
 
-/**
- * 	19.02.10 김건하
- *	외부파일 가져오는 클래스
- * @author 82102
- */
 @SuppressWarnings("serial")
 public class ModifyExtView extends JDialog {
 
@@ -24,7 +19,6 @@ public class ModifyExtView extends JDialog {
 	
 	private EeInfoRegView eirv;
 	private EeInfoRegController eirc;
-
 	private EeInfoModifyView eimv;
 	private EeInfoModifyController eimc;
 	

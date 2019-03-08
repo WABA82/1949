@@ -82,7 +82,6 @@ public class EeInfoModifyController extends WindowAdapter implements ActionListe
 		
 		switch(JOptionPane.showConfirmDialog(eimv, updateMsg)) {
 		case JOptionPane.OK_OPTION :
-			System.out.println("---이미지명 : "+uploadImg.getName());
 			
 			String imgName = "";
 			String extName = "";
@@ -102,7 +101,6 @@ public class EeInfoModifyController extends WindowAdapter implements ActionListe
 			EeModifyVO emvo = new EeModifyVO(eivo.getEeNum(), imgName,
 					rank,loc,education, portfolio, extName);
 			
-			System.out.println(emvo);
 			try {
 				if(eedao.updateEeInfo(emvo)) {
 					JOptionPane.showMessageDialog(eimv, "개인정보가 변경되었습니다.");
@@ -118,30 +116,23 @@ public class EeInfoModifyController extends WindowAdapter implements ActionListe
 						File original = new File("C:/dev/1949/03.개발/src/user/img/ee/"+eivo.getImg());
 						original.delete();
 						
-						System.out.println("getImg = "+eivo.getImg());
 						// 새로운 이미지 파일 FileServer에 삭제, 추가, 요청
-						System.out.println("111");
 						uu.deleteFile(eivo.getImg(), "ee", client, dos, dis);
-						System.out.println("--- 기존 이미지 삭제");
 						
 						uu.addNewFile(imgName, uploadImg, "ee", client, dos, dis, fis); // 새로운 이미지를 전송
-						System.out.println("--- 이미지파일 수정");
 						
 						// FilerServer로부터 이미지 요청
 						uu.reqFile(imgName, "ee", client, dos, dis, fos); // 새로운 이미지를 FS에게 요청, 저장
-						System.out.println("--- 이미지파일 요청");
 					}
 					
 					if (extChgFlag && !"".equals(eimv.getJtfExtResume().getText().trim())) {
 						// 새로운 이력서 파일이 존재하면 FileServer에 삭제, 추가
 						uu.deleteFile(eivo.getExtResume(), "ext", client, dos, dis);
-						System.out.println("--- 기존이력서 삭제");
 						
 						uu.addNewFile(extName, uploadExt, "ext", client, dos, dis, fis);
-						System.out.println("--- 이력서 파일 수정");
 					}
 					
-					ul.sendLog(eivo.getEeId(), "기본정보 수정");
+					ul.sendLog("["+eivo.getEeId()+"]", "["+eivo.getEeNum()+"]수정");
 					
 					//메인창 종료휴 업데이트로 띄우기
 					EeMainVO updateEmvo=CommonDAO.getInstance().selectEeMain(eivo.getEeId(), "Y");
@@ -157,9 +148,6 @@ public class EeInfoModifyController extends WindowAdapter implements ActionListe
 		
 	}// modifyEe
 
-	/**
-	 * 이미지를 바꾸는 method
-	 */
 	private void changeImg() {
 		boolean flag = false;
 		
@@ -181,7 +169,6 @@ public class EeInfoModifyController extends WindowAdapter implements ActionListe
 	 	if(flag) {
 	 		imgChgFlag = true;
 	 		uploadImg =  new File(path + name);
-	 		System.out.println("upload img : "+uploadImg.getAbsolutePath());
 	 		eimv.getJlImag().setIcon(new ImageIcon(uploadImg.getAbsolutePath()));
 		} else {
 			JOptionPane.showMessageDialog(eimv, name + "은 사용할수 없습니다.");

@@ -29,14 +29,11 @@ import user.util.UserUtil;
 
 public class EeInfoRegController extends WindowAdapter implements ActionListener {
 
-	/* 인스턴스변수 */
 	private EeInfoRegView eirv;
-	
 	private File uploadImg;
 	private File uploadExt;
-	
 	private EeDAO eedao;
-	private String eeId;// 내 아이디.
+	private String eeId;
 	private EeMainView emv;
 	private UserUtil uu;
 	private UserLog ul;
@@ -58,7 +55,7 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 		if (uploadImg == null) {
 			JOptionPane.showMessageDialog(eirv, "이미지 등록은 필수 입니다.\n(size : 150px * 200px)");
 			return;
-		} 
+		}//end if 
 
 		String tempRank = eirv.getJcbRank().getSelectedItem().toString();
 		String rank = tempRank.equals("신입") ? "C" : "N";
@@ -75,14 +72,12 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 		String imgName = System.currentTimeMillis()+uploadImg.getName();
 		
 		EeInsertVO eivo = new EeInsertVO(eeId, imgName, rank, loc, education, portfolio, extResume);
-		System.out.println("-----------"+eivo);
 		// ActivationVO, FileUser(UserUtil 사용) 안써도 될듯..(영근 0302)
 		
 		try {
 			insertFlag=	eedao.updateUserInfo(eivo);
 			if(insertFlag) {
 				JOptionPane.showMessageDialog(eirv, "개인정보가 등록 되었습니다.");
-				//창 다시 띄우기?
 				
 				try {
 					///////////////////////// 0301 영근 이미지 FS에 추가기능 구현 ////////////////////////////////
@@ -94,18 +89,16 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 					
 					// 새로운 이미지 파일 FileServer에 추가
 					uu.addNewFile(imgName, uploadImg, "ee", client, dos, dis, fis); // 새로운 이미지를 전송
-					System.out.println("--- 이미지파일 등록");
 					// FilerServer로부터 이미지 요청
 					uu.reqFile(imgName, "ee", client, dos, dis, fos); // 새로운 이미지를 FS에게 요청, 저장
-					System.out.println("--- 이미지파일 요청");
 					
 					// 새로운 이력서 파일이 존재하면 FileServer에 추가
 					if (!"".equals(extResume)) {
 						uu.addNewFile(extResume, uploadExt, "ext", client, dos, dis, fis);
-						System.out.println("--- 이력서 파일 등록만 수행");
 					}
 					
-					ul.sendLog(eeId, "신규 기본정보 등록");
+				String userNum=eedao.selectUserNum(eeId);
+					ul.sendLog("["+eeId+"]", "["+userNum+"] 등록");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}//end catch

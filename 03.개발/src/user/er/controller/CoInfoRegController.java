@@ -39,10 +39,8 @@ public class CoInfoRegController extends WindowAdapter implements MouseListener,
 	private boolean imgFlag1, imgFlag2, imgFlag3, imgFlag4;
 	private UserUtil uu;
 	private UserLog ul;
-
 	private String path, name;
 	private ErDAO erdao;
-//	private CoInsertVO civo;
 	private ErMainView emv;
 
 	public CoInfoRegController(CoInfoRegView cirv, String erId, ErMainView emv) {
@@ -174,9 +172,7 @@ public class CoInfoRegController extends WindowAdapter implements MouseListener,
 		civo = new CoInsertVO(erId, imgName1, imgName2, imgName3,
 				imgName4, coName, estDate, coDesc, memberNum);
 		
-		ActivationVO avo = new ActivationVO(erId);
-		System.out.println("civo값 : " + civo + "avo의 값은 : " + avo);
-
+//		ActivationVO avo = new ActivationVO(erId);
 		
 		
 		if (erdao.updateErInfo(civo)) {
@@ -209,10 +205,10 @@ public class CoInfoRegController extends WindowAdapter implements MouseListener,
 				uu.reqFile(imgName3, "co", client, dos, dis, fos);
 			}
 			
-			System.out.println("등록 완료");
 			JOptionPane.showMessageDialog(cirv, "회사 정보가 등록되었습니다\n이제부터 구직 정보를 조회가능합니다.");
 			ErMainVO updateEmvo = CommonDAO.getInstance().selectErMain(erId, "Y");
-			ul.sendLog(erId, "신규 기업정보 등록");
+			String coNum=erdao.selectCoNum(erId);
+			ul.sendLog("["+erId+"]", "["+coNum+"] 등록");
 			new ErMainView(updateEmvo);
 			emv.dispose();
 			cirv.dispose();

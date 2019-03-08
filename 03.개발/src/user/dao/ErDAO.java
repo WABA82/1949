@@ -953,14 +953,6 @@ public class ErDAO {
 		return flag;
 	}// updateAppSatusAccept()
 
-	/* 재현 : 단위 테스트용 main메서드. */
-//	public static void main(String[] args) {
-//		try {
-//			System.out.println(ErDAO.getInstance().selectErList("metro777"));
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}// main
 
 	/***************************** 재현 끝 *****************************/
 
@@ -1034,14 +1026,6 @@ public class ErDAO {
 		return updateFlag;
 	}// end if
 
-//	public static void main(String[] args) throws SQLException {
-//		Connection con=ErDAO.getInstance().getConn();
-//		ActivationVO avo=new ActivationVO("song9912");
-//		System.out.println(avo);
-//		System.out.println(ErDAO.getInstance().updateActivation(con, avo));
-//	}//main
-	
-	
 	
 	/**
 	 * 19.02.17 회사의 정보를 가져오는 method
@@ -1090,11 +1074,6 @@ public class ErDAO {
 		return civo;
 	}// selectCoInfo
 
-//단위 테스트 성공
-//public static void main(String[] args)  throws SQLException{
-//System.out.println(ErDAO.getInstance().selectCoInfo("song9912"));
-//}
-
 	public boolean updateCoInfo(CoInfoVO cvo) throws SQLException {
 		boolean flag = false;
 
@@ -1140,15 +1119,6 @@ public class ErDAO {
 		return flag;
 	}// updateCoInfo
 
-//	public static void main(String[] args) {
-//		CoInfoVO civo=new CoInfoVO("co_000013", "주윤발", "123.jpg", "23.jpg", "d3.jpg", "d32.jpg", "1990-12-12", "회사소개.", 30);
-//		try {
-//			System.out.println(ErDAO.getInstance().updateCoInfo(civo));
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}
-
 	/**
 	 * activation를 Y로 바꿔주는 트랜잭션
 	 * @param civo
@@ -1189,15 +1159,32 @@ public class ErDAO {
 		return updateEr;
 	}
 
-	//트랜잭션을 사용한 단위 테스트
-//	public static void main(String[] args) throws SQLException{
-//		CoInsertVO civo=new CoInsertVO("song9912", "sd.img", "sd.img", "se.img", "sdf.img", "건하회사", "2019-02-12", "안녕하세요", 15);
-//		ActivationVO avo=new ActivationVO("song9912");		
-//		Connection con=ErDAO.getInstance().getConn();
-//		System.out.println(ErDAO.getInstance().updateErInfo(civo, avo));
-//		
-//	}//main
-	
+	public String selectCoNum(String erid) throws SQLException {
+		String coNum="";
+		
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		
+		try {
+		con=getConn();
+		String selectCoNum="select co_num from company where er_id=? ";
+		pstmt=con.prepareStatement(selectCoNum);
+		pstmt.setString(1, erid);
+		
+		rs=pstmt.executeQuery();
+		
+		if(rs.next()) {
+			coNum=rs.getString("co_num");
+		}//end if
+		
+		}finally {
+			if( rs !=null ) { rs.close(); }
+			if( pstmt !=null ) { pstmt.close(); }
+			if( con !=null ) { con.close(); }
+		}//end if
+		return coNum;
+	}//selectcoNum
 	
 	
 //////////////////////////////////////////김건하 끝 ///////////////////////////

@@ -14,14 +14,10 @@ public class ErMainView extends JFrame {
 
 	private JButton jbCoMgmt, jbEeInfo, jbErMgmt, jbApp, jbInterestEe;
 	private JLabel jlUserInfo, jlLogOut, jlActivation;
-//	private ErMainVO ermvo;
-	//삭제할것
 	
-//	private LoginView lv;
 	public ErMainView(ErMainVO ermvo) {
 		super("1949 - 기업사용자 ["+ermvo.getName()+"]");
 		System.out.println(ermvo);
-//		this.ermvo=ermvo;
 		
 		JLabel jlAct = new JLabel("회사정보 등록여부 : ");
 		JLabel jlImg = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/"+ermvo.getImg1()));
@@ -46,9 +42,9 @@ public class ErMainView extends JFrame {
 		jlAct.setBounds(20, 20, 150, 30);
 		jlActivation.setBounds(145,20,30,30);
 		jlImg.setBounds(15, 70, 210, 180);
-		jlUserInfo.setBounds(260, 15, 100, 30); // 회원정보관리(이미지로 수정 예정)
+		jlUserInfo.setBounds(260, 15, 100, 30); 
 		jlUserMsg.setBounds(268, 40, 100, 30);
-		jlLogOut.setBounds(358, 15, 100, 30); // 로그아웃(이미지로 수정 예정)
+		jlLogOut.setBounds(358, 15, 100, 30); 
 		jlLogOutMsg.setBounds(380, 40, 100, 30);
 		jbCoMgmt.setBounds(250, 70, 200, 50);
 		jbEeInfo.setBounds(250, 140, 200, 50);
@@ -109,14 +105,4 @@ public class ErMainView extends JFrame {
 		return jlActivation;
 	}
 	
-	/*********단위 테스트용 ******************/
-//	public static void main(String[] args) {
-//		ErMainVO ermvo;
-//		try {
-//			ermvo = CommonDAO.getInstance().selectErMain("song9912");
-//			new ErMainView(ermvo);
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}// main	
-}
+}//class

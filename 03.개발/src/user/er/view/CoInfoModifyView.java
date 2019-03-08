@@ -2,19 +2,10 @@ package user.er.view;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Robot;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.Socket;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -24,7 +15,6 @@ import javax.swing.border.TitledBorder;
 import user.er.controller.CoInfoModifyController;
 import user.er.vo.CoInfoVO;
 import user.util.JTextFieldLimit;
-import user.util.UserUtil;
 
 @SuppressWarnings("serial")
 public class CoInfoModifyView extends JDialog {
@@ -33,11 +23,9 @@ public class CoInfoModifyView extends JDialog {
 	private JTextField jtfCoName;
 	private JTextField jtfEstDate, memberNum;
 	private JTextArea jtaCoDesc;
-//	private CoInfoVO cvo;
 
 	public CoInfoModifyView(ErMainView emv, CoInfoVO cvo) {
 		super(emv, "회사정보수정", true);
-//		this.cvo = cvo;
 
 		jtfCoName = new JTextField();
 		jtfCoName.setDocument(new JTextFieldLimit(10));
@@ -138,7 +126,6 @@ public class CoInfoModifyView extends JDialog {
 	}// 생성자
 	
 	
-
 	public void setJlImg1(JLabel jlImg1) {
 		this.jlImg1 = jlImg1;
 	}
@@ -203,9 +190,4 @@ public class CoInfoModifyView extends JDialog {
 		return jtaCoDesc;
 	}
 
-	/*
-	  public static void main(String[] args) { ErMainVO rm_vo = new ErMainVO("ad",
-	  "sad", "sad", "asd"); ErMainView emv = new ErMainView(rm_vo); CoInfoVO cvo =
-	 new CoInfoVO(); new CoInfoModifyView(emv,cvo); }
-	 */
-}
+}//class

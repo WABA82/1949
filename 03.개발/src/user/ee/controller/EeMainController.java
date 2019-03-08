@@ -62,11 +62,6 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 
 	}// checkActivation()
 
-	/**
-	 * 개인 정보 수정을 할수있는 method
-	 * 
-	 * @throws SQLException
-	 **/
 	public void mngEe() throws SQLException {
 		uivo = CommonDAO.getInstance().selectUserInfo(emvo.getEeId());
 		new ChangeUserInfoView(emv, uivo);
@@ -112,12 +107,10 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 		} else if (emvo.getActivation().equals("Y")) {
 
 			List<EeAppVO> list = eedao.selectAppList(emvo.getEeId());
-
 			if (list.isEmpty()) {// 등록한 메뉴가 없을 때 : 도시락 추가 버튼을 통해 메뉴를 추가 할 수 있다.
 				JOptionPane.showMessageDialog(emv, "관심구인정보가 없습니다. 먼저 구인정보에서 하트를 눌러주세요.");
 				return;
 			} // end if
-
 			new EeAppView(emv, emvo.getEeId());
 		} // end else
 
