@@ -98,7 +98,7 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 					}
 					
 				String userNum=eedao.selectUserNum(eeId);
-					ul.sendLog("["+eeId+"]", "["+userNum+"] 등록");
+					ul.sendLog(eeId, "["+userNum+"] 등록");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}//end catch
