@@ -58,7 +58,7 @@ public class ModifyExtController extends WindowAdapter implements ActionListener
 			return flag;
 		}
 		
-		if (fileName.endsWith(".doc") || fileName.endsWith(".pdf")) {
+		if (fileName.toLowerCase().endsWith(".doc") || fileName.toLowerCase().endsWith(".pdf")) {
 			emev.getJtfPath().setText(fileName);
 			flag = true;
 		} else {

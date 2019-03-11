@@ -52,7 +52,6 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 			JOptionPane.showMessageDialog(emv, "개인정보가 등록되지 않았습니다.!");
 			ervo = eedao.selectEeReg(emvo.getEeId());
 
-			System.out.println(ervo);
 			new EeInfoRegView(emv, ervo);
 
 		} else if (emvo.getActivation().equals("Y")) {

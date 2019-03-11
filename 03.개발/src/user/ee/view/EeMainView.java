@@ -32,7 +32,6 @@ public class EeMainView extends JFrame {
 		jbInterestEr = new JButton("관심 구인정보");
 		jbApp = new JButton("지원현황");
 
-		System.out.println(emvo);
 		setLayout(null);
 		
 		JLabel jlUserInfoMsg=new JLabel("회원정보 관리");
