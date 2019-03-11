@@ -50,7 +50,6 @@ public class ErMainController extends WindowAdapter implements ActionListener, M
 	public void mngUser() throws SQLException {
 		if (ermvo.getActivation().equals("N")) {
 			new CoInfoRegView(ermv, ermvo.getErId());
-			System.out.println(ermvo);
 
 		} else if (ermvo.getActivation().equals("Y")) {
 			cvo = erdao.selectCoInfo(ermvo.getErId());

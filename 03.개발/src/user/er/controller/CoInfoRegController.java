@@ -207,7 +207,7 @@ public class CoInfoRegController extends WindowAdapter implements MouseListener,
 			JOptionPane.showMessageDialog(cirv, "회사 정보가 등록되었습니다\n이제부터 구직 정보를 조회가능합니다.");
 			ErMainVO updateEmvo = CommonDAO.getInstance().selectErMain(erId, "Y");
 			String coNum=erdao.selectCoNum(erId);
-			ul.sendLog("["+erId+"]", "["+coNum+"] 등록");
+			ul.sendLog(erId, "["+coNum+"] 등록");
 			new ErMainView(updateEmvo);
 			emv.dispose();
 			cirv.dispose();
