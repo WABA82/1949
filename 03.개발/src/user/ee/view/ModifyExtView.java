@@ -17,23 +17,10 @@ public class ModifyExtView extends JDialog {
 	private JTextField jtfPath;
 	private JButton jbChoose, jbChange, jbCancel;
 	
-	private EeInfoRegView eirv;
-	private EeInfoRegController eirc;
-	private EeInfoModifyView eimv;
-	private EeInfoModifyController eimc;
-	
 	public ModifyExtView(JDialog jd, EeInfoRegView eirv, 
 			EeInfoRegController eirc, EeInfoModifyView eimv, 
 			EeInfoModifyController eimc, String flag) {
 		super(jd,"외부이력서 등록",true);
-		
-		if (flag.equals("modi")) {
-			this.eimv = eimv;
-			this.eimc = eimc;
-		} else {
-			this.eirv = eirv;
-			this.eirc = eirc;
-		}
 		
 		JLabel jlMsg=new JLabel("외부 이력서 첨부");
 		jlMsg.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));

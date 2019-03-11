@@ -25,7 +25,6 @@ import user.dao.CommonDAO;
 import user.dao.ErDAO;
 import user.er.view.CoInfoRegView;
 import user.er.view.ErMainView;
-import user.er.vo.ActivationVO;
 import user.er.vo.CoInsertVO;
 import user.util.UserLog;
 import user.util.UserUtil;
