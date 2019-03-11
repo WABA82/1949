@@ -17,7 +17,6 @@ public class ErMainView extends JFrame {
 	
 	public ErMainView(ErMainVO ermvo) {
 		super("1949 - 기업사용자 ["+ermvo.getName()+"]");
-		System.out.println(ermvo);
 		
 		JLabel jlAct = new JLabel("회사정보 등록여부 : ");
 		JLabel jlImg = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/co/"+ermvo.getImg1()));
