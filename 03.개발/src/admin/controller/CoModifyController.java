@@ -375,7 +375,7 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 		boolean flag = false;
 		
 		for(String ext : arrExt) {
-			if (selectedFileExt.equals(ext)) {
+			if (selectedFileExt.toLowerCase().equals(ext)) {
 				flag = true;
 			}
 		}
