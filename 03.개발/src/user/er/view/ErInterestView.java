@@ -71,7 +71,7 @@ public class ErInterestView extends JDialog {
 		addWindowListener(eric);
 		jtEeInfo.addMouseListener(eric);
 
-		setBounds(100, 100, 800, 500);
+		setBounds(100, 100, 800, 550);
 		setResizable(false);
 		setVisible(true);
 	}// »ý¼ºÀÚ
