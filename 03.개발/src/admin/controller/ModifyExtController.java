@@ -49,7 +49,7 @@ public class ModifyExtController extends WindowAdapter implements ActionListener
 		
 		String extResume = file.getName();
 		
-		if( !extResume.endsWith(".doc") && !extResume.endsWith(".pdf")) {
+		if( !extResume.toLowerCase().endsWith(".doc") && !extResume.toLowerCase().endsWith(".pdf")) {
 			JOptionPane.showMessageDialog(mev, "외부이력서는 doc, pdf만 가능합니다.");
 			return;
 		}else {

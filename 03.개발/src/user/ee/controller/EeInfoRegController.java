@@ -124,9 +124,9 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 		String name = fd.getFile();
 
 		if (path != null) {
-			if (name.endsWith(".jpg") || name.endsWith(".jpeg") 
-					|| name.endsWith(".png") || name.endsWith(".bmp")
-					|| name.endsWith(".gif")) {
+			if (name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".jpeg") 
+					|| name.toLowerCase().endsWith(".png") || name.toLowerCase().endsWith(".bmp")
+					|| name.toLowerCase().endsWith(".gif")) {
 				flag = true;
 			} // end if
 
