@@ -56,8 +56,8 @@ public class ErMgMtView extends JDialog {
 		jtEr.addMouseListener(emmc);
 		
 		setBounds(100, 100, 1015, 500);
-		setVisible(true);
 		setResizable(false);
+		setVisible(true);
 		
 		
 	}
