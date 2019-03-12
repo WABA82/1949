@@ -532,7 +532,6 @@ public class CommonDAO {
             
             if( cnt == 1) {
                 flag=true;
-                System.out.println(flag);
             }
         }finally {
             if(pstmt != null) { pstmt.close(); }
@@ -671,7 +670,6 @@ public class CommonDAO {
 					emv = new ErMainVO(rs.getString("id"), rs.getString("name"), "no_co_img1.png",
 							rs.getString("activation"));
 				}
-				// System.out.println(emv); 값 받았는지 확인
 			}
 		} finally {
 			if (rs != null) {

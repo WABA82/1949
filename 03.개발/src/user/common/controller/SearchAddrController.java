@@ -68,7 +68,6 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
          .append(sav.getJtZip().getValueAt(row, 4));
          String zip ="";
          zip= sav.getJtZip().getValueAt(row, 0).toString();
-         //System.out.println(zip);//테스트하느라 - 필요없음
          String addrSeq= listSeq.get(row);
          
          
@@ -76,7 +75,6 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
             suv.getJtfAddr1().setText(addr.toString());
             suv.getJtfZip().setText(zip);
             suc.setAddrSeq(addrSeq);// seq
-            //System.out.println("선택된 행의 seq : "+addrSeq);
          } else {
         	 //혜원추가(주소검색 시 상세주소초기화)
         	 cuiv.getJtfAddr2().setText("");
@@ -123,7 +121,6 @@ public class SearchAddrController extends WindowAdapter implements ActionListene
             rowData[3] = av.getDong();
             rowData[4] = av.getBunji();
             listSeq.add(av.getSeq());
-            //System.out.println("조회되는 seq 번호 :"+av.getSeq()); test 용
             
             dtm.addRow(rowData);
          }//end for
