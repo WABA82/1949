@@ -34,7 +34,10 @@
 
 ## 시연 - 관리자
 
-![관리자](https://github.com/younggeun0/1949/blob/master/05.%EC%8B%9C%EC%97%B0/admin.gif?raw=true)
+![관리자 시연](https://github.com/younggeun0/1949/blob/master/05.%EC%8B%9C%EC%97%B0/admin.gif?raw=true)
 
+## 시연 - 일반사용자
 
+## 시연 - 기업사용자
 
+![기업사용자 시연](https://github.com/younggeun0/1949/blob/master/05.%EC%8B%9C%EC%97%B0/er_user.gif?raw=true)
