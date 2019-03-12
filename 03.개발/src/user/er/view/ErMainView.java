@@ -23,7 +23,6 @@ public class ErMainView extends JFrame {
 		jlImg.setBorder(new TitledBorder("회사 이미지"));
 		
 		jlActivation = new JLabel(ermvo.getActivation());
-		System.out.println(ermvo.getActivation());
 		jlUserInfo = new JLabel(new ImageIcon("C:/dev/1949/03.개발/src/user/img/userInfoMgmt.png"));
 		JLabel jlUserMsg=new JLabel("회원정보관리");
 		add(jlUserMsg);
