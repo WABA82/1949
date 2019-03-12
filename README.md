@@ -8,7 +8,7 @@
 ## 프로젝트 간트차트
 
 
-![간트차트](https://github.com/younggeun0/1949/blob/master/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8_%EA%B0%84%ED%8A%B8%EC%B0%A8%ED%8A%B8.png?raw=true)
+![간트차트](https://github.com/younggeun0/1949/blob/master/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8_%EA%B0%84%ED%8A%B8%EC%B0%A8%ED%8A%B8_new.png?raw=true)
 
 ## 분석
 
