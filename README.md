@@ -38,6 +38,8 @@
 
 ## 시연 - 일반사용자
 
+![일반사용자 시연](https://github.com/younggeun0/1949/blob/master/05.%EC%8B%9C%EC%97%B0/ee_user.gif?raw=true)
+
 ## 시연 - 기업사용자
 
 ![기업사용자 시연](https://github.com/younggeun0/1949/blob/master/05.%EC%8B%9C%EC%97%B0/er_user.gif?raw=true)
