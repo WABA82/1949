@@ -2,7 +2,7 @@
 
 * **SIST Java SE 2번째 Team Project**
 * **일 구하고 사람 구하고**  
-  * 개발자 구인구직 플랫폼(Vertical Service)
+  * 개발자 구인구직 버티컬 서비스 자바 
   * JAVA SE CS 프로그래밍, Network, JDBC, Thread를 사용한 프로젝트
   
 ## 프로젝트 간트차트
