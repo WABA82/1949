@@ -20,13 +20,13 @@ public class AppListView extends JDialog {
 
 		jlEeInfo = new JLabel("총 지원자 수 : ");
 
-		String[] eeInfoColumns = { "번호", "지원번호", "이미지", "이름", "직급", "근무지역", "학력", "나이", "포트폴리오 유무", "성별", "지원일",
-				"지원상태" };
+		String[] eeInfoColumns = { "번호", "지원번호", "이미지", "이름", "직급", "근무지역", "학력", "나이", "포트폴리오 유무", "성별", "지원일", "지원상태" };
 		dtmApp = new DefaultTableModel(eeInfoColumns, 0) {
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
 		};
+		
 		jtApp = new JTable(dtmApp) {
 			@Override
 			public Class<?> getColumnClass(int column) {
@@ -66,7 +66,7 @@ public class AppListView extends JDialog {
 		jtApp.addMouseListener(alc);
 
 		/* 프레임 크기 설정 및 가시화 */
-		setBounds((erav.getX() + 150), (erav.getY() + 50), 800, 500);
+		setBounds((erav.getX() + 150), (erav.getY() + 50), 800, 550);
 		setResizable(false);
 		setVisible(true);
 
@@ -83,5 +83,5 @@ public class AppListView extends JDialog {
 	public DefaultTableModel getDtmEeInfo() {
 		return dtmApp;
 	}
-
+	
 }// class
