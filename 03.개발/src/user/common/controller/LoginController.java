@@ -152,7 +152,7 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
 
 			/////////////////// 정미가 기존에 구현한 파일 유무 판단 수정 // 영근0313
 			/////////////////// //////////////////////////////////////
-			File dir = new File("C:/dev/1949/03.개발/src/user/img/ee/");
+			File dir = new File("C:/dev/1949/03.개발/src/user/img/co/");
 
 			boolean noFileFlag = false;
 			String[] filesIHad = dir.list();
