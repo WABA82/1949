@@ -116,9 +116,21 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
             // 따라서 imgName변수를 이용해서 FileServer에 파일을 요청, 다운받아 user.img.ee 폴더에 저장
             String imgName = emvo.getImg();
 
-            File imgFileEe = new File("C:/dev/1949/03.개발/src/user/img/ee/"+imgName);
             
-            if(!imgFileEe.exists()) {
+            /////////////////// 정미가 기존에 구현한 파일 유무 판단 수정 // 영근0313 //////////////////////////////////////
+            File dir = new File("C:/dev/1949/03.개발/src/user/img/ee/");
+            
+            boolean noFileFlag = false;
+            String[] filesIHad = dir.list();
+            
+            for (int i=0; i<filesIHad.length; i++) {
+            	
+            	if (filesIHad[i].equals(imgName)) {
+            		noFileFlag = true;
+            	}
+            }
+            	
+            if(!noFileFlag) { // true면 파일 존재
             	Socket client = null;
             	DataOutputStream dos = null;
             	DataInputStream dis =null;
@@ -135,21 +147,32 @@ public class LoginController extends WindowAdapter implements ActionListener, Mo
             fail.clear();
             
 
-            // 따라서 imgName변수를 이용해서 FileServer에 파일을 요청, 다운받아 user.img.co 폴더에 저장
-            String imgName = ermvo.getImg1();
+			// 따라서 imgName변수를 이용해서 FileServer에 파일을 요청, 다운받아 user.img.co 폴더에 저장
+			String imgName = ermvo.getImg1();
 
-            File imgFileCo = new File("C:/dev/1949/03.개발/src/user/img/ee/"+imgName);
-            
-            if(!imgFileCo.exists()) {
-            	Socket client = null;
-            	DataOutputStream dos = null;
-            	DataInputStream dis =null;
-            	FileOutputStream fos =null;
-            	
-            	uu.reqFile(imgName, "co", client, dos, dis, fos);
-            }//end if 
+			/////////////////// 정미가 기존에 구현한 파일 유무 판단 수정 // 영근0313
+			/////////////////// //////////////////////////////////////
+			File dir = new File("C:/dev/1949/03.개발/src/user/img/co/");
 
-            
+			boolean noFileFlag = false;
+			String[] filesIHad = dir.list();
+
+			for (int i = 0; i < filesIHad.length; i++) {
+
+				if (filesIHad[i].equals(imgName)) {
+					noFileFlag = true;
+				}
+			}
+
+			if (!noFileFlag) { // true면 파일 존재
+				Socket client = null;
+				DataOutputStream dos = null;
+				DataInputStream dis = null;
+				FileOutputStream fos = null;
+
+				uu.reqFile(imgName, "co", client, dos, dis, fos);
+			} // end if
+
             new ErMainView(ermvo);
             lv.dispose();
          }else{
