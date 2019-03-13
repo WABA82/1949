@@ -49,7 +49,6 @@ public class EeMainController extends WindowAdapter implements ActionListener, M
 	public void mngUser() throws SQLException {
 
 		if (emvo.getActivation().equals("N")) {
-			JOptionPane.showMessageDialog(emv, "개인정보가 등록되지 않았습니다.!");
 			ervo = eedao.selectEeReg(emvo.getEeId());
 
 			new EeInfoRegView(emv, ervo);

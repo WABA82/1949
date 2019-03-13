@@ -117,7 +117,7 @@ public class EeInfoRegView extends JDialog {
 		jtfAge.setBounds(325, 182, 130, 20);
 		jtfAge.setEditable(false);
 		
-		jtfGender=new JTextField(ervo.getGender());
+		jtfGender=new JTextField(ervo.getGender().equals("F") ? "여자" : "남자");
 		add(jtfGender);
 		jtfGender.setBounds(325, 262, 130, 20);
 		jtfGender.setEditable(false);

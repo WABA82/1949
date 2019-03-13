@@ -142,7 +142,7 @@ public class EeInfoModifyView extends JDialog {
 		jtfAge.setEditable(false);
 		jtfAge.setBounds(325, 182, 130, 20);
 
-		JTextField jtfGender = new JTextField(eivo.getGender());
+		JTextField jtfGender = new JTextField(eivo.getGender().equals("M") ? "남자" : "여자");
 		add(jtfGender);
 		jtfGender.setEditable(false);
 		jtfGender.setBounds(325, 262, 130, 20);
