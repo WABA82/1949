@@ -105,6 +105,12 @@ public class SignUpController extends WindowAdapter implements ActionListener {
 			suv.getJtfName().requestFocus();
 			return;
 		}
+		if (name.length() > 5) {
+			JOptionPane.showMessageDialog(suv, "이름은 최대 5글자까지 입력가능합니다.");
+			suv.getJtfName().setText("");
+			suv.getJtfName().requestFocus();
+			return;
+		}
 		;// 이름 받기
 		if (ssn1 == null || ssn1.equals("")) {
 			JOptionPane.showMessageDialog(suv, "주민번호를 입력해주세요");
