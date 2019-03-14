@@ -306,6 +306,13 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 		
 		String questionType = String.valueOf(umv.getJcbQuestion().getSelectedIndex());
 		String answer = umv.getJtfAnswer().getText().trim();
+		
+		if("".equals(answer)) {
+			umv.getJtfAnswer().requestFocus();
+			msgCenter("질문 답은 필수입력사항입니다.");
+			return;
+		}
+		
 		String userType = umv.getJcbUser().getSelectedItem().equals("일반") ? "E" : "R";
 		
 		if (ssnFlag) { // ssn 변경 시 
@@ -381,9 +388,9 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 					msgCenter("회원정보가 수정되었습니다.");
 					au.sendLog("["+umv.getJtfId().getText()+"] 수정");
 					umv.dispose();
-					UserInfoVO ulvo = AdminDAO.getInstance().selectOneUser(id);
+					UserInfoVO uivo = AdminDAO.getInstance().selectOneUser(id);
 					ammc.setUser();
-					new UserModifyView(ammv, ulvo, ammc);
+					new UserModifyView(ammv, uivo, ammc);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -435,9 +442,9 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 					msgCenter("회원정보가 수정되었습니다.");
 					au.sendLog("["+umv.getJtfId().getText()+"] 수정");
 					umv.dispose();
-					UserInfoVO ulvo = AdminDAO.getInstance().selectOneUser(id);
+					UserInfoVO uivo = AdminDAO.getInstance().selectOneUser(id);
 					ammc.setUser();
-					new UserModifyView(ammv, ulvo, ammc);
+					new UserModifyView(ammv, uivo, ammc);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
