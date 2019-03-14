@@ -405,7 +405,9 @@ public class UserModifyController extends WindowAdapter implements ActionListene
 							
 							// 이미지, 이력서 먼저 삭제처리 
 							File imgFile = new File("C:/dev/1949/03.개발/src/admin/img/ee/"+eivo.getImg());
-							imgFile.delete();
+							if(imgFile != null) {
+								imgFile.delete();
+							}
 							
 							au.deleteFile(eivo.getImg(), "ee", client, dos, dis);
 							
