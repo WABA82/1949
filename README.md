@@ -32,6 +32,11 @@
 * [클래스 다이어그램 - 서버관리자](https://github.com/younggeun0/1949/blob/master/02.%EC%84%A4%EA%B3%84/class_diagrams/admin_class_diagram_0208%20-%20%EA%B0%9C%EB%B0%9C%EC%98%81%EC%97%AD%EA%B5%AC%EB%B6%84.png?raw=true)
 * [클래스 다이어그램 - 사용자](https://github.com/younggeun0/1949/blob/master/02.%EC%84%A4%EA%B3%84/class_diagrams/user_class_diagram_0208%20-%20%EA%B0%9C%EB%B0%9C%EC%98%81%EC%97%AD%EA%B5%AC%EB%B6%84.png?raw=true)
 
+## 테스트
+
+* [단위테스트](https://github.com/younggeun0/1949/tree/master/03.%EA%B0%9C%EB%B0%9C)
+* [통합테스트](https://github.com/younggeun0/1949/tree/master/04.%ED%85%8C%EC%8A%A4%ED%8A%B8)
+
 ## 시연(동영상)
 
 * 영상은 비밀번호 `Aaa11!` 입력하면 재생가능 
