@@ -756,7 +756,6 @@ public class AdminMgMtController extends WindowAdapter implements MouseListener,
 		while(true) { // 15초마다 AdminMgMtView의 리스트를 갱신 
 			try {
 				Thread.sleep(1000*15);
-				System.out.println("테이블 갱신");
 				setUser();
 				setEe();
 				setEr();
