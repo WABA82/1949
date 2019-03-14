@@ -10,7 +10,7 @@
 
 ![간트차트](https://github.com/younggeun0/1949/blob/master/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8_%EA%B0%84%ED%8A%B8%EC%B0%A8%ED%8A%B8_new.png?raw=true)
 
-## 분석
+## Scope & Boundary
 
 
 * [요구사항 명세서, 요구사항 정의서, 개발표준정의서](https://github.com/younggeun0/1949/tree/master/01.%EB%B6%84%EC%84%9D)
