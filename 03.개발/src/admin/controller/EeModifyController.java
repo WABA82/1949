@@ -251,8 +251,7 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 		fd.setVisible(true);
 		
 		if (fd.getDirectory() != null && fd.getName() != null) {
-			if (fd.getFile().toLowerCase().endsWith(".png") || 
-					fd.getFile().toLowerCase().endsWith(".jpg") || 
+			if (fd.getFile().toLowerCase().endsWith(".jpg") || 
 					fd.getFile().toLowerCase().endsWith(".jpeg") ||
 					fd.getFile().toLowerCase().endsWith(".gif")) {
 				changeImgFile = new File(fd.getDirectory()+fd.getFile());
@@ -260,7 +259,7 @@ public class EeModifyController extends WindowAdapter implements ActionListener 
 				
 				emv.getJlImg().setIcon(new ImageIcon(changeImgFile.getAbsolutePath()));
 			} else {
-				msgCenter("확장자가 png, jpg, jpeg, gif인 파일만 등록가능합니다.");
+				msgCenter("확장자가 jpg, jpeg, gif인 파일만 등록가능합니다.");
 			}
 		}
 	}

@@ -161,8 +161,8 @@ public class EeInfoModifyController extends WindowAdapter implements ActionListe
 			return;
 		} 	
 		
-		if(name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".jpeg") || name.toLowerCase().endsWith(".png") || 
-				name.toLowerCase().endsWith(".bmp") || name.toLowerCase().endsWith(".gif")) {
+		if(name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".jpeg") || 
+				name.toLowerCase().endsWith(".gif")) {
 			flag=true;
 		}//end if
 		
@@ -171,7 +171,7 @@ public class EeInfoModifyController extends WindowAdapter implements ActionListe
 	 		uploadImg =  new File(path + name);
 	 		eimv.getJlImag().setIcon(new ImageIcon(uploadImg.getAbsolutePath()));
 		} else {
-			JOptionPane.showMessageDialog(eimv, name + "은 사용할수 없습니다.");
+			JOptionPane.showMessageDialog(eimv, name + "은 사용할수 없습니다.\n확장자가 jpg, jpeg, gif인 파일으로만 수정가능합니다.");
 		}//else if
 	}// changeImg
 
