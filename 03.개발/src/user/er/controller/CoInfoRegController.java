@@ -15,6 +15,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -92,6 +94,53 @@ public class CoInfoRegController extends WindowAdapter implements MouseListener,
 		} // end if
 
 	}// mouseClicked
+	
+	/**
+	 * 설립일 검증 메소드
+	 * @param estDate
+	 * @return
+	 */
+	private boolean chkEstDate(String estDate) {
+		boolean flag = false;
+
+		String number = estDate.replaceAll("-", "");
+
+		if (number.length() != 8 ) { // 0000-00-00
+			return flag;
+		}
+		
+		int yyyy = 0;
+		int mm = 0;
+		int dd = 0;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+		int currYear = Integer.parseInt(sdf.format(new Date()));
+		
+		try {
+			Integer.parseInt(number);
+			yyyy = Integer.parseInt(number.substring(0, 4));
+			mm = Integer.parseInt(number.substring(4,6));
+			dd = Integer.parseInt(number.substring(6,8));
+			
+			if (yyyy > currYear) { // 설립년도가 올해보다 클 수 없음
+				return flag;
+			}
+			
+			if (mm > 12 || mm < 1) { // 월은 0보다 작거나 12보다 클 수 없음
+				return flag;
+			}
+
+			if (dd > 31 || dd < 1) { // 일은 0보다 작거나 31보다 클 수 없으
+				return flag;
+			}
+			
+			flag = true;
+		} catch (NumberFormatException npe) {
+			flag = false;
+		}
+		
+		return flag;
+	}
 
 	public void register() throws SQLException, IOException {
 //		boolean insertFlag = false;
@@ -113,11 +162,13 @@ public class CoInfoRegController extends WindowAdapter implements MouseListener,
 			JOptionPane.showMessageDialog(cirv, "설립일을 입력해주세요.");
 			return;
 		} // end if
-
-		if (estDate.length() < 7) {
-			JOptionPane.showMessageDialog(cirv, "설립년도의 입력형식을 아래와 같은 형식으로 해주세요\nex)19901217\nex)1990-12-17");
+		
+		if (!chkEstDate(estDate)) {
+			JOptionPane.showMessageDialog(cirv, "설립년도의 입력형식을 아래와 같은 형식으로 해주세요\\nex)19901217\\nex)1990-12-17");
+			cirv.getJtfEstDate().setText("");
+			cirv.getJtfEstDate().requestFocus();
 			return;
-		} // end if
+		}
 
 		int memberNum = 0;
 		try {
@@ -133,7 +184,7 @@ public class CoInfoRegController extends WindowAdapter implements MouseListener,
 			return;
 		} // end catch
 
-		if (coDesc.equals("")) {
+		if ("".equals(coDesc)) {
 			JOptionPane.showMessageDialog(cirv, "기업 설명을 입력해주세요!");
 			return;
 		}
