@@ -32,14 +32,20 @@
 * [클래스 다이어그램 - 서버관리자](https://github.com/younggeun0/1949/blob/master/02.%EC%84%A4%EA%B3%84/class_diagrams/admin_class_diagram_0208%20-%20%EA%B0%9C%EB%B0%9C%EC%98%81%EC%97%AD%EA%B5%AC%EB%B6%84.png?raw=true)
 * [클래스 다이어그램 - 사용자](https://github.com/younggeun0/1949/blob/master/02.%EC%84%A4%EA%B3%84/class_diagrams/user_class_diagram_0208%20-%20%EA%B0%9C%EB%B0%9C%EC%98%81%EC%97%AD%EA%B5%AC%EB%B6%84.png?raw=true)
 
-## 시연 - 관리자
+## 시연(동영상)
+
+* [관리자]()
+* [일반사용자]()
+* [기업사용자]()
+
+## 시연 GIF - 관리자
 
 ![관리자 시연](https://github.com/younggeun0/1949/blob/master/05.%EC%8B%9C%EC%97%B0/admin.gif?raw=true)
 
-## 시연 - 일반사용자
+## 시연 GIF - 일반사용자
 
 ![일반사용자 시연](https://github.com/younggeun0/1949/blob/master/05.%EC%8B%9C%EC%97%B0/ee_user.gif?raw=true)
 
-## 시연 - 기업사용자
+## 시연 GIF - 기업사용자
 
 ![기업사용자 시연](https://github.com/younggeun0/1949/blob/master/05.%EC%8B%9C%EC%97%B0/er_user.gif?raw=true)
