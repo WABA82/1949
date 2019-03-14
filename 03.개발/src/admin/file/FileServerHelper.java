@@ -49,7 +49,6 @@ public class FileServerHelper {
 		this.dos = dos;
 		
 		String flag = dis.readUTF();
-		System.out.println(flag);
 		
 		try {
 			switch(flag) {
@@ -177,7 +176,6 @@ public class FileServerHelper {
 		
 		// Admin이 없는 파일명 리스트를 전송받음
 		listImg = (List<String>)ois.readObject(); 
-		System.out.println("없어서 받는 이미지 : "+listImg);
 		
 		String filePath = dir.getAbsolutePath();
 		byte[] readData = new byte[512];
