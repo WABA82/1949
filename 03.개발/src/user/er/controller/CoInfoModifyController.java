@@ -256,7 +256,7 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 			return;
 		}
 
-		String[] extFlag = { "jpg", "jpeg", "png", "bmp", "gif" };
+		String[] extFlag = { "jpg", "jpeg", "gif" };
 		for (String ext : extFlag) {
 			if (name.toLowerCase().endsWith(ext)) {
 				flag = true;
@@ -282,7 +282,7 @@ public class CoInfoModifyController extends WindowAdapter implements ActionListe
 				cimv.getJlImg4().setIcon(new ImageIcon(uploadImg4.getAbsolutePath()));
 			} // end else if
 		} else {
-			JOptionPane.showMessageDialog(cimv, name + "파일은 이미지형식이 아닙니다.\n(jpg, jpeg, png, bmp, gif파일 등록 가능)");
+			JOptionPane.showMessageDialog(cimv, name + "파일은 이미지형식이 아닙니다.\n확장자가 jpg, jpeg, gif인 파일로만 수정가능합니다.");
 		} // end else
 	}// chgImg
 

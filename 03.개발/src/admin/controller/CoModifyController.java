@@ -362,7 +362,7 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 		FileDialog fd = new FileDialog(cmv, "이미지 변경", FileDialog.LOAD);
 		fd.setVisible(true);
 		
-		String[] arrExt = { "jpg", "png", "jpeg", "gif" };
+		String[] arrExt = { "jpg", "jpeg", "gif" };
 		
 		String selectedFileExt = "";
 		try {
@@ -403,7 +403,7 @@ public class CoModifyController extends WindowAdapter implements MouseListener, 
 				break;
 			}
 		} else {
-			msgCenter("확장자가 png, jpg, jpeg, gif인 파일만 등록가능합니다.");
+			msgCenter("확장자가 jpg, jpeg, gif인 파일만 등록가능합니다.");
 		}
 	}//changeImg
 	

@@ -125,7 +125,6 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 
 		if (path != null) {
 			if (name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".jpeg") 
-					|| name.toLowerCase().endsWith(".png") || name.toLowerCase().endsWith(".bmp")
 					|| name.toLowerCase().endsWith(".gif")) {
 				flag = true;
 			} // end if
@@ -134,7 +133,7 @@ public class EeInfoRegController extends WindowAdapter implements ActionListener
 				uploadImg = new File(path + name);
 				eirv.getJlImage().setIcon(new ImageIcon(uploadImg.getAbsolutePath()));
 			} else {
-				JOptionPane.showMessageDialog(eirv, name + "은 사용할수 없습니다.");
+				JOptionPane.showMessageDialog(eirv, name + "은 사용할수 없습니다.\n 확장자가 jpg, jpeg, gif인 파일만 등록가능합니다.");
 				return;
 			} // end else
 		} // end if
