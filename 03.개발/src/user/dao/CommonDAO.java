@@ -20,6 +20,7 @@ import user.common.vo.UserInfoVO;
 import user.common.vo.UserInsertVO;
 import user.common.vo.UserModifyVO;
 import user.common.vo.UserModifyWithoutPassVO;
+import user.util.UserUtil;
 
 public class CommonDAO {
     private static CommonDAO C_dao;
@@ -221,6 +222,8 @@ public class CommonDAO {
      */
     public boolean checkSsn(String ssn) throws SQLException {
     	boolean ssnFlag = false;
+    	UserUtil uu = new UserUtil();
+    	String shaSsn=uu.shaEncoding(ssn);
     	
     	Connection con =null;
     	PreparedStatement pstmt = null;
@@ -230,8 +233,7 @@ public class CommonDAO {
 	            
 	            String chkSsn = " select ssn from user_table where ssn= ? ";
 	            pstmt = con.prepareStatement(chkSsn);
-	            pstmt.setString(1, ssn);
-	            
+	            pstmt.setString(1, shaSsn);
 	            rs = pstmt.executeQuery();
 	            
 	            if(rs.next()) {
