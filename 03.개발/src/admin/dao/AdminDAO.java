@@ -558,7 +558,7 @@ public class AdminDAO {
 			updateUser
 			.append(" update user_table ")
 			.append(" set pass=?, name=?, ssn=?, tel=?, addr_seq=?,  ")
-			.append(" addr_detail=?, email=?, question_type=?, user_type=?, gender=?, age=? ")
+			.append(" addr_detail=?, email=?, question_type=?, answer=?, user_type=?, gender=?, age=? ")
 			.append(" where id = ? ");
 			
 			pstmt = con.prepareStatement(updateUser.toString());
@@ -571,10 +571,11 @@ public class AdminDAO {
 			pstmt.setString(6, umvo.getAddrDetail());
 			pstmt.setString(7, umvo.getEmail());
 			pstmt.setString(8, umvo.getQuestionType());
-			pstmt.setString(9, umvo.getUserType());
-			pstmt.setString(10, umvo.getGender());
-			pstmt.setInt(11, umvo.getAge());
-			pstmt.setString(12, umvo.getId());
+			pstmt.setString(9, umvo.getAnswer());
+			pstmt.setString(10, umvo.getUserType());
+			pstmt.setString(11, umvo.getGender());
+			pstmt.setInt(12, umvo.getAge());
+			pstmt.setString(13, umvo.getId());
 			
 			int cnt = pstmt.executeUpdate();
 			
@@ -609,7 +610,7 @@ public class AdminDAO {
 			updateUser
 			.append(" update user_table ")
 			.append(" set pass=?, name=?, tel=?, addr_seq=?,  ")
-			.append(" addr_detail=?, email=?, question_type=?, user_type=? ")
+			.append(" addr_detail=?, email=?, question_type=?, answer=?, user_type=? ")
 			.append(" where id = ? ");
 			
 			pstmt = con.prepareStatement(updateUser.toString());
@@ -621,8 +622,9 @@ public class AdminDAO {
 			pstmt.setString(5, umvo.getAddrDetail());
 			pstmt.setString(6, umvo.getEmail());
 			pstmt.setString(7, umvo.getQuestionType());
-			pstmt.setString(8, umvo.getUserType());
-			pstmt.setString(9, umvo.getId());
+			pstmt.setString(8, umvo.getAnswer());
+			pstmt.setString(9, umvo.getUserType());
+			pstmt.setString(10, umvo.getId());
 			
 			int cnt = pstmt.executeUpdate();
 			
