@@ -34,7 +34,7 @@
 
 ## 테스트
 
-* [단위테스트](https://github.com/younggeun0/1949/tree/master/03.%EA%B0%9C%EB%B0%9C)
+* [단위테스트](https://github.com/younggeun0/1949/tree/master/03.%EA%B0%9C%EB%B0%9C/%EB%8B%A8%EC%9C%84%ED%85%8C%EC%8A%A4%ED%8A%B8)
 * [통합테스트](https://github.com/younggeun0/1949/tree/master/04.%ED%85%8C%EC%8A%A4%ED%8A%B8)
 
 ## 시연(동영상)
